@@ -18,3 +18,7 @@ dist-ssr
 
 # Local
 *.local
+
+# Node Modules
+# Some libraries creates the folder like vite
+node_modules
