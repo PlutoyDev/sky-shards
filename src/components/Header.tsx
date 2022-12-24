@@ -1,16 +1,18 @@
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
+import { useSettings } from '../context/Settings';
 
 interface HeaderProp {
-  isTwelve: boolean;
   onThemeButtonClick: () => void;
   onClockButtonClick: () => void;
 }
 
-export default function Header({ isTwelve, onThemeButtonClick, onClockButtonClick }: HeaderProp) {
+export default function Header({ onThemeButtonClick, onClockButtonClick }: HeaderProp) {
+  const { isTwelveHourMode } = useSettings();
+
   return (
     <Box
       sx={{
@@ -54,7 +56,7 @@ export default function Header({ isTwelve, onThemeButtonClick, onClockButtonClic
             fontSize: '1.2rem',
           }}
         >
-          {isTwelve ? 12 : 24}
+          {isTwelveHourMode ? 12 : 24}
         </span>
         <span
           onClick={onThemeButtonClick}

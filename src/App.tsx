@@ -1,9 +1,11 @@
-import './App.css';
-import Header from './components/Header';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
 import { useState, useMemo } from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import Header from './components/Header';
+import { SettingsProvider } from './context/Settings';
+import Home from './pages/Home';
+import './App.css';
 
 function App() {
   const [twelveHourMode, setTwelveHourMode] = useState(false);
@@ -19,15 +21,18 @@ function App() {
   );
 
   return (
-    <ThemeProvider theme={appTheme}>
-      <CssBaseline />
-      <Header
-        isTwelve={twelveHourMode}
-        onThemeButtonClick={() => setDarkMode(!darkMode)}
-        onClockButtonClick={() => setTwelveHourMode(!twelveHourMode)}
-      />
-      <div className='App'></div>
-    </ThemeProvider>
+    <SettingsProvider value={{ isTwelveHourMode: twelveHourMode }}>
+        <ThemeProvider theme={appTheme}>
+          <CssBaseline />
+          <Header
+            onThemeButtonClick={() => setDarkMode(!darkMode)}
+            onClockButtonClick={() => setTwelveHourMode(!twelveHourMode)}
+          />
+          <div className='App'>
+            <Home />
+          </div>
+        </ThemeProvider>
+    </SettingsProvider>
   );
 }
 
