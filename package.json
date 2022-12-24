@@ -4,9 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "pnpify vite",
-    "build": "tsc && pnpify vite build",
-    "preview": "pnpify vite preview"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
     "date-fns": "^2.29.3",
