@@ -6,6 +6,7 @@ import { useState, useMemo } from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 
 function App() {
+  const [twelveHourMode, setTwelveHourMode] = useState(false);
   const [darkMode, setDarkMode] = useState(useMediaQuery('(prefers-color-scheme: dark)'));
   const appTheme = useMemo(
     () =>
@@ -20,9 +21,12 @@ function App() {
   return (
     <ThemeProvider theme={appTheme}>
       <CssBaseline />
-      <div className='App'>
-        <Header onThemeButtonClick={() => setDarkMode(!darkMode)} />
-      </div>
+      <Header
+        isTwelve={twelveHourMode}
+        onThemeButtonClick={() => setDarkMode(!darkMode)}
+        onClockButtonClick={() => setTwelveHourMode(!twelveHourMode)}
+      />
+      <div className='App'></div>
     </ThemeProvider>
   );
 }

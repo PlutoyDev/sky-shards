@@ -5,10 +5,12 @@ import LightModeIcon from '@mui/icons-material/LightMode';
 import { useTheme } from '@mui/material/styles';
 
 interface HeaderProp {
+  isTwelve: boolean;
   onThemeButtonClick: () => void;
+  onClockButtonClick: () => void;
 }
 
-export default function Header({ onThemeButtonClick }: HeaderProp) {
+export default function Header({ isTwelve, onThemeButtonClick, onClockButtonClick }: HeaderProp) {
   return (
     <Box
       sx={{
@@ -22,6 +24,7 @@ export default function Header({ onThemeButtonClick }: HeaderProp) {
         justifyContent: 'space-between',
         gap: '1rem',
         paddingX: { sm: '5px', md: '1rem' },
+        paddingTop: '1rem',
       }}
     >
       <div style={{ flexBasis: '10%' }} />
@@ -34,16 +37,35 @@ export default function Header({ onThemeButtonClick }: HeaderProp) {
         <strong>Sky Shards</strong>
       </Typography>
       <div
-        onClick={onThemeButtonClick}
         style={{
           display: 'flex',
-          cursor: 'pointer',
           flexFlow: 'row nowrap',
           flexBasis: '10%',
           justifyContent: 'flex-end',
+          alignItems: 'center',
+          gap: '1rem',
         }}
       >
-        {useTheme().palette.mode === 'dark' ? <DarkModeIcon /> : <LightModeIcon />}
+        <span
+          onClick={onClockButtonClick}
+          style={{
+            fontFamily: "'Orbitron', sans-serif",
+            cursor: 'pointer',
+            fontSize: '1.2rem',
+          }}
+        >
+          {isTwelve ? 12 : 24}
+        </span>
+        <span
+          onClick={onThemeButtonClick}
+          style={{
+            cursor: 'pointer',
+            fontSize: '1.2rem',
+            paddingTop: '0.5rem',
+          }}
+        >
+          {useTheme().palette.mode === 'dark' ? <DarkModeIcon /> : <LightModeIcon />}
+        </span>
       </div>
     </Box>
   );
