@@ -3,6 +3,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Header from './components/Header';
+import { NowProvider } from './context/Now';
 import { SettingsProvider } from './context/Settings';
 import Home from './pages/Home';
 import './App.css';
@@ -22,6 +23,7 @@ function App() {
 
   return (
     <SettingsProvider value={{ isTwelveHourMode: twelveHourMode }}>
+      <NowProvider>
         <ThemeProvider theme={appTheme}>
           <CssBaseline />
           <Header
@@ -32,6 +34,7 @@ function App() {
             <Home />
           </div>
         </ThemeProvider>
+      </NowProvider>
     </SettingsProvider>
   );
 }
