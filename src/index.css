@@ -1,0 +1,112 @@
+body {
+  --color-primary: #242424;
+  --color-secondary: #fffd;
+
+  --header-height: fit-content;
+  --header-padding-X: 10px;
+  --header-padding-top: 5px;
+  --header-background-color: rgba(0, 0, 0, 0.1);
+
+  --app-title-font-size: 2.4rem;
+  --app-title-font-weight: 800;
+  --app-title-font-color: var(--color-secondary);
+
+  --page-width: 100%;
+  --page-max-width: 100%;
+  --page-padding: 0px;
+  --page-margin-X: calc(50% - var(--page-max-width) / 2);
+  --page-margin-top: 1rem;
+
+  --page-height: calc(100vh - var(--header-height) - var(--page-margin-top));
+  --page-margin-top: calc(var(--header-height) + var(--page-margin-top));
+}
+
+body.light {
+  --color-primary: #fff;
+  --color-secondary: #242424;
+
+  --header-background-color: rgba(255, 255, 255, 0.1);
+
+  --app-title-font-color: var(--color-secondary);
+
+}
+
+
+body {
+  background-color: var(--color-primary);
+  color: var(--color-secondary);
+}
+
+
+@media (orientation: landscape) {
+  body {
+    --page-width: 70%;
+    --page-max-width: 70%;
+
+    --header-height: fit-content;
+  }
+}
+
+.App-header {
+  top: 0;
+  left: 1px;
+  right: 1px;
+  height: var(--header-height);
+  padding: var(--header-padding-top) var(--header-padding-X) 0 var(--header-padding-X);
+  background-color: var(--header-background-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.App-title {
+  flex: 0 0 40%;
+  font-size: var(--app-title-font-size);
+  font-weight: var(--app-title-font-weight);
+  color: var(--app-title-font-color);
+  font-family: 'Caramel', cursive;
+  text-align: left;
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 300px) {
+  .App-title {
+    font-size: 1.8rem;
+  }
+}
+
+.App-header-buttons {
+  display: flex;
+  flex: 0 0 25%;
+  flex-flow: row nowrap;
+  justify-content: right;
+  align-items: center;
+  gap: 0.8rem;
+  margin-right: 0.5rem;
+}
+
+.App-theme-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  font-size: 1.2rem;
+  color: var(--color-secondary);
+}
+
+.App {
+  top: var(--page-margin-top);
+  left: var(--page-margin-X);
+  width: var(--page-width);
+  max-width: var(--page-max-width);
+  height: var(--page-height);
+  padding: var(--page-padding);
+  overflow: auto;
+  color: var(--color-secondary);
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+}

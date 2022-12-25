@@ -1,39 +1,35 @@
-import { useState, useMemo } from 'react';
-import CssBaseline from '@mui/material/CssBaseline';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { useEffect, useState } from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Header from './components/Header';
 import { NowProvider } from './context/Now';
 import { SettingsProvider } from './context/Settings';
+import useLocalStorageState from './hooks/useLocalStorageState';
 import Home from './pages/Home';
 import './App.css';
 
 function App() {
   const [twelveHourMode, setTwelveHourMode] = useState(false);
-  const [darkMode, setDarkMode] = useState(useMediaQuery('(prefers-color-scheme: dark)'));
-  const appTheme = useMemo(
-    () =>
-      createTheme({
-        palette: {
-          mode: darkMode ? 'dark' : 'light',
-        },
-      }),
-    [darkMode],
-  );
+  const [lightMode, setLightMode] = useLocalStorageState('lightMode', useMediaQuery('(prefers-color-scheme: light)'));
+  // const [darkMode, setDarkMode] = useState(useMediaQuery('(prefers-color-scheme: dark)'));
+
+  useEffect(() => {
+    if (lightMode) {
+      document.body.classList.add('light');
+    } else {
+      document.body.classList.remove('light');
+    }
+  }, [lightMode]);
 
   return (
-    <SettingsProvider value={{ isTwelveHourMode: twelveHourMode }}>
+    <SettingsProvider value={{ isTwelveHourMode: twelveHourMode, isLightMode: lightMode }}>
       <NowProvider>
-        <ThemeProvider theme={appTheme}>
-          <CssBaseline />
-          <Header
-            onThemeButtonClick={() => setDarkMode(!darkMode)}
-            onClockButtonClick={() => setTwelveHourMode(!twelveHourMode)}
-          />
-          <div className='App'>
-            <Home />
-          </div>
-        </ThemeProvider>
+        <Header
+          onThemeButtonClick={() => setLightMode(!lightMode)}
+          onClockButtonClick={() => setTwelveHourMode(!twelveHourMode)}
+        />
+        <div className='App'>
+          <Home />
+        </div>
       </NowProvider>
     </SettingsProvider>
   );

@@ -11,43 +11,12 @@ interface HeaderProp {
 }
 
 export default function Header({ onThemeButtonClick, onClockButtonClick }: HeaderProp) {
-  const { isTwelveHourMode } = useSettings();
+  const { isTwelveHourMode, isLightMode } = useSettings();
 
   return (
-    <Box
-      sx={{
-        position: 'absolute',
-        top: 0,
-        left: '1px',
-        right: '1px',
-        height: { sm: 32, md: 64 },
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        gap: '1rem',
-        paddingX: { sm: '5px', md: '1rem' },
-        paddingTop: '1rem',
-      }}
-    >
-      <div style={{ flexBasis: '10%' }} />
-      <Typography
-        component='span'
-        sx={{
-          fontSize: { sm: '1.2rem', md: '2.8rem' },
-        }}
-      >
-        <strong>Sky Shards</strong>
-      </Typography>
-      <div
-        style={{
-          display: 'flex',
-          flexFlow: 'row nowrap',
-          flexBasis: '10%',
-          justifyContent: 'flex-end',
-          alignItems: 'center',
-          gap: '1rem',
-        }}
-      >
+    <Box className='App-header'>
+      <span className='App-title'>Sky Shards</span>
+      <div className='App-header-buttons'>
         <span
           onClick={onClockButtonClick}
           style={{
@@ -66,7 +35,7 @@ export default function Header({ onThemeButtonClick, onClockButtonClick }: Heade
             paddingTop: '0.5rem',
           }}
         >
-          {useTheme().palette.mode === 'dark' ? <DarkModeIcon /> : <LightModeIcon />}
+          {isLightMode ? <LightModeIcon /> : <DarkModeIcon />}
         </span>
       </div>
     </Box>
