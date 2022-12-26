@@ -1,0 +1,91 @@
+#SummaryPage,
+#ShardInfoDisplay,
+#ShardLandEndCountdown {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+
+  font-size: var(--font-size-medium);
+  font-family: 'Bubblegum Sans', cursive;
+}
+
+#ShardLandEndCountdown {
+  border-top: 1px solid white;
+}
+
+.Emphasized,
+.Date {
+  display: inline;
+  font-weight: 600;
+  font-size: var(--font-size-large);
+  white-space: nowrap;
+}
+
+.Full {
+  display: none;
+}
+
+.Nick {
+  display: inline;
+}
+
+.Red {
+  color: red;
+}
+
+.Black {
+  color: black;
+}
+
+.AbsoluteTime {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+#ShardLandEndCountdown .smaller {
+  font-size: var(--font-size-small);
+}
+
+.AbsTimeGrp,
+.AbsTime {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+}
+
+@media (min-width: 760px) or (orientation: landscape) {
+  #ShardInfoDisplay {
+    display: block;
+  }
+
+  .Emphasized,
+  .Date {
+    display: inline;
+    font-size: var(--font-size-medium);
+  }
+
+  .Full {
+    display: inline;
+  }
+
+  .Nick {
+    display: none;
+  }
+
+  #ShardLandEndCountdown,
+  #ShardInfoDisplay {
+    font-size: var(--font-size-small);
+  }
+
+  #ShardLandEndCountdown .smaller {
+    font-size: var(--font-size-xsmall);
+  }
+
+  .AbsTimeGrp {
+    flex-flow: row nowrap;
+  }
+}

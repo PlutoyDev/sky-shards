@@ -1,0 +1,8 @@
+.Date {
+  --date-font-size: var(--font-size-medium);
+
+  font-size: var(--date-font-size);
+  display: block;
+
+  white-space: nowrap;
+}
