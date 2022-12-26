@@ -2,6 +2,7 @@ import { DateTime } from 'luxon';
 import Clock from '../components/Clock';
 import Date from '../components/Date';
 import { useNow } from '../context/Now';
+import { useURL } from '../hooks/useURL';
 import { getShardInfo, nextOrCurrent, ShardInfo, ShardPhases } from '../shardPredictor';
 import './Summary.css';
 
@@ -10,12 +11,29 @@ interface SummaryProps {
 }
 
 export default function Summary({ now }: SummaryProps) {
-  const defNow = now ?? useNow().application;
+  const { daysToAdd } = useURL();
+  const defNow =
+    now ?? daysToAdd
+      ? daysToAdd < 0
+        ? useNow()
+            .application.endOf('day')
+            .minus({ days: Math.abs(daysToAdd) })
+        : useNow().application.startOf('day').plus({ days: daysToAdd })
+      : useNow().application;
   const { info, index, phases } = nextOrCurrent(defNow);
+  const verbsTense = !info?.haveShard
+    ? 'future'
+    : daysToAdd
+    ? daysToAdd < 0
+      ? 'past'
+      : 'future'
+    : phases && defNow > phases.land
+    ? 'present'
+    : 'future';
 
   return (
     <div id='SummaryPage'>
-      <ShardInfoDisplay info={info} now={defNow} />
+      <ShardInfoDisplay info={info} now={defNow} verbsTense={verbsTense} />
       {phases && <ShardLandEndCountdown phases={phases} index={index} now={defNow} />}
     </div>
   );
@@ -24,10 +42,12 @@ export default function Summary({ now }: SummaryProps) {
 interface ShardInfoDisplayProps {
   info?: ShardInfo;
   now?: DateTime;
+  verbsTense?: 'past' | 'present' | 'future';
 }
 
-export function ShardInfoDisplay({ info, now }: ShardInfoDisplayProps) {
-  const { date, haveShard, isRed, map, realmFull, realmNick } = info ?? getShardInfo(now ?? useNow().application);
+export function ShardInfoDisplay({ info, now, verbsTense }: ShardInfoDisplayProps) {
+  const defNow = now ?? useNow().application;
+  const { date, haveShard, isRed, map, realmFull, realmNick } = info ?? getShardInfo(defNow);
   const color = isRed ? 'Red' : 'Black';
 
   if (!haveShard) {
@@ -43,7 +63,9 @@ export function ShardInfoDisplay({ info, now }: ShardInfoDisplayProps) {
     return (
       <div id='ShardInfoDisplay'>
         <span>
-          <span>There will be </span>
+          <span>
+            There {verbsTense && verbsTense !== 'future' ? (verbsTense === 'past' ? 'was' : 'is') : 'will be'}{' '}
+          </span>
           <span className={`${color} Emphasized`}>{color} Shard </span>
           <span> on </span>
         </span>
