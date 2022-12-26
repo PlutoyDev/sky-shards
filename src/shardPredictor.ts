@@ -66,7 +66,7 @@ const shardsInfo: ShardConfig[] = [
   },
 ];
 
-export function findInfo(date: DateTime): ShardInfo {
+export function getShardInfo(date: DateTime): ShardInfo {
   date = date.setZone('America/Los_Angeles').startOf('day');
   const [dayOfMth, dayOfWk] = [date.day, date.weekday];
   const isRed = dayOfMth % 2 === 1;
@@ -75,6 +75,7 @@ export function findInfo(date: DateTime): ShardInfo {
   const { noShardWkDay, interval, offset, maps } = shardsInfo[infoIndex];
   const haveShard = !noShardWkDay.includes(dayOfWk);
   return {
+    date,
     isRed,
     haveShard,
     offset,
@@ -85,7 +86,8 @@ export function findInfo(date: DateTime): ShardInfo {
   };
 }
 
-type ShardInfo = {
+export type ShardInfo = {
+  date: DateTime;
   isRed: boolean;
   haveShard: boolean;
   offset: Duration;
@@ -119,12 +121,19 @@ export function phasesFromEnd(end: DateTime): ShardPhases {
   return { early, start, eruption, land, end };
 }
 
-export function predict(date: DateTime) {
-  const info = findInfo(date);
+interface RecursiveOpt {
+  enable?: boolean;
+  reverse?: boolean;
+  limit?: number;
+  daysAdded?: number;
+}
+
+export function getOccurrences(date: DateTime, rOpts: RecursiveOpt) {
+  const info = getShardInfo(date);
   if (!info.haveShard) return { ...info, occurrences: [] };
   const shardStart = date.plus(info.offset);
 
-  const occurrences = Array.from({ length: 3 }).map((_, i) =>
+  const occurrences = Array.from({ length: 3 }, (_, i) =>
     phasesFromStart(shardStart.plus(info.interval.mapUnits(v => v * i))),
   );
 
@@ -138,9 +147,9 @@ export function nextOrCurrent(
   now: DateTime,
   recursive = false,
   daysAdded = 0,
-): { info: ShardInfo; phases?: ShardPhases; daysAdded: number } {
+): { info: ShardInfo; index?: number; phases?: ShardPhases; daysAdded: number } {
   const today = now.startOf('day');
-  const info = findInfo(now);
+  const info = getShardInfo(now);
   const { haveShard, offset, interval } = info;
   if (!haveShard) {
     if (recursive) {
@@ -149,16 +158,14 @@ export function nextOrCurrent(
     return { info, daysAdded };
   }
 
-  const next = Array.from({ length: 3 }, (_, i) =>
-    today
-      .plus(offset)
-      .plus(endOffset)
-      .plus(interval.mapUnits(v => v * i)),
-  ).find(shardEnd => now < shardEnd);
+  const firstEnd = today.plus(offset).plus(endOffset);
+  const ends = Array.from({ length: 3 }, (_, i) => firstEnd.plus(interval.mapUnits(v => v * i)));
+  const index = ends.findIndex(end => now < end);
+  const next = ends[index];
 
   if (next) {
     const phases = phasesFromEnd(next);
-    return { info, phases, daysAdded };
+    return { info, index, phases, daysAdded };
   }
 
   if (recursive) {

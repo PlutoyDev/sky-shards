@@ -1,111 +1,91 @@
-#SummaryPage {
-  display: flex !important;
-  flex-flow: column wrap;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  width: 95%;
-  gap: 1%;
-}
-
-
-.Display {
-  display: flex !important;
-  flex-flow: column wrap;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  width: 95%;
-}
-
-.Sub.Display {
-  padding-bottom: 1%;
-  border-bottom: 2px solid;
-  border-radius: 2px
-}
-
-.Display.Responsive {
+#SummaryPage,
+#ShardInfoDisplay,
+#ShardLandEndCountdown {
+  display: flex;
   flex-flow: column nowrap;
-}
+  justify-content: center;
+  text-align: center;
+  align-items: center;
 
-.Display.Secondary {
-  flex-flow: row nowrap;
-}
-
-.Display.Secondary.Text {
-  gap: 1rem;
-}
-
-.time-desc {
-  width: 30%;
-  text-align: right;
-  flex-grow: 1;
-}
-
-
-@media (orientation: landscape) {
-  .Display.Responsive {
-    flex-flow: row nowrap;
-  }
-
-  .time-desc {
-    width: 100%;
-    text-align: center;
-  }
-
-  
-  .Display.Secondary.Responsive {
-    flex-flow: column nowrap;
-  }
-}
-
-.fillerText {
-  white-space: nowrap;
   font-size: var(--font-size-medium);
   font-family: 'Bubblegum Sans', cursive;
 }
 
-.Sub .fillerText {
-  font-size: var(--font-size-small);
+#ShardLandEndCountdown {
+  border-top: 1px solid white;
 }
 
-.fillerText.xs {
-  font-size: var(--font-size-xsmall);
-}
-
-.fillerText.xxs {
-  font-size: var(--font-size-xxsmall);
-}
-
-.Status {
+.Emphasized,
+.Date {
+  display: inline;
+  font-weight: 600;
   font-size: var(--font-size-large);
-  font-family: 'Bubblegum Sans', cursive;
-} 
-
-.Sub .Status {
-  font-size: var(--font-size-medium);
+  white-space: nowrap;
 }
 
-.Shard {
-  font-size: var(--font-size-xlarge) !important;
-  font-family: 'Lobster', cursive !important;
-  text-decoration-line: underline;
+.Full {
+  display: none;
 }
 
-.Red.Shard {
+.Nick {
+  display: inline;
+}
+
+.Red {
   color: red;
 }
 
-.Black.Shard {
+.Black {
   color: black;
 }
 
-.Map {
-  font-size: var(--font-size-large) !important;
-  font-family: 'Lobster', cursive !important;
+.AbsoluteTime {
+  display: flex;
+  flex-flow: column nowrap;
 }
 
-.Realm {
-  font-size: var(--font-size-medium) !important;
-  font-family: 'Lobster', cursive !important;
+#ShardLandEndCountdown .smaller {
+  font-size: var(--font-size-small);
+}
+
+.AbsTimeGrp,
+.AbsTime {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+}
+
+@media (min-width: 760px) or (orientation: landscape) {
+  #ShardInfoDisplay {
+    display: block;
+  }
+
+  .Emphasized,
+  .Date {
+    display: inline;
+    font-size: var(--font-size-medium);
+  }
+
+  .Full {
+    display: inline;
+  }
+
+  .Nick {
+    display: none;
+  }
+
+  #ShardLandEndCountdown,
+  #ShardInfoDisplay {
+    font-size: var(--font-size-small);
+  }
+
+  #ShardLandEndCountdown .smaller {
+    font-size: var(--font-size-xsmall);
+  }
+
+  .AbsTimeGrp {
+    flex-flow: row nowrap;
+  }
 }

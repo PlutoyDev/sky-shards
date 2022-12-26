@@ -18,6 +18,5 @@ export default function Date({ date }: DateProp) {
     isMobile ? 'MMM' : 'MMMM',
     isMobile ? 'yy' : ', yyyy',
   ].join(' ');
-  console.log({ date, format });
   return <span className='Date'>{date.toFormat(format)}</span>;
 }

@@ -16,8 +16,6 @@ interface ClockProp {
   fontSize?: CSSProperties['fontSize'];
 }
 
-const durationFormat = "dd'd' hh'h' mm'm' ss's'";
-
 export default function Clock({
   local,
   sky,
@@ -35,7 +33,7 @@ export default function Clock({
   duration = duration ?? relative ? (negate ? now.diff(date) : date.diff(now)) : undefined;
 
   let text = duration
-    ? duration.rescale().toFormat(durationFormat)
+    ? duration.rescale().shiftTo('hours').toFormat(`hh'h' mm'm' ss's'`)
     : date.toFormat(isTwelveHourMode ? 'hh:mm:ss a' : 'HH:mm:ss');
 
   if (trim) text = text.replace(/^(0+\w )+/, '');
