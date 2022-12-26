@@ -9,12 +9,12 @@ body {
   --header-height: 12vh;
   --header-padding-X: 20px;
   --header-padding-top: 5px;
-  --header-background-color: rgba(0, 0, 0, 0.1);
+  --header-background-color: rgba(0, 0, 0, 0.5);
 
   --footer-height: 24vh;
   --footer-padding-X: 10px;
   --footer-padding-bottom: 5px;
-  --footer-background-color: rgb(44, 44, 44);
+  --footer-background-color: rgb(0, 0, 0, 0.5);
 
   --app-title-font-size: 2.4rem;
   --app-title-font-weight: 800;
@@ -45,8 +45,8 @@ body.light {
   /* --color-primary: #659cbb; */
   --color-secondary: #fffd;
 
-  --header-background-color: rgba(0, 0, 0, 0.5);
-  --footer-background-color: rgb(0, 0, 0, 0.5);
+  --header-background-color: rgba(100, 100, 100, 0.7);
+  --footer-background-color: rgb(100, 100, 100, 0.7);
 
   --app-title-font-color: var(--color-secondary);
 
