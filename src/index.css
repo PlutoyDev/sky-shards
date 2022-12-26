@@ -6,7 +6,7 @@ body {
   --color-primary: #242424;
   --color-secondary: #fffd;
 
-  --header-height: 4%;
+  --header-height: 12vh;
   --header-padding-X: 20px;
   --header-padding-top: 5px;
   --header-background-color: rgba(0, 0, 0, 0.1);
@@ -37,7 +37,7 @@ body {
   background-image: url('/backgrounds/SkyBackgroundDark.jpg');
   background-repeat: no-repeat;
   background-size: cover;
-  background-position: 80% center;
+  background-position: 90% center;
   background-attachment: fixed;
 }
 

@@ -1,6 +1,5 @@
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
-import Box from '@mui/material/Box';
 import { useSettings } from '../context/Settings';
 
 interface HeaderProp {
@@ -12,7 +11,7 @@ export default function Header({ onThemeButtonClick, onClockButtonClick }: Heade
   const { isTwelveHourMode, isLightMode } = useSettings();
 
   return (
-    <Box className='App-header'>
+    <div className='App-header'>
       <span className='App-title'>Sky Shards</span>
       <div className='App-header-buttons'>
         <span
@@ -36,6 +35,6 @@ export default function Header({ onThemeButtonClick, onClockButtonClick }: Heade
           {isLightMode ? <LightModeIcon /> : <DarkModeIcon />}
         </span>
       </div>
-    </Box>
+    </div>
   );
 }
