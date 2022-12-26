@@ -32,7 +32,7 @@ export default function Header({ onThemeButtonClick, onClockButtonClick }: Heade
           style={{
             cursor: 'pointer',
             fontSize: '1.2rem',
-            paddingTop: '0.5rem',
+            paddingBottom: '0.3rem',
           }}
         >
           {isLightMode ? <LightModeIcon /> : <DarkModeIcon />}

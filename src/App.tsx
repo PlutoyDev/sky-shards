@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import Footer from './components/Footer';
 import Header from './components/Header';
 import { NowProvider } from './context/Now';
 import { SettingsProvider } from './context/Settings';
@@ -30,6 +31,7 @@ function App() {
         <div className='App'>
           <Summary />
         </div>
+        <Footer />
       </NowProvider>
     </SettingsProvider>
   );

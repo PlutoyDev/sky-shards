@@ -1,16 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 body {
   --color-primary: #242424;
   --color-secondary: #fffd;
 
   --header-height: 4%;
-  --header-padding-X: 10px;
+  --header-padding-X: 20px;
   --header-padding-top: 5px;
   --header-background-color: rgba(0, 0, 0, 0.1);
 
-  --footer-height: 6%
+  --footer-height: 24vh;
   --footer-padding-X: 10px;
   --footer-padding-bottom: 5px;
-  --footer-background-color: rgba(0, 0, 0);
+  --footer-background-color: rgb(44, 44, 44);
 
   --app-title-font-size: 2.4rem;
   --app-title-font-weight: 800;
@@ -21,7 +25,7 @@ body {
   --page-padding: 0px;
   --page-margin-X: calc(50% - var(--page-max-width) / 2);
   --page-margin-top: calc(var(--header-height) + var(--header-padding-top));
-  --page-margin-bottom: 1rem;
+  --page-margin-bottom: calc(var(--footer-height) + var(--footer-padding-bottom));
 
   --font-size-xlarge: min(10vh, 10vw);
   --font-size-large: min(8vh, 8vw);
@@ -29,15 +33,25 @@ body {
   --font-size-small: min(4vh, 4vw);
   --font-size-xsmall: min(2vh, 2vw);
   --font-size-xxsmall: min(1vh, 1vw);
+
+  background-image: url('./backgrounds/SkyBackgroundDark.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 80% center;
+  background-attachment: fixed;
 }
 
 body.light {
-  --color-primary: #fff;
+  /* --color-primary: #659cbb; */
   --color-secondary: #fffd;
 
-  --header-background-color: rgba(255, 255, 255, 0.1);
+  --header-background-color: rgba(0, 0, 0, 0.5);
+  --footer-background-color: rgb(0, 0, 0, 0.5);
 
   --app-title-font-color: var(--color-secondary);
+
+  background-position: 10% center;
+  background-image: url('./backgrounds/SkyBackgroundLight.jpg');
 }
 
 body {
@@ -45,10 +59,22 @@ body {
   color: var(--color-secondary);
 }
 
-@media (orientation: landscape) {
+@media (orientation: landscape) and (min-width: 420px) {
   body {
     --page-width: 80%;
-    /* --page-max-width: 70%; */
+    --footer-height: 18vh;
+  }
+}
+
+@media screen and (min-height: 480px) and (max-width: 420px) {
+  body {
+    --footer-height: 40vh;
+  }
+}
+
+@media screen and (min-height: 768px) {
+  body {
+    --footer-height: 20vh;
   }
 }
 
@@ -57,12 +83,13 @@ body {
   left: 1px;
   right: 1px;
   height: var(--header-height);
-  padding: var(--header-padding-top) var(--header-padding-X) 0 var(--header-padding-X);
+  padding: var(--header-padding-top) var(--header-padding-X) 5 var(--header-padding-X);
   background-color: var(--header-background-color);
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
+  border-radius: 10px;
 }
 
 .App-title {
@@ -73,6 +100,7 @@ body {
   font-family: 'Caramel', cursive;
   text-align: left;
   cursor: pointer;
+  margin-left: 0.5rem;
 }
 
 @media only screen and (max-width: 300px) {
@@ -107,12 +135,11 @@ body {
   right: var(--page-margin-X);
   bottom: var(--page-margin-bottom);
   padding: var(--page-padding);
-  margin-top: var(--page-margin-top);
   overflow: auto;
   color: var(--color-secondary);
   display: flex;
   flex-flow: column nowrap;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
   gap: 1rem;
 }
@@ -120,4 +147,62 @@ body {
 .App > * {
   width: var(--page-width);
   height: 100%;
+}
+
+.App-footer {
+  position: absolute;
+  bottom: 1px;
+  left: 1px;
+  right: 1px;
+  height: var(--footer-height);
+  padding: 0 var(--footer-padding-X) var(--footer-padding-bottom) var(--footer-padding-X);
+  background-color: var(--footer-background-color);
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
+  font-size: 0.8rem;
+  gap: 1px;
+  border-radius: 10px;
+}
+
+.App-footer div {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.link > *::after:not(:last-child) {
+  content: ', ';
+  margin: 0 0.2rem;
+}
+
+.credits {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  color: var(--color-secondary);
+  margin: 0 0.2rem;
+}
+
+.credits > * {
+  margin: 0 0.2rem;
+}
+
+/* .App-footer > * {
+  width: 100%;
+  height: 100%;
+} */
+
+a {
+  text-decoration: underline;
+  color: blue;
+}
+
+a:visited {
+  text-decoration: underline;
+  color: orange;
 }
