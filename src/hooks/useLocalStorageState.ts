@@ -11,7 +11,7 @@ export default function useLocalStorageState<T>(key: string, defaultValue?: T, f
 
   const setValue = (newValue: T) => {
     _setValue(newValue);
-    localStorage.setItem(key, JSON.stringify(value));
+    localStorage.setItem(key, JSON.stringify(newValue));
   };
 
   return [value, setValue];

@@ -2,10 +2,15 @@ body {
   --color-primary: #242424;
   --color-secondary: #fffd;
 
-  --header-height: fit-content;
+  --header-height: 4%;
   --header-padding-X: 10px;
   --header-padding-top: 5px;
   --header-background-color: rgba(0, 0, 0, 0.1);
+
+  --footer-height: 6%
+  --footer-padding-X: 10px;
+  --footer-padding-bottom: 5px;
+  --footer-background-color: rgba(0, 0, 0);
 
   --app-title-font-size: 2.4rem;
   --app-title-font-weight: 800;
@@ -15,35 +20,35 @@ body {
   --page-max-width: 100%;
   --page-padding: 0px;
   --page-margin-X: calc(50% - var(--page-max-width) / 2);
-  --page-margin-top: 1rem;
+  --page-margin-top: calc(var(--header-height) + var(--header-padding-top));
+  --page-margin-bottom: 1rem;
 
-  --page-height: calc(100vh - var(--header-height) - var(--page-margin-top));
-  --page-margin-top: calc(var(--header-height) + var(--page-margin-top));
+  --font-size-xlarge: min(10vh, 10vw);
+  --font-size-large: min(8vh, 8vw);
+  --font-size-medium: min(6vh, 6vw);
+  --font-size-small: min(4vh, 4vw);
+  --font-size-xsmall: min(2vh, 2vw);
+  --font-size-xxsmall: min(1vh, 1vw);
 }
 
 body.light {
   --color-primary: #fff;
-  --color-secondary: #242424;
+  --color-secondary: #fffd;
 
   --header-background-color: rgba(255, 255, 255, 0.1);
 
   --app-title-font-color: var(--color-secondary);
-
 }
-
 
 body {
   background-color: var(--color-primary);
   color: var(--color-secondary);
 }
 
-
 @media (orientation: landscape) {
   body {
-    --page-width: 70%;
-    --page-max-width: 70%;
-
-    --header-height: fit-content;
+    --page-width: 80%;
+    /* --page-max-width: 70%; */
   }
 }
 
@@ -96,12 +101,13 @@ body {
 }
 
 .App {
+  position: absolute;
   top: var(--page-margin-top);
   left: var(--page-margin-X);
-  width: var(--page-width);
-  max-width: var(--page-max-width);
-  height: var(--page-height);
+  right: var(--page-margin-X);
+  bottom: var(--page-margin-bottom);
   padding: var(--page-padding);
+  margin-top: var(--page-margin-top);
   overflow: auto;
   color: var(--color-secondary);
   display: flex;
@@ -109,4 +115,9 @@ body {
   justify-content: flex-start;
   align-items: center;
   gap: 1rem;
+}
+
+.App > * {
+  width: var(--page-width);
+  height: 100%;
 }

@@ -2,56 +2,47 @@ import { CSSProperties } from 'react';
 import { DateTime, Duration } from 'luxon';
 import { useNow } from '../context/Now';
 import { useSettings } from '../context/Settings';
+import './Clock.css';
 
 interface ClockProp {
   local?: boolean;
+  sky?: boolean;
+  negate?: boolean;
   relative?: boolean;
   trim?: boolean;
   date?: DateTime;
   duration?: Duration;
-  fontSize?: CSSProperties['fontSize'];
   variableWidth?: boolean;
+  fontSize?: CSSProperties['fontSize'];
 }
 
 const durationFormat = "dd'd' hh'h' mm'm' ss's'";
 
-export default function Clock({ local, relative, trim, date, duration, fontSize, variableWidth }: ClockProp) {
+export default function Clock({
+  local,
+  sky,
+  negate,
+  relative,
+  trim,
+  date,
+  duration,
+  variableWidth,
+  fontSize,
+}: ClockProp) {
   const { isTwelveHourMode } = useSettings();
   const now = local ? useNow().local : useNow().application;
-  date = date || now;
+  date = (local ? date?.toLocal() : sky ? date?.setZone('America/Los_Angeles') : date) ?? now;
+  duration = duration ?? relative ? (negate ? now.diff(date) : date.diff(now)) : undefined;
+
   let text = duration
     ? duration.rescale().toFormat(durationFormat)
-    : relative
-    ? date.diff(now).rescale().toFormat(durationFormat)
     : date.toFormat(isTwelveHourMode ? 'hh:mm:ss a' : 'HH:mm:ss');
 
   if (trim) text = text.replace(/^(0+\w )+/, '');
 
   return (
-    <div
-      style={{
-        fontFamily: "'Orbitron', sans-serif",
-        fontSize,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
-      {variableWidth || text.length === 0
-        ? text
-        : text.split('').map((char, index) => (
-            <span
-              key={index}
-              style={{
-                display: 'inline-block',
-                flexBasis: `calc(${fontSize} * 0.84)`,
-                padding: 0,
-                textAlign: 'center',
-              }}
-            >
-              {char}
-            </span>
-          ))}
-    </div>
+    <span className={`Clock${variableWidth ? '' : ' Monospace'}`} style={{ ['--clock-font-size' as string]: fontSize }}>
+      {variableWidth || text.length === 0 ? text : text.split('').map((char, index) => <span key={index}>{char}</span>)}
+    </span>
   );
 }

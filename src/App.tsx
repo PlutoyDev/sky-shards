@@ -4,13 +4,13 @@ import Header from './components/Header';
 import { NowProvider } from './context/Now';
 import { SettingsProvider } from './context/Settings';
 import useLocalStorageState from './hooks/useLocalStorageState';
-import Home from './pages/Home';
+import Summary from './pages/Summary';
 import './App.css';
 
 function App() {
-  const [twelveHourMode, setTwelveHourMode] = useState(false);
+  const [twelveHourMode, setTwelveHourMode] = useLocalStorageState('twelveHourMode', false);
   const [lightMode, setLightMode] = useLocalStorageState('lightMode', useMediaQuery('(prefers-color-scheme: light)'));
-  // const [darkMode, setDarkMode] = useState(useMediaQuery('(prefers-color-scheme: dark)'));
+  const compactMode = useMediaQuery('(max-width: 300px)');
 
   useEffect(() => {
     if (lightMode) {
@@ -21,14 +21,14 @@ function App() {
   }, [lightMode]);
 
   return (
-    <SettingsProvider value={{ isTwelveHourMode: twelveHourMode, isLightMode: lightMode }}>
+    <SettingsProvider value={{ isTwelveHourMode: twelveHourMode, isLightMode: lightMode, isCompactMode: compactMode }}>
       <NowProvider>
         <Header
           onThemeButtonClick={() => setLightMode(!lightMode)}
           onClockButtonClick={() => setTwelveHourMode(!twelveHourMode)}
         />
         <div className='App'>
-          <Home />
+          <Summary />
         </div>
       </NowProvider>
     </SettingsProvider>

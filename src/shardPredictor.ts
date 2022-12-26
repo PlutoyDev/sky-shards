@@ -2,14 +2,14 @@ import { DateTime, Duration } from 'luxon';
 
 const earlyOffset = Duration.fromObject({ minutes: -30 }); //after start
 const eruptionOffset = Duration.fromObject({ minutes: 7 }); //after start
-const landOffset = Duration.fromObject({ minutes: 1, seconds: 40 }); //after start
-const endOffset = Duration.fromObject({ minutes: 1, seconds: 30 }); //after start
+const landOffset = Duration.fromObject({ minutes: 8, seconds: 40 }); //after start
+const endOffset = Duration.fromObject({ hours: 4 }); //after start
 
 const blackShardInterval = Duration.fromObject({ hours: 8 });
 const redShardInterval = Duration.fromObject({ hours: 6 });
 
-// const realms = ['Daylight Prairie', 'Hidden Forest', 'Valley Of Triumph', 'Golden Wasteland', 'Vault Of Knowledge']
-const realms = ['Prairie', 'Forest', 'Valley', 'Wasteland', 'Vault'];
+const realmsFull = ['Daylight Prairie', 'Hidden Forest', 'Valley Of Triumph', 'Golden Wasteland', 'Vault Of Knowledge'];
+const realmsNick = ['Prairie', 'Forest', 'Valley', 'Wasteland', 'Vault'];
 
 interface ShardConfig {
   noShardWkDay: number[];
@@ -66,7 +66,7 @@ const shardsInfo: ShardConfig[] = [
   },
 ];
 
-export default function predict(date: DateTime) {
+export function findInfo(date: DateTime): ShardInfo {
   date = date.setZone('America/Los_Angeles').startOf('day');
   const [dayOfMth, dayOfWk] = [date.day, date.weekday];
   const isRed = dayOfMth % 2 === 1;
@@ -74,28 +74,96 @@ export default function predict(date: DateTime) {
   const infoIndex = isRed ? (((dayOfMth - 1) / 2) % 3) + 2 : (dayOfMth / 2) % 2;
   const { noShardWkDay, interval, offset, maps } = shardsInfo[infoIndex];
   const haveShard = !noShardWkDay.includes(dayOfWk);
-  if (!haveShard) return { isRed, haveShard } as const;
-  const shardStart = date.plus(offset);
-
-  const occurrences = Array.from({ length: 3 }).map((_, i) => {
-    // const start = add(shardStart, { hours: i * interval.hours });
-    // const early = add(start, earlyOffset);
-    // const end = add(start, endOffset);
-    // const eruption = add(start, eruptionOffset);
-    // const land = add(start, landOffset);
-    const start = shardStart.plus(interval.mapUnits(v => v * i));
-    const early = start.plus(earlyOffset);
-    const end = start.plus(endOffset);
-    const eruption = start.plus(eruptionOffset);
-    const land = start.plus(landOffset);
-    return { early, start, eruption, land, end };
-  });
-
   return {
     isRed,
     haveShard,
-    occurrences,
-    realm: realms[realmIdx],
+    offset,
+    interval,
+    realmFull: realmsFull[realmIdx],
+    realmNick: realmsNick[realmIdx],
     map: maps[realmIdx],
+  };
+}
+
+type ShardInfo = {
+  isRed: boolean;
+  haveShard: boolean;
+  offset: Duration;
+  interval: Duration;
+  realmFull: string;
+  realmNick: string;
+  map: string;
+};
+
+export interface ShardPhases {
+  early: DateTime;
+  start: DateTime;
+  eruption: DateTime;
+  land: DateTime;
+  end: DateTime;
+}
+
+export function phasesFromStart(start: DateTime): ShardPhases {
+  const early = start.plus(earlyOffset);
+  const end = start.plus(endOffset);
+  const eruption = start.plus(eruptionOffset);
+  const land = start.plus(landOffset);
+  return { early, start, eruption, land, end };
+}
+
+export function phasesFromEnd(end: DateTime): ShardPhases {
+  const start = end.minus(endOffset);
+  const early = start.plus(earlyOffset);
+  const eruption = start.plus(eruptionOffset);
+  const land = start.plus(landOffset);
+  return { early, start, eruption, land, end };
+}
+
+export function predict(date: DateTime) {
+  const info = findInfo(date);
+  if (!info.haveShard) return { ...info, occurrences: [] };
+  const shardStart = date.plus(info.offset);
+
+  const occurrences = Array.from({ length: 3 }).map((_, i) =>
+    phasesFromStart(shardStart.plus(info.interval.mapUnits(v => v * i))),
+  );
+
+  return {
+    ...info,
+    occurrences,
   } as const;
+}
+
+export function nextOrCurrent(
+  now: DateTime,
+  recursive = false,
+  daysAdded = 0,
+): { info: ShardInfo; phases?: ShardPhases; daysAdded: number } {
+  const today = now.startOf('day');
+  const info = findInfo(now);
+  const { haveShard, offset, interval } = info;
+  if (!haveShard) {
+    if (recursive) {
+      return nextOrCurrent(today.plus({ days: 1 }), recursive, daysAdded + 1);
+    }
+    return { info, daysAdded };
+  }
+
+  const next = Array.from({ length: 3 }, (_, i) =>
+    today
+      .plus(offset)
+      .plus(endOffset)
+      .plus(interval.mapUnits(v => v * i)),
+  ).find(shardEnd => now < shardEnd);
+
+  if (next) {
+    const phases = phasesFromEnd(next);
+    return { info, phases, daysAdded };
+  }
+
+  if (recursive) {
+    return nextOrCurrent(today.plus({ days: 1 }), recursive, daysAdded + 1);
+  }
+
+  return { info, daysAdded };
 }
