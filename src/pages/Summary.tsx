@@ -121,7 +121,7 @@ export function ShardLandEndCountdown({ index, phases, now }: ShardLandEndCountd
         <div className='AbsTime'>
           <span className='smaller'>Your Time: </span>
           <span className='smaller'>({Intl.DateTimeFormat().resolvedOptions().timeZone})</span>
-          <Clock date={started ? end : land} />
+          <Clock date={started ? end : land} local />
         </div>
         <div className='AbsTime'>
           <span className='smaller'>Sky Time: </span>
