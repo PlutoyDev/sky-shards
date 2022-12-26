@@ -34,7 +34,7 @@ body {
   --font-size-xsmall: min(2vh, 2vw);
   --font-size-xxsmall: min(1vh, 1vw);
 
-  background-image: url('./backgrounds/SkyBackgroundDark.jpg');
+  background-image: url('/backgrounds/SkyBackgroundDark.jpg');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: 80% center;
@@ -51,7 +51,7 @@ body.light {
   --app-title-font-color: var(--color-secondary);
 
   background-position: 10% center;
-  background-image: url('./backgrounds/SkyBackgroundLight.jpg');
+  background-image: url('/backgrounds/SkyBackgroundLight.jpg');
 }
 
 body {
