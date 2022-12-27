@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Footer from './components/Footer';
 import Header from './components/Header';

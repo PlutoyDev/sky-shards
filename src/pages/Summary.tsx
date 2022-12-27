@@ -2,6 +2,7 @@ import { DateTime } from 'luxon';
 import Clock from '../components/Clock';
 import Date from '../components/Date';
 import { useNow } from '../context/Now';
+import { useURL } from '../hooks/useURL';
 import { getShardInfo, nextOrCurrent, ShardInfo, ShardPhases } from '../shardPredictor';
 import './Summary.css';
 
@@ -10,12 +11,27 @@ interface SummaryProps {
 }
 
 export default function Summary({ now }: SummaryProps) {
-  const defNow = now ?? useNow().application;
+  const { daysToAdd } = useURL();
+  const defNow =
+    now ?? daysToAdd
+      ? daysToAdd < 0
+        ? useNow().application.endOf('day').plus({ days: daysToAdd })
+        : useNow().application.startOf('day').plus({ days: daysToAdd })
+      : useNow().application;
   const { info, index, phases } = nextOrCurrent(defNow);
+  const verbsTense = !info?.haveShard
+    ? 'future'
+    : daysToAdd
+    ? daysToAdd < 0
+      ? 'past'
+      : 'future'
+    : phases && defNow > phases.land
+    ? 'present'
+    : 'future';
 
   return (
     <div id='SummaryPage'>
-      <ShardInfoDisplay info={info} now={defNow} />
+      <ShardInfoDisplay info={info} now={defNow} verbsTense={verbsTense} />
       {phases && <ShardLandEndCountdown phases={phases} index={index} now={defNow} />}
     </div>
   );
@@ -24,10 +40,12 @@ export default function Summary({ now }: SummaryProps) {
 interface ShardInfoDisplayProps {
   info?: ShardInfo;
   now?: DateTime;
+  verbsTense?: 'past' | 'present' | 'future';
 }
 
-export function ShardInfoDisplay({ info, now }: ShardInfoDisplayProps) {
-  const { date, haveShard, isRed, map, realmFull, realmNick } = info ?? getShardInfo(now ?? useNow().application);
+export function ShardInfoDisplay({ info, now, verbsTense }: ShardInfoDisplayProps) {
+  const defNow = now ?? useNow().application;
+  const { date, haveShard, isRed, map, realmFull, realmNick } = info ?? getShardInfo(defNow);
   const color = isRed ? 'Red' : 'Black';
 
   if (!haveShard) {
@@ -43,7 +61,9 @@ export function ShardInfoDisplay({ info, now }: ShardInfoDisplayProps) {
     return (
       <div id='ShardInfoDisplay'>
         <span>
-          <span>There will be </span>
+          <span>
+            There {verbsTense && verbsTense !== 'future' ? (verbsTense === 'past' ? 'was' : 'is') : 'will be'}{' '}
+          </span>
           <span className={`${color} Emphasized`}>{color} Shard </span>
           <span> on </span>
         </span>
@@ -77,6 +97,7 @@ export function ShardLandEndCountdown({ index, phases, now }: ShardLandEndCountd
   const defNow = now ?? useNow().application;
   const ordinalIndex = index !== undefined && ['1st', '2nd', '3rd'][index];
   const started = defNow > land;
+  const next = started ? end : land;
 
   return (
     <div id='ShardLandEndCountdown'>
@@ -93,18 +114,20 @@ export function ShardLandEndCountdown({ index, phases, now }: ShardLandEndCountd
         <span className='Emphasized'>{started ? 'end' : 'land'} </span>
         <span>in </span>
       </span>
-      <Clock date={started ? end : land} relative trim />
+      <Clock date={next} relative trim />
       <span> which is </span>
       <div className='AbsTimeGrp'>
         <div className='AbsTime'>
           <span className='smaller'>Your Time: </span>
           <span className='smaller'>({Intl.DateTimeFormat().resolvedOptions().timeZone})</span>
-          <Clock date={started ? end : land} />
+          <Date date={next} local hideYear />
+          <Clock date={next} local />
         </div>
         <div className='AbsTime'>
           <span className='smaller'>Sky Time: </span>
           <span className='smaller'>(America/Los_Angeles)</span>
-          <Clock date={started ? end : land} />
+          <Date date={next} hideYear />
+          <Clock date={next} />
         </div>
       </div>
     </div>

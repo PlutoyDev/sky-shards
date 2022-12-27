@@ -6,12 +6,12 @@ body {
   --color-primary: #242424;
   --color-secondary: #fffd;
 
-  --header-height: 12vh;
+  --header-height: max(min(12vh, 56px), 32px);
   --header-padding-X: 20px;
   --header-padding-top: 5px;
   --header-background-color: rgba(0, 0, 0, 0.5);
 
-  --footer-height: 24vh;
+  --footer-height: calc(var(--header-height) * 2);
   --footer-padding-X: 10px;
   --footer-padding-bottom: 5px;
   --footer-background-color: rgb(0, 0, 0, 0.5);
@@ -62,19 +62,13 @@ body {
 @media (orientation: landscape) and (min-width: 420px) {
   body {
     --page-width: 80%;
-    --footer-height: 18vh;
+    --footer-height: max(min(20vh, 110px), 68px);
   }
 }
 
 @media screen and (min-height: 480px) and (max-width: 420px) {
   body {
-    --footer-height: 40vh;
-  }
-}
-
-@media screen and (min-height: 768px) {
-  body {
-    --footer-height: 20vh;
+    --footer-height: max(min(40vh, 180px), 100px);
   }
 }
 
@@ -190,6 +184,16 @@ body {
 
 .credits > * {
   margin: 0 0.2rem;
+}
+
+@media only screen and (max-height: 680px) and (max-width: 380px) {
+  body {
+    --footer-height: 20vh;
+  }
+
+  .credits {
+    display: none !important;
+  }
 }
 
 /* .App-footer > * {

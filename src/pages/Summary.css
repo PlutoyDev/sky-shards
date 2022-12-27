@@ -7,7 +7,7 @@
   text-align: center;
   align-items: center;
 
-  font-size: var(--font-size-medium);
+  font-size: var(--font-size-small);
   font-family: 'Bubblegum Sans', cursive;
 }
 
@@ -15,11 +15,10 @@
   border-top: 1px solid white;
 }
 
-.Emphasized,
-.Date {
+.Emphasized {
   display: inline;
   font-weight: 600;
-  font-size: var(--font-size-large);
+  font-size: var(--font-size-medium);
   white-space: nowrap;
 }
 
@@ -57,6 +56,10 @@
   align-items: center;
 }
 
+.AbsTime > .Date {
+  --date-font-size: var(--font-size-xsmall);
+}
+
 @media (min-width: 760px) or (orientation: landscape) {
   #ShardInfoDisplay {
     display: block;
@@ -65,6 +68,9 @@
   .Emphasized,
   .Date {
     display: inline;
+  }
+
+  .Emphasized {
     font-size: var(--font-size-medium);
   }
 
@@ -87,5 +93,9 @@
 
   .AbsTimeGrp {
     flex-flow: row nowrap;
+  }
+
+  .AbsTime > .Date {
+    --date-font-size: var(--font-size-small);
   }
 }
