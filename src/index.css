@@ -8,19 +8,19 @@ body {
 
   --header-height: max(min(12vh, 56px), 32px);
   --header-padding-X: 20px;
-  --header-padding-top: 5px;
+  --header-padding-top: 0px;
   --header-background-color: rgba(0, 0, 0, 0.5);
 
-  --footer-height: calc(var(--header-height) * 2);
+  --footer-height: max(min(24vh, 170px), 64px);
   --footer-padding-X: 10px;
-  --footer-padding-bottom: 5px;
+  --footer-padding-bottom: 0px;
   --footer-background-color: rgb(0, 0, 0, 0.5);
 
   --app-title-font-size: 2.4rem;
   --app-title-font-weight: 800;
   --app-title-font-color: var(--color-secondary);
 
-  --page-width: 100%;
+  --page-width: max(300px, 90vw);
   --page-max-width: 100%;
   --page-padding: 0px;
   --page-margin-X: calc(50% - var(--page-max-width) / 2);
@@ -29,8 +29,8 @@ body {
 
   --font-size-xlarge: min(10vh, 10vw);
   --font-size-large: min(8vh, 8vw);
-  --font-size-medium: min(6vh, 6vw);
-  --font-size-small: min(4vh, 4vw);
+  --font-size-medium: min(5vh, 5vw);
+  --font-size-small: min(3vh, 3vw);
   --font-size-xsmall: min(2vh, 2vw);
   --font-size-xxsmall: min(1vh, 1vw);
 
@@ -59,20 +59,8 @@ body {
   color: var(--color-secondary);
 }
 
-@media (orientation: landscape) and (min-width: 420px) {
-  body {
-    --page-width: 80%;
-    --footer-height: max(min(20vh, 110px), 68px);
-  }
-}
-
-@media screen and (min-height: 480px) and (max-width: 420px) {
-  body {
-    --footer-height: max(min(40vh, 180px), 100px);
-  }
-}
-
 .App-header {
+  position: absolute;
   top: 0;
   left: 1px;
   right: 1px;
@@ -186,7 +174,7 @@ body {
   margin: 0 0.2rem;
 }
 
-@media only screen and (max-height: 680px) and (max-width: 380px) {
+@media only screen and (max-height: 640px) and (max-width: 480px) {
   body {
     --footer-height: 20vh;
   }
@@ -195,11 +183,6 @@ body {
     display: none !important;
   }
 }
-
-/* .App-footer > * {
-  width: 100%;
-  height: 100%;
-} */
 
 a {
   text-decoration: underline;
