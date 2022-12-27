@@ -1,8 +1,8 @@
 {
   "$schema": "https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/web-manifest.json",
   "name": "Sky Shards",
-  "theme_color": "#ffffff",
-  "background_color": "#ffffff",
+  "theme_color": "#8a76b1",
+  "background_color": "#8a76b1",
   "display": "standalone",
   "start_url": ".",
   "icons": [
