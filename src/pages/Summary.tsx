@@ -15,9 +15,7 @@ export default function Summary({ now }: SummaryProps) {
   const defNow =
     now ?? daysToAdd
       ? daysToAdd < 0
-        ? useNow()
-            .application.endOf('day')
-            .minus({ days: Math.abs(daysToAdd) })
+        ? useNow().application.endOf('day').plus({ days: daysToAdd })
         : useNow().application.startOf('day').plus({ days: daysToAdd })
       : useNow().application;
   const { info, index, phases } = nextOrCurrent(defNow);
@@ -99,6 +97,7 @@ export function ShardLandEndCountdown({ index, phases, now }: ShardLandEndCountd
   const defNow = now ?? useNow().application;
   const ordinalIndex = index !== undefined && ['1st', '2nd', '3rd'][index];
   const started = defNow > land;
+  const next = started ? end : land;
 
   return (
     <div id='ShardLandEndCountdown'>
@@ -115,18 +114,20 @@ export function ShardLandEndCountdown({ index, phases, now }: ShardLandEndCountd
         <span className='Emphasized'>{started ? 'end' : 'land'} </span>
         <span>in </span>
       </span>
-      <Clock date={started ? end : land} relative trim />
+      <Clock date={next} relative trim />
       <span> which is </span>
       <div className='AbsTimeGrp'>
         <div className='AbsTime'>
           <span className='smaller'>Your Time: </span>
           <span className='smaller'>({Intl.DateTimeFormat().resolvedOptions().timeZone})</span>
-          <Clock date={started ? end : land} local />
+          <Date date={next} local hideYear />
+          <Clock date={next} local />
         </div>
         <div className='AbsTime'>
           <span className='smaller'>Sky Time: </span>
           <span className='smaller'>(America/Los_Angeles)</span>
-          <Clock date={started ? end : land} />
+          <Date date={next} hideYear />
+          <Clock date={next} />
         </div>
       </div>
     </div>
