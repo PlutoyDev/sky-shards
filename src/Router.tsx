@@ -25,7 +25,7 @@ function absDateLoader({ params: { year, month, day } }: LoaderFunctionArgs) {
         zone: 'America/Los_Angeles',
       });
 
-      if (!absDate.isValid) {
+      if (!absDate.isValid || absDate.hasSame(DateTime.local().setZone('America/Los_Angeles'), 'day')) {
         return redirect('/');
       }
 
