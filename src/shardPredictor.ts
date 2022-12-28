@@ -122,25 +122,25 @@ export function phasesFromEnd(end: DateTime): ShardPhases {
 }
 
 interface RecursiveOpt {
-  enable?: boolean;
-  reverse?: boolean;
   limit?: number;
   daysAdded?: number;
+  colorIsRed?: boolean;
 }
 
-export function getOccurrences(date: DateTime, rOpts: RecursiveOpt) {
-  const info = getShardInfo(date);
-  if (!info.haveShard) return { ...info, occurrences: [] };
-  const shardStart = date.plus(info.offset);
-
-  const occurrences = Array.from({ length: 3 }, (_, i) =>
-    phasesFromStart(shardStart.plus(info.interval.mapUnits(v => v * i))),
-  );
-
-  return {
-    ...info,
-    occurrences,
-  } as const;
+export function nextShardInfo(
+  now: DateTime,
+  recursive: RecursiveOpt = {},
+): { info: ShardInfo; daysAdded: number; date: DateTime } {
+  const { limit = 14, daysAdded = 0, colorIsRed } = recursive;
+  const info = getShardInfo(now);
+  const { haveShard, isRed } = info;
+  if (haveShard && (colorIsRed === undefined || colorIsRed === isRed)) {
+    return { info, daysAdded, date: now };
+  }
+  if (daysAdded >= limit) {
+    return { info, daysAdded, date: now };
+  }
+  return nextShardInfo(now.plus({ days: 1 }), { limit, daysAdded: daysAdded + 1, colorIsRed });
 }
 
 export function nextOrCurrent(

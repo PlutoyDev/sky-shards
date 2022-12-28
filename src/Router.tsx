@@ -1,6 +1,7 @@
 import { LoaderFunctionArgs, createBrowserRouter, redirect } from 'react-router-dom';
 import { DateTime } from 'luxon';
 import Home from './page/Home';
+import { nextShardInfo } from './shardPredictor';
 
 const relDateMap = {
   eytd: -2,
@@ -70,6 +71,30 @@ export const router = createBrowserRouter([
     path: '/date/:year',
     element: <Home />,
     loader: absDateLoader,
+  },
+  {
+    path: '/next',
+    element: <Home />,
+    loader: () => {
+      const tmr = DateTime.local().setZone('America/Los_Angeles').plus({ days: 1 });
+      return redirect(`/date/${nextShardInfo(tmr).date.toFormat('yyyy/MM/dd')}`);
+    },
+  },
+  {
+    path: '/next/red',
+    element: <Home />,
+    loader: () => {
+      const tmr = DateTime.local().setZone('America/Los_Angeles').plus({ days: 1 });
+      return redirect(`/date/${nextShardInfo(tmr, { colorIsRed: true }).date.toFormat('yyyy/MM/dd')}`);
+    },
+  },
+  {
+    path: '/next/black',
+    element: <Home />,
+    loader: () => {
+      const tmr = DateTime.local().setZone('America/Los_Angeles').plus({ days: 1 });
+      return redirect(`/date/${nextShardInfo(tmr, { colorIsRed: false }).date.toFormat('yyyy/MM/dd')}`);
+    },
   },
 ]);
 
