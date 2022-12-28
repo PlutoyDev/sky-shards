@@ -37,15 +37,15 @@ export default function ShardLandEndCountdown({ index, phases, now }: ShardLandE
       <span> which is </span>
       <div className='AbsTimeGrp'>
         <div className='AbsTime'>
-          <span className='smaller'>Your Time: </span>
+          <span>Your Time: </span>
           <span className='smaller'>({Intl.DateTimeFormat().resolvedOptions().timeZone})</span>
-          <Date date={next} local hideYear />
+          <Date date={next} local />
           <Clock date={next} local />
         </div>
         <div className='AbsTime'>
-          <span className='smaller'>Sky Time: </span>
+          <span>Sky Time: </span>
           <span className='smaller'>(America/Los_Angeles)</span>
-          <Date date={next} hideYear />
+          <Date date={next} />
           <Clock date={next} />
         </div>
       </div>

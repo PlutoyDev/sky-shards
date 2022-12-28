@@ -4,6 +4,7 @@ import { useNow } from '../context/Now';
 import ShardLandEndCountdown from '../sections/Shard/Countdown';
 import ShardInfoDisplay from '../sections/Shard/Info';
 import { nextOrCurrent } from '../shardPredictor';
+import './Home.css';
 
 interface HomeLoaderData {
   relDate?: number;
