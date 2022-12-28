@@ -3,6 +3,7 @@
   flex-flow: column nowrap;
   align-items: center;
   justify-content: center;
+  width: calc(100% - 80px);
 }
 
 #SwipeRightHint {
