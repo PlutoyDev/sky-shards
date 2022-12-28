@@ -1,5 +1,7 @@
 import { useLoaderData, useNavigate } from 'react-router-dom';
 import { useSwipeable } from 'react-swipeable';
+import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import { DateTime } from 'luxon';
 import { useNow } from '../context/Now';
 import ShardLandEndCountdown from '../sections/Shard/Countdown';
@@ -32,6 +34,7 @@ export default function Home() {
       else navigate(`/date/${newDate.toFormat('yyyy/MM/dd')}`);
     },
     preventScrollOnSwipe: true,
+    trackMouse: true,
   });
 
   const verbsTense =
@@ -47,6 +50,14 @@ export default function Home() {
     <div id='HomePage' {...handlers}>
       <ShardInfoDisplay info={info} now={now} verbsTense={verbsTense} />
       {futureOrToday && phases && <ShardLandEndCountdown phases={phases} index={index} now={now} />}
+      <div id='SwipeRightHint'>
+        <span>Swipe right to see the previous day</span>
+        <NavigateNextIcon />
+      </div>
+      <div id='SwipeLeftHint'>
+        <NavigateBeforeIcon />
+        <span>Swipe left to see the next day</span>
+      </div>
     </div>
   );
 }
