@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
+import { RouterProvider } from 'react-router-dom';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import Footer from './components/Footer';
-import Header from './components/Header';
+import router from './Router';
 import { NowProvider } from './context/Now';
 import { SettingsProvider } from './context/Settings';
 import useLocalStorageState from './hooks/useLocalStorageState';
-import Summary from './pages/Summary';
+import Footer from './sections/App/Footer';
+import Header from './sections/App/Header';
 import './App.css';
 
 function App() {
@@ -29,7 +30,7 @@ function App() {
           onClockButtonClick={() => setTwelveHourMode(!twelveHourMode)}
         />
         <div className='App'>
-          <Summary />
+          <RouterProvider router={router} />
         </div>
         <Footer />
       </NowProvider>

@@ -1,4 +1,4 @@
-import credits from '../data/credits';
+import credits from '../../data/credits';
 
 export default function Footer() {
   return (
