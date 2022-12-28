@@ -1,18 +1,28 @@
 #SummaryPage,
-#ShardInfoDisplay,
 #ShardLandEndCountdown {
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
-  text-align: center;
   align-items: center;
+}
+
+#ShardInfoDisplay {
+  display: block;
+  text-align: center;
 
   font-size: var(--font-size-small);
   font-family: 'Bubblegum Sans', cursive;
 }
 
+#ShardInfoDisplay .Date {
+  display: inline;
+}
+
 #ShardLandEndCountdown {
+  font-size: var(--font-size-small);
+  font-family: 'Bubblegum Sans', cursive;
   border-top: 1px solid white;
+  width: 100%;
 }
 
 .Emphasized {
@@ -44,7 +54,7 @@
 }
 
 #ShardLandEndCountdown .smaller {
-  font-size: var(--font-size-small);
+  font-size: var(--font-size-xsmall);
 }
 
 .AbsTimeGrp,
@@ -54,26 +64,20 @@
   justify-content: center;
   text-align: center;
   align-items: center;
+  width: 80%;
 }
 
-.AbsTime > .Date {
-  --date-font-size: var(--font-size-xsmall);
+.AbsTimeGrp > * {
+  flex: 1 1 auto;
 }
 
-@media (min-width: 760px) or (orientation: landscape) {
-  #ShardInfoDisplay {
-    display: block;
-  }
+.AbsTime > .Date,
+.AbsTime > .Clock {
+  --date-font-size: var(--font-size-medium);
+  --clock-font-size: var(--font-size-medium);
+}
 
-  .Emphasized,
-  .Date {
-    display: inline;
-  }
-
-  .Emphasized {
-    font-size: var(--font-size-medium);
-  }
-
+@media (min-width: 480px) {
   .Full {
     display: inline;
   }
@@ -82,20 +86,14 @@
     display: none;
   }
 
-  #ShardLandEndCountdown,
-  #ShardInfoDisplay {
-    font-size: var(--font-size-small);
-  }
-
-  #ShardLandEndCountdown .smaller {
-    font-size: var(--font-size-xsmall);
-  }
-
   .AbsTimeGrp {
     flex-flow: row nowrap;
+    justify-content: space-around;
   }
 
-  .AbsTime > .Date {
+  #ShardLandEndCountdown .Date,
+  #ShardLandEndCountdown .Clock {
     --date-font-size: var(--font-size-small);
+    --clock-font-size: var(--font-size-small);
   }
 }
