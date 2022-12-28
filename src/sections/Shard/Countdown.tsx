@@ -24,9 +24,9 @@ export default function ShardLandEndCountdown({ index, phases, now }: ShardLandE
         <span className='Emphasized'>{ordinalIndex ? `${ordinalIndex} shard` : 'Shard'} </span>
         {started && (
           <>
-            <span className='Emphasized'>has landed </span>
-            <Clock date={land} relative trim />
-            <span> ago, It </span>
+            <span>has </span>
+            <span className='Emphasized'>landed</span>
+            <span>, it </span>
           </>
         )}
         <span>will </span>
