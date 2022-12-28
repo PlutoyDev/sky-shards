@@ -8,7 +8,7 @@ const relDateMap = {
   ereyesterday: -2,
   ytd: -1,
   yesterday: -1,
-  tmr: 1,
+  today: 1,
   tomorrow: 1,
   ovmr: 2,
   overmorrow: 2,
@@ -76,24 +76,24 @@ export const router = createBrowserRouter([
     path: '/next',
     element: <Home />,
     loader: () => {
-      const tmr = DateTime.local().setZone('America/Los_Angeles').plus({ days: 1 });
-      return redirect(`/date/${nextShardInfo(tmr).date.toFormat('yyyy/MM/dd')}`);
+      const today = DateTime.local().setZone('America/Los_Angeles');
+      return redirect(`/date/${nextShardInfo(today).date.toFormat('yyyy/MM/dd')}`);
     },
   },
   {
     path: '/next/red',
     element: <Home />,
     loader: () => {
-      const tmr = DateTime.local().setZone('America/Los_Angeles').plus({ days: 1 });
-      return redirect(`/date/${nextShardInfo(tmr, { colorIsRed: true }).date.toFormat('yyyy/MM/dd')}`);
+      const today = DateTime.local().setZone('America/Los_Angeles');
+      return redirect(`/date/${nextShardInfo(today, { colorIsRed: true }).date.toFormat('yyyy/MM/dd')}`);
     },
   },
   {
     path: '/next/black',
     element: <Home />,
     loader: () => {
-      const tmr = DateTime.local().setZone('America/Los_Angeles').plus({ days: 1 });
-      return redirect(`/date/${nextShardInfo(tmr, { colorIsRed: false }).date.toFormat('yyyy/MM/dd')}`);
+      const today = DateTime.local().setZone('America/Los_Angeles');
+      return redirect(`/date/${nextShardInfo(today, { colorIsRed: false }).date.toFormat('yyyy/MM/dd')}`);
     },
   },
 ]);
