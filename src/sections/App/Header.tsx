@@ -1,6 +1,6 @@
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
-import { useSettings } from '../context/Settings';
+import { useSettings } from '../../context/Settings';
 
 interface HeaderProp {
   onThemeButtonClick: () => void;

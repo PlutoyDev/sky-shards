@@ -20,9 +20,9 @@ export default function Date({ date, local, short, hideWeekday, hideYear }: Date
   const defShort = short ?? isMobile;
   const format = [
     hideWeekday ? '' : defShort ? 'ccc,' : 'cccc,',
-    defShort ? 'dd' : 'd',
-    defShort ? 'MMM' : 'MMMM',
+    defShort ? ' dd' : ' d',
+    defShort ? ' MMM' : ' MMMM',
     hideYear ? '' : defShort ? 'yy' : ', yyyy',
-  ].join(' ');
+  ].join('');
   return <span className='Date'>{date.toFormat(format)}</span>;
 }
