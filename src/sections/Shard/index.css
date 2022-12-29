@@ -45,6 +45,11 @@
 
 .Black {
   color: black;
+  text-shadow: 0px 0px 2px white;
+}
+
+body.light .Black {
+  text-shadow: unset;
 }
 
 .AbsoluteTime {
