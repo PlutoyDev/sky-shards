@@ -22,7 +22,7 @@ export default function Date({ date, local, short, hideWeekday, hideYear }: Date
     hideWeekday ? '' : defShort ? 'ccc,' : 'cccc,',
     defShort ? ' dd' : ' d',
     defShort ? ' MMM' : ' MMMM',
-    hideYear ? '' : defShort ? 'yy' : ', yyyy',
+    hideYear ? '' : defShort ? ' yy' : ', yyyy',
   ].join('');
   return <span className='Date'>{date.toFormat(format)}</span>;
 }
