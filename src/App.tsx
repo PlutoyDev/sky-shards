@@ -1,16 +1,17 @@
 import { useEffect } from 'react';
-import { RouterProvider } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import router from './Router';
 import { NowProvider } from './context/Now';
 import { SettingsProvider } from './context/Settings';
 import useLocalStorageState from './hooks/useLocalStorageState';
 import Footer from './sections/App/Footer';
 import Header from './sections/App/Header';
-import './App.css';
 
 function App() {
-  const [twelveHourMode, setTwelveHourMode] = useLocalStorageState('twelveHourMode', false);
+  const [twelveHourMode, setTwelveHourMode] = useLocalStorageState(
+    'twelveHourMode',
+    Intl.DateTimeFormat().resolvedOptions().hour12 ?? false,
+  );
   const [lightMode, setLightMode] = useLocalStorageState('lightMode', useMediaQuery('(prefers-color-scheme: light)'));
   const compactMode = useMediaQuery('(max-width: 300px)');
 
@@ -25,14 +26,14 @@ function App() {
   return (
     <SettingsProvider value={{ isTwelveHourMode: twelveHourMode, isLightMode: lightMode, isCompactMode: compactMode }}>
       <NowProvider>
-        <Header
-          onThemeButtonClick={() => setLightMode(!lightMode)}
-          onClockButtonClick={() => setTwelveHourMode(!twelveHourMode)}
-        />
         <div className='App'>
-          <RouterProvider router={router} />
+          <Header
+            onThemeButtonClick={() => setLightMode(!lightMode)}
+            onClockButtonClick={() => setTwelveHourMode(!twelveHourMode)}
+          />
+          <Outlet />
+          <Footer />
         </div>
-        <Footer />
       </NowProvider>
     </SettingsProvider>
   );

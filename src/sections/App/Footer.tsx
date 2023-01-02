@@ -2,8 +2,8 @@ import credits from '../../data/credits';
 
 export default function Footer() {
   return (
-    <div className='App-footer'>
-      <div>
+    <div id='footer' className='glass'>
+      {/* <div>
         <span>Not affiliated with thatgamecompany</span>
         <span>(It might not reflect what is in-game)</span>
       </div>
@@ -22,7 +22,7 @@ export default function Footer() {
             <span key={u}>{u}</span>
           ))}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

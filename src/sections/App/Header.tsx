@@ -11,10 +11,10 @@ export default function Header({ onThemeButtonClick, onClockButtonClick }: Heade
   const { isTwelveHourMode, isLightMode } = useSettings();
 
   return (
-    <div className='App-header'>
-      <span className='App-title'>Sky Shards</span>
-      <div className='App-header-buttons'>
-        <span
+    <div id='header' className='glass'>
+      <span id='title'>Sky Shards</span>
+      <div id='header-buttons'>
+        <button
           onClick={onClockButtonClick}
           style={{
             fontFamily: "'Orbitron', sans-serif",
@@ -23,8 +23,8 @@ export default function Header({ onThemeButtonClick, onClockButtonClick }: Heade
           }}
         >
           {isTwelveHourMode ? 12 : 24}
-        </span>
-        <span
+        </button>
+        <button
           onClick={onThemeButtonClick}
           style={{
             cursor: 'pointer',
@@ -33,7 +33,7 @@ export default function Header({ onThemeButtonClick, onClockButtonClick }: Heade
           }}
         >
           {isLightMode ? <LightModeIcon /> : <DarkModeIcon />}
-        </span>
+        </button>
       </div>
     </div>
   );
