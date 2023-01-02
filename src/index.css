@@ -19,6 +19,12 @@ body {
   --glass-background-color: rgba(128, 128, 128, 0.3);
   --glass-border-radius: 20px;
 
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+
   background-image: url('/backgrounds/SkyBackgroundDark.webp');
   background-repeat: no-repeat;
   background-size: cover;
