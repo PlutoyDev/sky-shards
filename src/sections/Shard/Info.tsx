@@ -2,7 +2,6 @@ import { DateTime } from 'luxon';
 import Date from '../../components/Date';
 import { useNow } from '../../context/Now';
 import { getShardInfo, ShardInfo } from '../../shardPredictor';
-import './index.css';
 
 interface ShardInfoDisplayProps {
   info?: ShardInfo;
@@ -17,7 +16,7 @@ export default function ShardInfoDisplay({ info, now, verbsTense }: ShardInfoDis
 
   if (!haveShard) {
     return (
-      <div id='ShardInfoDisplay'>
+      <div id='shardInfo' className='glass'>
         <span>There is </span>
         <span className='Emphasized'>No Shard </span>
         <span>on </span>
@@ -26,7 +25,7 @@ export default function ShardInfoDisplay({ info, now, verbsTense }: ShardInfoDis
     );
   } else {
     return (
-      <div id='ShardInfoDisplay'>
+      <div id='shardInfo' className='glass'>
         <span>
           <span>
             There {verbsTense && verbsTense !== 'future' ? (verbsTense === 'past' ? 'was' : 'is') : 'will be'}{' '}

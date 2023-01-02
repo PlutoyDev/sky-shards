@@ -1,0 +1,174 @@
+.HomePage {
+  --nav-hint-height: 40px;
+  gap: 0.2rem;
+
+  display: grid;
+  grid-template-rows: var(--nav-hint-height) repeat(2, auto) var(--nav-hint-height);
+  grid-template-columns: var(--nav-hint-height) auto var(--nav-hint-height);
+  grid-template-areas:
+    'topNavHint topNavHint topNavHint'
+    'leftNavHint info rightNavHint'
+    'leftNavHint timing rightNavHint'
+    'bottomNavHint bottomNavHint bottomNavHint';
+
+  font-size: var(--font-size-200);
+
+  justify-items: center;
+  align-items: center;
+  text-align: center;
+}
+
+#topNavHint {
+  grid-area: topNavHint;
+  flex-direction: column;
+}
+
+#topNavHint > .navHintArrow {
+  transform: rotate(90deg);
+}
+
+#bottomNavHint {
+  grid-area: bottomNavHint;
+  flex-direction: column;
+}
+
+#bottomNavHint > .navHintArrow {
+  transform: rotate(-90deg);
+}
+
+#leftNavHint {
+  grid-area: leftNavHint;
+  flex-direction: column-reverse;
+  writing-mode: vertical-rl;
+}
+
+/* #leftNavHint > .navHintArrow {
+  transform: rotate(0deg);
+} */
+
+#rightNavHint {
+  grid-area: rightNavHint;
+  writing-mode: vertical-rl;
+  flex-direction: column;
+}
+
+#rightNavHint > .navHintArrow {
+  transform: rotate(180deg);
+}
+
+#rightNavHint > .navHintText {
+  transform: rotate(180deg);
+}
+
+.navHint {
+  position: relative;
+  cursor: pointer;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-wrap: nowrap;
+  gap: 2px;
+
+  font-family: 'Bubblegum Sans', cursive;
+  font-size: var(--font-size-200);
+  white-space: nowrap;
+}
+
+.navHint.disabled {
+  display: none;
+}
+
+#shardInfo {
+  grid-area: info;
+  align-self: flex-end;
+}
+
+#shardTiming {
+  grid-area: timing;
+  align-self: flex-start;
+
+  display: grid;
+  grid-template-rows: auto auto auto;
+  grid-template-columns: auto;
+  grid-template-areas:
+    'countdown'
+    'absLocal'
+    'absSky';
+  column-gap: 5%;
+  align-items: center;
+  justify-content: center;
+}
+
+.HomePage .Clock,
+.HomePage .Date,
+.Emphasized {
+  font-size: var(--font-size-400);
+  font-weight: 800;
+}
+
+.Demphasized {
+  font-size: var(--font-size-200);
+  font-weight: 400;
+}
+
+#shardCountdown {
+  grid-area: countdown;
+}
+
+#shardAbsLocal {
+  grid-area: absLocal;
+}
+
+#shardAbsSky {
+  grid-area: absSky;
+}
+
+.Full {
+  display: none;
+}
+
+.Nick {
+  display: inline;
+}
+
+.Red {
+  color: red;
+}
+
+.Black {
+  color: black;
+}
+
+@media (min-width: 480px) and (max-height: 480px) {
+  #shardTiming {
+    grid-template-rows: auto auto;
+    grid-template-columns: auto auto;
+    grid-template-areas:
+      'countdown countdown'
+      'absLocal absSky';
+  }
+
+  .Full {
+    display: inline;
+  }
+
+  .Nick {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) and (max-height: 480px) {
+  .HomePage .Clock,
+  .HomePage .Date,
+  .Emphasized {
+    font-size: var(--font-size-400);
+    font-weight: 600;
+  }
+
+  .Demphasized {
+    font-size: var(--font-size-100);
+    font-weight: 300;
+  }
+}
