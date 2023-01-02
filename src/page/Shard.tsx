@@ -62,7 +62,7 @@ export default function Home() {
 
   return (
     <div className='Page HomePage' {...handlers}>
-      <div id='topNavHint' className='navHint'>
+      <div id='topNavHint' className='navHint disabled'>
         <span className='navHintText'>Swipe down for images of where shard will land</span>
         {SvgArrow}
       </div>
@@ -76,7 +76,7 @@ export default function Home() {
         <span className='navHintText'>Swipe left to see the next day</span>
         {SvgArrow}
       </div>
-      <div id='bottomNavHint' className='navHint'>
+      <div id='bottomNavHint' className='navHint disabled'>
         <span className='navHintText'>Swipe up for all timings</span>
         {SvgArrow}
       </div>
