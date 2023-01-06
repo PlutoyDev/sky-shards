@@ -67,7 +67,7 @@ body.light {
   bottom: 5px;
 
   display: grid;
-  grid-template-rows: var(--header-height) auto minmax(0, 196px);
+  grid-template-rows: var(--header-height) auto fit-content(35vh);
   grid-template-columns: 1fr;
   grid-template-areas:
     'header'
@@ -119,7 +119,7 @@ body.light {
   font-size: 0.8rem;
 
   display: grid;
-  grid-template-rows: 1fr 1fr 1.5fr;
+  grid-template-rows: 1fr 1fr 1.2fr;
   grid-template-columns: auto;
   grid-template-areas:
     'disclaimer'
@@ -141,16 +141,16 @@ body.light {
   align-items: center;
   column-gap: 0.5rem;
 }
-#footer-author {
-  grid-area: author;
-  padding: 0 20px;
-}
 #footer-credits {
   grid-area: credits;
   padding: 0 20px;
   overflow: hidden;
   border-top: 1px solid rgba(192, 192, 192, 0.3);
   border-bottom: 1px solid rgba(192, 192, 192, 0.3);
+}
+#footer-author {
+  grid-area: author;
+  padding: 0 20px;
 }
 
 #credits {
@@ -172,13 +172,11 @@ body.light {
   }
 }
 
-#credits > .scrolling > span {
-  display: inline-block;
-  white-space: nowrap;
-  padding-right: 100%;
-}
-
 @media (min-width: 670px) {
+  .App {
+    grid-template-rows: var(--header-height) auto fit-content(20vh);
+  }
+
   #footer {
     grid-template-rows: 1fr 2fr;
     grid-template-columns: 75% 23%;
@@ -202,6 +200,7 @@ body.light {
     flex-flow: row wrap;
     justify-content: center;
     align-items: center;
+    width: 100%;
   }
 }
 
@@ -220,6 +219,7 @@ body.light {
 a {
   text-decoration: underline;
   color: blue;
+  white-space: nowrap;
 }
 
 a:visited {

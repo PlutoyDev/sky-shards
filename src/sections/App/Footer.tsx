@@ -9,13 +9,13 @@ export default function Footer() {
       </div>
       <div id='footer-credits'>
         <span>Thank you to those who helped to discover the patterns shard eruption:</span>
-        <div className='scrolling'>
-          <div id='credits'>
-            {credits.map(u => (
-              <span key={u}>{u}</span>
-            ))}
-          </div>
+        {/* <div className='scrolling'> */}
+        <div id='credits'>
+          {credits.map(u => (
+            <span key={u}>{u}</span>
+          ))}
         </div>
+        {/* </div> */}
       </div>
       <div id='footer-author'>
         <span>Created by Plutoy</span>
