@@ -1,5 +1,4 @@
-import DarkModeIcon from '@mui/icons-material/DarkMode';
-import LightModeIcon from '@mui/icons-material/LightMode';
+import { BsSunFill, BsMoonFill } from 'react-icons/bs';
 import { useSettings } from '../../context/Settings';
 
 interface HeaderProp {
@@ -29,10 +28,9 @@ export default function Header({ onThemeButtonClick, onClockButtonClick }: Heade
           style={{
             cursor: 'pointer',
             fontSize: '1.2rem',
-            paddingBottom: '0.3rem',
           }}
         >
-          {isLightMode ? <LightModeIcon /> : <DarkModeIcon />}
+          {isLightMode ? <BsSunFill /> : <BsMoonFill />}
         </button>
       </div>
     </div>

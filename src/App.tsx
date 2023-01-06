@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
+import { useMediaQuery } from 'react-responsive';
 import { Outlet } from 'react-router-dom';
-import useMediaQuery from '@mui/material/useMediaQuery';
 import { NowProvider } from './context/Now';
 import { SettingsProvider } from './context/Settings';
 import useLocalStorageState from './hooks/useLocalStorageState';
@@ -12,8 +12,11 @@ function App() {
     'twelveHourMode',
     Intl.DateTimeFormat().resolvedOptions().hour12 ?? false,
   );
-  const [lightMode, setLightMode] = useLocalStorageState('lightMode', useMediaQuery('(prefers-color-scheme: light)'));
-  const compactMode = useMediaQuery('(max-width: 300px)');
+  const [lightMode, setLightMode] = useLocalStorageState(
+    'lightMode',
+    useMediaQuery({ query: '(prefers-color-scheme: light)' }),
+  );
+  const compactMode = useMediaQuery({ maxWidth: '300px' });
 
   useEffect(() => {
     if (lightMode) {

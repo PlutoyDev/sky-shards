@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon';
 import { useNow } from '../context/Now';
-import useSizing from '../hooks/useSizing';
+import { useSettings } from '../context/Settings';
 import './Date.css';
 
 interface DateProp {
@@ -12,9 +12,7 @@ interface DateProp {
 }
 
 export default function Date({ date, local, short, hideWeekday, hideYear }: DateProp) {
-  const {
-    devices: { isMobile },
-  } = useSizing();
+  const isMobile = useSettings().isCompactMode;
   const now = local ? useNow().local : useNow().application;
   date = (local ? date?.toLocal() : date?.setZone('America/Los_Angeles')) ?? now;
   const defShort = short ?? isMobile;
