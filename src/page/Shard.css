@@ -161,17 +161,3 @@
     display: none;
   }
 }
-
-@media (max-width: 480px) and (max-height: 480px) {
-  .HomePage .Clock,
-  .HomePage .Date,
-  .Emphasized {
-    font-size: var(--font-size-400);
-    font-weight: 600;
-  }
-
-  .Demphasized {
-    font-size: var(--font-size-100);
-    font-weight: 300;
-  }
-}
