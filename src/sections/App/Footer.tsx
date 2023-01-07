@@ -52,7 +52,7 @@ export default function Footer() {
                 (import.meta.env.VITE_NETLIFY_GIT_BRANCH && `Branch ${import.meta.env.VITE_NETLIFY_GIT_BRANCH}`) ??
                 (import.meta.env.VITE_NETLIFY_GIT_COMIT_REF &&
                   `Commit ${import.meta.env.VITE_NETLIFY_GIT_COMIT_REF}`) ??
-                'Local'}
+                'Unknown'}
             </div>
           </div>
           <div id='project-link'>
