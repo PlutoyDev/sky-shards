@@ -34,18 +34,30 @@ body {
   background-color: var(--color-primary);
   color: var(--color-secondary);
 
-  --font-size-base: min(5vh, 5vw);
   --font-size-adjust: min(1vh, 1vw);
+  --font-size-base: calc(var(--font-size-adjust) * 4);
 
   --font-size-100: calc(var(--font-size-200) - var(--font-size-adjust));
   --font-size-200: calc(var(--font-size-300) - var(--font-size-adjust));
-  --font-size-300: calc(var(--font-size-400) - var(--font-size-adjust) * 1.3);
+  --font-size-300: calc(var(--font-size-400) - var(--font-size-adjust) * 0.6);
   --font-size-400: calc(var(--font-size-500) - var(--font-size-adjust));
   --font-size-500: var(--font-size-base);
   --font-size-600: calc(var(--font-size-500) + var(--font-size-adjust));
-  --font-size-700: calc(var(--font-size-600) + var(--font-size-adjust) * 1.3);
+  --font-size-700: calc(var(--font-size-600) + var(--font-size-adjust) * 0.6);
   --font-size-800: calc(var(--font-size-700) + var(--font-size-adjust));
   --font-size-900: calc(var(--font-size-800) + var(--font-size-adjust));
+}
+
+@media (max-width: 300px) {
+  body {
+    --font-size-base: calc(var(--font-size-adjust) * 3.5);
+  }
+}
+
+@media (min-width: 600px) {
+  body {
+    --font-size-base: calc(var(--font-size-adjust) * 5);
+  }
 }
 
 body.light {
@@ -67,7 +79,7 @@ body.light {
   bottom: 5px;
 
   display: grid;
-  grid-template-rows: var(--header-height) auto fit-content(35vh);
+  grid-template-rows: var(--header-height) auto fit-content(20vh);
   grid-template-columns: 1fr;
   grid-template-areas:
     'header'
@@ -116,7 +128,7 @@ body.light {
   /* display: flex;
   flex-flow: column nowrap;
   */
-  font-size: 0.8rem;
+  font-size: 0.6rem;
 
   display: grid;
   grid-template-rows: 1fr 1fr 1.2fr;
@@ -187,10 +199,6 @@ body.light {
 }
 
 @media (min-width: 670px) {
-  .App {
-    grid-template-rows: var(--header-height) auto fit-content(20vh);
-  }
-
   #footer {
     grid-template-rows: 1fr 2fr;
     grid-template-columns: 75% 23%;
@@ -205,7 +213,7 @@ body.light {
   }
 
   #footer-author {
-    padding: 20px;
+    padding: 0 10px;
     border-left: 1px solid rgba(192, 192, 192, 0.3);
   }
 
@@ -244,8 +252,8 @@ body.light {
 }
 
 .circular-icon > svg {
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 1rem;
+  height: 1rem;
   fill: var(--color-secondary);
 }
 
