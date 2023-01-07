@@ -10,17 +10,15 @@ export default function Footer() {
       </div>
       <div id='footer-credits'>
         <span>Thank you to those who helped to discover the patterns shard eruption:</span>
-        {/* <div className='scrolling'> */}
         <div id='credits'>
           {credits.map(u => (
             <span key={u}>{u}</span>
           ))}
         </div>
-        {/* </div> */}
       </div>
       <div id='footer-author'>
         <div>
-          <div id='author'>Created by Plutoy</div>
+          <div id='author'>Created by Plutoy#5022</div>
           <div id='author-link'>
             <a className='circular-icon' href='https://github.com/PlutoyDev' aria-label="Go to Developer's GitHub">
               <BsGithub />
@@ -61,8 +59,8 @@ export default function Footer() {
             </a>
             <a
               className='circular-icon'
-              href='https://discord.com/channels/736912435654688868/1041548386333102090'
-              aria-label='Discord'
+              href='https://discord.com/channels/575762611111592007/575827924343848960/1057890049166938143'
+              aria-label="Go to Developer's Discord"
             >
               <BsDiscord />
             </a>
