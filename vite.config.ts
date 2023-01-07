@@ -49,7 +49,8 @@ export default defineConfig({
           },
           //Not just images though. This is a catch all for all netlify cdn domains
           process.env.NETLIFY_IMAGES_CDN_DOMAIN && {
-            urlPattern: new RegExp(`^https://${process.env.NETLIFY_IMAGES_CDN_DOMAIN}/.*`),
+            //Replace all . with \. to make it a regex
+            urlPattern: new RegExp(`^https://${process.env.NETLIFY_IMAGES_CDN_DOMAIN.replace(/\./g, '\\.')}/.*`, 'i'),
             handler: 'StaleWhileRevalidate',
             options: {
               cacheName: 'netlify-cdn',
