@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { Outlet } from 'react-router-dom';
+import Version2Modal from './components/modals/Version2Modal';
 import { NowProvider } from './context/Now';
 import { SettingsProvider } from './context/Settings';
 import useLocalStorageState from './hooks/useLocalStorageState';
@@ -37,6 +38,7 @@ function App() {
           <Outlet />
           <Footer />
         </div>
+        <Version2Modal />
       </NowProvider>
     </SettingsProvider>
   );

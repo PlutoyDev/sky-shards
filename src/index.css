@@ -61,6 +61,7 @@ body {
 }
 
 body.light {
+  --color-primary: #f0f0f0;
   --color-secondary: #fffd;
 
   --glass-backdrop-filter: blur(10px);
@@ -269,6 +270,71 @@ body.light {
   border-radius: var(--glass-border-radius);
   padding: 2px 20px;
   border: 1px solid rgba(192, 192, 192, 0.2);
+}
+
+.modal {
+  position: fixed;
+  top: min(5%, 40px);
+  left: min(5%, 40px);
+  right: min(5%, 40px);
+  bottom: min(5%, 40px);
+  z-index: 100;
+
+  background-color: var(--glass-background-color);
+  backdrop-filter: blur(200px);
+  border-radius: var(--glass-border-radius);
+
+  padding: 10px;
+
+  display: grid;
+  grid-template-rows: var(--header-height) auto 1fr;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    'header'
+    'content'
+    'footer';
+}
+
+.modal-header {
+  grid-area: header;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+  font-size: 1.5rem;
+  border-bottom: 1px solid rgba(192, 192, 192, 0.3);
+}
+
+.modal-header > h2 {
+  font-weight: 700;
+  text-align: left;
+  margin-left: 0.5rem;
+  margin-bottom: 3px;
+}
+
+.modal-header > button {
+  border: none;
+  cursor: pointer;
+  outline: none;
+  color: var(--color-secondary);
+}
+
+.modal-content {
+  padding: 20px;
+  overflow-y: scroll;
+  scrollbar-width: none;
+}
+
+.modal-content::-webkit-scrollbar {
+  display: none;
+}
+
+#OptOut {
+  text-decoration: underline;
+  color: blue;
+  cursor: pointer;
 }
 
 .Page {
