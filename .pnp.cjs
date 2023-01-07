@@ -33,6 +33,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@fontsource/roboto", "npm:4.5.8"],\
             ["@trivago/prettier-plugin-sort-imports", "virtual:3289a2ebd1fc3a545ed90b99040395ab5377fdbee426bb4f4986962712ee1703568c500b9a51ac601832545ac7a3751c621eaa5a3ade3824512cbe43b51ba33f#npm:4.0.0"],\
             ["@types/luxon", "npm:3.1.0"],\
+            ["@types/node", "npm:18.11.18"],\
             ["@types/prettier", "npm:2.7.2"],\
             ["@types/react", "npm:18.0.26"],\
             ["@types/react-dom", "npm:18.0.10"],\
@@ -3379,6 +3380,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@types-node-npm-18.11.17-897ad73ae4-1933afd068.zip/node_modules/@types/node/",\
           "packageDependencies": [\
             ["@types/node", "npm:18.11.17"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["npm:18.11.18", {\
+          "packageLocation": "./.yarn/cache/@types-node-npm-18.11.18-d61e8a4a20-03f17f9480.zip/node_modules/@types/node/",\
+          "packageDependencies": [\
+            ["@types/node", "npm:18.11.18"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -8148,6 +8156,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@fontsource/roboto", "npm:4.5.8"],\
             ["@trivago/prettier-plugin-sort-imports", "virtual:3289a2ebd1fc3a545ed90b99040395ab5377fdbee426bb4f4986962712ee1703568c500b9a51ac601832545ac7a3751c621eaa5a3ade3824512cbe43b51ba33f#npm:4.0.0"],\
             ["@types/luxon", "npm:3.1.0"],\
+            ["@types/node", "npm:18.11.18"],\
             ["@types/prettier", "npm:2.7.2"],\
             ["@types/react", "npm:18.0.26"],\
             ["@types/react-dom", "npm:18.0.10"],\
@@ -8863,7 +8872,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["vite", "virtual:3289a2ebd1fc3a545ed90b99040395ab5377fdbee426bb4f4986962712ee1703568c500b9a51ac601832545ac7a3751c621eaa5a3ade3824512cbe43b51ba33f#npm:4.0.3"],\
             ["@types/less", null],\
-            ["@types/node", null],\
+            ["@types/node", "npm:18.11.18"],\
             ["@types/sass", null],\
             ["@types/stylus", null],\
             ["@types/sugarss", null],\
