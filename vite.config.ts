@@ -4,6 +4,7 @@ import { VitePWA } from 'vite-plugin-pwa';
 import manifest from './manifest';
 
 console.log('Version', process.env.VITE_VERSION_MINOR);
+console.log('Netlify CDN', process.env.NETLIFY_IMAGES_CDN_DOMAIN);
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -48,7 +49,7 @@ export default defineConfig({
           },
           //Not just images though. This is a catch all for all netlify cdn domains
           process.env.NETLIFY_IMAGES_CDN_DOMAIN && {
-            urlPattern: process.env.NETLIFY_IMAGES_CDN_DOMAIN + '/.*/',
+            urlPattern: new RegExp(`^https://${process.env.NETLIFY_IMAGES_CDN_DOMAIN}/.*`),
             handler: 'StaleWhileRevalidate',
             options: {
               cacheName: 'netlify-cdn',
