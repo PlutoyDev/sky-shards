@@ -10,6 +10,11 @@ export default function Version2Modal() {
     location.reload();
   };
 
+  const onModalClose = () => {
+    setIsOpen(false);
+    localStorage.setItem('v2ModalShown', 'true');
+  };
+
   useEffect(() => {
     if (import.meta.env.DEV) {
       setIsOpen(true);
@@ -21,17 +26,14 @@ export default function Version2Modal() {
   return (
     <Modal
       isOpen={isOpen}
-      onRequestClose={() => {
-        setIsOpen(false);
-        localStorage.setItem('v2ModalShown', 'true');
-      }}
+      onRequestClose={onModalClose}
       className='modal'
       overlayClassName='modal-overlay'
       ariaHideApp={false}
     >
       <div className='modal-header'>
         <h2 className='modal-title'>V2.0 Beta</h2>
-        <button className='modal-close' onClick={() => setIsOpen(false)}>
+        <button className='modal-close' onClick={onModalClose}>
           <BsX />
         </button>
       </div>
