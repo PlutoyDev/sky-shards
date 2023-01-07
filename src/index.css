@@ -151,6 +151,20 @@ body.light {
 #footer-author {
   grid-area: author;
   padding: 0 20px;
+
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+#footer-author > div {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 #credits {
@@ -204,25 +218,53 @@ body.light {
   }
 }
 
+#author-link,
+#project-link {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  column-gap: 0.5rem;
+  text-decoration: none;
+}
+
+//Circular Icons
+.circular-icon {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.circular-icon:not(.disabled):hover {
+  transform: scale(1.1);
+}
+
+.circular-icon > svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  fill: var(--color-secondary);
+}
+
+//Circular icon disabled
+.circular-icon.disabled {
+  display: none;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .glass {
   background-color: var(--glass-background-color);
   backdrop-filter: var(--glass-backdrop-filter);
   border-radius: var(--glass-border-radius);
-  padding: 5px 20px;
+  padding: 2px 20px;
   border: 1px solid rgba(192, 192, 192, 0.2);
 }
 
 .Page {
   grid-area: main;
-}
-
-a {
-  text-decoration: underline;
-  color: blue;
-  white-space: nowrap;
-}
-
-a:visited {
-  text-decoration: underline;
-  color: orange;
 }
