@@ -132,7 +132,7 @@ body.light {
   font-size: 0.6rem;
 
   display: grid;
-  grid-template-rows: 1fr 1fr 1.2fr;
+  grid-template-rows: repeat(2, fit-content(1fr)) fit-content(1.5fr);
   grid-template-columns: auto;
   grid-template-areas:
     'disclaimer'
@@ -147,7 +147,7 @@ body.light {
 
 #footer-disclaimer {
   grid-area: disclaimer;
-  padding: 0 20px;
+  padding: 5px 20px;
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
@@ -156,7 +156,7 @@ body.light {
 }
 #footer-credits {
   grid-area: credits;
-  padding: 0 20px;
+  padding: 5px 20px;
   overflow: hidden;
   border-top: 1px solid rgba(192, 192, 192, 0.3);
   border-bottom: 1px solid rgba(192, 192, 192, 0.3);
