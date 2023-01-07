@@ -47,12 +47,12 @@ export default function Footer() {
         <div>
           <div id='version'>
             <div>
-              {import.meta.env.DEV ? 'Dev' : 'Prod'} Version:{' '}
-              {(import.meta.env.VITE_VERSION_MINOR && `V${import.meta.env.VITE_VERSION_MINOR}`) ??
-                (import.meta.env.VITE_NETLIFY_GIT_BRANCH && `Branch ${import.meta.env.VITE_NETLIFY_GIT_BRANCH}`) ??
-                (import.meta.env.VITE_NETLIFY_GIT_COMIT_REF &&
-                  `Commit ${import.meta.env.VITE_NETLIFY_GIT_COMIT_REF}`) ??
-                'Unknown'}
+              {import.meta.env.DEV ? 'Dev' : 'Prod'}
+              {import.meta.env.VITE_VERSION_MINOR
+                ? ` Version: ${import.meta.env.VITE_VERSION_MINOR}`
+                : __NETLIFY_GIT_BRANCH__
+                ? ` Branch: ${__NETLIFY_GIT_BRANCH__}`
+                : ': Unknown'}
             </div>
           </div>
           <div id='project-link'>

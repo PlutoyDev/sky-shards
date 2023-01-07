@@ -5,6 +5,9 @@ import manifest from './manifest';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  define: {
+    __NETLIFY_GIT_BRANCH__: `'${process.env.BRANCH}'`,
+  },
   plugins: [
     react(),
     VitePWA({

@@ -228,7 +228,6 @@ body.light {
   text-decoration: none;
 }
 
-//Circular Icons
 .circular-icon {
   width: 2rem;
   height: 2rem;
@@ -250,7 +249,6 @@ body.light {
   fill: var(--color-secondary);
 }
 
-//Circular icon disabled
 .circular-icon.disabled {
   display: none;
   opacity: 0.5;
