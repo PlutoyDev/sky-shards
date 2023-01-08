@@ -44,18 +44,22 @@ export default function Home() {
       ? 'past'
       : 'future';
 
+  const nextDay = () => {
+    const newDate = DateTime.prototype.plus.call(customDate ?? now, { days: 1 });
+    if (newDate.hasSame(now, 'day')) navigate('/');
+    else navigate(`/date/${newDate.toFormat('yyyy/MM/dd')}`);
+  };
+
+  const prevDay = () => {
+    const newDate = DateTime.prototype.minus.call(customDate ?? now, { days: 1 });
+    if (newDate.hasSame(now, 'day')) navigate('/');
+    else navigate(`/date/${newDate.toFormat('yyyy/MM/dd')}`);
+  };
+
   const navigate = useNavigate();
   const handlers = useSwipeable({
-    onSwipedLeft: () => {
-      const newDate = DateTime.prototype.plus.call(customDate ?? now, { days: 1 });
-      if (newDate.hasSame(now, 'day')) navigate('/');
-      else navigate(`/date/${newDate.toFormat('yyyy/MM/dd')}`);
-    },
-    onSwipedRight: () => {
-      const newDate = DateTime.prototype.minus.call(customDate ?? now, { days: 1 });
-      if (newDate.hasSame(now, 'day')) navigate('/');
-      else navigate(`/date/${newDate.toFormat('yyyy/MM/dd')}`);
-    },
+    onSwipedLeft: nextDay,
+    onSwipedRight: prevDay,
     preventScrollOnSwipe: true,
     trackMouse: true,
   });
@@ -66,14 +70,14 @@ export default function Home() {
         <span className='navHintText'>Swipe down for images of where shard will land</span>
         {SvgArrow}
       </div>
-      <div id='leftNavHint' className='navHint'>
-        <span className='navHintText'>Swipe right to see the previous day</span>
+      <div id='leftNavHint' className='navHint' onClick={prevDay}>
+        <span className='navHintText'>Swipe right or Click here to see the previous day</span>
         {SvgArrow}
       </div>
       <ShardInfoDisplay info={info} verbsTense={verbsTense} />
       {phases && futureOrToday && <ShardTimingDisplay phases={phases} index={index} now={now} />}
-      <div id='rightNavHint' className='navHint'>
-        <span className='navHintText'>Swipe left to see the next day</span>
+      <div id='rightNavHint' className='navHint' onClick={nextDay}>
+        <span className='navHintText'>Swipe left or Click here to see the next day</span>
         {SvgArrow}
       </div>
       <div id='bottomNavHint' className='navHint disabled'>
