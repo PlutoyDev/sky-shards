@@ -166,7 +166,7 @@ body.light {
 
 #footer-disclaimer {
   grid-area: disclaimer;
-  padding: 5px 20px;
+  padding: 2px 20px;
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
@@ -183,7 +183,7 @@ body.light {
 }
 #footer-author {
   grid-area: author;
-  padding: 0 20px;
+  padding: 2px 20px;
 
   display: flex;
   flex-flow: row wrap;
@@ -221,20 +221,20 @@ body.light {
 
 @media (min-width: 670px) {
   #footer {
-    grid-template-rows: 1fr 2fr;
-    grid-template-columns: 75% 23%;
+    grid-template-rows: auto auto;
+    grid-template-columns: fit-content(75%) fit-content(25%);
     grid-template-areas:
       'disclaimer author'
       'credits author';
   }
 
   #footer-credits {
-    padding: 20px;
+    padding: 2px 20px;
     border-bottom: none;
   }
 
   #footer-author {
-    padding: 0 10px;
+    padding: 1px 10px;
     border-left: 1px solid rgba(192, 192, 192, 0.3);
   }
 
