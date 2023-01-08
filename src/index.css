@@ -35,28 +35,51 @@ body {
   color: var(--color-secondary);
 
   --font-size-adjust: min(1vh, 1vw);
-  --font-size-base: calc(var(--font-size-adjust) * 4);
+  --font-size-base: calc(var(--font-size-adjust) * 6.5);
 
   --font-size-100: calc(var(--font-size-200) - var(--font-size-adjust));
   --font-size-200: calc(var(--font-size-300) - var(--font-size-adjust));
-  --font-size-300: calc(var(--font-size-400) - var(--font-size-adjust) * 0.6);
+  --font-size-300: calc(var(--font-size-400) - var(--font-size-adjust));
   --font-size-400: calc(var(--font-size-500) - var(--font-size-adjust));
   --font-size-500: var(--font-size-base);
   --font-size-600: calc(var(--font-size-500) + var(--font-size-adjust));
   --font-size-700: calc(var(--font-size-600) + var(--font-size-adjust) * 0.6);
   --font-size-800: calc(var(--font-size-700) + var(--font-size-adjust));
   --font-size-900: calc(var(--font-size-800) + var(--font-size-adjust));
+
+  --footer-font-size: 0.4rem;
 }
 
-@media (max-width: 300px) {
+@media (min-aspect-ratio: 18/9) or (min-aspect-ratio: 9/18) {
   body {
-    --font-size-base: calc(var(--font-size-adjust) * 3.5);
+    --font-size-base: calc(var(--font-size-adjust) * 6);
   }
 }
 
-@media (min-width: 600px) {
+@media (min-aspect-ratio: 16/9) or (min-aspect-ratio: 9/16) {
   body {
-    --font-size-base: calc(var(--font-size-adjust) * 5);
+    --font-size-base: calc(var(--font-size-adjust) * 4.8);
+    --footer-font-size: 0.6rem;
+  }
+}
+
+@media (max-aspect-ratio: 4/3) or (max-aspect-ratio: 3/4) {
+  body {
+    --font-size-base: calc(var(--font-size-adjust) * 6.1);
+    --footer-font-size: 0.4rem;
+  }
+}
+
+@media (min-width: 890px) {
+  body {
+    --font-size-base: calc(var(--font-size-adjust) * 5.5);
+    --footer-font-size: 0.6rem;
+  }
+}
+
+@media (orientation: vertical) {
+  body {
+    --footer-font-size: 0.8rem;
   }
 }
 
@@ -74,10 +97,10 @@ body.light {
 
 .App {
   position: absolute;
-  top: 5px;
-  left: 5px;
-  right: 5px;
-  bottom: 5px;
+  top: 7px;
+  left: 7px;
+  right: 7px;
+  bottom: 7px;
 
   display: grid;
   grid-template-rows: var(--header-height) auto fit-content(20vh);
@@ -125,21 +148,17 @@ body.light {
 
 #footer {
   grid-area: footer;
-
-  /* display: flex;
-  flex-flow: column nowrap;
-  */
-  font-size: 0.6rem;
+  font-size: var(--footer-font-size);
 
   display: grid;
-  grid-template-rows: repeat(2, fit-content(1fr)) fit-content(1.5fr);
+  grid-template-rows: auto auto auto;
   grid-template-columns: auto;
   grid-template-areas:
     'disclaimer'
     'credits'
     'author';
 
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   text-align: center;
   padding: 0 20px;
@@ -153,6 +172,7 @@ body.light {
   justify-content: center;
   align-items: center;
   column-gap: 0.5rem;
+  font-size: calc(var(--footer-font-size) * 0.8);
 }
 #footer-credits {
   grid-area: credits;
@@ -167,9 +187,9 @@ body.light {
 
   display: flex;
   flex-flow: row wrap;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.2rem 0.5rem;
 }
 
 #footer-author > div {
@@ -177,7 +197,7 @@ body.light {
   flex-flow: row wrap;
   justify-content: center;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.2rem 0.5rem;
 }
 
 #credits {
@@ -238,8 +258,8 @@ body.light {
 }
 
 .circular-icon {
-  width: 2rem;
-  height: 2rem;
+  width: calc(var(--footer-font-size) * 1.4);
+  height: calc(var(--footer-font-size) * 1.4);
   border-radius: 50%;
   display: flex;
   justify-content: center;
@@ -253,8 +273,8 @@ body.light {
 }
 
 .circular-icon > svg {
-  width: 1rem;
-  height: 1rem;
+  width: calc(var(--footer-font-size) * 1.3);
+  height: calc(var(--footer-font-size) * 1.3);
   fill: var(--color-secondary);
 }
 
