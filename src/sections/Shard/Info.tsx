@@ -31,11 +31,6 @@ export default function ShardInfoDisplay({ info, now, verbsTense }: ShardInfoDis
             There {verbsTense && verbsTense !== 'future' ? (verbsTense === 'past' ? 'was' : 'is') : 'will be'}{' '}
           </span>
           <span className={`${color} Emphasized`}>{color} Shard </span>
-          <span> on </span>
-        </span>
-
-        <span>
-          <Date date={date} />
           <span> in </span>
         </span>
         <span>
@@ -46,6 +41,9 @@ export default function ShardInfoDisplay({ info, now, verbsTense }: ShardInfoDis
             <span className='Emphasized Full'>{realmFull}</span>
             <span className='Emphasized Nick'>{realmNick}</span>
           </span>
+        </span>
+        <span>
+          <Date date={date} describeClose />
         </span>
       </div>
     );
