@@ -17,7 +17,7 @@ export default function Date({ date, local, short, describeClose, hideWeekday, h
   const isMobile = useSettings().isCompactMode;
   const now = local ? useNow().local : useNow().application;
   date = (local ? date?.toLocal() : date?.setZone('America/Los_Angeles')) ?? now;
-  const howClose = Math.floor(date.diff(now, 'days').days);
+  const howClose = Math.ceil(date.diff(now, 'days').days);
   if (describeClose && howClose <= 1) {
     return (
       <span className='Date'>
