@@ -50,3 +50,15 @@ This project uses Yarn (Berry) Package Manager with "zero-installs"
 yarn
 yarn dev
 ```
+
+To build the project
+
+```bash
+yarn build
+```
+
+Optionally, you can preview the production build locally
+
+```bash
+yarn preview
+```
