@@ -1,8 +1,6 @@
 # Sky Shard Web Application
 
-[Open app](https://sky-shard.netlify.app/)
-
-![Netlify Status](https://api.netlify.com/api/v1/badges/3287f068-3f32-4f94-9749-ee6c668bfeec/deploy-status?branch=production)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/3287f068-3f32-4f94-9749-ee6c668bfeec/deploy-status?branch=production) Open App](https://sky-shard.netlify.app/)
 
 ## Description
 
@@ -44,7 +42,7 @@ Shard is computed as described in [Shard Prediction Rule](./ShardPredictionRule.
 
 ## Developement
 
-This project uses Yarn (Berry) Package Manager with "zero-installs"
+This project uses Yarn (Berry) Package Manager with "zero-installs" 
 
 ```bash
 yarn
