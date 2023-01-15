@@ -48,7 +48,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-plugin-import", "virtual:3289a2ebd1fc3a545ed90b99040395ab5377fdbee426bb4f4986962712ee1703568c500b9a51ac601832545ac7a3751c621eaa5a3ade3824512cbe43b51ba33f#npm:2.26.0"],\
             ["eslint-plugin-prettier", "virtual:3289a2ebd1fc3a545ed90b99040395ab5377fdbee426bb4f4986962712ee1703568c500b9a51ac601832545ac7a3751c621eaa5a3ade3824512cbe43b51ba33f#npm:4.2.1"],\
             ["eslint-plugin-react", "virtual:3289a2ebd1fc3a545ed90b99040395ab5377fdbee426bb4f4986962712ee1703568c500b9a51ac601832545ac7a3751c621eaa5a3ade3824512cbe43b51ba33f#npm:7.31.11"],\
-            ["luxon", "npm:3.1.1"],\
+            ["luxon", "npm:3.2.1"],\
             ["postcss", "npm:8.4.20"],\
             ["prettier", "npm:2.8.1"],\
             ["react", "npm:18.2.0"],\
@@ -6711,10 +6711,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["luxon", [\
-        ["npm:3.1.1", {\
-          "packageLocation": "./.yarn/cache/luxon-npm-3.1.1-64fe977c1d-388fb35d3c.zip/node_modules/luxon/",\
+        ["npm:3.2.1", {\
+          "packageLocation": "./.yarn/cache/luxon-npm-3.2.1-56f8d97395-3fa3def2c5.zip/node_modules/luxon/",\
           "packageDependencies": [\
-            ["luxon", "npm:3.1.1"]\
+            ["luxon", "npm:3.2.1"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -8231,7 +8231,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-plugin-import", "virtual:3289a2ebd1fc3a545ed90b99040395ab5377fdbee426bb4f4986962712ee1703568c500b9a51ac601832545ac7a3751c621eaa5a3ade3824512cbe43b51ba33f#npm:2.26.0"],\
             ["eslint-plugin-prettier", "virtual:3289a2ebd1fc3a545ed90b99040395ab5377fdbee426bb4f4986962712ee1703568c500b9a51ac601832545ac7a3751c621eaa5a3ade3824512cbe43b51ba33f#npm:4.2.1"],\
             ["eslint-plugin-react", "virtual:3289a2ebd1fc3a545ed90b99040395ab5377fdbee426bb4f4986962712ee1703568c500b9a51ac601832545ac7a3751c621eaa5a3ade3824512cbe43b51ba33f#npm:7.31.11"],\
-            ["luxon", "npm:3.1.1"],\
+            ["luxon", "npm:3.2.1"],\
             ["postcss", "npm:8.4.20"],\
             ["prettier", "npm:2.8.1"],\
             ["react", "npm:18.2.0"],\
