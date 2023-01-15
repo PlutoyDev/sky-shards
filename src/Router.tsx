@@ -1,6 +1,7 @@
 import { LoaderFunctionArgs, createBrowserRouter, redirect } from 'react-router-dom';
 import { DateTime } from 'luxon';
-import Home from './page/Home';
+import App from './App';
+import Shard from './page/Shard';
 import { nextShardInfo } from './shardPredictor';
 
 const relDateMap = {
@@ -8,7 +9,7 @@ const relDateMap = {
   ereyesterday: -2,
   ytd: -1,
   yesterday: -1,
-  today: 1,
+  tmr: 1,
   tomorrow: 1,
   ovmr: 2,
   overmorrow: 2,
@@ -43,58 +44,64 @@ function absDateLoader({ params: { year, month, day } }: LoaderFunctionArgs) {
 
 export const router = createBrowserRouter([
   {
-    path: '/',
-    element: <Home />,
-  },
-  {
-    path: '/:relDateName',
-    element: <Home />,
-    loader: ({ params: { relDateName } }) => {
-      if (relDateName && relDateName in relDateMap) {
-        return { relDate: relDateMap[relDateName as keyof typeof relDateMap] };
-      } else {
-        return redirect('/');
-      }
-    },
-  },
-  {
-    path: '/date/:year/:month/:day',
-    element: <Home />,
-    loader: absDateLoader,
-  },
-  {
-    path: '/date/:year/:month',
-    element: <Home />,
-    loader: absDateLoader,
-  },
-  {
-    path: '/date/:year',
-    element: <Home />,
-    loader: absDateLoader,
-  },
-  {
-    path: '/next',
-    element: <Home />,
-    loader: () => {
-      const today = DateTime.local().setZone('America/Los_Angeles');
-      return redirect(`/date/${nextShardInfo(today).date.toFormat('yyyy/MM/dd')}`);
-    },
-  },
-  {
-    path: '/next/red',
-    element: <Home />,
-    loader: () => {
-      const today = DateTime.local().setZone('America/Los_Angeles');
-      return redirect(`/date/${nextShardInfo(today, { colorIsRed: true }).date.toFormat('yyyy/MM/dd')}`);
-    },
-  },
-  {
-    path: '/next/black',
-    element: <Home />,
-    loader: () => {
-      const today = DateTime.local().setZone('America/Los_Angeles');
-      return redirect(`/date/${nextShardInfo(today, { colorIsRed: false }).date.toFormat('yyyy/MM/dd')}`);
-    },
+    path: '',
+    element: <App />,
+    children: [
+      {
+        path: '',
+        element: <Shard />,
+      },
+      {
+        path: '/:relDateName',
+        element: <Shard />,
+        loader: ({ params: { relDateName } }) => {
+          if (relDateName && relDateName in relDateMap) {
+            return { relDate: relDateMap[relDateName as keyof typeof relDateMap] };
+          } else {
+            return redirect('/');
+          }
+        },
+      },
+      {
+        path: 'date/:year/:month/:day',
+        element: <Shard />,
+        loader: absDateLoader,
+      },
+      {
+        path: 'date/:year/:month',
+        element: <Shard />,
+        loader: absDateLoader,
+      },
+      {
+        path: 'date/:year',
+        element: <Shard />,
+        loader: absDateLoader,
+      },
+      {
+        path: 'next',
+        element: <Shard />,
+        loader: () => {
+          const today = DateTime.local().setZone('America/Los_Angeles');
+          return redirect(`/date/${nextShardInfo(today).date.toFormat('yyyy/MM/dd')}`);
+        },
+      },
+      {
+        path: 'next/red',
+        element: <Shard />,
+        loader: () => {
+          const today = DateTime.local().setZone('America/Los_Angeles');
+          return redirect(`/date/${nextShardInfo(today, { colorIsRed: true }).date.toFormat('yyyy/MM/dd')}`);
+        },
+      },
+      {
+        path: 'next/black',
+        element: <Shard />,
+        loader: () => {
+          const today = DateTime.local().setZone('America/Los_Angeles');
+          return redirect(`/date/${nextShardInfo(today, { colorIsRed: false }).date.toFormat('yyyy/MM/dd')}`);
+        },
+      },
+    ],
   },
 ]);
 

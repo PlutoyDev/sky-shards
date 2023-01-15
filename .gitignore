@@ -22,3 +22,7 @@ dist-ssr
 # Node Modules
 # Some libraries creates the folder like vite
 node_modules
+
+
+# Local Netlify folder
+.netlify

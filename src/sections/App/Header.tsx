@@ -1,5 +1,4 @@
-import DarkModeIcon from '@mui/icons-material/DarkMode';
-import LightModeIcon from '@mui/icons-material/LightMode';
+import { BsSunFill, BsMoonFill } from 'react-icons/bs';
 import { useSettings } from '../../context/Settings';
 
 interface HeaderProp {
@@ -11,10 +10,10 @@ export default function Header({ onThemeButtonClick, onClockButtonClick }: Heade
   const { isTwelveHourMode, isLightMode } = useSettings();
 
   return (
-    <div className='App-header'>
-      <span className='App-title'>Sky Shards</span>
-      <div className='App-header-buttons'>
-        <span
+    <div id='header' className='glass'>
+      <span id='title'>Sky Shards</span>
+      <div id='header-buttons'>
+        <button
           onClick={onClockButtonClick}
           style={{
             fontFamily: "'Orbitron', sans-serif",
@@ -23,17 +22,16 @@ export default function Header({ onThemeButtonClick, onClockButtonClick }: Heade
           }}
         >
           {isTwelveHourMode ? 12 : 24}
-        </span>
-        <span
+        </button>
+        <button
           onClick={onThemeButtonClick}
           style={{
             cursor: 'pointer',
             fontSize: '1.2rem',
-            paddingBottom: '0.3rem',
           }}
         >
-          {isLightMode ? <LightModeIcon /> : <DarkModeIcon />}
-        </span>
+          {isLightMode ? <BsSunFill /> : <BsMoonFill />}
+        </button>
       </div>
     </div>
   );
