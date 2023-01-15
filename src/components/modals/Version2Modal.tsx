@@ -4,21 +4,16 @@ import Modal from 'react-modal';
 
 export default function Version2Modal() {
   const [isOpen, setIsOpen] = useState(false);
-  //Set cookies nf_ab to production
-  const onOptOut = () => {
-    document.cookie = 'nf_ab=production; path=/';
-    location.reload();
-  };
-
   const onModalClose = () => {
     setIsOpen(false);
-    localStorage.setItem('v2ModalShown', 'true');
+    localStorage.setItem('v2FullModalShown', 'true');
   };
 
   useEffect(() => {
     if (import.meta.env.DEV) {
       setIsOpen(true);
-    } else if (localStorage.getItem('v2ModalShown') === null) {
+    }
+    if (localStorage.getItem('v2FullModalShown') === null) {
       setIsOpen(true);
     }
   }, []);
@@ -32,37 +27,30 @@ export default function Version2Modal() {
       ariaHideApp={false}
     >
       <div className='modal-header'>
-        <h2 className='modal-title'>V2.0 Beta</h2>
+        <h2 className='modal-title'>V2.0 Released</h2>
         <button className='modal-close' onClick={onModalClose}>
           <BsX />
         </button>
       </div>
       <div className='modal-content'>
         <p>
-          <strong>Hello SkyKids</strong>, Plutoy here.
+          <strong className='text-xl'>Hello SkyKids</strong>, Plutoy here.
         </p>
         &nbsp;
-        <p>You have been randomly selected to help me test the new version of Sky Shards.</p>
+        <p>I&apos;m happy to announce that Sky Shards V2(.2) is officially out of beta.</p>
+        <p>With that said, only major release like V2 will get this kind of pop-up message</p>
+        <p>There will be an &quot;animations, details and guides&quot; (V2.3) update soon</p>
+        &nbsp;
         <p>
-          <span>Click </span>
-          <span id='OptOut' onClick={onOptOut}>
-            here
-          </span>
-          <span> to opt-out </span>
-          <span>(Note: By opting-out, You will not be able to come back to this version, until full release)</span>
+          <span className='text-lg font-extrabold'>Thank you</span>
+          <span> to early testers, especially, to those who write in feedback.</span>
         </p>
         &nbsp;
-        <p>The site design had been changed a lot. I hope you like it.</p>
-        &nbsp;
-        <p>If you notice any bugs or have any feedback, I would like to hear about it.</p>
-        <p>Links to my socials can be found the bottom of the page</p>
-        &nbsp;
+        <p>Feel free to shoot me with any feedback / bugs that you find,</p>
+        <p>my socials can be found at the bottom of the page</p>
+        &nbsp; &nbsp;
         <p>
-          <strong>Thank you for your help</strong>,
-        </p>
-        &nbsp;
-        <p>
-          <strong>Plutoy</strong>
+          <strong>Plutoy,</strong>
         </p>
         <p>Developer of Sky Shards.</p>
       </div>
