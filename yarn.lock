@@ -6223,6 +6223,7 @@ __metadata:
     typescript: ^4.9.3
     vite: ^4.0.0
     vite-plugin-pwa: ^0.14.0
+    workbox-build: ^6.5.4
   languageName: unknown
   linkType: soft
 

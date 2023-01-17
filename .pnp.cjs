@@ -61,7 +61,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["tailwindcss", "virtual:3289a2ebd1fc3a545ed90b99040395ab5377fdbee426bb4f4986962712ee1703568c500b9a51ac601832545ac7a3751c621eaa5a3ade3824512cbe43b51ba33f#npm:3.2.4"],\
             ["typescript", "patch:typescript@npm%3A4.9.4#~builtin<compat/typescript>::version=4.9.4&hash=ad5954"],\
             ["vite", "virtual:3289a2ebd1fc3a545ed90b99040395ab5377fdbee426bb4f4986962712ee1703568c500b9a51ac601832545ac7a3751c621eaa5a3ade3824512cbe43b51ba33f#npm:4.0.3"],\
-            ["vite-plugin-pwa", "virtual:3289a2ebd1fc3a545ed90b99040395ab5377fdbee426bb4f4986962712ee1703568c500b9a51ac601832545ac7a3751c621eaa5a3ade3824512cbe43b51ba33f#npm:0.14.0"]\
+            ["vite-plugin-pwa", "virtual:3289a2ebd1fc3a545ed90b99040395ab5377fdbee426bb4f4986962712ee1703568c500b9a51ac601832545ac7a3751c621eaa5a3ade3824512cbe43b51ba33f#npm:0.14.0"],\
+            ["workbox-build", "npm:6.5.4"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -8244,7 +8245,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["tailwindcss", "virtual:3289a2ebd1fc3a545ed90b99040395ab5377fdbee426bb4f4986962712ee1703568c500b9a51ac601832545ac7a3751c621eaa5a3ade3824512cbe43b51ba33f#npm:3.2.4"],\
             ["typescript", "patch:typescript@npm%3A4.9.4#~builtin<compat/typescript>::version=4.9.4&hash=ad5954"],\
             ["vite", "virtual:3289a2ebd1fc3a545ed90b99040395ab5377fdbee426bb4f4986962712ee1703568c500b9a51ac601832545ac7a3751c621eaa5a3ade3824512cbe43b51ba33f#npm:4.0.3"],\
-            ["vite-plugin-pwa", "virtual:3289a2ebd1fc3a545ed90b99040395ab5377fdbee426bb4f4986962712ee1703568c500b9a51ac601832545ac7a3751c621eaa5a3ade3824512cbe43b51ba33f#npm:0.14.0"]\
+            ["vite-plugin-pwa", "virtual:3289a2ebd1fc3a545ed90b99040395ab5377fdbee426bb4f4986962712ee1703568c500b9a51ac601832545ac7a3751c621eaa5a3ade3824512cbe43b51ba33f#npm:0.14.0"],\
+            ["workbox-build", "npm:6.5.4"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -8994,7 +8996,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             "@types/vite",\
             "@types/workbox-build",\
             "@types/workbox-window",\
-            "vite"\
+            "vite",\
+            "workbox-build"\
           ],\
           "linkType": "HARD"\
         }]\
