@@ -10,7 +10,7 @@ export default function Header({ onThemeButtonClick, onClockButtonClick }: Heade
   const { isTwelveHourMode, isLightMode } = useSettings();
 
   return (
-    <div id='header' className='glass'>
+    <header id='header' className='glass'>
       <span id='title'>Sky Shards</span>
       <div id='header-buttons'>
         <button
@@ -33,6 +33,6 @@ export default function Header({ onThemeButtonClick, onClockButtonClick }: Heade
           {isLightMode ? <BsSunFill /> : <BsMoonFill />}
         </button>
       </div>
-    </div>
+    </header>
   );
 }

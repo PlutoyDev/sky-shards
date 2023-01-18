@@ -3,7 +3,7 @@ import credits from '../../data/credits';
 
 export default function Footer() {
   return (
-    <div id='footer' className='glass'>
+    <footer id='footer' className='glass'>
       <div id='footer-disclaimer'>
         <span>Not affiliated with thatgamecompany </span>
         <span>(It might not reflect what is in-game)</span>
@@ -67,6 +67,6 @@ export default function Footer() {
           </div>
         </div>
       </div>
-    </div>
+    </footer>
   );
 }
