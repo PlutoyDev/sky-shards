@@ -1,6 +1,6 @@
 import { DateTime, Duration } from 'luxon';
 
-const earlyOffset = Duration.fromObject({ minutes: -30 }); //after start
+const earlySkyOffset = Duration.fromObject({ minutes: -30 }); //after start
 const eruptionOffset = Duration.fromObject({ minutes: 7 }); //after start
 const landOffset = Duration.fromObject({ minutes: 8, seconds: 40 }); //after start
 const endOffset = Duration.fromObject({ hours: 4 }); //after start
@@ -74,12 +74,17 @@ export function getShardInfo(date: DateTime): ShardInfo {
   const infoIndex = isRed ? (((dayOfMth - 1) / 2) % 3) + 2 : (dayOfMth / 2) % 2;
   const { noShardWkDay, interval, offset, maps } = shardsInfo[infoIndex];
   const haveShard = !noShardWkDay.includes(dayOfWk);
+  const lastEnd = date
+    .plus(offset)
+    .plus(interval.mapUnits(x => x * 2))
+    .plus(endOffset);
   return {
     date,
     isRed,
     haveShard,
     offset,
     interval,
+    lastEnd,
     realmFull: realmsFull[realmIdx],
     realmNick: realmsNick[realmIdx],
     map: maps[realmIdx],
@@ -92,85 +97,41 @@ export type ShardInfo = {
   haveShard: boolean;
   offset: Duration;
   interval: Duration;
+  lastEnd: DateTime;
   realmFull: string;
   realmNick: string;
   map: string;
 };
 
-export interface ShardPhases {
-  early: DateTime;
+export interface ShardSimplePhases {
+  index: number;
   start: DateTime;
-  eruption: DateTime;
   land: DateTime;
   end: DateTime;
 }
-
-export function phasesFromStart(start: DateTime): ShardPhases {
-  const early = start.plus(earlyOffset);
-  const end = start.plus(endOffset);
-  const eruption = start.plus(eruptionOffset);
-  const land = start.plus(landOffset);
-  return { early, start, eruption, land, end };
+//Shards happens 3 times a day, given any time, return the current/next shard phase
+export function getUpcommingShardPhase(now: DateTime, info?: ShardInfo): ShardSimplePhases | undefined {
+  if (!info) {
+    info = getShardInfo(now);
+  }
+  const { interval, lastEnd } = info;
+  if (now > lastEnd) return undefined;
+  const secondEnd = lastEnd.minus(interval);
+  if (now > secondEnd) {
+    const start = lastEnd.minus(endOffset);
+    return { index: 2, start, land: start.plus(landOffset), end: lastEnd };
+  }
+  const firstEnd = secondEnd.minus(interval);
+  if (now > firstEnd) {
+    const start = secondEnd.minus(endOffset);
+    return { index: 1, start, land: start.plus(landOffset), end: secondEnd };
+  }
+  const start = firstEnd.minus(endOffset);
+  return { index: 0, start, land: start.plus(landOffset), end: firstEnd };
 }
 
-export function phasesFromEnd(end: DateTime): ShardPhases {
-  const start = end.minus(endOffset);
-  const early = start.plus(earlyOffset);
-  const eruption = start.plus(eruptionOffset);
-  const land = start.plus(landOffset);
-  return { early, start, eruption, land, end };
-}
-
-interface RecursiveOpt {
-  limit?: number;
-  daysAdded?: number;
-  colorIsRed?: boolean;
-}
-
-export function nextShardInfo(
-  now: DateTime,
-  recursive: RecursiveOpt = {},
-): { info: ShardInfo; daysAdded: number; date: DateTime } {
-  const { limit = 14, daysAdded = 0, colorIsRed } = recursive;
-  const info = getShardInfo(now);
-  const { haveShard, isRed } = info;
-  if (haveShard && (colorIsRed === undefined || colorIsRed === isRed)) {
-    return { info, daysAdded, date: now };
-  }
-  if (daysAdded >= limit) {
-    return { info, daysAdded, date: now };
-  }
-  return nextShardInfo(now.plus({ days: 1 }), { limit, daysAdded: daysAdded + 1, colorIsRed });
-}
-
-export function nextOrCurrent(
-  now: DateTime,
-  recursive = false,
-  daysAdded = 0,
-): { info: ShardInfo; index?: number; phases?: ShardPhases; daysAdded: number } {
-  const today = now.startOf('day');
-  const info = getShardInfo(now);
-  const { haveShard, offset, interval } = info;
-  if (!haveShard) {
-    if (recursive) {
-      return nextOrCurrent(today.plus({ days: 1 }), recursive, daysAdded + 1);
-    }
-    return { info, daysAdded };
-  }
-
-  const firstEnd = today.plus(offset).plus(endOffset);
-  const ends = Array.from({ length: 3 }, (_, i) => firstEnd.plus(interval.mapUnits(v => v * i)));
-  const index = ends.findIndex(end => now < end);
-  const next = ends[index];
-
-  if (next) {
-    const phases = phasesFromEnd(next);
-    return { info, index, phases, daysAdded };
-  }
-
-  if (recursive) {
-    return nextOrCurrent(today.plus({ days: 1 }), recursive, daysAdded + 1);
-  }
-
-  return { info, daysAdded };
+export interface ShardFullPhases extends ShardSimplePhases {
+  earlySky: DateTime;
+  start: DateTime;
+  eruption: DateTime;
 }
