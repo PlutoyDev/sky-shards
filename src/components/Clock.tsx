@@ -12,21 +12,11 @@ interface ClockProp {
   trim?: boolean;
   date?: DateTime;
   duration?: Duration;
-  variableWidth?: boolean;
   fontSize?: CSSProperties['fontSize'];
+  inline?: boolean;
 }
 
-export default function Clock({
-  local,
-  sky,
-  negate,
-  relative,
-  trim,
-  date,
-  duration,
-  variableWidth,
-  fontSize,
-}: ClockProp) {
+export default function Clock({ local, sky, negate, relative, trim, date, duration, fontSize, inline }: ClockProp) {
   const { isTwelveHourMode } = useSettings();
   date = local
     ? date?.toLocal() ?? useNow().local
@@ -41,8 +31,11 @@ export default function Clock({
   if (trim) text = text.replace(/^(0+\w )+/, '');
 
   return (
-    <span className={`Clock${variableWidth ? '' : ' Monospace'}`} style={{ ['--clock-font-size' as string]: fontSize }}>
-      {variableWidth || text.length === 0 ? text : text.split('').map((char, index) => <span key={index}>{char}</span>)}
+    <span
+      className='Clock'
+      style={{ ['--clock-font-size' as string]: fontSize, display: inline ? 'inline-block' : undefined }}
+    >
+      {text}
     </span>
   );
 }
