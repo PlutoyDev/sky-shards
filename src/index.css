@@ -34,8 +34,8 @@ body {
   background-color: var(--color-primary);
   color: var(--color-secondary);
 
-  --font-size-adjust: min(1vh, 1vw);
-  --font-size-base: calc(var(--font-size-adjust) * 6.5);
+  --font-size-base: 2vmin;
+  --font-size-adjust: 0.1vmin;
 
   --font-size-100: calc(var(--font-size-200) - var(--font-size-adjust));
   --font-size-200: calc(var(--font-size-300) - var(--font-size-adjust));
@@ -43,7 +43,7 @@ body {
   --font-size-400: calc(var(--font-size-500) - var(--font-size-adjust));
   --font-size-500: var(--font-size-base);
   --font-size-600: calc(var(--font-size-500) + var(--font-size-adjust));
-  --font-size-700: calc(var(--font-size-600) + var(--font-size-adjust) * 0.6);
+  --font-size-700: calc(var(--font-size-600) + var(--font-size-adjust));
   --font-size-800: calc(var(--font-size-700) + var(--font-size-adjust));
   --font-size-900: calc(var(--font-size-800) + var(--font-size-adjust));
 
@@ -52,27 +52,28 @@ body {
 
 @media (min-aspect-ratio: 18/9) or (min-aspect-ratio: 9/18) {
   body {
-    --font-size-base: calc(var(--font-size-adjust) * 6);
+    --font-size-base: 2vmin;
   }
 }
 
 @media (min-aspect-ratio: 16/9) or (min-aspect-ratio: 9/16) {
   body {
-    --font-size-base: calc(var(--font-size-adjust) * 4.8);
+    --font-size-base: 2.2vmin;
+    --font-size-adjust: 0.2vmin;
     --footer-font-size: 0.6rem;
   }
 }
 
 @media (max-aspect-ratio: 4/3) or (max-aspect-ratio: 3/4) {
   body {
-    --font-size-base: calc(var(--font-size-adjust) * 6.1);
+    --font-size-base: 2.6vmin;
     --footer-font-size: 0.4rem;
   }
 }
 
 @media (min-width: 890px) {
   body {
-    --font-size-base: calc(var(--font-size-adjust) * 5.5);
+    --font-size-base: 3.6vmin;
     --footer-font-size: 0.6rem;
   }
 }
