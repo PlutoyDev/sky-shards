@@ -14,19 +14,19 @@ Shard is computed as described in [Shard Prediction Rule](./ShardPredictionRule.
   - [x] Countdown to the next Shard landing or ending
   - [x] Display the landing time of the Shard Eruption in your local time zone and the time zone of Sky
   - [x] Swipe left/right to change the date
-  - [ ] Swipe up/down to view more information
-  - [ ] Date Selector
-  - [ ] Show possible landing spots on a map (WIP)
-  - [ ] Notify you when a Shard is about to land (WIP)
+  - [ ] Swipe up/down to view more information (WIP)
+  - [ ] Date Selector (WIP)
+  - [ ] Show possible landing spots on a map
+  - [ ] Notify you when a Shard is about to land
 - [x] Dark/Light Mode & 24h/12h Time Format
 - [x] Installable Progressive Web App
-  - [x] Offline Support (WIP)
-- [ ] Live overriding of the Shard Eruption time (WIP)
-- [ ] Server Side Rendering (WIP)
-  - Dynamic Meta Tags (WIP)
-  - Dynamic Soical Cards Image (WIP)
-  - Incremental Static Generation with Netlify (WIP)
-  - Pre-rendered pages for 2 weeks in advance (WIP)
+  - [x] Offline Support
+- [ ] Live overriding of the Shard Eruption time
+- [ ] Server Side Rendering
+  - Dynamic Meta Tags
+  - Dynamic Soical Cards Image
+  - Incremental Static Generation with Netlify
+  - Pre-rendered pages for 2 weeks in advance
 
 ## Routes
 
