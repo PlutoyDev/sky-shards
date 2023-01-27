@@ -202,7 +202,7 @@
 
 .timeline-header-text {
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: column wrap;
   column-gap: 20px;
   align-items: flex-start;
 }
@@ -280,5 +280,8 @@
 
   .timeline-item-content {
     top: -6px;
+  }
+  .timeline-header-text {
+    flex-flow: row wrap;
   }
 }

@@ -24,7 +24,7 @@ interface ShardTimelineSectionProp {
 
 export default function ShardTimeline({ date }: ShardTimelineSectionProp) {
   const now = useNow().application;
-  const { occurrences, upcommingIndex } = getAllShardFullPhases(date);
+  const { occurrences, upcommingIndex } = useMemo(() => getAllShardFullPhases(date), [date.minute]);
   const [expandedIndex, setExpandedIndex] = useState<0 | 1 | 2 | undefined>(upcommingIndex);
   const miniClockType = Math.floor(now.second / (Math.abs(date.diffNow('days').days) < 3 ? 20 : 30));
 
@@ -50,15 +50,16 @@ export default function ShardTimeline({ date }: ShardTimelineSectionProp) {
                     () =>
                       [
                         <>
-                          <span>Your Time: </span>
-                          <Clock date={phases.land} local inline />
+                          <span>Landing [Your Time] </span>
+                          <Clock date={phases.land} local inline twoUnits />
                         </>,
                         <>
-                          <span>Sky Time: </span>
-                          <Clock date={phases.land} inline />
+                          <span>Landing [Sky Time] </span>
+                          <Clock date={phases.land} inline twoUnits />
                         </>,
                         <>
-                          <Clock date={phases.land} relative inline />
+                          <span>Landing in </span>
+                          <Clock date={phases.land} relative inline twoUnits />
                         </>,
                       ][miniClockType],
                     [miniClockType],
@@ -86,13 +87,13 @@ export default function ShardTimeline({ date }: ShardTimelineSectionProp) {
                     <div className='timeline-item-content'>
                       <div className='timeline-item-header'>{phasesName[pName]}</div>
                       <p>
-                        Relative: <Clock date={phases[pName]} inline relative />
+                        Relative: <Clock date={phases[pName]} inline relative twoUnits />
                       </p>
                       <p>
-                        Sky Time: <Clock date={phases[pName]} inline />
+                        Sky Time: <Clock date={phases[pName]} inline twoUnits />
                       </p>
                       <p>
-                        Your Time: <Clock date={phases[pName]} inline local />
+                        Your Time: <Clock date={phases[pName]} inline local twoUnits />
                       </p>
                     </div>
                   </div>
