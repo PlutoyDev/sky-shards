@@ -28,12 +28,14 @@ export default function Clock({
   fontSize,
 }: ClockProp) {
   const { isTwelveHourMode } = useSettings();
-  const now = local ? useNow().local : useNow().application;
-  date = (local ? date?.toLocal() : sky ? date?.setZone('America/Los_Angeles') : date) ?? now;
-  duration = duration ?? relative ? (negate ? now.diff(date) : date.diff(now)) : undefined;
+  date = local
+    ? date?.toLocal() ?? useNow().local
+    : (sky ? date?.setZone('America/Los_Angeles') : date) ?? useNow().application;
+  duration =
+    duration ?? relative ? (negate ? useNow().application.diff(date) : date.diff(useNow().application)) : undefined;
 
   let text = duration
-    ? duration.rescale().shiftTo('hours').toFormat(`hh'h' mm'm' ss's'`)
+    ? duration.rescale().toFormat(`hh'h' mm'm' ss's'`)
     : date.toFormat(isTwelveHourMode ? 'hh:mm:ss a' : 'HH:mm:ss');
 
   if (trim) text = text.replace(/^(0+\w )+/, '');
