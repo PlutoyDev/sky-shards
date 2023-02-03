@@ -62,6 +62,7 @@ export default function Home() {
     onSwipedRight: prevDay,
     preventScrollOnSwipe: true,
     trackMouse: true,
+    delta: 100,
   });
 
   return (
