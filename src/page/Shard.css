@@ -300,3 +300,27 @@
     flex-flow: row wrap;
   }
 }
+
+#shard-infographics {
+  grid-area: shardContent;
+}
+
+#shard-infographics > .title {
+  font-weight: 800;
+  text-decoration: underline;
+  margin-bottom: 2px;
+}
+
+#shard-infographics > .image {
+  padding: 0.2rem;
+}
+
+#shard-infographics > .image > img {
+  border-radius: 0.5rem;
+}
+
+@media (min-width: 480px) or (orientation: landscape) {
+  #shard-infographics > .image > img {
+    max-width: 60%;
+  }
+}
