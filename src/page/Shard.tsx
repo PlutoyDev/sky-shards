@@ -3,6 +3,7 @@ import { LoaderFunction, redirect, useLoaderData } from 'react-router-dom';
 import { DateTime } from 'luxon';
 import { useNow } from '../context/Now';
 import ShardSummary from '../sections/Shard/Summary';
+import ShardTimeline from '../sections/Shard/Timeline';
 import './Shard.css';
 
 const relDateMap = {
@@ -122,9 +123,12 @@ export default function Shard() {
 
   return (
     <main className='Page ShardPage'>
-      <ShardSummary date={activeDate} />
-      <NavHint position='top' hint='Swipe down or Click here to see the top section' />
-      <NavHint position='bottom' hint='Swipe up or Click here to see the bottom section' />
+      <div id='shardContent'>
+        <ShardSummary date={activeDate} />
+        <ShardTimeline date={activeDate} />
+      </div>
+      {/* <NavHint position='top' hint='Swipe down or Click here to see the top section' />
+      <NavHint position='bottom' hint='Swipe up or Click here to see the bottom section' /> */}
       <NavHint position='left' hint='Swipe right or Click here to see the previous day' />
       <NavHint position='right' hint='Swipe left or Click here to see the next day' />
     </main>
