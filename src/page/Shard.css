@@ -3,12 +3,9 @@
   gap: 0.2rem;
 
   display: grid;
-  grid-template-rows: var(--nav-hint-height) auto var(--nav-hint-height);
+  grid-template-rows: auto;
   grid-template-columns: var(--nav-hint-height) auto var(--nav-hint-height);
-  grid-template-areas:
-    'leftNavHint topNavHint rightNavHint'
-    'leftNavHint shardContent rightNavHint'
-    'leftNavHint bottomNavHint rightNavHint';
+  grid-template-areas: 'leftNavHint shardContent rightNavHint';
 
   font-size: var(--font-size-400);
 
@@ -85,15 +82,35 @@
   display: none;
 }
 
+#shardContent {
+  grid-area: shardContent;
+  width: 90%;
+  height: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 0.5rem;
+  justify-content: flex-start;
+  align-items: center;
+  text-align: center;
+  overflow: hidden scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+#shardContent::-webkit-scrollbar {
+  display: none;
+}
+
 /* Summary Section */
 
 #shardSummary {
-  grid-area: shardContent;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-flow: column nowrap;
   gap: 0.2rem;
+  min-height: 85vh;
+  transition: transform 0.5s ease-in-out;
 }
 
 #shardTiming {
@@ -169,9 +186,7 @@
 
 /* Full Shard Schedule */
 #shardTimeline {
-  grid-area: shardContent;
-  min-width: 95%;
-  min-height: 10%;
+  min-width: 90%;
 
   font-size: var(--font-size-100);
 }
