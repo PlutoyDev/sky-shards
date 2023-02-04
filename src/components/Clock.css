@@ -1,6 +1,4 @@
 .Clock {
-  --clock-font-size: var(--font-size-medium);
-
   font-family: 'Orbitron', sans-serif;
   font-size: var(--clock-font-size);
   display: block;

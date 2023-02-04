@@ -104,13 +104,15 @@ export type ShardInfo = {
 };
 
 export interface ShardSimplePhases {
-  index: number;
   start: DateTime;
   land: DateTime;
   end: DateTime;
 }
 //Shards happens 3 times a day, given any time, return the current/next shard phase
-export function getUpcommingShardPhase(now: DateTime, info?: ShardInfo): ShardSimplePhases | undefined {
+export function getUpcommingShardPhase(
+  now: DateTime,
+  info?: ShardInfo,
+): (ShardSimplePhases & { index: number }) | undefined {
   if (!info) {
     info = getShardInfo(now);
   }
@@ -132,6 +134,34 @@ export function getUpcommingShardPhase(now: DateTime, info?: ShardInfo): ShardSi
 
 export interface ShardFullPhases extends ShardSimplePhases {
   earlySky: DateTime;
-  start: DateTime;
   eruption: DateTime;
+}
+
+export function getAllShardFullPhases(
+  now: DateTime,
+  info?: ShardInfo,
+): { occurrences: ShardFullPhases[]; upcommingIndex: 0 | 1 | 2 | undefined } {
+  const today = now.setZone('America/Los_Angeles').startOf('day');
+  if (!info) {
+    info = getShardInfo(now);
+  }
+  const { offset, interval } = info;
+  const occurrences = Array.from({ length: 3 }, (_, i) => {
+    const start = today.plus(offset).plus(interval.mapUnits(x => x * i));
+    const earlySky = start.plus(earlySkyOffset);
+    const eruption = start.plus(eruptionOffset);
+    const land = start.plus(landOffset);
+    const end = start.plus(endOffset);
+    return { start, earlySky, eruption, land, end };
+  });
+
+  const upcommingIndex = occurrences.reduceRight(
+    (acc, cur, idx) => (!acc && now > cur.end ? idx : undefined) as 0 | 1 | 2 | undefined,
+    undefined as 0 | 1 | 2 | undefined,
+  );
+
+  return {
+    occurrences,
+    upcommingIndex,
+  };
 }

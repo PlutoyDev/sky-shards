@@ -6,9 +6,9 @@
   grid-template-rows: var(--nav-hint-height) auto var(--nav-hint-height);
   grid-template-columns: var(--nav-hint-height) auto var(--nav-hint-height);
   grid-template-areas:
-    'topNavHint topNavHint topNavHint'
+    'leftNavHint topNavHint rightNavHint'
     'leftNavHint shardContent rightNavHint'
-    'bottomNavHint bottomNavHint bottomNavHint';
+    'leftNavHint bottomNavHint rightNavHint';
 
   font-size: var(--font-size-400);
 
@@ -109,9 +109,9 @@
   justify-content: center;
 }
 
-.HomePage .Clock,
-.HomePage .Date,
-.Emphasized {
+#shardSummary .Clock,
+#shardSummary .Date,
+#shardSummary .Emphasized {
   font-size: var(--font-size-300);
   font-weight: 800;
 }
@@ -170,4 +170,115 @@
 /* Full Shard Schedule */
 #shardTimeline {
   grid-area: shardContent;
+  min-width: 95%;
+  min-height: 10%;
+
+  font-size: var(--font-size-100);
+}
+
+#shardTimeline > .title {
+  font-weight: 800;
+  text-decoration: underline;
+  margin-bottom: 2px;
+}
+
+.timelines {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 0.5rem;
+  text-align: left;
+}
+
+.timeline-header {
+  margin-bottom: 0.2rem;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-bottom: 1px solid rgba(192, 192, 192, 0.3);
+}
+
+.timeline-header-text {
+  display: flex;
+  flex-flow: row wrap;
+  column-gap: 20px;
+  align-items: flex-start;
+}
+
+.timeline-header .title {
+  font-weight: 600;
+  font-size: var(--font-size-300);
+}
+
+.timeline-header .mini-clock {
+  padding-top: 0.08px;
+  font-size: var(--font-size-200);
+}
+
+.timeline {
+  display: flex;
+  flex-flow: column nowrap;
+  --clock-font-size: var(--font-size-100);
+}
+
+.timeline-item {
+  flex-grow: 1;
+}
+
+.timeline-item:not(:last-child) {
+  border-left: 1px solid white;
+}
+
+.timeline-item:last-child {
+  margin-left: 1px;
+}
+
+.timeline-item-dot {
+  position: relative;
+  top: -4px;
+  left: -5px;
+  width: 8px;
+  height: 8px;
+  border-radius: 8px;
+  background-color: var(--color-secondary);
+}
+
+.timeline-item-content {
+  position: relative;
+  display: inline-flex;
+  flex-flow: column nowrap;
+  top: -14px;
+  margin-left: 0.5rem;
+}
+
+#shardTimeline .timeline-item-header {
+  font-size: var(--font-size-300);
+  font-weight: 400;
+  width: 100%;
+}
+
+@media (min-width: 480px) and (orientation: landscape) {
+  .timeline {
+    flex-flow: row nowrap;
+  }
+
+  .timeline-item:not(:last-child) {
+    border-left: unset;
+    border-top: 1px solid white;
+  }
+
+  .timeline-item:last-child {
+    margin-left: unset;
+  }
+
+  .timeline-item-dot {
+    top: -5px;
+    left: unset;
+  }
+
+  .timeline-item-content {
+    top: -6px;
+  }
 }
