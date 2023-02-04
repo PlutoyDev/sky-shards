@@ -9,26 +9,39 @@ interface DateProp {
   local?: boolean;
   short?: boolean;
   describeClose?: boolean;
+  describeClosePrefix?: boolean;
   hideWeekday?: boolean;
   hideYear?: boolean;
 }
 
-export default function Date({ date, local, short, describeClose, hideWeekday, hideYear }: DateProp) {
+export default function Date({
+  date,
+  local,
+  short,
+  describeClose,
+  describeClosePrefix,
+  hideWeekday,
+  hideYear,
+}: DateProp) {
   const isMobile = useSettings().isCompactMode;
   const now = local ? useNow().local : useNow().application;
   date = (local ? date?.toLocal() : date?.setZone('America/Los_Angeles')) ?? now;
-  const howClose = Math.ceil(date.diff(now, 'days').days);
-  if (describeClose && howClose <= 1) {
+  const howClose = Math.ceil(date.startOf('day').diff(now.startOf('day'), 'days').days);
+
+  if (describeClose && Math.abs(howClose) <= 1) {
     return (
-      <span className='Date'>
-        {
+      <>
+        {describeClosePrefix && <span>, </span>}
+        <span className='Date'>
           {
-            '-1': ', Yesterday',
-            '0': ', Today',
-            '1': ', Tomorrow',
-          }[howClose.toString()]
-        }
-      </span>
+            {
+              '-1': 'Yesterday',
+              '0': 'Today',
+              '1': 'Tomorrow',
+            }[howClose.toString()]
+          }
+        </span>
+      </>
     );
   }
   const defShort = short ?? isMobile;
@@ -40,7 +53,7 @@ export default function Date({ date, local, short, describeClose, hideWeekday, h
   ].join('');
   return (
     <>
-      {describeClose && <span>, on </span>}
+      {describeClose && describeClosePrefix && <span>, on </span>}
       <span className='Date'>{date.toFormat(format)}</span>
     </>
   );
