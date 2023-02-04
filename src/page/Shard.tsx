@@ -4,6 +4,7 @@ import { DateTime } from 'luxon';
 import { useNow } from '../context/Now';
 import ShardSummary from '../sections/Shard/Summary';
 import ShardTimeline from '../sections/Shard/Timeline';
+import { getShardInfo } from '../shardPredictor';
 import './Shard.css';
 
 const relDateMap = {
@@ -87,48 +88,29 @@ const SvgArrow = (
 export default function Shard() {
   const now = useNow().application;
   const { date } = (useLoaderData() ?? {}) as ShardLoaderData;
-  const { info, index, phases } = nextOrCurrent(date ?? now);
-  const futureOrToday = !date || date.hasSame(now, 'day') || date > now;
-
-  const verbsTense =
-    !date || date.hasSame(now, 'day')
-      ? phases
-        ? now > phases?.land
-          ? 'present'
-          : 'future'
-        : 'past'
-      : date < now
-      ? 'past'
-      : 'future';
-
-  const nextDay = () => {
-    const newDate = DateTime.prototype.plus.call(date ?? now, { days: 1 });
-    if (newDate.hasSame(now, 'day')) navigate('/');
-    else navigate(`/date/${newDate.toFormat('yyyy/MM/dd')}`);
-  };
-
-  const prevDay = () => {
-    const newDate = DateTime.prototype.minus.call(date ?? now, { days: 1 });
-    if (newDate.hasSame(now, 'day')) navigate('/');
-    else navigate(`/date/${newDate.toFormat('yyyy/MM/dd')}`);
-  };
-
-  const navigate = useNavigate();
-  const handlers = useSwipeable({
-    onSwipedLeft: nextDay,
-    onSwipedRight: prevDay,
-    preventScrollOnSwipe: true,
-    trackMouse: true,
-  });
+  const { activeShardInfo } = useMemo(() => {
+    let activeDate = date ?? now;
+    if (activeDate && !activeDate?.hasSame(now, 'day')) {
+      if (activeDate < now) activeDate = activeDate.endOf('day');
+      else activeDate = activeDate.startOf('day');
+    }
+    const activeShardInfo = getShardInfo(activeDate);
+    return { activeDate, activeShardInfo };
+  }, [date, Math.trunc(now.second / 10)]);
 
   return (
     <main className='Page ShardPage'>
       <div id='shardContent'>
-        <ShardSummary date={activeDate} />
-        <ShardTimeline date={activeDate} />
+        <ShardSummary
+          info={activeShardInfo}
+          includedChild={activeShardInfo.haveShard && <NavHint position='top' hint='Scroll down for more info' />}
+        />
+        {activeShardInfo.haveShard && (
+          <>
+            <ShardTimeline info={activeShardInfo} />
+          </>
+        )}
       </div>
-      {/* <NavHint position='top' hint='Swipe down or Click here to see the top section' />
-      <NavHint position='bottom' hint='Swipe up or Click here to see the bottom section' /> */}
       <NavHint position='left' hint='Swipe right or Click here to see the previous day' />
       <NavHint position='right' hint='Swipe left or Click here to see the next day' />
     </main>
