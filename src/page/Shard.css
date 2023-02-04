@@ -168,6 +168,6 @@
 }
 
 /* Full Shard Schedule */
-#shardFull {
+#shardTimeline {
   grid-area: shardContent;
 }
