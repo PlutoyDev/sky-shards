@@ -1,27 +1,29 @@
-import { DateTime } from 'luxon';
+import { ReactNode } from 'react';
 import Clock from '../../components/Clock';
 import Date from '../../components/Date';
-import { getShardInfo, getUpcommingShardPhase } from '../../shardPredictor';
+import { getUpcommingShardPhase, ShardInfo } from '../../shardPredictor';
 
 interface ShardSummarySectionProp {
-  date: DateTime;
+  info: ShardInfo;
+  includedChild?: ReactNode;
 }
 
-export default function ShardSummary({ date }: ShardSummarySectionProp) {
-  const info = getShardInfo(date);
+export default function ShardSummary({ info, includedChild }: ShardSummarySectionProp) {
+  const date = info.date;
 
   if (!info.haveShard) {
     return (
       <div id='shardSummary'>
         <div id='shardInfo' className='glass'>
           <span>There is </span>
-          <span className='Emphasized'>No Shard </span>
+          <span className='Emphasized'>No Shard</span>
           <Date date={date} describeClose describeClosePrefix />
         </div>
+        {includedChild}
       </div>
     );
   } else {
-    const upcomming = getUpcommingShardPhase(date);
+    const upcomming = getUpcommingShardPhase(date, info);
     const landed = upcomming && upcomming.land < date;
     const next = upcomming ? (landed ? upcomming.end : upcomming.land) : undefined;
     const ordinalIndex = upcomming?.index !== undefined && ['1st', '2nd', '3rd'][upcomming.index];
@@ -85,6 +87,7 @@ export default function ShardSummary({ date }: ShardSummarySectionProp) {
             </div>
           )}
         </div>
+        {includedChild}
       </div>
     );
   }
