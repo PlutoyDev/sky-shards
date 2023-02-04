@@ -20,7 +20,7 @@ export default function ShardInfoDisplay({ info, now, verbsTense }: ShardInfoDis
         <span>There is </span>
         <span className='Emphasized'>No Shard </span>
         <span>on </span>
-        <Date date={date} />
+        <Date date={date} describeClose />
       </div>
     );
   } else {
