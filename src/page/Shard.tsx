@@ -22,8 +22,6 @@ interface ShardLoaderData {
 }
 
 export const ShardPageLoader: LoaderFunction = ({ params }): Response | ShardLoaderData => {
-  const parts = params['*']?.split('/') ?? [];
-
   const [route, ...args] = params['*']?.split('/') ?? [];
 
   if (route === 'date') {
@@ -39,7 +37,7 @@ export const ShardPageLoader: LoaderFunction = ({ params }): Response | ShardLoa
 
       if (date.isValid) {
         //Redirect back to home page if date is today
-        if (DateTime.local().hasSame(date, 'day')) {
+        if (DateTime.local({ zone: 'America/Los_Angeles' }).hasSame(date, 'day')) {
           return redirect(`/`);
         }
 
