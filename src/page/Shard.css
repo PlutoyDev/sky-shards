@@ -3,12 +3,11 @@
   gap: 0.2rem;
 
   display: grid;
-  grid-template-rows: var(--nav-hint-height) repeat(2, auto) var(--nav-hint-height);
+  grid-template-rows: var(--nav-hint-height) auto var(--nav-hint-height);
   grid-template-columns: var(--nav-hint-height) auto var(--nav-hint-height);
   grid-template-areas:
     'topNavHint topNavHint topNavHint'
-    'leftNavHint info rightNavHint'
-    'leftNavHint timing rightNavHint'
+    'leftNavHint shardContent rightNavHint'
     'bottomNavHint bottomNavHint bottomNavHint';
 
   font-size: var(--font-size-400);
@@ -19,6 +18,9 @@
   justify-items: center;
   align-items: center;
   text-align: center;
+
+  overflow: hidden;
+  padding: 0.5rem;
 }
 
 #topNavHint {
@@ -32,7 +34,7 @@
 
 #bottomNavHint {
   grid-area: bottomNavHint;
-  flex-direction: column;
+  flex-direction: column-reverse;
 }
 
 #bottomNavHint > .navHintArrow {
@@ -83,15 +85,18 @@
   display: none;
 }
 
-#shardInfo {
-  grid-area: info;
-  align-self: flex-end;
+/* Summary Section */
+
+#shardSummary {
+  grid-area: shardContent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-flow: column nowrap;
+  gap: 0.2rem;
 }
 
 #shardTiming {
-  grid-area: timing;
-  align-self: flex-start;
-
   display: grid;
   grid-template-rows: auto auto auto;
   grid-template-columns: auto;
@@ -160,4 +165,9 @@
   .Nick {
     display: none;
   }
+}
+
+/* Full Shard Schedule */
+#shardFull {
+  grid-area: shardContent;
 }
