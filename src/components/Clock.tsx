@@ -15,6 +15,7 @@ interface ClockProp {
   fontSize?: CSSProperties['fontSize'];
   inline?: boolean;
   twoUnits?: boolean;
+  hideSeconds?: boolean;
 }
 
 export default function Clock({
@@ -28,6 +29,7 @@ export default function Clock({
   fontSize,
   inline,
   twoUnits,
+  hideSeconds,
 }: ClockProp) {
   const { isTwelveHourMode } = useSettings();
   date = local
@@ -38,9 +40,15 @@ export default function Clock({
 
   let text = duration
     ? duration.toFormat(
-        twoUnits ? (duration.shiftTo('hours').hours > 2 ? `hh'h' mm'm'` : `mm'm' ss's'`) : `hh'h' mm'm' ss's'`,
+        twoUnits || hideSeconds
+          ? duration.shiftTo('hours').hours > 2 || hideSeconds
+            ? `hh'h' mm'm'`
+            : `mm'm' ss's'`
+          : `hh'h' mm'm' ss's'`,
       )
-    : date.toFormat(isTwelveHourMode ? 'hh:mm:ss a' : 'HH:mm:ss');
+    : date.toFormat(
+        hideSeconds ? (isTwelveHourMode ? 'hh:mm a' : 'HH:mm') : isTwelveHourMode ? 'hh:mm:ss a' : 'HH:mm:ss',
+      );
 
   if (trim) text = text.replace(/^(0+\w )+/, '');
 

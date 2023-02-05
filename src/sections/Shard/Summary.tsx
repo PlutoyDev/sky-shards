@@ -55,7 +55,7 @@ export default function ShardSummary({ date, info, includedChild }: ShardSummary
                     <>
                       <span>has </span>
                       <span className='Emphasized'>landed </span>
-                      <Clock date={upcomming.land} relative negate inline twoUnits />
+                      <Clock date={upcomming.land} relative negate inline hideSeconds />
                       <span> ago, it </span>
                     </>
                   )}
