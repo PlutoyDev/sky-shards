@@ -6,7 +6,7 @@ import Date from '../../components/Date';
 import { useNow } from '../../context/Now';
 import { getAllShardFullPhases, ShardFullPhases, ShardInfo } from '../../shardPredictor';
 
-const ordinalMap = ['First', 'Second', 'Third'] as const;
+const ordinalMap = ['1st', '2nd', '3rd'] as const;
 
 const phasesOrder: (keyof ShardFullPhases)[] = ['earlySky', 'start', 'land', 'end'];
 
@@ -51,12 +51,12 @@ export default function ShardTimeline({ date, info }: ShardTimelineSectionProp) 
                     () =>
                       [
                         <>
-                          <span>Landing [Your Time] </span>
-                          <Clock date={phases.land} local inline twoUnits />
+                          <span>Landing [Your Timezone]: </span>
+                          <Clock date={phases.land} local inline hideSeconds />
                         </>,
                         <>
-                          <span>Landing [Sky Time] </span>
-                          <Clock date={phases.land} inline twoUnits />
+                          <span>Landing [Sky Timezone]: </span>
+                          <Clock date={phases.land} inline hideSeconds />
                         </>,
                         <>
                           <span>Landing in </span>
@@ -91,10 +91,10 @@ export default function ShardTimeline({ date, info }: ShardTimelineSectionProp) 
                         Relative: <Clock date={phases[pName]} inline relative twoUnits />
                       </p>
                       <p>
-                        Sky Time: <Clock date={phases[pName]} inline twoUnits />
+                        Sky Time: <Clock date={phases[pName]} inline hideSeconds />
                       </p>
                       <p>
-                        Your Time: <Clock date={phases[pName]} inline local twoUnits />
+                        Your Time: <Clock date={phases[pName]} inline local hideSeconds />
                       </p>
                     </div>
                   </div>
