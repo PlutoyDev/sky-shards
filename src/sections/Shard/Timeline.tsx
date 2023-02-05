@@ -69,7 +69,7 @@ export default function ShardTimeline({ date, info }: ShardTimelineSectionProp) 
                 </span>
               </span>
               {/* Expand button */}
-              {i === upcommingIndex ? (
+              {i === expandedIndex ? (
                 <MdExpandMore className='expand-icon' />
               ) : (
                 <MdExpandLess className='expand-icon' />
