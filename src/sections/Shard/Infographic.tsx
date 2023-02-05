@@ -79,7 +79,7 @@ export function ShardMapInfographic({ info }: ShardMapInfographic) {
   const map = ClementShardMapRecords[info.map];
   return (
     <ShardInfographics
-      title='Map'
+      title="Clement's Map"
       image={map}
       imageAlt={info.map}
       credits={
@@ -98,6 +98,52 @@ export function ShardMapInfographic({ info }: ShardMapInfographic) {
             <span>Click here to Join Server </span>
             <BiLinkExternal style={{ display: 'inline' }} />
           </p>
+        </div>
+      }
+    />
+  );
+}
+
+const GaleShardDataRecords: Record<string, string> = {
+  'Bird Nest': '/infographics/data_gale/Prairie-Bird_Nest.webp',
+  'Sanctuary Island': '/infographics/data_gale/Prairie-Sanctuary_Islands.webp',
+  'Cave': '/infographics/data_gale/Prairie-Prairie_Cave.webp',
+  'Village Islands': '/infographics/data_gale/Prairie-Village_Islands.webp',
+  'Butterfly Field': '/infographics/data_gale/Prairie-Butterfly_Field.webp',
+  'Forest Garden': '/infographics/data_gale/Forest-End.webp',
+  'Treehouse': '/infographics/data_gale/Forest-Treehouse.webp',
+  'Elevated Clearing': '/infographics/data_gale/Forest-Elevated_Clearing.webp',
+  'Forest Brook': '/infographics/data_gale/Forest-Brook.webp',
+  'Boneyard': '/infographics/data_gale/Forest-Boneyard.webp',
+  'Hermit valley': '/infographics/data_gale/Valley-Hermit_Valley.webp',
+  'Village of Dreams': '/infographics/data_gale/Valley-Village_Of_Dreams.webp',
+  'Ice Rink': '/infographics/data_gale/Valley-Ice_Rink.webp',
+  'Graveyard': '/infographics/data_gale/Wasteland-Graveyard.webp',
+  'Crabfield': '/infographics/data_gale/Wasteland-Crabfield.webp',
+  'Forgotten Ark': '/infographics/data_gale/Wasteland-Fogortten_Ark.webp',
+  'Broken Temple': '/infographics/data_gale/Wasteland-Broken_Temple.webp',
+  'Battlefield': '/infographics/data_gale/Wasteland-Battlefield.webp',
+  'Jellyfish Cove': '/infographics/data_gale/Vault-Jellyfish_Cove.webp',
+  'Starlight Desert': '/infographics/data_gale/Vault-Starlight_Desert.webp',
+};
+
+interface ShardDataInfographic {
+  info: ShardInfo;
+}
+
+export function ShardDataInfographic({ info }: ShardDataInfographic) {
+  const data = GaleShardDataRecords[info.map];
+  return (
+    <ShardInfographics
+      title="Gale's Data"
+      image={data}
+      imageAlt={info.map}
+      credits={
+        <div className='credit'>
+          <span>
+            By <s>Year of the Clam</s> <strong>Galerowfylery </strong>
+          </span>
+          <BsDiscord style={{ display: 'inline' }} />
         </div>
       }
     />

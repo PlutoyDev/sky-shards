@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { LoaderFunction, redirect, useLoaderData } from 'react-router-dom';
 import { DateTime } from 'luxon';
 import { useNow } from '../context/Now';
-import { ShardMapInfographic } from '../sections/Shard/Infographic';
+import { ShardDataInfographic, ShardMapInfographic } from '../sections/Shard/Infographic';
 import ShardSummary from '../sections/Shard/Summary';
 import ShardTimeline from '../sections/Shard/Timeline';
 import { getShardInfo } from '../shardPredictor';
@@ -111,6 +111,7 @@ export default function Shard() {
           <>
             <ShardMapInfographic info={activeShardInfo} />
             <ShardTimeline date={activeDate} info={activeShardInfo} />
+            <ShardDataInfographic info={activeShardInfo} />
           </>
         )}
       </div>
