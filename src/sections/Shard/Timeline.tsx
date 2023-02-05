@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { MdExpandMore, MdExpandLess } from 'react-icons/md';
+import { DateTime } from 'luxon';
 import Clock from '../../components/Clock';
 import Date from '../../components/Date';
 import { useNow } from '../../context/Now';
@@ -18,12 +19,12 @@ const phasesName: Record<keyof ShardFullPhases, string> = {
 };
 
 interface ShardTimelineSectionProp {
+  date: DateTime;
   info: ShardInfo;
 }
 
-export default function ShardTimeline({ info }: ShardTimelineSectionProp) {
+export default function ShardTimeline({ date, info }: ShardTimelineSectionProp) {
   const now = useNow().application;
-  const date = info.date;
   const { occurrences, upcommingIndex } = useMemo(() => getAllShardFullPhases(date, info), [date.minute]);
   const [expandedIndex, setExpandedIndex] = useState<0 | 1 | 2 | undefined>(upcommingIndex);
   const miniClockType = Math.floor(now.second / (Math.abs(date.diffNow('days').days) < 3 ? 20 : 30));

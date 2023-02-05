@@ -108,7 +108,7 @@ export default function Shard() {
         />
         {activeShardInfo.haveShard && (
           <>
-            <ShardTimeline info={activeShardInfo} />
+            <ShardTimeline date={activeDate} info={activeShardInfo} />
           </>
         )}
       </div>
