@@ -88,7 +88,7 @@ const SvgArrow = (
 export default function Shard() {
   const now = useNow().application;
   const { date } = (useLoaderData() ?? {}) as ShardLoaderData;
-  const { activeShardInfo } = useMemo(() => {
+  const { activeDate, activeShardInfo } = useMemo(() => {
     let activeDate = date ?? now;
     if (activeDate && !activeDate?.hasSame(now, 'day')) {
       if (activeDate < now) activeDate = activeDate.endOf('day');
@@ -102,6 +102,7 @@ export default function Shard() {
     <main className='Page ShardPage'>
       <div id='shardContent'>
         <ShardSummary
+          date={activeDate}
           info={activeShardInfo}
           includedChild={activeShardInfo.haveShard && <NavHint position='top' hint='Scroll down for more info' />}
         />

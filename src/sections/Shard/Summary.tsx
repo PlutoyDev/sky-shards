@@ -1,16 +1,16 @@
 import { ReactNode } from 'react';
+import { DateTime } from 'luxon';
 import Clock from '../../components/Clock';
 import Date from '../../components/Date';
 import { getUpcommingShardPhase, ShardInfo } from '../../shardPredictor';
 
 interface ShardSummarySectionProp {
+  date: DateTime;
   info: ShardInfo;
   includedChild?: ReactNode;
 }
 
-export default function ShardSummary({ info, includedChild }: ShardSummarySectionProp) {
-  const date = info.date;
-
+export default function ShardSummary({ date, info, includedChild }: ShardSummarySectionProp) {
   if (!info.haveShard) {
     return (
       <div id='shardSummary'>
@@ -55,7 +55,7 @@ export default function ShardSummary({ info, includedChild }: ShardSummarySectio
                     <>
                       <span>has </span>
                       <span className='Emphasized'>landed </span>
-                      <Clock date={upcomming.land} relative negate inline />
+                      <Clock date={upcomming.land} relative negate inline twoUnits />
                       <span> ago, it </span>
                     </>
                   )}
