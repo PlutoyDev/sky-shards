@@ -8,7 +8,7 @@ import { getAllShardFullPhases, ShardFullPhases, ShardInfo } from '../../shardPr
 
 const ordinalMap = ['First', 'Second', 'Third'] as const;
 
-const morePhases: (keyof ShardFullPhases)[] = ['earlySky', 'start', 'land', 'end'];
+const phasesOrder: (keyof ShardFullPhases)[] = ['earlySky', 'start', 'land', 'end'];
 
 const phasesName: Record<keyof ShardFullPhases, string> = {
   earlySky: 'Early Shard Skies',
@@ -79,7 +79,7 @@ export default function ShardTimeline({ date, info }: ShardTimelineSectionProp) 
             {/* Timeline */}
             <div className='timeline' style={expandedIndex === i ? { marginTop: '0.5rem' } : undefined}>
               {expandedIndex === i &&
-                morePhases.map((pName, pi) => (
+                phasesOrder.map((pName, pi) => (
                   <div key={`${i}-${pi}`} className='timeline-item'>
                     {/* Timeline Dot */}
                     <div className='timeline-item-dot' />
