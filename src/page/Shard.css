@@ -1,5 +1,6 @@
 .ShardPage {
   --nav-hint-height: 30px;
+  --content-height: calc(100vh - 0.4rem - var(--header-height) - var(--footer-height));
   gap: 0.2rem;
 
   display: grid;
@@ -88,7 +89,7 @@
   height: 100%;
   display: flex;
   flex-flow: column nowrap;
-  gap: 0.5rem;
+  gap: 1rem;
   justify-content: flex-start;
   align-items: center;
   text-align: center;
@@ -109,7 +110,7 @@
   justify-content: center;
   flex-flow: column nowrap;
   gap: 0.2rem;
-  min-height: 85vh;
+  min-height: var(--content-height);
   transition: transform 0.5s ease-in-out;
 }
 
@@ -317,6 +318,7 @@
 
 #shard-infographics > .image > img {
   border-radius: 0.5rem;
+  margin: 0 auto;
 }
 
 @media (min-width: 480px) or (orientation: landscape) {
