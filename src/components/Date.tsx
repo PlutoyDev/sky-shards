@@ -1,4 +1,3 @@
-import { memo } from 'react';
 import { DateTime } from 'luxon';
 import { useNow } from '../context/Now';
 import { useSettings } from '../context/Settings';
@@ -18,14 +17,14 @@ export default function Date({ date, local, short, describeClose, hideWeekday, h
   const now = local ? useNow().local : useNow().application;
   date = (local ? date?.toLocal() : date?.setZone('America/Los_Angeles')) ?? now;
   const howClose = Math.ceil(date.diff(now, 'days').days);
-  if (describeClose && howClose <= 1) {
+  if (describeClose && howClose <= 1 && howClose >= -1) {
     return (
       <span className='Date'>
         {
           {
-            '-1': ', Yesterday',
-            '0': ', Today',
-            '1': ', Tomorrow',
+            '-1': ' Yesterday',
+            '0': ' Today',
+            '1': ' Tomorrow',
           }[howClose.toString()]
         }
       </span>
@@ -40,7 +39,7 @@ export default function Date({ date, local, short, describeClose, hideWeekday, h
   ].join('');
   return (
     <>
-      {describeClose && <span>, on </span>}
+      {describeClose && <span> on </span>}
       <span className='Date'>{date.toFormat(format)}</span>
     </>
   );

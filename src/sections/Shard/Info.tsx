@@ -6,7 +6,7 @@ import { getShardInfo, ShardInfo } from '../../shardPredictor';
 interface ShardInfoDisplayProps {
   info?: ShardInfo;
   now?: DateTime;
-  verbsTense?: 'past' | 'present' | 'future';
+  verbsTense: 'past' | 'present' | 'future';
 }
 
 export default function ShardInfoDisplay({ info, now, verbsTense }: ShardInfoDisplayProps) {
@@ -17,9 +17,8 @@ export default function ShardInfoDisplay({ info, now, verbsTense }: ShardInfoDis
   if (!haveShard) {
     return (
       <div id='shardInfo' className='glass'>
-        <span>There is </span>
-        <span className='Emphasized'>No Shard </span>
-        <span>on </span>
+        <span>There {verbsTense === 'future' ? 'will be' : verbsTense === 'past' ? 'was' : 'is'} </span>
+        <span className='Emphasized'>No Shard</span>
         <Date date={date} describeClose />
       </div>
     );
@@ -27,9 +26,7 @@ export default function ShardInfoDisplay({ info, now, verbsTense }: ShardInfoDis
     return (
       <div id='shardInfo' className='glass'>
         <span>
-          <span>
-            There {verbsTense && verbsTense !== 'future' ? (verbsTense === 'past' ? 'was' : 'is') : 'will be'}{' '}
-          </span>
+          <span>There {verbsTense === 'future' ? 'will be' : verbsTense === 'past' ? 'was' : 'is'} a </span>
           <span className={`${color} Emphasized`}>{color} Shard </span>
           <span> in </span>
         </span>
