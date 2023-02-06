@@ -233,6 +233,7 @@ const ShardPageContent = motion(
             <ShardMapInfographic info={info} />
             <ShardTimeline date={date} info={info} />
             <ShardDataInfographic info={info} />
+            <div style={{ minHeight: '60%' }}></div>
           </>
         )}
       </div>
