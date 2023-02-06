@@ -89,35 +89,45 @@ const SvgArrow = (
 export default function Shard() {
   const now = useNow().application;
   const { date } = (useLoaderData() ?? {}) as ShardLoaderData;
-  const { activeDate, activeShardInfo } = useMemo(() => {
+  const { activeDate } = useMemo(() => {
     let activeDate = date ?? now;
     if (activeDate && !activeDate?.hasSame(now, 'day')) {
       if (activeDate < now) activeDate = activeDate.endOf('day');
       else activeDate = activeDate.startOf('day');
     }
-    const activeShardInfo = getShardInfo(activeDate);
-    return { activeDate, activeShardInfo };
+    return { activeDate };
   }, [date, Math.trunc(now.second / 10)]);
 
   return (
     <main className='Page ShardPage'>
-      <div id='shardContent'>
-        <ShardSummary
-          date={activeDate}
-          info={activeShardInfo}
-          includedChild={activeShardInfo.haveShard && <NavHint position='top' hint='Scroll down for more info' />}
-        />
-        {activeShardInfo.haveShard && (
-          <>
-            <ShardMapInfographic info={activeShardInfo} />
-            <ShardTimeline date={activeDate} info={activeShardInfo} />
-            <ShardDataInfographic info={activeShardInfo} />
-          </>
-        )}
-      </div>
+      <ShardPageContent date={activeDate} />
       <NavHint position='left' hint='Swipe right or Click here to see the previous day' />
       <NavHint position='right' hint='Swipe left or Click here to see the next day' />
     </main>
+  );
+}
+
+interface ShardPageContentProps {
+  date: DateTime;
+}
+
+function ShardPageContent({ date }: ShardPageContentProps) {
+  const info = useMemo(() => getShardInfo(date), [date]);
+  return (
+    <div id='shardContent'>
+      <ShardSummary
+        date={date}
+        info={info}
+        includedChild={info.haveShard && <NavHint position='top' hint='Scroll down for more info' />}
+      />
+      {info.haveShard && (
+        <>
+          <ShardMapInfographic info={info} />
+          <ShardTimeline date={date} info={info} />
+          <ShardDataInfographic info={info} />
+        </>
+      )}
+    </div>
   );
 }
 
