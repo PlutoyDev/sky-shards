@@ -76,20 +76,6 @@ export const ShardPageLoader: LoaderFunction = ({ params }): Response | ShardLoa
   return redirect('/');
 };
 
-//16 by 16 arrow down
-const SvgArrow = (
-  <svg
-    className='navHintArrow'
-    width='16'
-    height='16'
-    viewBox='0 0 16 16'
-    fill='none'
-    xmlns='http://www.w3.org/2000/svg'
-  >
-    <path d='M8 12L12 8L8 4' stroke='white' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round' />
-  </svg>
-);
-
 export default function Shard() {
   const now = useNow().application;
   const { date } = (useLoaderData() ?? {}) as ShardLoaderData;
@@ -268,7 +254,24 @@ const NavHint = motion(
       () => (
         <div ref={ref} id={`${position}NavHint`} className={`navHint ${disabled ? 'disabled' : ''}`} onClick={onClick}>
           <span className='navHintText'>{hint}</span>
-          {!hideArrow && SvgArrow}
+
+          <svg
+            className='navHintArrow'
+            width='16'
+            height='16'
+            viewBox='0 0 16 16'
+            fill='none'
+            xmlns='http://www.w3.org/2000/svg'
+          >
+            <path
+              d='M8 12L12 8L8 4'
+              stroke='white'
+              strokeWidth='2'
+              strokeLinecap='round'
+              strokeLinejoin='round'
+              strokeOpacity={hideArrow ? 0 : 1}
+            />
+          </svg>
         </div>
       ),
       [hint, position, onClick],
