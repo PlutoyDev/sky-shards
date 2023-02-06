@@ -1,6 +1,6 @@
-import { forwardRef, HTMLAttributes, useCallback, useMemo, useState } from 'react';
+import { forwardRef, HTMLAttributes, useCallback, useMemo, useRef, useState } from 'react';
 import { LoaderFunction, redirect, useLoaderData, useNavigate } from 'react-router-dom';
-import { useGesture } from '@use-gesture/react';
+import { useDrag, createUseGesture, dragAction, pinchAction } from '@use-gesture/react';
 import { animate, motion, useMotionValue, useTransform } from 'framer-motion';
 import { DateTime } from 'luxon';
 import { useNow } from '../context/Now';
@@ -26,7 +26,10 @@ interface ShardLoaderData {
   date: DateTime;
 }
 
-const dragThreshold = 100;
+const dragThreshold = 150;
+const useGesture = createUseGesture([dragAction, pinchAction]);
+const roundToRefDate = (date: DateTime, ref: DateTime) =>
+  date.hasSame(ref, 'day') ? ref : date < ref ? date.endOf('day') : date.startOf('day');
 
 export const ShardPageLoader: LoaderFunction = ({ params }): Response | ShardLoaderData => {
   const [route, ...args] = params['*']?.split('/') ?? [];
@@ -78,20 +81,16 @@ export const ShardPageLoader: LoaderFunction = ({ params }): Response | ShardLoa
 
 export default function Shard() {
   const now = useNow().application;
-  const { date } = (useLoaderData() ?? {}) as ShardLoaderData;
-  const { activeDate } = useMemo(() => {
-    let activeDate = date ?? now;
-    if (activeDate && !activeDate?.hasSame(now, 'day')) {
-      if (activeDate < now) activeDate = activeDate.endOf('day');
-      else activeDate = activeDate.startOf('day');
-    }
-    return { activeDate };
-  }, [date, Math.trunc(now.second / 10)]);
+  const loaderData = (useLoaderData() ?? {}) as ShardLoaderData;
+  const date = roundToRefDate(loaderData.date ?? now, now);
 
   const navigate = useNavigate();
+  const [isNavigatable, setIsNavigatable] = useState(true);
 
+  const activeContentRef = useRef<HTMLDivElement>(null);
+  const pendingPreviousContentRef = useRef<HTMLDivElement>(null);
+  const pendingNextContentRef = useRef<HTMLDivElement>(null);
   const [hintIdx, setHintIdx] = useState(0);
-  //Detect drag gesture using useGesture and animate content with framer motion
   const draggedX = useMotionValue(0);
 
   const contentX = useTransform(
@@ -112,30 +111,37 @@ export default function Shard() {
     [-dragThreshold * 0.7, 0, dragThreshold * 0.7],
     { clamp: true },
   );
+  const previousContentX = useTransform(contentX, x => x - window?.innerWidth);
+  const nextContentX = useTransform(contentX, x => x + window?.innerWidth);
 
   const navigateToPreviousDay = useCallback(() => {
-    animate(contentX, window?.innerWidth * 1.5, {
+    setIsNavigatable(false);
+    animate(contentX, window.innerWidth, {
       type: 'spring',
       duration: 0.5,
       onComplete: () => {
-        navigate(`/date/${activeDate.minus({ days: 1 }).toFormat(`yyyy/MM/dd`)}`);
+        navigate(`/date/${date.minus({ days: 1 }).toFormat(`yyyy/MM/dd`)}`);
         draggedX.jump(0);
         setHintIdx(0);
+        setIsNavigatable(true);
       },
     });
-  }, [activeDate.day, activeDate.month, activeDate.year, draggedX, contentX]);
+  }, [date.day, date.month, date.year, draggedX, contentX]);
 
   const navigateToNextDay = useCallback(() => {
-    animate(contentX, -window?.innerWidth * 1.5, {
+    setIsNavigatable(false);
+
+    animate(contentX, -window.innerWidth, {
       type: 'spring',
       duration: 0.5,
       onComplete: () => {
-        navigate(`/date/${activeDate.plus({ days: 1 }).toFormat(`yyyy/MM/dd`)}`);
+        navigate(`/date/${date.plus({ days: 1 }).toFormat(`yyyy/MM/dd`)}`);
         draggedX.jump(0);
         setHintIdx(0);
+        setIsNavigatable(true);
       },
     });
-  }, [activeDate.day, activeDate.month, activeDate.year, draggedX, contentX]);
+  }, [date.day, date.month, date.year, draggedX, contentX]);
 
   const bind = useGesture(
     {
@@ -150,7 +156,7 @@ export default function Shard() {
         }
       },
       onDragEnd: ({ movement: [mx] }) => {
-        if (Math.abs(mx) > 100) {
+        if (Math.abs(mx) > dragThreshold) {
           if (mx > 0) {
             navigateToPreviousDay();
           } else {
@@ -170,15 +176,31 @@ export default function Shard() {
   return (
     <main className='Page ShardPage'>
       <ShardPageContent
-        date={activeDate}
-        divProps={bind()}
+        ref={activeContentRef}
+        date={date}
+        divProps={{ ...bind() }}
         style={{
           x: contentX,
         }}
       />
+      <ShardPageContent
+        ref={pendingPreviousContentRef}
+        date={roundToRefDate(date.minus({ days: 1 }), now)}
+        style={{
+          x: previousContentX,
+        }}
+      />
+
+      <ShardPageContent
+        ref={pendingNextContentRef}
+        date={roundToRefDate(date.plus({ days: 1 }), now)}
+        style={{
+          x: nextContentX,
+        }}
+      />
       <NavHint
         position='left'
-        disabled={Math.sign(hintIdx) === -1}
+        disabled={Math.sign(hintIdx) === -1 || !isNavigatable}
         hideArrow={Math.abs(hintIdx) === 2}
         hint={
           [
@@ -194,7 +216,7 @@ export default function Shard() {
       />
       <NavHint
         position='right'
-        disabled={Math.sign(hintIdx) === 1}
+        disabled={Math.sign(hintIdx) === 1 || !isNavigatable}
         hideArrow={Math.abs(hintIdx) === 2}
         hint={
           [
