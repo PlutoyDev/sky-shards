@@ -40,7 +40,7 @@ Shard is computed as described in [Shard Prediction Rule](./ShardPredictionRule.
   - `/2022/12/31/summary` Shard Eruption summary page for 31st December 2022
   - `/diff/-5/full` Shard Eruption full schedule page for 31st December 2022
 
-## Developement
+## Development
 
 This project uses Yarn (Berry) Package Manager with "zero-installs"
 
