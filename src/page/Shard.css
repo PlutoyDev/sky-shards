@@ -19,6 +19,8 @@
 
   overflow: hidden;
   padding: 0.5rem;
+
+  user-select: none;
 }
 
 #topNavHint {
@@ -94,6 +96,7 @@
   align-items: center;
   text-align: center;
   overflow: hidden scroll;
+  touch-action: pan-y;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
@@ -110,7 +113,7 @@
   justify-content: center;
   flex-flow: column nowrap;
   gap: 0.2rem;
-  min-height: var(--content-height);
+  min-height: 100%;
   transition: transform 0.5s ease-in-out;
 }
 

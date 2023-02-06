@@ -1,5 +1,7 @@
-import { useMemo } from 'react';
-import { LoaderFunction, redirect, useLoaderData } from 'react-router-dom';
+import { forwardRef, HTMLAttributes, useCallback, useMemo, useState } from 'react';
+import { LoaderFunction, redirect, useLoaderData, useNavigate } from 'react-router-dom';
+import { useGesture } from '@use-gesture/react';
+import { animate, motion, useMotionValue, useTransform } from 'framer-motion';
 import { DateTime } from 'luxon';
 import { useNow } from '../context/Now';
 import { ShardDataInfographic, ShardMapInfographic } from '../sections/Shard/Infographic';
@@ -23,6 +25,8 @@ interface ShardLoaderData {
   isShardPage: true;
   date: DateTime;
 }
+
+const dragThreshold = 100;
 
 export const ShardPageLoader: LoaderFunction = ({ params }): Response | ShardLoaderData => {
   const [route, ...args] = params['*']?.split('/') ?? [];
@@ -98,54 +102,176 @@ export default function Shard() {
     return { activeDate };
   }, [date, Math.trunc(now.second / 10)]);
 
+  const navigate = useNavigate();
+
+  const [hintIdx, setHintIdx] = useState(0);
+  //Detect drag gesture using useGesture and animate content with framer motion
+  const draggedX = useMotionValue(0);
+
+  const contentX = useTransform(
+    draggedX,
+    [-dragThreshold, 0, dragThreshold],
+    [-dragThreshold * 0.7, 0, dragThreshold * 0.7],
+    { clamp: false },
+  );
+  const hintLeftX = useTransform(
+    draggedX,
+    [-dragThreshold, 0, dragThreshold],
+    [-dragThreshold * 0.7, 0, dragThreshold * 0.7],
+    { clamp: true },
+  );
+  const hintRightX = useTransform(
+    draggedX,
+    [-dragThreshold, 0, dragThreshold],
+    [-dragThreshold * 0.7, 0, dragThreshold * 0.7],
+    { clamp: true },
+  );
+
+  const navigateToPreviousDay = useCallback(() => {
+    animate(contentX, window?.innerWidth * 1.5, {
+      type: 'spring',
+      duration: 0.5,
+      onComplete: () => {
+        navigate(`/date/${activeDate.minus({ days: 1 }).toFormat(`yyyy/MM/dd`)}`);
+        draggedX.jump(0);
+        setHintIdx(0);
+      },
+    });
+  }, [activeDate.day, activeDate.month, activeDate.year, draggedX, contentX]);
+
+  const navigateToNextDay = useCallback(() => {
+    animate(contentX, -window?.innerWidth * 1.5, {
+      type: 'spring',
+      duration: 0.5,
+      onComplete: () => {
+        navigate(`/date/${activeDate.plus({ days: 1 }).toFormat(`yyyy/MM/dd`)}`);
+        draggedX.jump(0);
+        setHintIdx(0);
+      },
+    });
+  }, [activeDate.day, activeDate.month, activeDate.year, draggedX, contentX]);
+
+  const bind = useGesture(
+    {
+      onDrag: ({ movement: [mx] }) => {
+        draggedX.set(mx);
+        if (Math.abs(mx) > dragThreshold) {
+          setHintIdx(2 * Math.sign(mx));
+        } else if (Math.abs(mx) > 20) {
+          setHintIdx(1 * Math.sign(mx));
+        } else {
+          setHintIdx(0);
+        }
+      },
+      onDragEnd: ({ movement: [mx] }) => {
+        if (Math.abs(mx) > 100) {
+          if (mx > 0) {
+            navigateToPreviousDay();
+          } else {
+            navigateToNextDay();
+          }
+        } else {
+          animate(draggedX, 0, { type: 'spring', stiffness: 500 });
+          setHintIdx(0);
+        }
+      },
+    },
+    {
+      drag: { axis: 'x' },
+    },
+  );
+
   return (
     <main className='Page ShardPage'>
-      <ShardPageContent date={activeDate} />
-      <NavHint position='left' hint='Swipe right or Click here to see the previous day' />
-      <NavHint position='right' hint='Swipe left or Click here to see the next day' />
+      <ShardPageContent
+        date={activeDate}
+        divProps={bind()}
+        style={{
+          x: contentX,
+        }}
+      />
+      <NavHint
+        position='left'
+        disabled={Math.sign(hintIdx) === -1}
+        hideArrow={Math.abs(hintIdx) === 2}
+        hint={
+          [
+            'Swipe right or Click here for previous day shard',
+            'Swipe further for previous day shard',
+            'Release for previous day shard',
+          ][Math.abs(hintIdx)]
+        }
+        onClick={() => navigateToPreviousDay()}
+        style={{
+          x: hintLeftX,
+        }}
+      />
+      <NavHint
+        position='right'
+        disabled={Math.sign(hintIdx) === 1}
+        hideArrow={Math.abs(hintIdx) === 2}
+        hint={
+          [
+            'Swipe left or Click here for next day shard',
+            'Swipe further for next day shard',
+            'Release for next day shard',
+          ][Math.abs(hintIdx)]
+        }
+        onClick={() => navigateToNextDay()}
+        style={{
+          x: hintRightX,
+        }}
+      />
     </main>
   );
 }
 
 interface ShardPageContentProps {
   date: DateTime;
+  divProps?: HTMLAttributes<HTMLDivElement>;
 }
 
-function ShardPageContent({ date }: ShardPageContentProps) {
-  const info = useMemo(() => getShardInfo(date), [date]);
-  return (
-    <div id='shardContent'>
-      <ShardSummary
-        date={date}
-        info={info}
-        includedChild={info.haveShard && <NavHint position='top' hint='Scroll down for more info' />}
-      />
-      {info.haveShard && (
-        <>
-          <ShardMapInfographic info={info} />
-          <ShardTimeline date={date} info={info} />
-          <ShardDataInfographic info={info} />
-        </>
-      )}
-    </div>
-  );
-}
+const ShardPageContent = motion(
+  forwardRef<HTMLDivElement, ShardPageContentProps>(function ShardPageContent({ date, divProps }, ref) {
+    const info = useMemo(() => getShardInfo(date), [date]);
+
+    return (
+      <div id='shardContent' ref={ref} {...divProps}>
+        <ShardSummary
+          date={date}
+          info={info}
+          includedChild={info.haveShard && <NavHint position='top' hint='Scroll down for more info' />}
+        />
+        {info.haveShard && (
+          <>
+            <ShardMapInfographic info={info} />
+            <ShardTimeline date={date} info={info} />
+            <ShardDataInfographic info={info} />
+          </>
+        )}
+      </div>
+    );
+  }),
+);
 
 interface NavHintProps {
   hint: string;
   position: 'top' | 'bottom' | 'left' | 'right';
   disabled?: boolean;
+  hideArrow?: boolean;
   onClick?: () => void;
 }
 
-function NavHint({ hint, position, disabled, onClick }: NavHintProps) {
-  return useMemo(
-    () => (
-      <div id={`${position}NavHint`} className={`navHint ${disabled ? 'disabled' : ''}`} onClick={onClick}>
-        <span className='navHintText'>{hint}</span>
-        {SvgArrow}
-      </div>
-    ),
-    [hint, position, onClick],
-  );
-}
+const NavHint = motion(
+  forwardRef<HTMLDivElement, NavHintProps>(function NavHint({ hint, position, disabled, hideArrow, onClick }, ref) {
+    return useMemo(
+      () => (
+        <div ref={ref} id={`${position}NavHint`} className={`navHint ${disabled ? 'disabled' : ''}`} onClick={onClick}>
+          <span className='navHintText'>{hint}</span>
+          {!hideArrow && SvgArrow}
+        </div>
+      ),
+      [hint, position, onClick],
+    );
+  }),
+);
