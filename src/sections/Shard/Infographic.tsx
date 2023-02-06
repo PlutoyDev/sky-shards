@@ -1,4 +1,4 @@
-import { ComponentPropsWithoutRef, ReactNode, CSSProperties, useState, useCallback } from 'react';
+import { ComponentPropsWithoutRef, ReactNode, CSSProperties, useState, useCallback, useEffect } from 'react';
 import { BiLinkExternal } from 'react-icons/bi';
 import { BsDiscord } from 'react-icons/bs';
 import { ShardInfo } from '../../shardPredictor';
@@ -27,6 +27,10 @@ function ShardInfographics({
   divProps,
 }: ShardInfographicsProps) {
   const [noImg, setNoImg] = useState(image === '');
+  useEffect(() => {
+    setNoImg(image === '');
+  }, [image]);
+
   return (
     <div id='shard-infographics' className='glass' {...divProps}>
       <div className='title'>{title}</div>
