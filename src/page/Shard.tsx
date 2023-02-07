@@ -302,7 +302,7 @@ export default function Shard() {
           [pendableState.date]: (
             <ShardPageContent
               ref={pendingRef}
-              date={pendingDate ?? date}
+              date={roundToRefDate(pendingDate ?? date, now)}
               isCalendar={false}
               style={{ scale: dateScale, opacity: dateOpacity }}
             />
