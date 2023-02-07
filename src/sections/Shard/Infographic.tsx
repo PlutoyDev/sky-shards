@@ -139,13 +139,13 @@ export function ShardDataInfographic({ info }: ShardDataInfographic) {
   const data = GaleShardDataRecords[info.map];
   return (
     <ShardInfographics
-      title="Gale's Data"
+      title="Gale's Shard Data"
       image={data}
       imageAlt={info.map}
       credits={
         <div className='credit'>
           <span>
-            By <s>Year of the Clam</s> <strong>Galerowfylery </strong>
+            By <s>Clam</s> <strong>Galerowfylery </strong>
           </span>
           <BsDiscord style={{ display: 'inline' }} />
         </div>
