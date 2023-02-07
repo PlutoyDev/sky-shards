@@ -329,3 +329,17 @@
     max-width: 60%;
   }
 }
+
+#shardCalendar {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 0.5rem;
+
+  margin: auto;
+}
+
+#shardCalendar > .title {
+  font-weight: 800;
+  text-decoration: underline;
+  margin-bottom: 2px;
+}
