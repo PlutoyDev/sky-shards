@@ -103,7 +103,8 @@ const pendableState = {
 export default function Shard() {
   const now = useNow().application;
   const loaderData = (useLoaderData() ?? {}) as ShardLoaderData;
-  const [date, setDate] = useState(roundToRefDate(loaderData.date ?? now, now));
+  const date = roundToRefDate(loaderData.date ?? now, now);
+  const [pendingDate, setPendingDate] = useState<DateTime | null>(null);
   const isCalendar = loaderData.isCalendar;
 
   const navigate = useNavigate();
@@ -196,7 +197,7 @@ export default function Shard() {
 
   const navigateToDate = useCallback(
     (date: DateTime) => {
-      setDate(date);
+      setPendingDate(date);
       setPendingState(pendableState.date);
       setIsNavigatable(false);
       animate(contentScale, 2, { type: 'spring', duration: 0.5 });
@@ -301,7 +302,7 @@ export default function Shard() {
           [pendableState.date]: (
             <ShardPageContent
               ref={pendingRef}
-              date={date}
+              date={pendingDate ?? date}
               isCalendar={false}
               style={{ scale: dateScale, opacity: dateOpacity }}
             />
