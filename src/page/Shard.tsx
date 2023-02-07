@@ -29,7 +29,7 @@ interface ShardLoaderData {
 }
 
 const dragThreshold = 150;
-const pinchThreshold = 0.3;
+const pinchThreshold = 0.5;
 const useGesture = createUseGesture([dragAction, pinchAction]);
 const roundToRefDate = (date: DateTime, ref: DateTime) =>
   date.hasSame(ref, 'day') ? ref : date < ref ? date.endOf('day') : date.startOf('day');
@@ -103,7 +103,7 @@ const pendableState = {
 export default function Shard() {
   const now = useNow().application;
   const loaderData = (useLoaderData() ?? {}) as ShardLoaderData;
-  const date = roundToRefDate(loaderData.date ?? now, now);
+  const [date, setDate] = useState(roundToRefDate(loaderData.date ?? now, now));
   const isCalendar = loaderData.isCalendar;
 
   const navigate = useNavigate();
@@ -151,8 +151,8 @@ export default function Shard() {
   const calendarScale = useTransform(contentScale, x => 1 + x);
   const calendarOpacity = useTransform(contentOpacity, x => 1 - x);
 
-  const dateScale = useTransform(contentScale, x => x * 0.3);
-  const dateOpacity = useTransform(contentOpacity, x => x * 0.3);
+  const dateScale = useTransform(contentScale, x => x - 1);
+  const dateOpacity = useTransform(contentOpacity, x => 1 - x);
 
   const navigateLeftRight = useCallback(
     (sign: -1 | 1) => {
@@ -193,6 +193,26 @@ export default function Shard() {
       },
     });
   }, [date.day, date.month, date.year, contentScale, contentOpacity]);
+
+  const navigateToDate = useCallback(
+    (date: DateTime) => {
+      setDate(date);
+      setPendingState(pendableState.date);
+      setIsNavigatable(false);
+      animate(contentScale, 2, { type: 'spring', duration: 0.5 });
+      animate(contentOpacity, 0, {
+        type: 'spring',
+        duration: 0.51,
+        onComplete: () => {
+          navigate(`/date/${date.toFormat(`yyyy/MM/dd`)}`);
+          pinchDistance.jump(1);
+          setPendingState(null);
+          setIsNavigatable(true);
+        },
+      });
+    },
+    [date.day, date.month, date.year, contentScale, contentOpacity],
+  );
 
   const bind = useGesture(
     {
@@ -248,6 +268,7 @@ export default function Shard() {
         ref={activeContentRef}
         date={date}
         isCalendar={isCalendar}
+        onDayClick={navigateToDate}
         style={{ x: contentX, scale: contentScale, opacity: contentOpacity }}
       />
 
@@ -320,15 +341,19 @@ export default function Shard() {
 interface ShardPageContentProps {
   date: DateTime;
   isCalendar?: boolean;
+  onDayClick?: (day: DateTime) => void;
   divProps?: HTMLAttributes<HTMLDivElement>;
 }
 
 const ShardPageContent = motion(
-  forwardRef<HTMLDivElement, ShardPageContentProps>(function ShardPageContent({ date, isCalendar, divProps }, ref) {
+  forwardRef<HTMLDivElement, ShardPageContentProps>(function ShardPageContent(
+    { date, isCalendar, onDayClick, divProps },
+    ref,
+  ) {
     if (isCalendar) {
       return (
         <div id='shardContent' ref={ref} {...divProps}>
-          <ShardCalendar year={date.year} month={date.month} />
+          <ShardCalendar year={date.year} month={date.month} onDayClick={onDayClick} />
         </div>
       );
     }
