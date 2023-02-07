@@ -1,6 +1,6 @@
 import { forwardRef, HTMLAttributes, useCallback, useMemo, useRef, useState } from 'react';
 import { LoaderFunction, redirect, useLoaderData, useNavigate } from 'react-router-dom';
-import { useDrag, createUseGesture, dragAction, pinchAction } from '@use-gesture/react';
+import { createUseGesture, dragAction, pinchAction } from '@use-gesture/react';
 import { animate, motion, useMotionValue, useTransform } from 'framer-motion';
 import { DateTime } from 'luxon';
 import { useNow } from '../context/Now';
