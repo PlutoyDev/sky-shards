@@ -32,7 +32,7 @@ function ShardInfographics({
   }, [image]);
 
   return (
-    <div id='shard-infographics' className='glass' {...divProps}>
+    <div className='shard-infographics glass' {...divProps}>
       <div className='title'>{title}</div>
       {noImg && (
         <div className='no-img'>
