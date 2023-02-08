@@ -1,4 +1,4 @@
-import { forwardRef, HTMLAttributes, useCallback, useMemo, useRef, useState } from 'react';
+import { forwardRef, HTMLAttributes, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { LoaderFunction, redirect, useLoaderData, useNavigate } from 'react-router-dom';
 import { createUseGesture, dragAction, pinchAction } from '@use-gesture/react';
 import { animate, motion, useMotionValue, useTransform } from 'framer-motion';
@@ -110,7 +110,6 @@ export default function Shard() {
   const [isNavigatable, setIsNavigatable] = useState(true);
 
   const activeContentRef = useRef<HTMLDivElement>(null);
-  const pendingRef = useRef<HTMLDivElement>(null);
   const [pendingState, setPendingState] = useState<typeof pendableState[keyof typeof pendableState] | null>(null);
   const [hintIdx, setHintIdx] = useState(0);
   const draggedX = useMotionValue(0);
@@ -264,6 +263,9 @@ export default function Shard() {
     },
   );
 
+  //Scroll to top on date change
+  useEffect(() => activeContentRef.current?.scrollTo(0, 0), [date.day, date.month, date.year]);
+
   return (
     <main className='Page ShardPage' {...bind()}>
       <ShardPageContent
@@ -278,7 +280,6 @@ export default function Shard() {
         {
           [pendableState.plus]: (
             <ShardPageContent
-              ref={pendingRef}
               date={roundToRefDate(pendingDate ?? date.plus({ [isCalendar ? 'months' : 'days']: 1 }), now)}
               isCalendar={isCalendar}
               style={{ x: nextContentX }}
@@ -286,7 +287,6 @@ export default function Shard() {
           ),
           [pendableState.minus]: (
             <ShardPageContent
-              ref={pendingRef}
               date={roundToRefDate(pendingDate ?? date.minus({ [isCalendar ? 'months' : 'days']: 1 }), now)}
               isCalendar={isCalendar}
               style={{ x: previousContentX }}
@@ -294,7 +294,6 @@ export default function Shard() {
           ),
           [pendableState.calendar]: (
             <ShardPageContent
-              ref={pendingRef}
               date={date}
               isCalendar={true}
               style={{ scale: calendarScale, opacity: calendarOpacity }}
@@ -302,7 +301,6 @@ export default function Shard() {
           ),
           [pendableState.date]: (
             <ShardPageContent
-              ref={pendingRef}
               date={roundToRefDate(pendingDate ?? date, now)}
               isCalendar={false}
               style={{ scale: dateScale, opacity: dateOpacity }}
