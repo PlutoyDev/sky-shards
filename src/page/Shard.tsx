@@ -286,6 +286,9 @@ export default function Shard() {
               Today
             </button>
           )}
+          <button className='glass' onClick={() => navigateToCalendar()}>
+            Calendar
+          </button>
         </div>
       )}
       <ShardPageContent

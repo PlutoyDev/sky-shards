@@ -1,10 +1,10 @@
 .ShardPage {
   --nav-hint-height: 30px;
-  --content-height: calc(100vh - 0.4rem - var(--header-height) - var(--footer-height) - 50px);
+  --content-height: calc(100vh - 0.4rem - var(--header-height) - var(--footer-height) - var(--nav-hint-height));
   gap: 0.2rem;
 
   display: grid;
-  grid-template-rows: 50px auto;
+  grid-template-rows: var(--nav-hint-height) auto;
   grid-template-columns: var(--nav-hint-height) auto var(--nav-hint-height);
   grid-template-areas:
     'leftNavHint topBar rightNavHint'
@@ -98,6 +98,7 @@
   padding: 0.2rem 1rem;
   font-size: var(--font-size-100);
   place-self: flex-start center;
+  overflow: hidden visible;
 }
 
 #nextShardNavButtons > button {
@@ -135,8 +136,8 @@
   justify-content: center;
   flex-flow: column nowrap;
   gap: 0.2rem;
-  min-height: calc(100% - 50px);
-  margin-bottom: 50px;
+  min-height: calc(100% - 30px);
+  margin-bottom: 30px;
   transition: transform 0.5s ease-in-out;
 }
 
