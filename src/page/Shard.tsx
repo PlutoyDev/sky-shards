@@ -7,7 +7,7 @@ import { useNow } from '../context/Now';
 import { ShardDataInfographic, ShardMapInfographic } from '../sections/Shard/Infographic';
 import ShardSummary from '../sections/Shard/Summary';
 import ShardTimeline from '../sections/Shard/Timeline';
-import { getShardInfo } from '../shardPredictor';
+import { findNextShard, getShardInfo } from '../shardPredictor';
 import './Shard.css';
 
 const relDateMap = {
@@ -69,12 +69,11 @@ export const ShardPageLoader: LoaderFunction = ({ params }): Response | ShardLoa
         .toFormat('yyyy/MM/dd')}`,
     );
   } else if (route === 'next') {
-    // const today = DateTime.local().setZone('America/Los_Angeles');
-    // if (args[0] === 'red')
-    //   return redirect(`/date/${nextShardInfo(today, { colorIsRed: true }).date.toFormat('yyyy/MM/dd')}`);
-    // if (args[0] === 'black')
-    //   return redirect(`/date/${nextShardInfo(today, { colorIsRed: false }).date.toFormat('yyyy/MM/dd')}`);
-    // return redirect(`/date/${nextShardInfo(today).date.toFormat('yyyy/MM/dd')}`);
+    const today = DateTime.local().setZone('America/Los_Angeles');
+    const color = args[0] as 'red' | 'black' | undefined;
+    if (color === 'red' || color === 'black')
+      return redirect(`/date/${findNextShard(today, { only: color }).date.toFormat('yyyy/MM/dd')}`);
+    return redirect(`/date/${findNextShard(today).date.toFormat('yyyy/MM/dd')}`);
   }
   return redirect('/');
 };

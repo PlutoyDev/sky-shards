@@ -165,3 +165,18 @@ export function getAllShardFullPhases(
     upcommingIndex,
   };
 }
+
+interface findShardOptions {
+  only?: undefined | 'black' | 'red';
+}
+
+export function findNextShard(from: DateTime, opts: findShardOptions = {}): ShardInfo {
+  const info = getShardInfo(from);
+  const { haveShard, isRed, lastEnd } = info;
+  const { only } = opts;
+  if (haveShard && from < lastEnd && (!only || (only === 'red') === isRed)) {
+    return info;
+  } else {
+    return findNextShard(from.plus({ days: 1 }), { only });
+  }
+}
