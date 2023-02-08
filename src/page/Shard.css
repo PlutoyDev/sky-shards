@@ -387,7 +387,7 @@
   justify-content: flex-start;
   align-items: center;
   cursor: pointer;
-  --clock-font-size: 0.4rem;
+  --clock-font-size: min(0.4rem, var(--font-size-600));
 
   max-width: 2.5rem;
 }
@@ -398,7 +398,7 @@
 }
 
 .day-cell > .day-map {
-  font-size: 0.4rem;
+  font-size: min(0.4rem, var(--font-size-600));
 }
 
 .day-cell.red > .day-number {
