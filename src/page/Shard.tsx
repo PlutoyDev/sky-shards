@@ -269,7 +269,7 @@ export default function Shard() {
 
   return (
     <main className='Page ShardPage' {...bind()}>
-      {isCalendar || (
+      {isCalendar || !isNavigatable || (
         <div id='nextShardNavButtons'>
           <span>Go to: </span>
           <button className='glass' onClick={() => navigateLeftRight(findNextShard(date).date)}>
