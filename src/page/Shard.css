@@ -4,7 +4,7 @@
   gap: 0.2rem;
 
   display: grid;
-  grid-template-rows: var(--nav-hint-height) auto;
+  grid-template-rows: 2px auto;
   grid-template-columns: var(--nav-hint-height) auto var(--nav-hint-height);
   grid-template-areas:
     'leftNavHint topBar rightNavHint'
