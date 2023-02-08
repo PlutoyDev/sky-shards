@@ -1,12 +1,14 @@
 .ShardPage {
   --nav-hint-height: 30px;
-  --content-height: calc(100vh - 0.4rem - var(--header-height) - var(--footer-height));
+  --content-height: calc(100vh - 0.4rem - var(--header-height) - var(--footer-height) - 50px);
   gap: 0.2rem;
 
   display: grid;
-  grid-template-rows: auto;
+  grid-template-rows: 50px auto;
   grid-template-columns: var(--nav-hint-height) auto var(--nav-hint-height);
-  grid-template-areas: 'leftNavHint shardContent rightNavHint';
+  grid-template-areas:
+    'leftNavHint topBar rightNavHint'
+    'leftNavHint shardContent rightNavHint';
 
   font-size: var(--font-size-400);
 
@@ -85,6 +87,26 @@
   display: none;
 }
 
+#nextShardNavButtons {
+  grid-area: topBar;
+  display: flex;
+  flex-flow: row wrap;
+  gap: 0.5rem;
+  justify-content: flex-start;
+  align-items: flex-start;
+  text-align: center;
+  padding: 0.2rem 1rem;
+  font-size: var(--font-size-100);
+  place-self: flex-start center;
+}
+
+#nextShardNavButtons > button {
+  font-weight: 800;
+  border-radius: 4rem;
+  padding: 0.2rem 1rem;
+  margin-left: 1rem;
+}
+
 #shardContent {
   grid-area: shardContent;
   width: 90%;
@@ -113,7 +135,8 @@
   justify-content: center;
   flex-flow: column nowrap;
   gap: 0.2rem;
-  min-height: 100%;
+  min-height: calc(100% - 50px);
+  margin-bottom: 50px;
   transition: transform 0.5s ease-in-out;
 }
 
@@ -187,7 +210,6 @@
     display: none;
   }
 }
-
 /* Full Shard Schedule */
 #shardTimeline {
   min-width: 90%;

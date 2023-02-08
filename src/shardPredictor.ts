@@ -177,6 +177,6 @@ export function findNextShard(from: DateTime, opts: findShardOptions = {}): Shar
   if (haveShard && from < lastEnd && (!only || (only === 'red') === isRed)) {
     return info;
   } else {
-    return findNextShard(from.plus({ days: 1 }), { only });
+    return findNextShard(from.startOf('day').plus({ days: 1 }), { only });
   }
 }

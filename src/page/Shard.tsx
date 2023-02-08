@@ -154,13 +154,14 @@ export default function Shard() {
   const dateOpacity = useTransform(contentOpacity, x => 1 - x);
 
   const navigateLeftRight = useCallback(
-    (daysOrMonth: number) => {
-      const to = date.plus({ [isCalendar ? 'months' : 'days']: daysOrMonth });
-      setPendingState(daysOrMonth > 0 ? pendableState.plus : pendableState.minus);
+    (d: number | DateTime) => {
+      const diff = d instanceof DateTime ? d.diff(date, 'days').days : d;
+      const to = typeof d === 'number' ? date.plus({ [isCalendar ? 'months' : 'days']: d }) : d;
+      setPendingState(diff > 0 ? pendableState.plus : pendableState.minus);
       setPendingDate(to);
       setIsNavigatable(false);
 
-      animate(contentX, -window.innerWidth * daysOrMonth, {
+      animate(contentX, -window.innerWidth * Math.sign(diff), {
         type: 'spring',
         duration: 0.5,
         onComplete: () => {
@@ -268,6 +269,25 @@ export default function Shard() {
 
   return (
     <main className='Page ShardPage' {...bind()}>
+      {isCalendar || (
+        <div id='nextShardNavButtons'>
+          <span>Go to: </span>
+          <button className='glass' onClick={() => navigateLeftRight(findNextShard(date).date)}>
+            Next Shard ⇒
+          </button>
+          <button className='glass' onClick={() => navigateLeftRight(findNextShard(date, { only: 'black' }).date)}>
+            Next Black Shard ⇒
+          </button>
+          <button className='glass' onClick={() => navigateLeftRight(findNextShard(date, { only: 'red' }).date)}>
+            Next Red Shard ⇒
+          </button>
+          {date.hasSame(now, 'day') || (
+            <button className='glass' onClick={() => navigateLeftRight(now)}>
+              Today
+            </button>
+          )}
+        </div>
+      )}
       <ShardPageContent
         ref={activeContentRef}
         date={date}
