@@ -155,23 +155,22 @@ export default function Shard() {
   const dateOpacity = useTransform(contentOpacity, x => 1 - x);
 
   const navigateLeftRight = useCallback(
-    (sign: -1 | 1) => {
-      setPendingState(sign === 1 ? pendableState.plus : pendableState.minus);
+    (daysOrMonth: number) => {
+      const to = date.plus({ [isCalendar ? 'months' : 'days']: daysOrMonth });
+      setPendingState(daysOrMonth > 0 ? pendableState.plus : pendableState.minus);
+      setPendingDate(to);
       setIsNavigatable(false);
 
-      animate(contentX, -window.innerWidth * sign, {
+      animate(contentX, -window.innerWidth * daysOrMonth, {
         type: 'spring',
         duration: 0.5,
         onComplete: () => {
-          navigate(
-            `/${isCalendar ? 'calendar' : 'date'}/${date
-              .plus({ [isCalendar ? 'months' : 'days']: sign })
-              .toFormat(`yyyy/MM/dd`)}`,
-          );
+          navigate(`/${isCalendar ? 'calendar' : 'date'}/${to.toFormat(`yyyy/MM/dd`)}`);
           draggedX.jump(0);
           setHintIdx(0);
           setPendingState(null);
           setIsNavigatable(true);
+          setPendingDate(null);
         },
       });
     },
@@ -190,6 +189,7 @@ export default function Shard() {
         pinchDistance.jump(1);
         setPendingState(null);
         setIsNavigatable(true);
+        setPendingDate(null);
       },
     });
   }, [date.day, date.month, date.year, contentScale, contentOpacity]);
@@ -208,6 +208,7 @@ export default function Shard() {
           pinchDistance.jump(1);
           setPendingState(null);
           setIsNavigatable(true);
+          setPendingDate(null);
         },
       });
     },
@@ -218,6 +219,7 @@ export default function Shard() {
     {
       onDrag: ({ movement: [mx] }) => {
         draggedX.set(mx);
+        setPendingDate(null);
         if (Math.abs(mx) > dragThreshold) {
           setHintIdx(2 * Math.sign(mx));
         } else if (Math.abs(mx) > 20) {
@@ -277,7 +279,7 @@ export default function Shard() {
           [pendableState.plus]: (
             <ShardPageContent
               ref={pendingRef}
-              date={roundToRefDate(date.plus({ [isCalendar ? 'months' : 'days']: 1 }), now)}
+              date={roundToRefDate(pendingDate ?? date.plus({ [isCalendar ? 'months' : 'days']: 1 }), now)}
               isCalendar={isCalendar}
               style={{ x: nextContentX }}
             />
@@ -285,7 +287,7 @@ export default function Shard() {
           [pendableState.minus]: (
             <ShardPageContent
               ref={pendingRef}
-              date={roundToRefDate(date.minus({ [isCalendar ? 'months' : 'days']: 1 }), now)}
+              date={roundToRefDate(pendingDate ?? date.minus({ [isCalendar ? 'months' : 'days']: 1 }), now)}
               isCalendar={isCalendar}
               style={{ x: previousContentX }}
             />
