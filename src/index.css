@@ -66,12 +66,12 @@ body {
 
 @media (max-aspect-ratio: 4/3) or (max-aspect-ratio: 3/4) {
   body {
-    --font-size-base: 2.6vmin;
+    --font-size-base: 3vmin;
     --footer-font-size: 0.4rem;
   }
 }
 
-@media (min-width: 890px) {
+@media (min-width: 890px) or (min-height: 780px) {
   body {
     --font-size-base: 3.6vmin;
     --footer-font-size: 0.6rem;
