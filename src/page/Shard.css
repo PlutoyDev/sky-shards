@@ -110,7 +110,7 @@
 
 #shardContent {
   grid-area: shardContent;
-  width: 90%;
+  width: 98%;
   height: 100%;
   display: flex;
   flex-flow: column nowrap;
