@@ -8,6 +8,10 @@
   margin: 0;
 }
 
+html {
+  overflow: hidden;
+}
+
 body {
   --color-primary: #242424;
   --color-secondary: #fffd;
@@ -20,10 +24,10 @@ body {
   --glass-border-radius: 20px;
 
   position: absolute;
-  top: 2px;
-  left: 2px;
-  right: 2px;
-  bottom: 2px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 
   background-image: url('/backgrounds/SkyBackgroundDark.webp');
   background-repeat: no-repeat;
@@ -60,18 +64,16 @@ body {
   body {
     --font-size-base: 2.2vmin;
     --font-size-adjust: 0.2vmin;
-    --footer-font-size: 0.6rem;
   }
 }
 
 @media (max-aspect-ratio: 4/3) or (max-aspect-ratio: 3/4) {
   body {
-    --font-size-base: 2.6vmin;
-    --footer-font-size: 0.4rem;
+    --font-size-base: 3vmin;
   }
 }
 
-@media (min-width: 890px) {
+@media (min-width: 890px) or (min-height: 890px) {
   body {
     --font-size-base: 3.6vmin;
     --footer-font-size: 0.6rem;
