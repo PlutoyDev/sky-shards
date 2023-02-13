@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useLoaderData, useNavigate } from 'react-router-dom';
 import { useSwipeable } from 'react-swipeable';
 import { DateTime } from 'luxon';
@@ -64,6 +65,21 @@ export default function Home() {
     trackMouse: true,
     delta: 100,
   });
+
+  //Change the title and description of the page
+  useEffect(() => {
+    const dateStr = info.date.toFormat(`EEE, dd MMM yyyy`);
+    document.title = `Shard for ${dateStr}`;
+
+    document
+      .querySelector('meta[name="description"]')
+      ?.setAttribute(
+        'content',
+        info.haveShard
+          ? `There will be ${info.isRed ? 'red' : 'black'} shard in ${info.map}, ${info.realmFull}. `
+          : 'There is no shard.',
+      );
+  }, [info]);
 
   return (
     <main className='Page HomePage' {...handlers}>
