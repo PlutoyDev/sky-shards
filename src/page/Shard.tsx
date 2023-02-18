@@ -78,6 +78,8 @@ export const ShardPageLoader: LoaderFunction = ({ params }): Response | ShardLoa
   return redirect('/');
 };
 
+type PendingState = 'next' | 'previous' | 'none';
+
 export default function Shard() {
   const now = useNow().application;
   const loaderData = (useLoaderData() ?? {}) as ShardLoaderData;
@@ -86,9 +88,8 @@ export default function Shard() {
   const navigate = useNavigate();
   const [isNavigatable, setIsNavigatable] = useState(true);
 
-  const activeContentRef = useRef<HTMLDivElement>(null);
-  const pendingPreviousContentRef = useRef<HTMLDivElement>(null);
-  const pendingNextContentRef = useRef<HTMLDivElement>(null);
+  const [pending, setPending] = useState<PendingState>('none');
+  const pendingRef = useRef<HTMLDivElement>(null);
   const [hintIdx, setHintIdx] = useState(0);
   const draggedX = useMotionValue(0);
 
@@ -110,37 +111,35 @@ export default function Shard() {
     [-dragThreshold * 0.7, 0, dragThreshold * 0.7],
     { clamp: true },
   );
-  const previousContentX = useTransform(contentX, x => x - window?.innerWidth);
-  const nextContentX = useTransform(contentX, x => x + window?.innerWidth);
+  const pendingContentX = useTransform(contentX, x =>
+    pending == 'previous' ? x - window?.innerWidth : pending == 'next' ? x + window?.innerWidth : 0,
+  );
 
-  const navigateToPreviousDay = useCallback(() => {
-    setIsNavigatable(false);
-    animate(contentX, window.innerWidth, {
-      type: 'spring',
-      duration: 0.5,
-      onComplete: () => {
-        navigate(`/date/${date.minus({ days: 1 }).toFormat(`yyyy/MM/dd`)}`);
-        draggedX.jump(0);
-        setHintIdx(0);
-        setIsNavigatable(true);
-      },
-    });
-  }, [date.day, date.month, date.year, draggedX, contentX]);
+  const navigateDay = useCallback(
+    (d: DateTime | number) => {
+      const diff = typeof d === 'number' ? d : date.diff(d, 'days').days;
+      const target = typeof d === 'number' ? date.plus({ days: d }) : d;
+      if (diff === 0) return;
+      const pendingState = diff < 0 ? 'previous' : 'next';
+      if (pendingState === pending) {
+        setPending(diff < 0 ? 'previous' : 'next');
+      }
+      setIsNavigatable(false);
 
-  const navigateToNextDay = useCallback(() => {
-    setIsNavigatable(false);
-
-    animate(contentX, -window.innerWidth, {
-      type: 'spring',
-      duration: 0.5,
-      onComplete: () => {
-        navigate(`/date/${date.plus({ days: 1 }).toFormat(`yyyy/MM/dd`)}`);
-        draggedX.jump(0);
-        setHintIdx(0);
-        setIsNavigatable(true);
-      },
-    });
-  }, [date.day, date.month, date.year, draggedX, contentX]);
+      animate(contentX, -window.innerWidth * Math.sign(diff), {
+        type: 'spring',
+        duration: 0.5,
+        onComplete: () => {
+          navigate(`/date/${target.toFormat(`yyyy/MM/dd`)}`);
+          draggedX.jump(0);
+          setHintIdx(0);
+          setIsNavigatable(true);
+          setPending('none');
+        },
+      });
+    },
+    [date.day, date.month, date.year, draggedX, contentX],
+  );
 
   const bind = useGesture(
     {
@@ -150,17 +149,15 @@ export default function Shard() {
           setHintIdx(2 * Math.sign(mx));
         } else if (Math.abs(mx) > 20) {
           setHintIdx(1 * Math.sign(mx));
+          setPending(mx > 0 ? 'previous' : 'next');
         } else {
           setHintIdx(0);
         }
       },
       onDragEnd: ({ movement: [mx] }) => {
         if (Math.abs(mx) > dragThreshold) {
-          if (mx > 0) {
-            navigateToPreviousDay();
-          } else {
-            navigateToNextDay();
-          }
+          if (mx > 0) navigateDay(-1);
+          else navigateDay(1);
         } else {
           animate(draggedX, 0, { type: 'spring', stiffness: 500 });
           setHintIdx(0);
@@ -175,28 +172,21 @@ export default function Shard() {
   return (
     <main className='Page ShardPage'>
       <ShardPageContent
-        ref={activeContentRef}
         date={date}
         divProps={{ ...bind() }}
         style={{
           x: contentX,
         }}
       />
-      <ShardPageContent
-        ref={pendingPreviousContentRef}
-        date={roundToRefDate(date.minus({ days: 1 }), now)}
-        style={{
-          x: previousContentX,
-        }}
-      />
-
-      <ShardPageContent
-        ref={pendingNextContentRef}
-        date={roundToRefDate(date.plus({ days: 1 }), now)}
-        style={{
-          x: nextContentX,
-        }}
-      />
+      {pending !== 'none' && (
+        <ShardPageContent
+          ref={pendingRef}
+          date={roundToRefDate(date.plus({ days: pending === 'previous' ? -1 : 1 }), now)}
+          style={{
+            x: pendingContentX,
+          }}
+        />
+      )}
       <NavHint
         position='left'
         disabled={Math.sign(hintIdx) === -1 || !isNavigatable}
@@ -208,7 +198,7 @@ export default function Shard() {
             'Release for previous day shard',
           ][Math.abs(hintIdx)]
         }
-        onClick={() => navigateToPreviousDay()}
+        onClick={() => navigateDay(-1)}
         style={{
           x: hintLeftX,
         }}
@@ -224,7 +214,7 @@ export default function Shard() {
             'Release for next day shard',
           ][Math.abs(hintIdx)]
         }
-        onClick={() => navigateToNextDay()}
+        onClick={() => navigateDay(1)}
         style={{
           x: hintRightX,
         }}
