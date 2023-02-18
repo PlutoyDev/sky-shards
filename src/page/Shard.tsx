@@ -121,7 +121,7 @@ export default function Shard() {
       const target = typeof d === 'number' ? date.plus({ days: d }) : d;
       if (diff === 0) return;
       const pendingState = diff < 0 ? 'previous' : 'next';
-      if (pendingState === pending) {
+      if (pending !== pendingState) {
         setPending(diff < 0 ? 'previous' : 'next');
       }
       setIsNavigatable(false);
