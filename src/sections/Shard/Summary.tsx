@@ -16,7 +16,7 @@ export default function ShardSummary({ date, info, includedChild }: ShardSummary
       <div id='shardSummary'>
         <div id='shardInfo' className='glass'>
           <span>There is </span>
-          <span className='Emphasized'>No Shard</span>
+          <span className='font-bold'>No Shard</span>
           <Date date={date} describeClose describeClosePrefix />
         </div>
         {includedChild}
@@ -31,48 +31,62 @@ export default function ShardSummary({ date, info, includedChild }: ShardSummary
     return (
       <section id='shardSummary'>
         <summary id='shardInfo' className='glass'>
-          <span>There {upcomming ? (landed ? 'is' : 'will be') : 'was'} </span>
-          <span className={`${info.isRed ? 'Red' : 'Black'} Emphasized`}>{info.isRed ? 'Red' : 'Black'} Shard</span>
-          <span> in </span>
-          <span>
-            <span>
-              <span className='Emphasized'>{info.map}, </span>
+          <p className='whitespace-normal'>
+            <span>There {upcomming ? (landed ? 'is' : 'will be') : 'was'} </span>
+            <span className={`${info.isRed ? 'Red' : 'Black'} font-bold whitespace-nowrap`}>
+              {info.isRed ? 'Red' : 'Black'} Shard
             </span>
-            <span>
-              <span className='Emphasized'>{info.realmFull}</span>
-            </span>
-          </span>
-          <Date date={date} describeClose describeClosePrefix />
+            <span> in </span>
+            <span className='font-bold whitespace-nowrap'>{info.map}, </span>
+            <span className='font-bold'>{info.realmNick}</span>
+            <Date date={date} describeClose describeClosePrefix />
+          </p>
+          <p>
+            <span>Giving </span>
+            {info.isRed ? (
+              <>
+                <span className='font-bold'> max of {info.rewardAC}</span>
+                <img className='emoji' src='/emojis/AscendedCandle.webp' alt='Ascended Candles' />
+              </>
+            ) : (
+              <>
+                <span className='font-bold'>4</span>
+                <img className='emoji' src='/emojis/CandleCake.webp' alt='Candle Cakes' />
+                <span> of wax</span>
+              </>
+            )}
+            <span> after first clear</span>
+          </p>
         </summary>
         <div id='shardTiming' className='glass'>
           {upcomming ? (
             <>
               <div id='shardCountdown'>
                 <span>
-                  <span className='Emphasized'>{ordinalIndex ? `${ordinalIndex} shard` : 'Shard'} </span>
+                  <span className='font-bold'>{ordinalIndex ? `${ordinalIndex} shard` : 'Shard'} </span>
                   {landed && (
                     <>
                       <span>has </span>
-                      <span className='Emphasized'>landed </span>
+                      <span className='font-bold'>landed </span>
                       <Clock date={upcomming.land} relative negate inline hideSeconds />
                       <span> ago, it </span>
                     </>
                   )}
                   <span>will </span>
-                  <span className='Emphasized'>{landed ? 'end' : 'land'} </span>
+                  <span className='font-bold'>{landed ? 'end' : 'land'} </span>
                   <span>in </span>
                 </span>
                 <Clock date={next} relative trim />
                 <span> which is </span>
               </div>
               <time id='shardAbsLocal' dateTime={next?.setZone('local')?.toISO({ suppressMilliseconds: true })}>
-                <span className='Emphasized'>Your Time: </span>
+                <span className='font-bold'>Your Time: </span>
                 <div className='Demphasized'>({Intl.DateTimeFormat().resolvedOptions().timeZone})</div>
                 <Date date={next} local />
                 <Clock date={next} local />
               </time>
               <time id='shardAbsSky' dateTime={next?.toISO({ suppressMilliseconds: true })}>
-                <span className='Emphasized'>Sky Time: </span>
+                <span className='font-bold'>Sky Time: </span>
                 <div className='Demphasized'>(America/Los_Angeles)</div>
                 <Date date={next} />
                 <Clock date={next} />

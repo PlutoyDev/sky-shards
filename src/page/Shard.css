@@ -131,8 +131,7 @@
 }
 
 #shardSummary .Clock,
-#shardSummary .Date,
-#shardSummary .Emphasized {
+#shardSummary .Date {
   font-size: var(--font-size-300);
   font-weight: 800;
 }
@@ -154,20 +153,20 @@
   grid-area: absSky;
 }
 
-.Full {
-  display: none;
-}
-
-.Nick {
-  display: inline;
-}
-
 .Red {
   color: #e2252b;
 }
 
 .Black {
   color: black;
+}
+
+.emoji {
+  display: inline;
+  height: 1em;
+  width: 1em;
+  margin: 0 0.05em 0 0.1em;
+  vertical-align: -0.1em;
 }
 
 @media (min-width: 480px) and (orientation: landscape) {
@@ -177,14 +176,6 @@
     grid-template-areas:
       'countdown countdown'
       'absLocal absSky';
-  }
-
-  .Full {
-    display: inline;
-  }
-
-  .Nick {
-    display: none;
   }
 }
 
