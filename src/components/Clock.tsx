@@ -41,7 +41,7 @@ export default function Clock({
   let text = duration
     ? duration.toFormat(
         twoUnits || hideSeconds
-          ? duration.shiftTo('hours').hours > 2 || hideSeconds
+          ? Math.abs(duration.shiftTo('hours').hours) > 2 || hideSeconds
             ? `hh'h' mm'm'`
             : `mm'm' ss's'`
           : `hh'h' mm'm' ss's'`,
