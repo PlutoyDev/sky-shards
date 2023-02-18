@@ -1,4 +1,4 @@
-import { forwardRef, HTMLAttributes, useCallback, useMemo, useRef, useState } from 'react';
+import { forwardRef, HTMLAttributes, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { LoaderFunction, redirect, useLoaderData, useNavigate } from 'react-router-dom';
 import { createUseGesture, dragAction, pinchAction } from '@use-gesture/react';
 import { animate, motion, useMotionValue, useTransform } from 'framer-motion';
@@ -89,7 +89,7 @@ export default function Shard() {
   const [isNavigatable, setIsNavigatable] = useState(true);
 
   const [pending, setPending] = useState<PendingState>('none');
-  const pendingRef = useRef<HTMLDivElement>(null);
+  const activeContentRef = useRef<HTMLDivElement>(null);
   const [hintIdx, setHintIdx] = useState(0);
   const draggedX = useMotionValue(0);
 
@@ -169,9 +169,13 @@ export default function Shard() {
     },
   );
 
+  //Scroll to top on date change
+  useEffect(() => activeContentRef.current?.scrollTo(0, 0), [date.day, date.month, date.year]);
+
   return (
     <main className='Page ShardPage'>
       <ShardPageContent
+        ref={activeContentRef}
         date={date}
         divProps={{ ...bind() }}
         style={{
@@ -180,7 +184,6 @@ export default function Shard() {
       />
       {pending !== 'none' && (
         <ShardPageContent
-          ref={pendingRef}
           date={roundToRefDate(date.plus({ days: pending === 'previous' ? -1 : 1 }), now)}
           style={{
             x: pendingContentX,
