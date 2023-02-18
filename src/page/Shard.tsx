@@ -237,6 +237,9 @@ const ShardPageContent = motion(
   forwardRef<HTMLDivElement, ShardPageContentProps>(function ShardPageContent({ date, isMain, divProps }, ref) {
     const childrens = useMemo(() => {
       const info = getShardInfo(date);
+      if (isMain) {
+        document.title = `Sky Shard Eruption for ${date.toFormat('ccc, dd MMM yyyy')}`;
+      }
       return (
         <>
           <ShardSummary
@@ -254,20 +257,21 @@ const ShardPageContent = motion(
           )}
         </>
       );
-    }, [date.day, date.month, date.year]);
+    }, [isMain, date.day, date.month, date.year]);
 
-    if (isMain)
+    if (isMain) {
       return (
         <main id='shardContent' ref={ref} {...divProps}>
           {childrens}
         </main>
       );
-    else
+    } else {
       return (
         <div id='shardContent' ref={ref} {...divProps}>
           {childrens}
         </div>
       );
+    }
   }),
 );
 
