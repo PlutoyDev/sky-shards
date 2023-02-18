@@ -16,6 +16,7 @@ interface ShardConfig {
   offset: Duration;
   interval: Duration;
   maps: [string, string, string, string, string];
+  defRewardAC?: number;
 }
 
 const shardsInfo: ShardConfig[] = [
@@ -45,6 +46,7 @@ const shardsInfo: ShardConfig[] = [
       minutes: 40,
     }),
     maps: ['Cave', 'Forest Garden', 'Village of Dreams', 'Graveyard', 'Jellyfish Cove'],
+    defRewardAC: 2,
   },
   {
     noShardWkDay: [2, 3], //Tue;Wed
@@ -54,6 +56,7 @@ const shardsInfo: ShardConfig[] = [
       minutes: 20,
     }),
     maps: ['Bird Nest', 'Treehouse', 'Village of Dreams', 'Crabfield', 'Jellyfish Cove'],
+    defRewardAC: 2.5,
   },
   {
     noShardWkDay: [3, 4], //Wed;Thu
@@ -63,8 +66,16 @@ const shardsInfo: ShardConfig[] = [
       minutes: 30,
     }),
     maps: ['Sanctuary Island', 'Elevated Clearing', 'Hermit valley', 'Forgotten Ark', 'Jellyfish Cove'],
+    defRewardAC: 3.5,
   },
 ];
+
+const overrideRewardAC: Record<string, number> = {
+  'Forest Garden': 2.5,
+  'Village of Dreams': 2.5,
+  'Treehouse': 3.5,
+  'Jellyfish Cove': 3.5,
+};
 
 export function getShardInfo(date: DateTime): ShardInfo {
   date = date.setZone('America/Los_Angeles').startOf('day');
@@ -72,8 +83,10 @@ export function getShardInfo(date: DateTime): ShardInfo {
   const isRed = dayOfMth % 2 === 1;
   const realmIdx = (dayOfMth - 1) % 5;
   const infoIndex = isRed ? (((dayOfMth - 1) / 2) % 3) + 2 : (dayOfMth / 2) % 2;
-  const { noShardWkDay, interval, offset, maps } = shardsInfo[infoIndex];
+  const { noShardWkDay, interval, offset, maps, defRewardAC } = shardsInfo[infoIndex];
   const haveShard = !noShardWkDay.includes(dayOfWk);
+  const map = maps[realmIdx];
+  const rewardAC = isRed ? overrideRewardAC[map] ?? defRewardAC : undefined;
   const lastEnd = date
     .plus(offset)
     .plus(interval.mapUnits(x => x * 2))
@@ -87,7 +100,8 @@ export function getShardInfo(date: DateTime): ShardInfo {
     lastEnd,
     realmFull: realmsFull[realmIdx],
     realmNick: realmsNick[realmIdx],
-    map: maps[realmIdx],
+    map,
+    rewardAC,
   };
 }
 
@@ -101,6 +115,7 @@ export type ShardInfo = {
   realmFull: string;
   realmNick: string;
   map: string;
+  rewardAC?: number;
 };
 
 export interface ShardSimplePhases {
