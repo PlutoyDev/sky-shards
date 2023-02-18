@@ -235,29 +235,28 @@ interface ShardPageContentProps {
 
 const ShardPageContent = motion(
   forwardRef<HTMLDivElement, ShardPageContentProps>(function ShardPageContent({ date, isMain, divProps }, ref) {
-    const childrens = useMemo(() => {
-      const info = getShardInfo(date);
-      if (isMain) {
-        document.title = `Sky Shard Eruption for ${date.toFormat('ccc, dd MMM yyyy')}`;
-      }
-      return (
-        <>
-          <ShardSummary
-            date={date}
-            info={info}
-            includedChild={info.haveShard && <NavHint position='top' hint='Scroll down for more info' />}
-          />
-          {info.haveShard && (
-            <>
-              <ShardMapInfographic info={info} />
-              <ShardTimeline date={date} info={info} />
-              <ShardDataInfographic info={info} />
-              <div style={{ minHeight: '60%' }}></div>
-            </>
-          )}
-        </>
-      );
-    }, [isMain, date.day, date.month, date.year]);
+    const info = useMemo(() => getShardInfo(date), [date.day, date.month, date.year]);
+    const childrens = (
+      <>
+        <ShardSummary
+          date={date}
+          info={info}
+          includedChild={info.haveShard && <NavHint position='top' hint='Scroll down for more info' />}
+        />
+        {info.haveShard && (
+          <>
+            <ShardMapInfographic info={info} />
+            <ShardTimeline date={date} info={info} />
+            <ShardDataInfographic info={info} />
+            <div style={{ minHeight: '60%' }}></div>
+          </>
+        )}
+      </>
+    );
+
+    useEffect(() => {
+      if (isMain) document.title = `Sky Shard Eruption for ${date.toFormat('ccc, dd MMM yyyy')}`;
+    }, [date.day, date.month, date.year]);
 
     if (isMain) {
       return (
