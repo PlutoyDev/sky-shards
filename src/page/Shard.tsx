@@ -138,7 +138,7 @@ export default function Shard() {
         },
       });
     },
-    [date.day, date.month, date.year, draggedX, contentX],
+    [pending, date.day, date.month, date.year, draggedX, contentX],
   );
 
   const bind = useGesture(
