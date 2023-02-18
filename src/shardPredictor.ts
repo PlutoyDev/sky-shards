@@ -1,6 +1,6 @@
 import { DateTime, Duration } from 'luxon';
 
-const earlySkyOffset = Duration.fromObject({ minutes: -30 }); //after start
+const earlySkyOffset = Duration.fromObject({ minutes: -32, seconds: -10 }); //after start
 const eruptionOffset = Duration.fromObject({ minutes: 7 }); //after start
 const landOffset = Duration.fromObject({ minutes: 8, seconds: 40 }); //after start
 const endOffset = Duration.fromObject({ hours: 4 }); //after start
