@@ -61,7 +61,7 @@ export default function ShardSummary({ date, info, includedChild }: ShardSummary
         <div id='shardTiming' className='glass'>
           {upcomming ? (
             <>
-              <div id='shardCountdown'>
+              <time id='shardCountdown' dateTime={next?.diffNow().toISO()}>
                 <span>
                   <span className='font-bold'>{ordinalIndex ? `${ordinalIndex} shard` : 'Shard'} </span>
                   {landed && (
@@ -78,7 +78,7 @@ export default function ShardSummary({ date, info, includedChild }: ShardSummary
                 </span>
                 <Clock date={next} relative trim />
                 <span> which is </span>
-              </div>
+              </time>
               <time id='shardAbsLocal' dateTime={next?.setZone('local')?.toISO({ suppressMilliseconds: true })}>
                 <span className='font-bold'>Your Time: </span>
                 <div className='Demphasized'>({Intl.DateTimeFormat().resolvedOptions().timeZone})</div>
