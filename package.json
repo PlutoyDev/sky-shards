@@ -48,5 +48,5 @@
     "vite-plugin-pwa": "^0.14.0",
     "workbox-build": "^6.5.4"
   },
-  "packageManager": "yarn@3.3.1"
+  "packageManager": "pnpm@7.27.0"
 }

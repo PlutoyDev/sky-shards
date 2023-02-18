@@ -1,0 +1,6 @@
+https://sky-shards.netlify.app
+https://sky-shards.netlify.app/tomorrow
+https://sky-shards.netlify.app/overmorrow
+https://sky-shards.netlify.app/next
+https://sky-shards.netlify.app/next/red
+https://sky-shards.netlify.app/next/black
