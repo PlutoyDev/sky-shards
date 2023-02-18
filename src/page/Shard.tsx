@@ -173,8 +173,9 @@ export default function Shard() {
   useEffect(() => activeContentRef.current?.scrollTo(0, 0), [date.day, date.month, date.year]);
 
   return (
-    <main className='Page ShardPage'>
+    <div className='Page ShardPage'>
       <ShardPageContent
+        isMain={true}
         ref={activeContentRef}
         date={date}
         divProps={{ ...bind() }}
@@ -222,36 +223,51 @@ export default function Shard() {
           x: hintRightX,
         }}
       />
-    </main>
+    </div>
   );
 }
 
 interface ShardPageContentProps {
   date: DateTime;
+  isMain?: boolean;
   divProps?: HTMLAttributes<HTMLDivElement>;
 }
 
 const ShardPageContent = motion(
-  forwardRef<HTMLDivElement, ShardPageContentProps>(function ShardPageContent({ date, divProps }, ref) {
-    const info = useMemo(() => getShardInfo(date), [date]);
+  forwardRef<HTMLDivElement, ShardPageContentProps>(function ShardPageContent({ date, isMain, divProps }, ref) {
+    const childrens = useMemo(() => {
+      const info = getShardInfo(date);
+      return (
+        <>
+          <ShardSummary
+            date={date}
+            info={info}
+            includedChild={info.haveShard && <NavHint position='top' hint='Scroll down for more info' />}
+          />
+          {info.haveShard && (
+            <>
+              <ShardMapInfographic info={info} />
+              <ShardTimeline date={date} info={info} />
+              <ShardDataInfographic info={info} />
+              <div style={{ minHeight: '60%' }}></div>
+            </>
+          )}
+        </>
+      );
+    }, [date.day, date.month, date.year]);
 
-    return (
-      <div id='shardContent' ref={ref} {...divProps}>
-        <ShardSummary
-          date={date}
-          info={info}
-          includedChild={info.haveShard && <NavHint position='top' hint='Scroll down for more info' />}
-        />
-        {info.haveShard && (
-          <>
-            <ShardMapInfographic info={info} />
-            <ShardTimeline date={date} info={info} />
-            <ShardDataInfographic info={info} />
-            <div style={{ minHeight: '60%' }}></div>
-          </>
-        )}
-      </div>
-    );
+    if (isMain)
+      return (
+        <main id='shardContent' ref={ref} {...divProps}>
+          {childrens}
+        </main>
+      );
+    else
+      return (
+        <div id='shardContent' ref={ref} {...divProps}>
+          {childrens}
+        </div>
+      );
   }),
 );
 

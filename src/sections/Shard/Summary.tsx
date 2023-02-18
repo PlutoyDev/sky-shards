@@ -29,8 +29,8 @@ export default function ShardSummary({ date, info, includedChild }: ShardSummary
     const ordinalIndex = upcomming?.index !== undefined && ['1st', '2nd', '3rd'][upcomming.index];
 
     return (
-      <div id='shardSummary'>
-        <div id='shardInfo' className='glass'>
+      <section id='shardSummary'>
+        <summary id='shardInfo' className='glass'>
           <span>There {upcomming ? (landed ? 'is' : 'will be') : 'was'} </span>
           <span className={`${info.isRed ? 'Red' : 'Black'} Emphasized`}>{info.isRed ? 'Red' : 'Black'} Shard</span>
           <span> in </span>
@@ -39,12 +39,11 @@ export default function ShardSummary({ date, info, includedChild }: ShardSummary
               <span className='Emphasized'>{info.map}, </span>
             </span>
             <span>
-              <span className='Emphasized Full'>{info.realmFull}</span>
-              <span className='Emphasized Nick'>{info.realmNick}</span>
+              <span className='Emphasized'>{info.realmFull}</span>
             </span>
           </span>
           <Date date={date} describeClose describeClosePrefix />
-        </div>
+        </summary>
         <div id='shardTiming' className='glass'>
           {upcomming ? (
             <>
@@ -66,18 +65,18 @@ export default function ShardSummary({ date, info, includedChild }: ShardSummary
                 <Clock date={next} relative trim />
                 <span> which is </span>
               </div>
-              <div id='shardAbsLocal'>
+              <time id='shardAbsLocal' dateTime={next?.setZone('local')?.toISO({ suppressMilliseconds: true })}>
                 <span className='Emphasized'>Your Time: </span>
                 <div className='Demphasized'>({Intl.DateTimeFormat().resolvedOptions().timeZone})</div>
                 <Date date={next} local />
                 <Clock date={next} local />
-              </div>
-              <div id='shardAbsSky'>
+              </time>
+              <time id='shardAbsSky' dateTime={next?.toISO({ suppressMilliseconds: true })}>
                 <span className='Emphasized'>Sky Time: </span>
                 <div className='Demphasized'>(America/Los_Angeles)</div>
                 <Date date={next} />
                 <Clock date={next} />
-              </div>
+              </time>
             </>
           ) : (
             <div id='shardCountdown'>
@@ -88,7 +87,7 @@ export default function ShardSummary({ date, info, includedChild }: ShardSummary
           )}
         </div>
         {includedChild}
-      </div>
+      </section>
     );
   }
 }
