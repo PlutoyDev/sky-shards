@@ -1,4 +1,5 @@
-import { ReactNode } from 'react';
+import { ReactNode, useRef } from 'react';
+import { BsChevronCompactDown } from 'react-icons/bs';
 import { DateTime } from 'luxon';
 import Clock from '../../components/Clock';
 import Date from '../../components/Date';
@@ -7,10 +8,10 @@ import { getUpcommingShardPhase, ShardInfo } from '../../shardPredictor';
 interface ShardSummarySectionProp {
   date: DateTime;
   info: ShardInfo;
-  includedChild?: ReactNode;
 }
 
-export default function ShardSummary({ date, info, includedChild }: ShardSummarySectionProp) {
+export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
+  const summaryRef = useRef<HTMLDivElement>(null);
   if (!info.haveShard) {
     return (
       <div id='shardSummary'>
@@ -19,7 +20,6 @@ export default function ShardSummary({ date, info, includedChild }: ShardSummary
           <strong>No Shard</strong>
           <Date date={date} describeClose describeClosePrefix />
         </section>
-        {includedChild}
       </div>
     );
   } else {
@@ -29,7 +29,7 @@ export default function ShardSummary({ date, info, includedChild }: ShardSummary
     const ordinalIndex = upcomming?.index !== undefined && ['1st', '2nd', '3rd'][upcomming.index];
 
     return (
-      <div id='shardSummary'>
+      <div id='shardSummary' ref={summaryRef}>
         <section id='shardInfo' className='glass'>
           <p className='whitespace-normal'>
             <span>There {upcomming ? (landed ? 'is' : 'will be') : 'was'} </span>
@@ -101,7 +101,18 @@ export default function ShardSummary({ date, info, includedChild }: ShardSummary
             </div>
           )}
         </section>
-        {includedChild}
+        <div
+          className='scrollHint'
+          onClick={() => {
+            summaryRef.current?.parentElement?.scrollBy({
+              top: summaryRef.current?.parentElement?.scrollHeight,
+              behavior: 'smooth',
+            });
+          }}
+        >
+          <span>Scroll down for more info</span>
+          <BsChevronCompactDown />
+        </div>
       </div>
     );
   }

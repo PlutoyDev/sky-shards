@@ -1,4 +1,5 @@
 import { forwardRef, HTMLAttributes, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { BsChevronCompactUp } from 'react-icons/bs';
 import { LoaderFunction, redirect, useLoaderData, useNavigate } from 'react-router-dom';
 import { createUseGesture, dragAction, pinchAction } from '@use-gesture/react';
 import { animate, motion, useMotionValue, useTransform } from 'framer-motion';
@@ -235,23 +236,35 @@ interface ShardPageContentProps {
 
 const ShardPageContent = motion(
   forwardRef<HTMLDivElement, ShardPageContentProps>(function ShardPageContent({ date, isMain, divProps }, ref) {
+    const contentRef = useRef<HTMLDivElement | null>(null);
     const info = useMemo(() => getShardInfo(date), [date.day, date.month, date.year]);
     const childrens = (
       <>
-        <ShardSummary
-          date={date}
-          info={info}
-          includedChild={info.haveShard && <NavHint position='top' hint='Scroll down for more info' />}
-        />
+        <ShardSummary date={date} info={info} />
         {info.haveShard && (
           <>
             <ShardMapInfographic info={info} />
             <ShardTimeline date={date} info={info} />
             <ShardDataInfographic info={info} />
-            <div style={{ minHeight: '60%' }}></div>
+
+            <div className='scrollHint' onClick={() => contentRef.current?.scrollTo({ top: 0, behavior: 'smooth' })}>
+              <BsChevronCompactUp />
+              <span>Scroll back to summary</span>
+            </div>
+            <div style={{ minHeight: '15%' }}></div>
           </>
         )}
       </>
+    );
+
+    const refCallback = useCallback(
+      (node: HTMLDivElement) => {
+        contentRef.current = node;
+        if (ref)
+          if (typeof ref === 'function') ref(node);
+          else ref.current = node;
+      },
+      [ref],
     );
 
     useEffect(() => {
@@ -260,13 +273,13 @@ const ShardPageContent = motion(
 
     if (isMain) {
       return (
-        <main id='shardContent' ref={ref} {...divProps}>
+        <main id='shardContent' ref={refCallback} {...divProps}>
           {childrens}
         </main>
       );
     } else {
       return (
-        <div id='shardContent' ref={ref} {...divProps}>
+        <div id='shardContent' ref={refCallback} {...divProps}>
           {childrens}
         </div>
       );
