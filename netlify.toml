@@ -8,9 +8,9 @@ to = "/index.html"
 status = 200
 
 [[headers]]
-for = "/*"
+for = "/index.html"
 [headers.values]
-Content-Security-Policy = "default-src 'self'; style-src 'self' https://fonts.googleapis.com/; font-src 'self' https://fonts.gstatic.com"
+Content-Security-Policy = "default-src 'self'; style-src 'self' https://fonts.googleapis.com/; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://fonts.googleapis.com"
 X-Frame-Options = "DENY"
 X-XSS-Protection = "1; mode=block"
 X-Content-Type-Options = "nosniff"
