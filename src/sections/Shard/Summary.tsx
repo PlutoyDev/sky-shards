@@ -14,11 +14,11 @@ export default function ShardSummary({ date, info, includedChild }: ShardSummary
   if (!info.haveShard) {
     return (
       <div id='shardSummary'>
-        <div id='shardInfo' className='glass'>
+        <section id='shardInfo' className='glass'>
           <span>There is </span>
-          <span className='font-bold'>No Shard</span>
+          <strong>No Shard</strong>
           <Date date={date} describeClose describeClosePrefix />
-        </div>
+        </section>
         {includedChild}
       </div>
     );
@@ -29,65 +29,66 @@ export default function ShardSummary({ date, info, includedChild }: ShardSummary
     const ordinalIndex = upcomming?.index !== undefined && ['1st', '2nd', '3rd'][upcomming.index];
 
     return (
-      <section id='shardSummary'>
-        <summary id='shardInfo' className='glass'>
+      <div id='shardSummary'>
+        <section id='shardInfo' className='glass'>
           <p className='whitespace-normal'>
             <span>There {upcomming ? (landed ? 'is' : 'will be') : 'was'} </span>
-            <span className={`${info.isRed ? 'Red' : 'Black'} font-bold whitespace-nowrap`}>
+            <strong className={`${info.isRed ? 'Red' : 'Black'} whitespace-nowrap`}>
               {info.isRed ? 'Red' : 'Black'} Shard
-            </span>
+            </strong>
             <span> in </span>
-            <span className='font-bold whitespace-nowrap'>{info.map}, </span>
-            <span className='font-bold'>{info.realmNick}</span>
+            <strong>
+              {info.map}, {info.realmNick}
+            </strong>
             <Date date={date} describeClose describeClosePrefix />
           </p>
           <p>
             <span>Giving </span>
             {info.isRed ? (
               <>
-                <span className='font-bold'> max of {info.rewardAC}</span>
+                <strong> max of {info.rewardAC}</strong>
                 <img className='emoji' src='/emojis/AscendedCandle.webp' alt='Ascended Candles' />
               </>
             ) : (
               <>
-                <span className='font-bold'>4</span>
+                <strong>4</strong>
                 <img className='emoji' src='/emojis/CandleCake.webp' alt='Candle Cakes' />
                 <span> of wax</span>
               </>
             )}
             <span> after first clear</span>
           </p>
-        </summary>
-        <div id='shardTiming' className='glass'>
+        </section>
+        <section id='shardTiming' className='glass'>
           {upcomming ? (
             <>
-              <time id='shardCountdown' dateTime={next?.diffNow().toISO()}>
+              <div id='shardCountdown'>
                 <span>
-                  <span className='font-bold'>{ordinalIndex ? `${ordinalIndex} shard` : 'Shard'} </span>
+                  <strong>{ordinalIndex ? `${ordinalIndex} shard` : 'Shard'} </strong>
                   {landed && (
                     <>
                       <span>has </span>
-                      <span className='font-bold'>landed </span>
+                      <strong>landed </strong>
                       <Clock date={upcomming.land} relative negate inline hideSeconds />
                       <span> ago, it </span>
                     </>
                   )}
                   <span>will </span>
-                  <span className='font-bold'>{landed ? 'end' : 'land'} </span>
+                  <strong>{landed ? 'end' : 'land'} </strong>
                   <span>in </span>
                 </span>
-                <Clock date={next} relative trim />
+                <Clock date={next} relative trim useSemantic />
                 <span> which is </span>
-              </time>
+              </div>
               <time id='shardAbsLocal' dateTime={next?.setZone('local')?.toISO({ suppressMilliseconds: true })}>
-                <span className='font-bold'>Your Time: </span>
-                <div className='Demphasized'>({Intl.DateTimeFormat().resolvedOptions().timeZone})</div>
+                <strong>Your Time: </strong>
+                <small className='block'>({Intl.DateTimeFormat().resolvedOptions().timeZone})</small>
                 <Date date={next} local />
                 <Clock date={next} local />
               </time>
               <time id='shardAbsSky' dateTime={next?.toISO({ suppressMilliseconds: true })}>
-                <span className='font-bold'>Sky Time: </span>
-                <div className='Demphasized'>(America/Los_Angeles)</div>
+                <strong>Sky Time: </strong>
+                <small className='block'>(America/Los_Angeles)</small>
                 <Date date={next} />
                 <Clock date={next} />
               </time>
@@ -95,13 +96,13 @@ export default function ShardSummary({ date, info, includedChild }: ShardSummary
           ) : (
             <div id='shardCountdown'>
               <span> All shard has ended </span>
-              <Clock date={info.lastEnd} relative negate />
+              <Clock date={info.lastEnd} relative negate useSemantic />
               <span> ago </span>
             </div>
           )}
-        </div>
+        </section>
         {includedChild}
-      </section>
+      </div>
     );
   }
 }

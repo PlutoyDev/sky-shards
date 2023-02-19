@@ -30,41 +30,32 @@ export default function ShardTimeline({ date, info }: ShardTimelineSectionProp) 
   const miniClockType = Math.floor(now.second / (Math.abs(date.diffNow('days').days) < 3 ? 20 : 30));
 
   return (
-    <div id='shardTimeline' className='glass'>
-      <div className='title'>
+    <section id='shardTimeline' className='glass'>
+      <h1 className='title'>
         <span>Timeline for </span>
         <Date date={date} describeClose />
-      </div>
+      </h1>
       <div className='timelines'>
         {occurrences.map((phases, i) => (
           <div className='glass' key={i}>
             {/* Accordin with ordinal shard name */}
-            <div
+            <h2
               className='timeline-header'
               onClick={() => setExpandedIndex(expandedIndex === i ? undefined : (i as 0 | 1 | 2))}
             >
               <span className='timeline-header-text'>
                 <span className='title'>{ordinalMap[i]} shard </span>
                 <span className='mini-clock'>
-                  (
-                  {useMemo(
-                    () =>
-                      [
-                        <>
-                          <span>Landing [Your Timezone]: </span>
-                          <Clock date={phases.land} local inline hideSeconds />
-                        </>,
-                        <>
-                          <span>Landing [Sky Timezone]: </span>
-                          <Clock date={phases.land} inline hideSeconds />
-                        </>,
-                        <>
-                          <span>Landing in </span>
-                          <Clock date={phases.land} relative inline twoUnits />
-                        </>,
-                      ][miniClockType],
-                    [miniClockType],
-                  )}
+                  (<span>Landing {miniClockType < 2 ? `[${miniClockType ? 'Your ' : 'Sky '} Timezone]: ` : 'in'}</span>
+                  <Clock
+                    date={phases.land}
+                    inline
+                    hideSeconds
+                    useSemantic
+                    local={miniClockType === 1}
+                    relative={miniClockType === 2}
+                    twoUnits={miniClockType === 2}
+                  />
                   )
                 </span>
               </span>
@@ -74,7 +65,7 @@ export default function ShardTimeline({ date, info }: ShardTimelineSectionProp) 
               ) : (
                 <MdExpandLess className='expand-icon' />
               )}
-            </div>
+            </h2>
 
             {/* Timeline */}
             <div className='timeline' style={expandedIndex === i ? { marginTop: '0.5rem' } : undefined}>
@@ -86,16 +77,18 @@ export default function ShardTimeline({ date, info }: ShardTimelineSectionProp) 
 
                     {/* Content */}
                     <div className='timeline-item-content'>
-                      <div className='timeline-item-header'>{phasesName[pName]}</div>
-                      <p>
-                        Relative: <Clock date={phases[pName]} inline relative twoUnits />
-                      </p>
-                      <p>
-                        Sky Time: <Clock date={phases[pName]} inline hideSeconds />
-                      </p>
-                      <p>
-                        Your Time: <Clock date={phases[pName]} inline local hideSeconds />
-                      </p>
+                      <h3 className='timeline-item-header'>{phasesName[pName]}</h3>
+                      <time dateTime={phases[pName].toISO()}>
+                        <p>
+                          Relative: <Clock date={phases[pName]} inline relative twoUnits />
+                        </p>
+                        <p>
+                          Sky Time: <Clock date={phases[pName]} inline hideSeconds />
+                        </p>
+                        <p>
+                          Your Time: <Clock date={phases[pName]} inline local hideSeconds />
+                        </p>
+                      </time>
                     </div>
                   </div>
                 ))}
@@ -103,6 +96,6 @@ export default function ShardTimeline({ date, info }: ShardTimelineSectionProp) 
           </div>
         ))}
       </div>
-    </div>
+    </section>
   );
 }

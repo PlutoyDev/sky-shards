@@ -16,6 +16,7 @@ interface ClockProp {
   inline?: boolean;
   twoUnits?: boolean;
   hideSeconds?: boolean;
+  useSemantic?: boolean;
 }
 
 export default function Clock({
@@ -30,6 +31,7 @@ export default function Clock({
   inline,
   twoUnits,
   hideSeconds,
+  useSemantic,
 }: ClockProp) {
   const { isTwelveHourMode } = useSettings();
   date = local
@@ -52,12 +54,26 @@ export default function Clock({
 
   if (trim) text = text.replace(/^(0+\w )+/, '');
 
-  return (
-    <span
-      className='Clock'
-      style={{ ['--clock-font-size' as string]: fontSize, display: inline ? 'inline-block' : undefined }}
-    >
-      {text}
-    </span>
-  );
+  if (useSemantic) {
+    return (
+      <time
+        className='Clock'
+        dateTime={
+          relative ? duration?.toISO() : date.toISO({ suppressMilliseconds: true, suppressSeconds: hideSeconds })
+        }
+        style={{ ['--clock-font-size' as string]: fontSize, display: inline ? 'inline-block' : undefined }}
+      >
+        {text}
+      </time>
+    );
+  } else {
+    return (
+      <span
+        className='Clock'
+        style={{ ['--clock-font-size' as string]: fontSize, display: inline ? 'inline-block' : undefined }}
+      >
+        {text}
+      </span>
+    );
+  }
 }

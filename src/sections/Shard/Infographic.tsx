@@ -32,8 +32,8 @@ function ShardInfographics({
   }, [image]);
 
   return (
-    <div className='shard-infographics glass' {...divProps}>
-      <div className='title'>{title}</div>
+    <section className='shard-infographics glass' {...divProps}>
+      <h1 className='title'>{title}</h1>
       {noImg && (
         <div className='no-img'>
           <div className='text'>Infographic has yet to be created for the following</div>
@@ -47,8 +47,8 @@ function ShardInfographics({
           style={{ minWidth, minHeight, maxWidth, maxHeight }}
         />
       </div>
-      <div className='credits'>{credits}</div>
-    </div>
+      <small className='credits'>{credits}</small>
+    </section>
   );
 }
 
