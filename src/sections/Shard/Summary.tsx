@@ -105,7 +105,7 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
           className='scrollHint'
           onClick={() => {
             summaryRef.current?.parentElement?.scrollBy({
-              top: summaryRef.current?.parentElement?.scrollHeight,
+              top: summaryRef.current?.offsetHeight,
               behavior: 'smooth',
             });
           }}
