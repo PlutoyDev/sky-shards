@@ -1,4 +1,4 @@
-import { ReactNode, useRef } from 'react';
+import { useRef } from 'react';
 import { BsChevronCompactDown } from 'react-icons/bs';
 import { DateTime } from 'luxon';
 import Clock from '../../components/Clock';
