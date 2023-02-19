@@ -53,25 +53,20 @@ export default function Clock({
       );
 
   if (trim) text = text.replace(/^(0+\w )+/, '');
+  const style: CSSProperties = { fontSize, display: inline ? 'inline-block' : undefined };
 
   if (useSemantic) {
+    const isoDateTime = relative
+      ? duration?.toISO()
+      : date.toISO({ suppressMilliseconds: true, suppressSeconds: hideSeconds });
     return (
-      <time
-        className='Clock'
-        dateTime={
-          relative ? duration?.toISO() : date.toISO({ suppressMilliseconds: true, suppressSeconds: hideSeconds })
-        }
-        style={{ ['--clock-font-size' as string]: fontSize, display: inline ? 'inline-block' : undefined }}
-      >
+      <time className='Clock' style={style} dateTime={isoDateTime}>
         {text}
       </time>
     );
   } else {
     return (
-      <span
-        className='Clock'
-        style={{ ['--clock-font-size' as string]: fontSize, display: inline ? 'inline-block' : undefined }}
-      >
+      <span className='Clock' style={style}>
         {text}
       </span>
     );

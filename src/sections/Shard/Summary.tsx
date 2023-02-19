@@ -65,20 +65,32 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
               <div id='shardCountdown'>
                 <span>
                   <strong>{ordinalIndex ? `${ordinalIndex} shard` : 'Shard'} </strong>
-                  {landed && (
+                  {landed ? (
                     <>
-                      <span>has </span>
-                      <strong>landed </strong>
-                      <Clock date={upcomming.land} relative negate inline hideSeconds />
-                      <span> ago, it </span>
+                      <span className='whitespace-nowrap'>
+                        has <strong>landed </strong>
+                        <Clock
+                          date={upcomming.land}
+                          relative
+                          negate
+                          inline
+                          hideSeconds
+                          fontSize='var(--font-size-200)'
+                        />
+                      </span>
+                      <span> ago. </span>
+                      <span className='whitespace-nowrap'>
+                        it will <strong>end in</strong>{' '}
+                      </span>
                     </>
+                  ) : (
+                    <span className='whitespace-nowrap'>
+                      will <strong>land in</strong>
+                    </span>
                   )}
-                  <span>will </span>
-                  <strong>{landed ? 'end' : 'land'} </strong>
-                  <span>in </span>
                 </span>
-                <Clock date={next} relative trim useSemantic />
-                <span> which is </span>
+                <Clock date={next} relative trim useSemantic fontSize='var(--font-size-600)' />
+                <small> which is</small>
               </div>
               <time id='shardAbsLocal' dateTime={next?.setZone('local')?.toISO({ suppressMilliseconds: true })}>
                 <strong>Your Time: </strong>
@@ -96,7 +108,7 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
           ) : (
             <div id='shardCountdown'>
               <span> All shard has ended </span>
-              <Clock date={info.lastEnd} relative negate useSemantic />
+              <Clock date={info.lastEnd} relative negate useSemantic fontSize='var(--font-size-600)' />
               <span> ago </span>
             </div>
           )}
