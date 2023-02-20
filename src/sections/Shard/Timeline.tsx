@@ -26,7 +26,7 @@ interface ShardTimelineSectionProp {
 export default function ShardTimeline({ date, info }: ShardTimelineSectionProp) {
   const now = useNow().application;
   const { occurrences, upcommingIndex } = useMemo(() => getAllShardFullPhases(date, info), [date.minute]);
-  const [expandedIndex, setExpandedIndex] = useState<0 | 1 | 2 | undefined>(upcommingIndex);
+  const [expandedIndexes, setExpandedIndexes] = useState<(0 | 1 | 2)[]>(upcommingIndex ? [upcommingIndex] : []);
   const miniClockType = Math.floor(now.second / (Math.abs(date.diffNow('days').days) < 3 ? 20 : 30));
 
   return (
@@ -36,65 +36,76 @@ export default function ShardTimeline({ date, info }: ShardTimelineSectionProp) 
         <Date date={date} describeClose />
       </h1>
       <div className='timelines'>
-        {occurrences.map((phases, i) => (
-          <div className='glass' key={i}>
-            {/* Accordin with ordinal shard name */}
-            <h2
-              className='timeline-header'
-              onClick={() => setExpandedIndex(expandedIndex === i ? undefined : (i as 0 | 1 | 2))}
-            >
-              <span className='timeline-header-text'>
-                <span className='title'>{ordinalMap[i]} shard </span>
-                <span className='mini-clock'>
-                  (<span>Landing {miniClockType < 2 ? `[${miniClockType ? 'Your ' : 'Sky '} Timezone]: ` : 'in'}</span>
-                  <Clock
-                    date={phases.land}
-                    inline
-                    hideSeconds
-                    useSemantic
-                    local={miniClockType === 1}
-                    relative={miniClockType === 2}
-                    twoUnits={miniClockType === 2}
-                  />
+        {occurrences.map((phases, oI) => {
+          const occurIndex = oI as 0 | 1 | 2;
+          return (
+            <div className='glass' key={occurIndex}>
+              {/* Accordin with ordinal shard name */}
+              <h2
+                className='timeline-header'
+                onClick={() =>
+                  setExpandedIndexes(a =>
+                    a.includes(occurIndex) ? a.filter(v => v !== occurIndex) : [...a, occurIndex],
                   )
+                }
+              >
+                <span className='timeline-header-text'>
+                  <span className='title'>{ordinalMap[occurIndex]} shard </span>
+                  <span className='mini-clock'>
+                    (
+                    <span>Landing {miniClockType < 2 ? `[${miniClockType ? 'Your ' : 'Sky '} Timezone]:` : 'in'} </span>
+                    <Clock
+                      date={phases.land}
+                      inline
+                      hideSeconds
+                      useSemantic
+                      local={miniClockType === 1}
+                      relative={miniClockType === 2}
+                      twoUnits={miniClockType === 2}
+                    />
+                    )
+                  </span>
                 </span>
-              </span>
-              {/* Expand button */}
-              {i === expandedIndex ? (
-                <MdExpandMore className='expand-icon' />
-              ) : (
-                <MdExpandLess className='expand-icon' />
-              )}
-            </h2>
+                {/* Expand button */}
+                {expandedIndexes.includes(occurIndex) ? (
+                  <MdExpandMore className='expand-icon' />
+                ) : (
+                  <MdExpandLess className='expand-icon' />
+                )}
+              </h2>
 
-            {/* Timeline */}
-            <div className='timeline' style={expandedIndex === i ? { marginTop: '0.5rem' } : undefined}>
-              {expandedIndex === i &&
-                phasesOrder.map((pName, pi) => (
-                  <div key={`${i}-${pi}`} className='timeline-item'>
-                    {/* Timeline Dot */}
-                    <div className='timeline-item-dot' />
+              {/* Timeline */}
+              <div
+                className='timeline'
+                style={expandedIndexes.includes(occurIndex) ? { marginTop: '0.5rem' } : undefined}
+              >
+                {expandedIndexes.includes(occurIndex) &&
+                  phasesOrder.map((pName, pi) => (
+                    <div key={`${occurIndex}-${pi}`} className='timeline-item'>
+                      {/* Timeline Dot */}
+                      <div className='timeline-item-dot' />
 
-                    {/* Content */}
-                    <div className='timeline-item-content'>
-                      <h3 className='timeline-item-header'>{phasesName[pName]}</h3>
-                      <time dateTime={phases[pName].toISO()}>
-                        <p>
-                          Relative: <Clock date={phases[pName]} inline relative twoUnits />
-                        </p>
-                        <p>
-                          Sky Time: <Clock date={phases[pName]} inline hideSeconds />
-                        </p>
-                        <p>
-                          Your Time: <Clock date={phases[pName]} inline local hideSeconds />
-                        </p>
-                      </time>
+                      {/* Content */}
+                      <div className='timeline-item-content'>
+                        <h3 className='timeline-item-header'>{phasesName[pName]}</h3>
+                        <time dateTime={phases[pName].toISO()}>
+                          <p>
+                            Relative: <Clock date={phases[pName]} inline relative twoUnits />
+                          </p>
+                          <p>
+                            Sky Time: <Clock date={phases[pName]} inline hideSeconds />
+                          </p>
+                          <p>
+                            Your Time: <Clock date={phases[pName]} inline local hideSeconds />
+                          </p>
+                        </time>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </section>
   );

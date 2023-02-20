@@ -171,7 +171,7 @@ export function getAllShardFullPhases(
   });
 
   const upcommingIndex = occurrences.reduceRight(
-    (acc, cur, idx) => (!acc && now < cur.end ? idx : undefined) as 0 | 1 | 2 | undefined,
+    (acc, { end }, idx) => (acc === undefined && now < end ? idx : undefined) as 0 | 1 | 2 | undefined,
     undefined as 0 | 1 | 2 | undefined,
   );
 
