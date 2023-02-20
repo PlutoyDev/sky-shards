@@ -66,7 +66,7 @@ const ClementShardMapRecords: Record<string, string> = {
   'Hermit valley': '/infographics/map_clement/03 Valley of Triumph - Hermit Valley.webp',
   'Village of Dreams': '/infographics/map_clement/03 Valley of Triumph - Village of Dreams.webp',
   'Ice Rink': '/infographics/map_clement/03 Valley of Triumph - Ice Rink.webp',
-  'Graveyard': '',
+  'Graveyard': '/infographics/map_clement/04 Golden Wasteland - Graveyard.webp',
   'Crabfield': '/infographics/map_clement/04 Golden Wasteland - Crab Fields.webp',
   'Forgotten Ark': '/infographics/map_clement/04 Golden Wasteland - Forgotten Ark.webp',
   'Broken Temple': '/infographics/map_clement/04 Golden Wasteland - Broken Temple.webp',
