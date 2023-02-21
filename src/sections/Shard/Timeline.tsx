@@ -25,7 +25,7 @@ interface ShardTimelineSectionProp {
 
 export default function ShardTimeline({ date, info }: ShardTimelineSectionProp) {
   const now = useNow().application;
-  const { occurrences, upcommingIndex } = useMemo(() => getAllShardFullPhases(date, info), [date.minute]);
+  const { occurrences, upcommingIndex } = useMemo(() => getAllShardFullPhases(date, info), [date.day, date.minute]);
   const [expandedIndexes, setExpandedIndexes] = useState<(0 | 1 | 2)[]>(upcommingIndex ? [upcommingIndex] : []);
   const miniClockType = Math.floor(now.second / (Math.abs(date.diffNow('days').days) < 3 ? 20 : 30));
 
