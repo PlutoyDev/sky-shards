@@ -1,5 +1,7 @@
 import { BsSunFill, BsMoonFill } from 'react-icons/bs';
+import { DateTime } from 'luxon';
 import Clock from '../../components/Clock';
+import Date from '../../components/Date';
 import { useSettings } from '../../context/Settings';
 
 interface HeaderProp {
@@ -14,7 +16,10 @@ export default function Header({ onThemeButtonClick, onClockButtonClick }: Heade
     <header id='header' className='glass'>
       <span id='title'>Sky Shards</span>
 
-      <Clock sky fontSize='0.8rem' />
+      <time dateTime={DateTime.utc().toISO()} id='header-dateTime'>
+        <Date hideYear short />
+        <Clock sky hideSeconds />
+      </time>
 
       <div id='header-buttons'>
         <button

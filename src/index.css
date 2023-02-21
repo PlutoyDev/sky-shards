@@ -133,6 +133,14 @@ body.light {
   margin-bottom: 3px;
 }
 
+#header-dateTime {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  text-align: center;
+  font-weight: 500;
+}
+
 #header-buttons {
   display: flex;
   flex-flow: row nowrap;
