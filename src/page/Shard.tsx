@@ -247,10 +247,10 @@ const ShardPageContent = motion(
             <ShardTimeline date={date} info={info} />
             <ShardDataInfographic info={info} />
 
-            <div className='scrollHint' onClick={() => contentRef.current?.scrollTo({ top: 0, behavior: 'smooth' })}>
+            <small className='scrollHint' onClick={() => contentRef.current?.scrollTo({ top: 0, behavior: 'smooth' })}>
               <BsChevronCompactUp />
-              <span>Scroll back to summary</span>
-            </div>
+              <span>Click here to scroll back to top</span>
+            </small>
             <div style={{ minHeight: '15%' }}></div>
           </>
         )}
@@ -299,7 +299,12 @@ const NavHint = motion(
   forwardRef<HTMLDivElement, NavHintProps>(function NavHint({ hint, position, disabled, hideArrow, onClick }, ref) {
     return useMemo(
       () => (
-        <div ref={ref} id={`${position}NavHint`} className={`navHint ${disabled ? 'disabled' : ''}`} onClick={onClick}>
+        <small
+          ref={ref}
+          id={`${position}NavHint`}
+          className={`navHint ${disabled ? 'disabled' : ''}`}
+          onClick={onClick}
+        >
           <span className='navHintText'>{hint}</span>
 
           <svg
@@ -319,7 +324,7 @@ const NavHint = motion(
               strokeOpacity={hideArrow ? 0 : 1}
             />
           </svg>
-        </div>
+        </small>
       ),
       [hint, position, onClick],
     );

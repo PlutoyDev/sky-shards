@@ -113,7 +113,7 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
             </div>
           )}
         </section>
-        <div
+        <small
           className='scrollHint'
           onClick={() => {
             summaryRef.current?.parentElement?.scrollBy({
@@ -122,9 +122,9 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
             });
           }}
         >
-          <span>Scroll down for more info</span>
+          <span>Click here or Scroll down for more info</span>
           <BsChevronCompactDown />
-        </div>
+        </small>
       </div>
     );
   }
