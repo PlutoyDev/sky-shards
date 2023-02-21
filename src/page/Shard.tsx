@@ -27,7 +27,7 @@ interface ShardLoaderData {
   date: DateTime;
 }
 
-const dragThreshold = 150;
+const dragThreshold = 125;
 const useGesture = createUseGesture([dragAction, pinchAction]);
 const roundToRefDate = (date: DateTime, ref: DateTime) =>
   date.hasSame(ref, 'day') ? ref : date < ref ? date.endOf('day') : date.startOf('day');
