@@ -12,8 +12,11 @@ interface ClockProp {
   trim?: boolean;
   date?: DateTime;
   duration?: Duration;
-  variableWidth?: boolean;
   fontSize?: CSSProperties['fontSize'];
+  inline?: boolean;
+  twoUnits?: boolean;
+  hideSeconds?: boolean;
+  useSemantic?: boolean;
 }
 
 export default function Clock({
@@ -24,23 +27,48 @@ export default function Clock({
   trim,
   date,
   duration,
-  variableWidth,
   fontSize,
+  inline,
+  twoUnits,
+  hideSeconds,
+  useSemantic,
 }: ClockProp) {
   const { isTwelveHourMode } = useSettings();
-  const now = local ? useNow().local : useNow().application;
-  date = (local ? date?.toLocal() : sky ? date?.setZone('America/Los_Angeles') : date) ?? now;
-  duration = duration ?? relative ? (negate ? now.diff(date) : date.diff(now)) : undefined;
+  date = local
+    ? date?.toLocal() ?? useNow().local
+    : (sky ? date?.setZone('America/Los_Angeles') : date) ?? useNow().application;
+  duration =
+    duration ?? relative ? (negate ? useNow().application.diff(date) : date.diff(useNow().application)) : undefined;
 
   let text = duration
-    ? duration.rescale().shiftTo('hours').toFormat(`hh'h' mm'm' ss's'`)
-    : date.toFormat(isTwelveHourMode ? 'hh:mm:ss a' : 'HH:mm:ss');
+    ? duration.toFormat(
+        twoUnits || hideSeconds
+          ? Math.abs(duration.shiftTo('hours').hours) > 2 || hideSeconds
+            ? `hh'h' mm'm'`
+            : `mm'm' ss's'`
+          : `hh'h' mm'm' ss's'`,
+      )
+    : date.toFormat(
+        hideSeconds ? (isTwelveHourMode ? 'hh:mm a' : 'HH:mm') : isTwelveHourMode ? 'hh:mm:ss a' : 'HH:mm:ss',
+      );
 
   if (trim) text = text.replace(/^(0+\w )+/, '');
+  const style: CSSProperties = { fontSize, display: inline ? 'inline-block' : undefined };
 
-  return (
-    <span className={`Clock${variableWidth ? '' : ' Monospace'}`} style={{ ['--clock-font-size' as string]: fontSize }}>
-      {variableWidth || text.length === 0 ? text : text.split('').map((char, index) => <span key={index}>{char}</span>)}
-    </span>
-  );
+  if (useSemantic) {
+    const isoDateTime = relative
+      ? duration?.toISO()
+      : date.toISO({ suppressMilliseconds: true, suppressSeconds: hideSeconds });
+    return (
+      <time className='Clock' style={style} dateTime={isoDateTime}>
+        {text}
+      </time>
+    );
+  } else {
+    return (
+      <span className='Clock' style={style}>
+        {text}
+      </span>
+    );
+  }
 }

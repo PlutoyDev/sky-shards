@@ -1,7 +1,7 @@
 {
   "name": "sky-shards",
   "private": true,
-  "version": "2.2.0",
+  "version": "3.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -12,14 +12,15 @@
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@fontsource/roboto": "^4.5.8",
+    "@use-gesture/react": "^10.2.24",
+    "framer-motion": "^9.0.1",
     "luxon": "^3.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.7.1",
     "react-modal": "^3.16.1",
     "react-responsive": "^9.0.2",
-    "react-router-dom": "^6.6.1",
-    "react-swipeable": "^7.0.0"
+    "react-router-dom": "^6.6.1"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^4.0.0",
@@ -47,5 +48,5 @@
     "vite-plugin-pwa": "^0.14.0",
     "workbox-build": "^6.5.4"
   },
-  "packageManager": "yarn@3.3.1"
+  "packageManager": "pnpm@7.27.0"
 }

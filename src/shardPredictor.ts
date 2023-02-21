@@ -1,6 +1,6 @@
 import { DateTime, Duration } from 'luxon';
 
-const earlyOffset = Duration.fromObject({ minutes: -30 }); //after start
+const earlySkyOffset = Duration.fromObject({ minutes: -32, seconds: -10 }); //after start
 const eruptionOffset = Duration.fromObject({ minutes: 7 }); //after start
 const landOffset = Duration.fromObject({ minutes: 8, seconds: 40 }); //after start
 const endOffset = Duration.fromObject({ hours: 4 }); //after start
@@ -16,6 +16,7 @@ interface ShardConfig {
   offset: Duration;
   interval: Duration;
   maps: [string, string, string, string, string];
+  defRewardAC?: number;
 }
 
 const shardsInfo: ShardConfig[] = [
@@ -45,6 +46,7 @@ const shardsInfo: ShardConfig[] = [
       minutes: 40,
     }),
     maps: ['Cave', 'Forest Garden', 'Village of Dreams', 'Graveyard', 'Jellyfish Cove'],
+    defRewardAC: 2,
   },
   {
     noShardWkDay: [2, 3], //Tue;Wed
@@ -54,6 +56,7 @@ const shardsInfo: ShardConfig[] = [
       minutes: 20,
     }),
     maps: ['Bird Nest', 'Treehouse', 'Village of Dreams', 'Crabfield', 'Jellyfish Cove'],
+    defRewardAC: 2.5,
   },
   {
     noShardWkDay: [3, 4], //Wed;Thu
@@ -63,8 +66,16 @@ const shardsInfo: ShardConfig[] = [
       minutes: 30,
     }),
     maps: ['Sanctuary Island', 'Elevated Clearing', 'Hermit valley', 'Forgotten Ark', 'Jellyfish Cove'],
+    defRewardAC: 3.5,
   },
 ];
+
+const overrideRewardAC: Record<string, number> = {
+  'Forest Garden': 2.5,
+  'Village of Dreams': 2.5,
+  'Treehouse': 3.5,
+  'Jellyfish Cove': 3.5,
+};
 
 export function getShardInfo(date: DateTime): ShardInfo {
   date = date.setZone('America/Los_Angeles').startOf('day');
@@ -72,17 +83,25 @@ export function getShardInfo(date: DateTime): ShardInfo {
   const isRed = dayOfMth % 2 === 1;
   const realmIdx = (dayOfMth - 1) % 5;
   const infoIndex = isRed ? (((dayOfMth - 1) / 2) % 3) + 2 : (dayOfMth / 2) % 2;
-  const { noShardWkDay, interval, offset, maps } = shardsInfo[infoIndex];
+  const { noShardWkDay, interval, offset, maps, defRewardAC } = shardsInfo[infoIndex];
   const haveShard = !noShardWkDay.includes(dayOfWk);
+  const map = maps[realmIdx];
+  const rewardAC = isRed ? overrideRewardAC[map] ?? defRewardAC : undefined;
+  const lastEnd = date
+    .plus(offset)
+    .plus(interval.mapUnits(x => x * 2))
+    .plus(endOffset);
   return {
     date,
     isRed,
     haveShard,
     offset,
     interval,
+    lastEnd,
     realmFull: realmsFull[realmIdx],
     realmNick: realmsNick[realmIdx],
-    map: maps[realmIdx],
+    map,
+    rewardAC,
   };
 }
 
@@ -92,85 +111,87 @@ export type ShardInfo = {
   haveShard: boolean;
   offset: Duration;
   interval: Duration;
+  lastEnd: DateTime;
   realmFull: string;
   realmNick: string;
   map: string;
+  rewardAC?: number;
 };
 
-export interface ShardPhases {
-  early: DateTime;
+export interface ShardSimplePhases {
   start: DateTime;
-  eruption: DateTime;
   land: DateTime;
   end: DateTime;
 }
-
-export function phasesFromStart(start: DateTime): ShardPhases {
-  const early = start.plus(earlyOffset);
-  const end = start.plus(endOffset);
-  const eruption = start.plus(eruptionOffset);
-  const land = start.plus(landOffset);
-  return { early, start, eruption, land, end };
-}
-
-export function phasesFromEnd(end: DateTime): ShardPhases {
-  const start = end.minus(endOffset);
-  const early = start.plus(earlyOffset);
-  const eruption = start.plus(eruptionOffset);
-  const land = start.plus(landOffset);
-  return { early, start, eruption, land, end };
-}
-
-interface RecursiveOpt {
-  limit?: number;
-  daysAdded?: number;
-  colorIsRed?: boolean;
-}
-
-export function nextShardInfo(
+//Shards happens 3 times a day, given any time, return the current/next shard phase
+export function getUpcommingShardPhase(
   now: DateTime,
-  recursive: RecursiveOpt = {},
-): { info: ShardInfo; daysAdded: number; date: DateTime } {
-  const { limit = 14, daysAdded = 0, colorIsRed } = recursive;
-  const info = getShardInfo(now);
-  const { haveShard, isRed } = info;
-  if (haveShard && (colorIsRed === undefined || colorIsRed === isRed)) {
-    return { info, daysAdded, date: now };
+  info?: ShardInfo,
+): (ShardSimplePhases & { index: number }) | undefined {
+  if (!info) {
+    info = getShardInfo(now);
   }
-  if (daysAdded >= limit) {
-    return { info, daysAdded, date: now };
+  const { interval, lastEnd } = info;
+  if (now > lastEnd) return undefined;
+  const secondEnd = lastEnd.minus(interval);
+  if (now > secondEnd) {
+    const start = lastEnd.minus(endOffset);
+    return { index: 2, start, land: start.plus(landOffset), end: lastEnd };
   }
-  return nextShardInfo(now.plus({ days: 1 }), { limit, daysAdded: daysAdded + 1, colorIsRed });
+  const firstEnd = secondEnd.minus(interval);
+  if (now > firstEnd) {
+    const start = secondEnd.minus(endOffset);
+    return { index: 1, start, land: start.plus(landOffset), end: secondEnd };
+  }
+  const start = firstEnd.minus(endOffset);
+  return { index: 0, start, land: start.plus(landOffset), end: firstEnd };
 }
 
-export function nextOrCurrent(
+export interface ShardFullPhases extends ShardSimplePhases {
+  earlySky: DateTime;
+  eruption: DateTime;
+}
+
+export function getAllShardFullPhases(
   now: DateTime,
-  recursive = false,
-  daysAdded = 0,
-): { info: ShardInfo; index?: number; phases?: ShardPhases; daysAdded: number } {
-  const today = now.startOf('day');
-  const info = getShardInfo(now);
-  const { haveShard, offset, interval } = info;
-  if (!haveShard) {
-    if (recursive) {
-      return nextOrCurrent(today.plus({ days: 1 }), recursive, daysAdded + 1);
-    }
-    return { info, daysAdded };
+  info?: ShardInfo,
+): { occurrences: ShardFullPhases[]; upcommingIndex: 0 | 1 | 2 | undefined } {
+  const today = now.setZone('America/Los_Angeles').startOf('day');
+  if (!info) {
+    info = getShardInfo(now);
   }
+  const { offset, interval } = info;
+  const occurrences = Array.from({ length: 3 }, (_, i) => {
+    const start = today.plus(offset).plus(interval.mapUnits(x => x * i));
+    const earlySky = start.plus(earlySkyOffset);
+    const eruption = start.plus(eruptionOffset);
+    const land = start.plus(landOffset);
+    const end = start.plus(endOffset);
+    return { start, earlySky, eruption, land, end };
+  });
 
-  const firstEnd = today.plus(offset).plus(endOffset);
-  const ends = Array.from({ length: 3 }, (_, i) => firstEnd.plus(interval.mapUnits(v => v * i)));
-  const index = ends.findIndex(end => now < end);
-  const next = ends[index];
+  const upcommingIndex = occurrences.reduceRight(
+    (acc, { end }, idx) => (acc === undefined && now < end ? idx : undefined) as 0 | 1 | 2 | undefined,
+    undefined as 0 | 1 | 2 | undefined,
+  );
 
-  if (next) {
-    const phases = phasesFromEnd(next);
-    return { info, index, phases, daysAdded };
+  return {
+    occurrences,
+    upcommingIndex,
+  };
+}
+
+interface findShardOptions {
+  only?: undefined | 'black' | 'red';
+}
+
+export function findNextShard(from: DateTime, opts: findShardOptions = {}): ShardInfo {
+  const info = getShardInfo(from);
+  const { haveShard, isRed, lastEnd } = info;
+  const { only } = opts;
+  if (haveShard && from < lastEnd && (!only || (only === 'red') === isRed)) {
+    return info;
+  } else {
+    return findNextShard(from.plus({ days: 1 }), { only });
   }
-
-  if (recursive) {
-    return nextOrCurrent(today.plus({ days: 1 }), recursive, daysAdded + 1);
-  }
-
-  return { info, daysAdded };
 }
