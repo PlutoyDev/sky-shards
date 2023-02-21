@@ -1,5 +1,5 @@
 import { BsGithub, BsTwitter, BsReddit, BsDiscord, BsFillEnvelopeFill } from 'react-icons/bs';
-import credits from '../../data/credits';
+import { patternCredits } from '../../data/credits';
 
 export default function Footer() {
   return (
@@ -11,7 +11,7 @@ export default function Footer() {
       <div id='footer-credits'>
         <span>Thank you to those who helped to discover the patterns shard eruption:</span>
         <div id='credits'>
-          {credits.map(u => (
+          {patternCredits.map(u => (
             <span key={u}>{u}</span>
           ))}
         </div>
