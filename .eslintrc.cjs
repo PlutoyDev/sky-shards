@@ -10,7 +10,7 @@ module.exports = {
     ecmaFeatures: { jsx: true },
   },
   settings: {
-    react: { version: 'detect' },
+    'react': { version: 'detect' },
     'import/resolver': {
       node: {
         paths: ['src'],
