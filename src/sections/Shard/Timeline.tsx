@@ -52,8 +52,7 @@ export default function ShardTimeline({ date, info }: ShardTimelineSectionProp) 
                 <span className='timeline-header-text'>
                   <span className='title'>{ordinalMap[occurIndex]} shard </span>
                   <span className='mini-clock'>
-                    (
-                    <span>Landing {miniClockType < 2 ? `[${miniClockType ? 'Your ' : 'Sky '} Timezone]:` : 'in'} </span>
+                    (<span>Landing {miniClockType < 2 ? `[${miniClockType ? 'Your ' : 'Sky '} Time]:` : 'in'} </span>
                     <Clock
                       date={phases.land}
                       inline
