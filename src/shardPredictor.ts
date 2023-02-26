@@ -152,16 +152,13 @@ export interface ShardFullPhases extends ShardSimplePhases {
   eruption: DateTime;
 }
 
-export function getAllShardFullPhases(
-  now: DateTime,
-  info?: ShardInfo,
-): { occurrences: ShardFullPhases[]; upcommingIndex: 0 | 1 | 2 | undefined } {
+export function getAllShardFullPhases(now: DateTime, info?: ShardInfo): ShardFullPhases[] {
   const today = now.setZone('America/Los_Angeles').startOf('day');
   if (!info) {
     info = getShardInfo(now);
   }
   const { offset, interval } = info;
-  const occurrences = Array.from({ length: 3 }, (_, i) => {
+  return Array.from({ length: 3 }, (_, i) => {
     const start = today.plus(offset).plus(interval.mapUnits(x => x * i));
     const earlySky = start.plus(earlySkyOffset);
     const eruption = start.plus(eruptionOffset);
@@ -169,16 +166,6 @@ export function getAllShardFullPhases(
     const end = start.plus(endOffset);
     return { start, earlySky, eruption, land, end };
   });
-
-  const upcommingIndex = occurrences.reduceRight(
-    (acc, { end }, idx) => (acc === undefined && now < end ? idx : undefined) as 0 | 1 | 2 | undefined,
-    undefined as 0 | 1 | 2 | undefined,
-  );
-
-  return {
-    occurrences,
-    upcommingIndex,
-  };
 }
 
 interface findShardOptions {

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { MdExpandMore, MdExpandLess } from 'react-icons/md';
 import { DateTime } from 'luxon';
 import Clock from '../../components/Clock';
@@ -25,11 +25,27 @@ interface ShardTimelineSectionProp {
 
 export default function ShardTimeline({ date, info }: ShardTimelineSectionProp) {
   const now = useNow().application;
-  const { occurrences, upcommingIndex } = useMemo(() => getAllShardFullPhases(date, info), [date.day, date.minute]);
-  const [expandedIndexes, setExpandedIndexes] = useState<(0 | 1 | 2)[]>(
-    upcommingIndex !== undefined ? [upcommingIndex] : [],
-  );
+  const occurrences = useMemo(() => getAllShardFullPhases(date, info), [date.day]);
+  const expanded = useRef<[boolean, boolean, boolean]>([false, false, false]);
   const miniClockType = Math.floor(now.second / (Math.abs(date.diffNow('days').days) < 3 ? 20 : 30));
+
+  const upcommingIndex = useMemo(
+    () =>
+      occurrences.reduceRight(
+        (acc, { end }, idx) => (acc === undefined && now < end ? idx : acc),
+        undefined as number | undefined,
+      ),
+    [...occurrences.map(({ end }) => end), now.minute],
+  );
+
+  useEffect(() => {
+    const countExpanded = expanded.current.reduce((acc, cur) => acc + (cur ? 1 : 0), 0);
+    const prevIndex = upcommingIndex !== undefined ? upcommingIndex - 1 : 2;
+    if (countExpanded === 1 && expanded.current[prevIndex]) expanded.current[prevIndex] = false;
+    if (upcommingIndex !== undefined) expanded.current[upcommingIndex] = true;
+    else expanded.current = [false, false, true];
+    console.log(upcommingIndex);
+  }, [upcommingIndex]);
 
   return (
     <section id='shardTimeline' className='glass'>
@@ -45,11 +61,7 @@ export default function ShardTimeline({ date, info }: ShardTimelineSectionProp) 
               {/* Accordin with ordinal shard name */}
               <h2
                 className='timeline-header'
-                onClick={() =>
-                  setExpandedIndexes(a =>
-                    a.includes(occurIndex) ? a.filter(v => v !== occurIndex) : [...a, occurIndex],
-                  )
-                }
+                onClick={() => (expanded.current[occurIndex] = !expanded.current[occurIndex])}
               >
                 <span className='timeline-header-text'>
                   <span className='title'>{ordinalMap[occurIndex]} shard </span>
@@ -68,7 +80,7 @@ export default function ShardTimeline({ date, info }: ShardTimelineSectionProp) 
                   </span>
                 </span>
                 {/* Expand button */}
-                {expandedIndexes.includes(occurIndex) ? (
+                {!expanded.current[occurIndex] ? (
                   <MdExpandMore className='expand-icon' />
                 ) : (
                   <MdExpandLess className='expand-icon' />
@@ -76,11 +88,8 @@ export default function ShardTimeline({ date, info }: ShardTimelineSectionProp) 
               </h2>
 
               {/* Timeline */}
-              <div
-                className='timeline'
-                style={expandedIndexes.includes(occurIndex) ? { marginTop: '0.5rem' } : undefined}
-              >
-                {expandedIndexes.includes(occurIndex) &&
+              <div className='timeline' style={expanded.current[occurIndex] ? { marginTop: '0.5rem' } : undefined}>
+                {expanded.current[occurIndex] &&
                   phasesOrder.map((pName, pi) => (
                     <div key={`${occurIndex}-${pi}`} className='timeline-item'>
                       {/* Timeline Dot */}
