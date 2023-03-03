@@ -44,7 +44,6 @@ export default function ShardTimeline({ date, info }: ShardTimelineSectionProp) 
     if (countExpanded === 1 && expanded.current[prevIndex]) expanded.current[prevIndex] = false;
     if (upcommingIndex !== undefined) expanded.current[upcommingIndex] = true;
     else expanded.current = [false, false, true];
-    console.log(upcommingIndex);
   }, [upcommingIndex]);
 
   return (
