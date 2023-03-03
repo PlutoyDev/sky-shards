@@ -1,6 +1,6 @@
 import { forwardRef, HTMLAttributes, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { BsChevronCompactUp } from 'react-icons/bs';
-import { LoaderFunction, redirect, useLoaderData, useNavigate } from 'react-router-dom';
+import { LoaderFunction, redirect, useLoaderData, useLocation, useNavigate, useResolvedPath } from 'react-router-dom';
 import { createUseGesture, dragAction, pinchAction } from '@use-gesture/react';
 import { animate, motion, useMotionValue, useTransform } from 'framer-motion';
 import { DateTime } from 'luxon';
@@ -172,6 +172,27 @@ export default function Shard() {
 
   //Scroll to top on date change
   useEffect(() => activeContentRef.current?.scrollTo(0, 0), [date.day, date.month, date.year]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (activeContentRef.current) {
+        const childrenCount = activeContentRef.current.childElementCount;
+        if (childrenCount > 1) {
+          const hash = window.location.hash.slice(1);
+          if (hash === 'map') {
+            const map = activeContentRef.current.children[1] as HTMLElement;
+            map.scrollIntoView();
+          } else if (hash === 'timeline') {
+            const timeline = activeContentRef.current.children[2] as HTMLElement;
+            timeline.scrollIntoView();
+          } else if (hash === 'data') {
+            const data = activeContentRef.current.children[3] as HTMLElement;
+            data.scrollIntoView();
+          }
+        }
+      }
+    }, 20);
+  }, []);
 
   return (
     <div className='Page ShardPage'>
