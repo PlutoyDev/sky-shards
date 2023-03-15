@@ -1,3 +1,6 @@
+/*
+  Cache-Control: public, max-age=31536000, immutable
+
 /
   X-Frame-Options: DENY
   Content-Security-Policy: default-src 'self'; style-src 'self' https://fonts.googleapis.com/; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://fonts.googleapis.com
@@ -14,7 +17,4 @@
 
 /infographics/*.webp
   Cache-Control: public, max-age=604800, stale-while-revalidate=604800, immutable
-
-/*
-  public, max-age=31536000, immutable
 
