@@ -5,15 +5,15 @@ import manifest from './manifest';
 import workbox from './workbox';
 
 console.log('Version', process.env.VITE_VERSION_MINOR);
-console.log('Branch', process.env.BRANCH);
-console.log('Commit Ref', process.env.COMMIT_REF);
+console.log('Branch', process.env.CF_PAGES_BRANCH);
+console.log('Commit Ref', process.env.CF_PAGES_COMMIT_SHA);
 console.log('Netlify CDN', process.env.NETLIFY_IMAGES_CDN_DOMAIN);
 
 // https://vitejs.dev/config/
 export default defineConfig({
   define: {
-    __NETLIFY_GIT_BRANCH__: `'${process.env.BRANCH}'`,
-    __NETLIFY_GIT_COMMIT_REF__: `'${process.env.COMMIT_REF}'`,
+    __NETLIFY_GIT_BRANCH__: `'${process.env.CF_PAGES_BRANCH}'`,
+    __NETLIFY_GIT_COMMIT_REF__: `'${process.env.CF_PAGES_COMMIT_SHA}'`,
   },
   plugins: [
     react(),
