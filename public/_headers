@@ -5,3 +5,16 @@
   X-Content-Type-Options: nosniff
   Referrer-Policy: same-origin
   Cache-Control: public, max-age=31536000, immutable
+
+/*.js
+  Cache-Control: public, max-age=604800, stale-while-revalidate=604800, immutable
+
+/*.css
+  Cache-Control: public, max-age=604800, stale-while-revalidate=604800, immutable
+
+/infographics/*.webp
+  Cache-Control: public, max-age=604800, stale-while-revalidate=604800, immutable
+
+/*
+  public, max-age=31536000, immutable
+
