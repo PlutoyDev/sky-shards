@@ -3,6 +3,7 @@ command = "pnpm run build"
 publish = "dist"
 
 [[redirects]]
-from = "/*"
+from = "https://sky-shards.netlify.app/*"
 to = "https://sky-shards.pages.dev/:splat"
 status = 301
+force = true
