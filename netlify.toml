@@ -4,5 +4,5 @@ publish = "dist"
 
 [[redirects]]
 from = "/*"
-to = "https:sky-shards.pages.dev/:splat"
+to = "https://sky-shards.pages.dev/:splat"
 status = 301
