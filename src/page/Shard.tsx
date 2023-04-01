@@ -1,6 +1,6 @@
 import { forwardRef, HTMLAttributes, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { BsChevronCompactUp } from 'react-icons/bs';
-import { LoaderFunction, redirect, useLoaderData, useLocation, useNavigate, useResolvedPath } from 'react-router-dom';
+import { LoaderFunction, redirect, useLoaderData, useNavigate } from 'react-router-dom';
 import { createUseGesture, dragAction, pinchAction } from '@use-gesture/react';
 import { animate, motion, useMotionValue, useTransform } from 'framer-motion';
 import { DateTime } from 'luxon';
