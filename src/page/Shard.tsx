@@ -4,6 +4,7 @@ import { LoaderFunction, redirect, useLoaderData, useNavigate } from 'react-rout
 import { createUseGesture, dragAction, pinchAction } from '@use-gesture/react';
 import { animate, motion, useMotionValue, useTransform } from 'framer-motion';
 import { DateTime } from 'luxon';
+import { useHeaderFx } from '../context/HeaderFx';
 import { useNow } from '../context/Now';
 import { ShardDataInfographic, ShardMapInfographic } from '../sections/Shard/Infographic';
 import ShardSummary from '../sections/Shard/Summary';
@@ -90,6 +91,7 @@ export default function Shard() {
   const [isNavigatable, setIsNavigatable] = useState(true);
 
   const [pending, setPending] = useState<PendingState>('none');
+  const [pendingDate, setPendingDate] = useState<DateTime | null>(null);
   const activeContentRef = useRef<HTMLDivElement>(null);
   const [hintIdx, setHintIdx] = useState(0);
   const draggedX = useMotionValue(0);
@@ -118,12 +120,16 @@ export default function Shard() {
 
   const navigateDay = useCallback(
     (d: DateTime | number) => {
-      const diff = typeof d === 'number' ? d : date.diff(d, 'days').days;
+      console.log('navigateDay', d);
+      const diff = typeof d === 'number' ? d : d.diff(date, 'days').days;
       const target = typeof d === 'number' ? date.plus({ days: d }) : d;
-      if (diff === 0) return;
+      if (Math.floor(diff) === 0) return;
       const pendingState = diff < 0 ? 'previous' : 'next';
       if (pending !== pendingState) {
         setPending(diff < 0 ? 'previous' : 'next');
+      }
+      if (Math.abs(diff) > 1) {
+        setPendingDate(target);
       }
       setIsNavigatable(false);
 
@@ -136,11 +142,15 @@ export default function Shard() {
           setHintIdx(0);
           setIsNavigatable(true);
           setPending('none');
+          setPendingDate(null);
         },
       });
     },
     [pending, date.day, date.month, date.year, draggedX, contentX],
   );
+
+  const { setNavigateDay } = useHeaderFx();
+  useEffect(() => setNavigateDay(navigateDay), [navigateDay]);
 
   const bind = useGesture(
     {
@@ -207,7 +217,7 @@ export default function Shard() {
       />
       {pending !== 'none' && (
         <ShardPageContent
-          date={roundToRefDate(date.plus({ days: pending === 'previous' ? -1 : 1 }), now)}
+          date={roundToRefDate(pendingDate ?? date.plus({ days: pending === 'previous' ? -1 : 1 }), now)}
           style={{
             x: pendingContentX,
           }}

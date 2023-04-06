@@ -2,6 +2,7 @@ import { BsSunFill, BsMoonFill } from 'react-icons/bs';
 import { DateTime } from 'luxon';
 import Clock from '../../components/Clock';
 import Date from '../../components/Date';
+import { useHeaderFx } from '../../context/HeaderFx';
 import { useSettings } from '../../context/Settings';
 
 interface HeaderProp {
@@ -11,12 +12,17 @@ interface HeaderProp {
 
 export default function Header({ onThemeButtonClick, onClockButtonClick }: HeaderProp) {
   const { isTwelveHourMode, isLightMode } = useSettings();
+  const { navigateDay } = useHeaderFx();
+
+  const navigateToday = () => navigateDay(DateTime.local({ zone: 'America/Los_Angeles' }));
 
   return (
     <header id='header' className='glass'>
-      <span id='title'>Sky Shards</span>
+      <a id='title' href='/' onClick={e => (navigateToday(), e.preventDefault())}>
+        <span>Sky Shards</span>
+      </a>
 
-      <time dateTime={DateTime.utc().toISO()} id='header-dateTime'>
+      <time dateTime={DateTime.utc().toISO()} id='header-dateTime' onClick={navigateToday}>
         <Date hideYear short />
         <Clock sky hideSeconds />
       </time>

@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { Outlet } from 'react-router-dom';
+import { HeaderFxConsumer, HeaderFxProvider } from './context/HeaderFx';
 import { NowProvider } from './context/Now';
 import { SettingsProvider } from './context/Settings';
 import useLocalStorageState from './hooks/useLocalStorageState';
@@ -27,18 +28,22 @@ function App() {
   }, [lightMode]);
 
   return (
-    <SettingsProvider value={{ isTwelveHourMode: twelveHourMode, isLightMode: lightMode, isCompactMode: compactMode }}>
-      <NowProvider>
-        <div className='App'>
-          <Header
-            onThemeButtonClick={() => setLightMode(!lightMode)}
-            onClockButtonClick={() => setTwelveHourMode(!twelveHourMode)}
-          />
-          <Outlet />
-          <Footer />
-        </div>
-      </NowProvider>
-    </SettingsProvider>
+    <HeaderFxProvider>
+      <SettingsProvider
+        value={{ isTwelveHourMode: twelveHourMode, isLightMode: lightMode, isCompactMode: compactMode }}
+      >
+        <NowProvider>
+          <div className='App'>
+            <Header
+              onThemeButtonClick={() => setLightMode(!lightMode)}
+              onClockButtonClick={() => setTwelveHourMode(!twelveHourMode)}
+            />
+            <Outlet />
+            <Footer />
+          </div>
+        </NowProvider>
+      </SettingsProvider>
+    </HeaderFxProvider>
   );
 }
 
