@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { Outlet } from 'react-router-dom';
 import { HeaderFxConsumer, HeaderFxProvider } from './context/HeaderFx';
@@ -9,20 +9,29 @@ import Footer from './sections/App/Footer';
 import Header from './sections/App/Header';
 
 function App() {
-  const [twelveHourMode, setTwelveHourMode] = useLocalStorageState(
-    'twelveHourMode',
-    Intl.DateTimeFormat().resolvedOptions().hour12 ?? false,
-  );
-  const [lightMode, setLightMode] = useLocalStorageState(
-    'lightMode',
-    useMediaQuery({ query: '(prefers-color-scheme: light)' }),
-  );
+  const [twelveHourModeSetting, setTwelveHourModeSetting] = useLocalStorageState('twelveHourMode', 'system');
+  const [lightMode, setLightMode] = useLocalStorageState<'false' | 'true' | 'system'>('lightMode', 'system');
   const compactMode = useMediaQuery({ maxWidth: '300px' });
 
+  const twelveHourMode =
+    twelveHourModeSetting === 'system'
+      ? Intl.DateTimeFormat().resolvedOptions().hour12 ?? false
+      : twelveHourModeSetting === 'true';
+
+  const boolLightMode =
+    lightMode === 'true' || (lightMode === 'system' && !window.matchMedia('(prefers-color-scheme: dark)').matches);
+
   useEffect(() => {
-    if (lightMode) {
+    if (lightMode === 'system') {
+      const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (prefersDarkMode) {
+        document.body.classList.remove('light');
+      } else {
+        document.body.classList.add('light');
+      }
+    } else if (lightMode === 'true') {
       document.body.classList.add('light');
-    } else {
+    } else if (lightMode === 'false') {
       document.body.classList.remove('light');
     }
   }, [lightMode]);
@@ -30,13 +39,15 @@ function App() {
   return (
     <HeaderFxProvider>
       <SettingsProvider
-        value={{ isTwelveHourMode: twelveHourMode, isLightMode: lightMode, isCompactMode: compactMode }}
+        value={{ isTwelveHourMode: twelveHourMode, isLightMode: boolLightMode, isCompactMode: compactMode }}
       >
         <NowProvider>
           <div className='App'>
             <Header
-              onThemeButtonClick={() => setLightMode(!lightMode)}
-              onClockButtonClick={() => setTwelveHourMode(!twelveHourMode)}
+              setTwelveHourModeSetting={setTwelveHourModeSetting}
+              setLightMode={setLightMode}
+              twelveHourModeSetting={twelveHourModeSetting}
+              lightMode={lightMode}
             />
             <Outlet />
             <Footer />
