@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { BsChevronCompactDown } from 'react-icons/bs';
-import { DateTime } from 'luxon';
+import { DateTime, Settings, Zone } from 'luxon';
 import Clock from '../../components/Clock';
 import Date from '../../components/Date';
 import { getUpcommingShardPhase, ShardInfo } from '../../shardPredictor';
@@ -94,7 +94,7 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
               </div>
               <time id='shardAbsLocal' dateTime={next?.setZone('local')?.toISO({ suppressMilliseconds: true })}>
                 <strong>Your Time: </strong>
-                <small className='block'>({Intl.DateTimeFormat().resolvedOptions().timeZone})</small>
+                <small className='block'>({(Settings.defaultZone as Zone).name})</small>
                 <Date date={next} local />
                 <Clock date={next} local />
               </time>
