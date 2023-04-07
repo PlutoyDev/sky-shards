@@ -116,8 +116,15 @@ export default function Header({
               </div>
             </div>
             <div className='border-zinc-300 border-opacity-50 border-t-2 pt-1'>
-              <p className='text-md'>Timezone</p>
-              {/* Select */}
+              <div className='flex flex-row items-center justify-between px-1'>
+                <p className='text-md'>Timezone</p>
+                <p
+                  className='text-xs underline cursor-pointer'
+                  onClick={() => setTimezone(Intl.DateTimeFormat().resolvedOptions().timeZone)}
+                >
+                  Reset
+                </p>
+              </div>
               <select
                 className={`w-full rounded-lg shadow-xl shadow-zinc-70 px-1 py-0.5 no-scrollbar
                 ${isLightMode ? 'bg-sky-300 text-black' : 'bg-violet-600 text-white'}`}
