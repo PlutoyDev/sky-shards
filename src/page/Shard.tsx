@@ -120,7 +120,6 @@ export default function Shard() {
 
   const navigateDay = useCallback(
     (d: DateTime | number) => {
-      console.log('navigateDay', d);
       const diff = typeof d === 'number' ? d : d.diff(date, 'days').days;
       const target = typeof d === 'number' ? date.plus({ days: d }) : d;
       if (Math.floor(diff) === 0) return;
