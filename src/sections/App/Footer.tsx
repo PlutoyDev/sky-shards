@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, useMemo } from 'react';
 import { BiLinkExternal } from 'react-icons/bi';
 import { BsGithub } from 'react-icons/bs';
 import { TbForms } from 'react-icons/tb';
@@ -24,7 +24,12 @@ const subfooters = [
         style={{ gridTemplateColumns: 'min-content max-context min-content' }}
         onClick={e => (e.preventDefault(), window.open('https://sky-clock.netlify.com/', '_blank'))}
       >
-        <img className='emoji ml-auto block mt-1.5' src='/ext/sky-clock.png' />
+        {useMemo(
+          () => (
+            <img className='emoji ml-auto block mt-1.5' src='/ext/sky-clock.png' />
+          ),
+          [],
+        )}
         <h2 className='text-center'>
           <span className='text-sm underline'>Sky Clock</span>
           <span className='text-xs'> by Chris Stead</span>
@@ -81,12 +86,20 @@ const subfooters = [
             <TbForms className='text-md inline-block mr-2' />
             <span className='text-sm font-bold '>Submit Feedback</span>
           </button>
-          <button
+          {/* <button
             className='bg-yellow-400 text-black rounded-xl'
             onClick={e => (e.preventDefault(), window.open('https://www.buymeacoffee.com/plutoy', '_blank'))}
           >
-            <img className='inline m-0 p-0 h-7 w-28 rounded-xl' src='/ext/buymeacoffee.png' />
-          </button>
+            {useMemo(
+              () => (
+                <img
+                  className='inline m-0 p-0 h-7 w-32 rounded-xl'
+                  src='https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20coffee&emoji=&slug=plutoy&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff'
+                />
+              ),
+              [],
+            )}
+          </button> */}
         </div>
       </div>
     );
@@ -103,7 +116,7 @@ if (durationCycle > 300) {
 
 const variants = {
   enter: {
-    x: 1000,
+    x: -1000,
     opacity: 0,
   },
   center: {
@@ -113,7 +126,7 @@ const variants = {
   },
   exit: {
     zIndex: 0,
-    x: -1000,
+    x: 1000,
     opacity: 0,
   },
 };
@@ -123,20 +136,17 @@ export default function Footer() {
   const footerEl = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      // if mouse is not hovering over footer, change section
-      if (!footerEl.current?.matches(':hover')) {
-        setDisplaySection(sec => (sec + 1) % subfooters.length);
-      } else {
-        console.log('mouse is hovering over footer');
-      }
-    }, durationPerSection * 1000);
-
+    const interval = setInterval(
+      () => footerEl.current?.matches(':hover') || setDisplaySection(sec => (sec + 1) % subfooters.length),
+      durationPerSection * 1000,
+    );
     return () => clearInterval(interval);
   }, []);
 
+  const SubFooter = subfooters[displaySection];
+
   return (
-    <footer ref={footerEl} className='footer glass container mx-auto'>
+    <footer ref={footerEl} className='footer glass container mx-auto overflow-hidden'>
       <AnimatePresence initial={false} mode='wait'>
         <motion.div
           key={displaySection}
@@ -149,7 +159,7 @@ export default function Footer() {
             opacity: { duration: 0.2 },
           }}
         >
-          {subfooters[displaySection]()}
+          <SubFooter />
         </motion.div>
       </AnimatePresence>
     </footer>
