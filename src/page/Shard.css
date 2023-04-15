@@ -8,7 +8,7 @@
   grid-template-columns: var(--nav-hint-height) auto var(--nav-hint-height);
   grid-template-areas: 'leftNavHint shardContent rightNavHint';
 
-  font-size: var(--font-size-400);
+  font-size: 0.9rem;
 
   height: 100%;
   width: 100%;
@@ -27,7 +27,8 @@
   cursor: pointer;
   width: 100%;
   font-family: 'Bubblegum Sans', cursive;
-  font-size: var(--font-size-200);
+  font-size: 0.75rem;
+  line-height: 1.25rem;
   white-space: nowrap;
 }
 
@@ -72,7 +73,8 @@
   gap: 2px;
 
   font-family: 'Bubblegum Sans', cursive;
-  font-size: var(--font-size-200);
+  font-size: 0.75rem;
+  line-height: 1.25rem;
   white-space: nowrap;
 }
 
@@ -128,7 +130,7 @@
 
 #shardSummary .Clock,
 #shardSummary .Date {
-  font-size: var(--font-size-300);
+  font-size: 1.1em;
   font-weight: 800;
 }
 
@@ -173,8 +175,6 @@
 /* Full Shard Schedule */
 #shardTimeline {
   min-width: 90%;
-
-  font-size: var(--font-size-100);
 }
 
 #shardTimeline > .title {
@@ -210,18 +210,18 @@
 
 .timeline-header .title {
   font-weight: 600;
-  font-size: var(--font-size-400);
+  font-size: 1.1em;
 }
 
 .timeline-header .mini-clock {
   padding-top: 0.08px;
-  font-size: var(--font-size-300);
+  font-size: 0.8em;
 }
 
 .timeline {
   display: flex;
   flex-flow: column nowrap;
-  --clock-font-size: var(--font-size-200);
+  --clock-font-size: 0.8em;
 }
 
 .timeline-item {
@@ -255,7 +255,7 @@
 }
 
 #shardTimeline .timeline-item-header {
-  font-size: var(--font-size-300);
+  font-size: 0.9em;
   font-weight: 400;
   width: 100%;
 }

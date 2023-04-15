@@ -69,14 +69,7 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
                     <>
                       <span className='whitespace-nowrap'>
                         has <strong>landed </strong>
-                        <Clock
-                          date={upcomming.land}
-                          relative
-                          negate
-                          inline
-                          hideSeconds
-                          fontSize='var(--font-size-200)'
-                        />
+                        <Clock date={upcomming.land} relative negate inline hideSeconds fontSize='0.9em' />
                       </span>
                       <span> ago. </span>
                       <span className='whitespace-nowrap'>
@@ -89,7 +82,7 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
                     </span>
                   )}
                 </span>
-                <Clock date={next} relative trim useSemantic fontSize='var(--font-size-600)' />
+                <Clock date={next} relative trim useSemantic fontSize='1.2em' />
                 <small> which is</small>
               </div>
               <time id='shardAbsLocal' dateTime={next?.setZone('local')?.toISO({ suppressMilliseconds: true })}>
@@ -108,7 +101,7 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
           ) : (
             <div id='shardCountdown'>
               <span> All shard has ended </span>
-              <Clock date={info.lastEnd} relative negate useSemantic fontSize='var(--font-size-600)' />
+              <Clock date={info.lastEnd} relative negate useSemantic fontSize='1.2em' />
               <span> ago </span>
             </div>
           )}

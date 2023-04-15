@@ -2,12 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
 html {
   overflow: hidden;
 }
@@ -37,54 +31,6 @@ body {
 
   background-color: var(--color-primary);
   color: var(--color-secondary);
-
-  --font-size-base: 2vmin;
-  --font-size-adjust: 0.1vmin;
-
-  --font-size-100: calc(var(--font-size-200) - var(--font-size-adjust));
-  --font-size-200: calc(var(--font-size-300) - var(--font-size-adjust));
-  --font-size-300: calc(var(--font-size-400) - var(--font-size-adjust));
-  --font-size-400: calc(var(--font-size-500) - var(--font-size-adjust));
-  --font-size-500: var(--font-size-base);
-  --font-size-600: calc(var(--font-size-500) + var(--font-size-adjust));
-  --font-size-700: calc(var(--font-size-600) + var(--font-size-adjust));
-  --font-size-800: calc(var(--font-size-700) + var(--font-size-adjust));
-  --font-size-900: calc(var(--font-size-800) + var(--font-size-adjust));
-
-  --footer-font-size: 0.4rem;
-}
-
-@media (min-aspect-ratio: 18/9) or (min-aspect-ratio: 9/18) {
-  body {
-    --font-size-base: 2vmin;
-  }
-}
-
-@media (min-aspect-ratio: 16/9) or (min-aspect-ratio: 9/16) {
-  body {
-    --font-size-base: 2.2vmin;
-    --font-size-adjust: 0.2vmin;
-  }
-}
-
-@media (max-aspect-ratio: 4/3) or (max-aspect-ratio: 3/4) {
-  body {
-    --font-size-base: 3vmin;
-  }
-}
-
-@media (min-width: 890px) or (min-height: 890px) {
-  body {
-    --font-size-base: 3.6vmin;
-    --footer-font-size: 0.6rem;
-  }
-}
-
-@media (orientation: portrait) {
-  body {
-    --footer-font-size: 0.8rem;
-    --footer-height: clamp(50px, 18vh, 128px);
-  }
 }
 
 body.light {
