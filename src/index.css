@@ -80,9 +80,10 @@ body {
   }
 }
 
-@media (orientation: vertical) {
+@media (orientation: portrait) {
   body {
     --footer-font-size: 0.8rem;
+    --footer-height: clamp(50px, 18vh, 128px);
   }
 }
 
@@ -98,6 +99,14 @@ body.light {
   background-image: url('/backgrounds/SkyBackgroundLight.webp');
 }
 
+.glass {
+  background-color: var(--glass-background-color);
+  backdrop-filter: var(--glass-backdrop-filter);
+  border-radius: var(--glass-border-radius);
+  padding: 2px 20px;
+  border: 1px solid rgba(192, 192, 192, 0.2);
+}
+
 .App {
   position: absolute;
   top: 7px;
@@ -106,7 +115,7 @@ body.light {
   bottom: 7px;
 
   display: grid;
-  grid-template-rows: var(--header-height) auto fit-content(20vh);
+  grid-template-rows: var(--header-height) auto min-content;
   grid-template-columns: 1fr;
   grid-template-areas:
     'header'
@@ -165,8 +174,8 @@ body.light {
   color: var(--color-secondary);
 }
 
-#footer {
-  grid-area: footer;
+.footer {
+  /* grid-area: footer;
   font-size: var(--footer-font-size);
 
   display: grid;
@@ -180,7 +189,10 @@ body.light {
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 0 20px;
+  padding: 0 20px; */
+
+  height: var(--footer-height);
+  padding: 2px 10px;
 }
 
 #footer-disclaimer {
@@ -239,13 +251,13 @@ body.light {
 }
 
 @media (min-width: 670px) {
-  #footer {
+  /* #footer {
     grid-template-rows: auto auto;
     grid-template-columns: fit-content(75%) fit-content(25%);
     grid-template-areas:
       'disclaimer author'
       'credits author';
-  }
+  } */
 
   #footer-credits {
     padding: 2px 20px;
@@ -301,14 +313,6 @@ body.light {
   display: none;
   opacity: 0.5;
   cursor: not-allowed;
-}
-
-.glass {
-  background-color: var(--glass-background-color);
-  backdrop-filter: var(--glass-backdrop-filter);
-  border-radius: var(--glass-border-radius);
-  padding: 2px 20px;
-  border: 1px solid rgba(192, 192, 192, 0.2);
 }
 
 .modal {
