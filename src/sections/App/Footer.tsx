@@ -7,17 +7,17 @@ import { patternCredits } from '../../data/credits';
 
 const subfooters = [
   () => (
-    <motion.div key='credits' className='flex flex-col gap-y-1 items-center'>
+    <div key='credits' className='flex flex-col gap-y-1 items-center'>
       <p>Thank you to those who helped to discover the patterns shard eruption:</p>
       <div className='flex flex-row flex-wrap gap-x-1.5 text-xs whitespace-nowrap w-fit overflow-hidden text-slate-200 justify-center'>
         {patternCredits.map(u => (
           <span key={u}>{u}</span>
         ))}
       </div>
-    </motion.div>
+    </div>
   ),
   () => (
-    <motion.div key='inspiration' className='flex flex-col items-center'>
+    <div key='inspiration' className='flex flex-col items-center'>
       <p>The creation of Sky Shard was inspired by:</p>
       <button
         className='text-center glass grid grid-rows-2 cursor-pointer'
@@ -35,14 +35,14 @@ const subfooters = [
         </p>
       </button>
       <hr className='min-h-full m-0' />
-    </motion.div>
+    </div>
   ),
   () => {
     const version = import.meta.env.VITE_VERSION_MINOR ?? 'undefiend';
     const branchName = import.meta.env.VITE_GIT_BRANCH ?? 'undefiend';
     const commitSha = import.meta.env.VITE_GIT_COMMIT ?? 'undefiend';
     return (
-      <motion.div className='flex flex-col flex-nowrap h-full justify-around' key='social-links'>
+      <div className='flex flex-col flex-nowrap h-full justify-around' key='social-links'>
         <span className='text-center text-sm'>Created by: Plutoy#5022</span>
         <p className='flex justify-center gap-2 text-sm'>
           <span>Version: {version}</span>
@@ -88,7 +88,7 @@ const subfooters = [
             <img className='inline m-0 p-0 h-7 w-28 rounded-xl' src='/ext/buymeacoffee.png' />
           </button>
         </div>
-      </motion.div>
+      </div>
     );
   },
 ];
@@ -100,6 +100,23 @@ if (durationCycle > 300) {
   //5 minutes
   throw new Error('Footer cycle duration is too long');
 }
+
+const variants = {
+  enter: {
+    x: 1000,
+    opacity: 0,
+  },
+  center: {
+    zIndex: 1,
+    x: 0,
+    opacity: 1,
+  },
+  exit: {
+    zIndex: 0,
+    x: -1000,
+    opacity: 0,
+  },
+};
 
 export default function Footer() {
   const [displaySection, setDisplaySection] = useState(0);
@@ -121,7 +138,19 @@ export default function Footer() {
   return (
     <footer ref={footerEl} className='footer glass container mx-auto'>
       <AnimatePresence initial={false} mode='wait'>
-        {subfooters[displaySection]()}
+        <motion.div
+          key={displaySection}
+          variants={variants}
+          initial='enter'
+          animate='center'
+          exit='exit'
+          transition={{
+            x: { type: 'spring', stiffness: 300, damping: 30 },
+            opacity: { duration: 0.2 },
+          }}
+        >
+          {subfooters[displaySection]()}
+        </motion.div>
       </AnimatePresence>
     </footer>
   );
