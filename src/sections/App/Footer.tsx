@@ -32,7 +32,7 @@ const subfooters = [
     </div>
   ),
   () => (
-    <div key='inspiration' className='flex flex-col items-center'>
+    <div key='inspiration' className='flex max-h-full flex-col flex-wrap items-center justify-center'>
       <p>The creation of Sky Shard was inspired by:</p>
       <button
         className='glass grid cursor-pointer grid-rows-2 text-center'
@@ -54,7 +54,6 @@ const subfooters = [
           Visit it for timing of Geyser, Grandma, Turtle and many more
         </p>
       </button>
-      <hr className='m-0 min-h-full' />
     </div>
   ),
   () => {
@@ -62,15 +61,17 @@ const subfooters = [
     const branchName = import.meta.env.VITE_GIT_BRANCH ?? 'undefiend';
     const commitSha = import.meta.env.VITE_GIT_COMMIT ?? 'undefiend';
     return (
-      <div className='flex h-full flex-col flex-nowrap justify-around' key='social-links'>
-        <span className='text-center text-sm'>Created by: Plutoy#5022</span>
-        <p className='flex justify-center gap-2 text-sm'>
-          <span>Version: {version}</span>
-          <span className='hidden md:inline'>
-            Branch: <a href={`https://github.com/PlutoyDev/sky-shards/tree/${branchName}`}>{branchName}</a> (
-            <a href={`https://github.com/PlutoyDev/sky-shards/commit/${commitSha}`}>{commitSha}</a>)
-          </span>
-        </p>
+      <div className='flex h-full max-w-full flex-col flex-wrap justify-around' key='social-links'>
+        <div>
+          <p className='text-center text-sm'>Created by: Plutoy#5022</p>
+          <p className='flex justify-center gap-2 text-sm'>
+            <span>Version: {version}</span>
+            <span className='hidden md:block'>
+              Branch: <a href={`https://github.com/PlutoyDev/sky-shards/tree/${branchName}`}>{branchName}</a> (
+              <a href={`https://github.com/PlutoyDev/sky-shards/commit/${commitSha}`}>{commitSha}</a>)
+            </span>
+          </p>
+        </div>
         <div className='mx-auto mt-1 flex max-w-fit flex-row flex-wrap items-center justify-center gap-1'>
           <button
             className=' rounded-xl bg-black px-2 pt-0.5 pb-1 text-white'
@@ -102,13 +103,13 @@ const subfooters = [
             <span className='text-sm font-bold '>Submit Feedback</span>
           </button>
           {/* <button
-            className='bg-yellow-400 text-black rounded-xl'
+            className='rounded-xl bg-yellow-400 text-black'
             onClick={e => (e.preventDefault(), window.open('https://www.buymeacoffee.com/plutoy', '_blank'))}
           >
             {useMemo(
               () => (
                 <img
-                  className='inline m-0 p-0 h-7 w-32 rounded-xl'
+                  className='m-0 inline h-7 w-32 rounded-xl p-0'
                   src='https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20coffee&emoji=&slug=plutoy&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff'
                 />
               ),
