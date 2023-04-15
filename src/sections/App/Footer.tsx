@@ -7,13 +7,28 @@ import { patternCredits } from '../../data/credits';
 
 const subfooters = [
   () => (
-    <div key='credits' className='flex flex-col items-center gap-y-1'>
-      <p>Thank you to those who helped to discover the patterns shard eruption:</p>
-      <div className='flex w-fit flex-row flex-wrap justify-center gap-x-1.5 overflow-hidden whitespace-nowrap text-xs text-slate-200'>
-        {patternCredits.map(u => (
-          <span key={u}>{u}</span>
-        ))}
+    <div key='credits' className='flex h-full flex-col items-center justify-around gap-y-1'>
+      <div>
+        <p className='text-center text-sm'>Thank you to those who helped to discover the patterns shard eruption:</p>
+        <p className='flex w-fit flex-row flex-wrap justify-center gap-x-1.5 overflow-hidden whitespace-nowrap text-xs '>
+          {patternCredits.map(u => {
+            if (u.includes('#')) {
+              const [name, tag] = u.split('#');
+              return (
+                <p key={u}>
+                  <span>{name}</span>
+                  <span className='hidden md:inline'>#{tag}</span>
+                </p>
+              );
+            } else return <p key={u}>{u}</p>;
+          })}
+        </p>
       </div>
+      <p className='text-center text-[8px] md:text-xs'>
+        <span>This website is not affiliated with thatgamecompany or </span>
+        <span className='whitespace-nowrap'>Sky: Children of the Light.</span>
+        <span className='whitespace-nowrap'>(It might not reflect what is in-game)</span>
+      </p>
     </div>
   ),
   () => (
@@ -158,6 +173,7 @@ export default function Footer() {
             x: { type: 'spring', stiffness: 300, damping: 30 },
             opacity: { duration: 0.2 },
           }}
+          className='h-full w-full'
         >
           <SubFooter />
         </motion.div>
