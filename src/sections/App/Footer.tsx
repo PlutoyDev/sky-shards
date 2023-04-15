@@ -7,9 +7,9 @@ import { patternCredits } from '../../data/credits';
 
 const subfooters = [
   () => (
-    <div key='credits' className='flex flex-col gap-y-1 items-center'>
+    <div key='credits' className='flex flex-col items-center gap-y-1'>
       <p>Thank you to those who helped to discover the patterns shard eruption:</p>
-      <div className='flex flex-row flex-wrap gap-x-1.5 text-xs whitespace-nowrap w-fit overflow-hidden text-slate-200 justify-center'>
+      <div className='flex w-fit flex-row flex-wrap justify-center gap-x-1.5 overflow-hidden whitespace-nowrap text-xs text-slate-200'>
         {patternCredits.map(u => (
           <span key={u}>{u}</span>
         ))}
@@ -20,13 +20,13 @@ const subfooters = [
     <div key='inspiration' className='flex flex-col items-center'>
       <p>The creation of Sky Shard was inspired by:</p>
       <button
-        className='text-center glass grid grid-rows-2 cursor-pointer'
+        className='glass grid cursor-pointer grid-rows-2 text-center'
         style={{ gridTemplateColumns: 'min-content max-context min-content' }}
         onClick={e => (e.preventDefault(), window.open('https://sky-clock.netlify.com/', '_blank'))}
       >
         {useMemo(
           () => (
-            <img className='emoji ml-auto block mt-1.5' src='/ext/sky-clock.png' />
+            <img className='emoji ml-auto mt-1.5 block' src='/ext/sky-clock.png' />
           ),
           [],
         )}
@@ -34,12 +34,12 @@ const subfooters = [
           <span className='text-sm underline'>Sky Clock</span>
           <span className='text-xs'> by Chris Stead</span>
         </h2>
-        <BiLinkExternal className='self-start mt-1.5' />
-        <p className='text-xs col-span-3 whitespace-normal'>
+        <BiLinkExternal className='mt-1.5 self-start' />
+        <p className='col-span-3 whitespace-normal text-xs'>
           Visit it for timing of Geyser, Grandma, Turtle and many more
         </p>
       </button>
-      <hr className='min-h-full m-0' />
+      <hr className='m-0 min-h-full' />
     </div>
   ),
   () => {
@@ -47,7 +47,7 @@ const subfooters = [
     const branchName = import.meta.env.VITE_GIT_BRANCH ?? 'undefiend';
     const commitSha = import.meta.env.VITE_GIT_COMMIT ?? 'undefiend';
     return (
-      <div className='flex flex-col flex-nowrap h-full justify-around' key='social-links'>
+      <div className='flex h-full flex-col flex-nowrap justify-around' key='social-links'>
         <span className='text-center text-sm'>Created by: Plutoy#5022</span>
         <p className='flex justify-center gap-2 text-sm'>
           <span>Version: {version}</span>
@@ -56,16 +56,16 @@ const subfooters = [
             <a href={`https://github.com/PlutoyDev/sky-shards/commit/${commitSha}`}>{commitSha}</a>)
           </span>
         </p>
-        <div className='mx-auto flex flex-row flex-wrap gap-1 justify-center items-center max-w-fit mt-1'>
+        <div className='mx-auto mt-1 flex max-w-fit flex-row flex-wrap items-center justify-center gap-1'>
           <button
-            className=' bg-black text-white px-2 pt-0.5 pb-1 rounded-xl'
+            className=' rounded-xl bg-black px-2 pt-0.5 pb-1 text-white'
             onClick={e => (e.preventDefault(), window.open('https://github.com/PlutoyDev/sky-shards', '_blank'))}
           >
-            <BsGithub className='text-md inline-block mr-2' />
+            <BsGithub className='text-md mr-2 inline-block' />
             <span className='text-sm font-bold '>Source on GitHub</span>
           </button>
           <button
-            className='bg-purple-700 text-white px-2 pt-0.5 pb-1 rounded-xl'
+            className='rounded-xl bg-purple-700 px-2 pt-0.5 pb-1 text-white'
             onClick={e => {
               e.preventDefault();
               const size = window.innerWidth + 'x' + window.innerHeight;
@@ -83,7 +83,7 @@ const subfooters = [
               window.open(`${baseLink}?${params.toString()}`, '_blank');
             }}
           >
-            <TbForms className='text-md inline-block mr-2' />
+            <TbForms className='text-md mr-2 inline-block' />
             <span className='text-sm font-bold '>Submit Feedback</span>
           </button>
           {/* <button

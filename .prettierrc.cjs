@@ -13,5 +13,4 @@ module.exports = {
     '^[./](?!.*\\.(css|scss|less|styl|png|jpg|jpeg|gif|svg|ttf|woff|woff2|eot|otf)$)',
     '^[./]',
   ],
-  importOrderSort: 'asc',
 };

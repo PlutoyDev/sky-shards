@@ -60,22 +60,22 @@ export default function Header({
 
       <div id='header-buttons'>
         <button
-          className='rounded-lg shadow-xl shadow-zinc-700 w-min p-1.5 bg-opacity-25 bg-slate-50 hover:bg-opacity-50'
+          className='w-min rounded-lg bg-slate-50 bg-opacity-25 p-1.5 shadow-xl shadow-zinc-700 hover:bg-opacity-50'
           onClick={() => setIsPopoverOpen(!isPopoverOpen)}
         >
           <FaCog size={18} />
         </button>
         <div
           className={`absolute z-10 w-60 rounded-lg shadow-xl shadow-zinc-700
-          ${isPopoverOpen ? 'block' : 'hidden'} glass text-white text-border`}
+          ${isPopoverOpen ? 'block' : 'hidden'} glass text-border text-white`}
           style={{ top: '4rem', right: '1.8rem' }}
           onMouseLeave={onSettingsNotUse}
         >
-          <div className='flex flex-col gap-2 p-2 min-h-50 '>
-            <h3 className='text-lg font-bold text-center'>Settings</h3>
-            <div className='border-zinc-300 border-opacity-50 border-t-2 pt-1'>
+          <div className='min-h-50 flex flex-col gap-2 p-2 '>
+            <h3 className='text-center text-lg font-bold'>Settings</h3>
+            <div className='border-t-2 border-zinc-300 border-opacity-50 pt-1'>
               <p className='text-md'>Theme</p>
-              <div className='flex flex-row items-center rounded-full m-1.5'>
+              <div className='m-1.5 flex flex-row items-center rounded-full'>
                 {[
                   ['Light', 'true', 'rounded-l-full'],
                   ['System', 'system', 'border-x-2 border-zinc-300 border-opacity-50'],
@@ -83,7 +83,7 @@ export default function Header({
                 ].map(([label, value, addClass]) => (
                   <button
                     key={value}
-                    className={`flex-1  text-xs p-1 whitespace-nowrap 
+                    className={`flex-1  whitespace-nowrap p-1 text-xs 
                     ${lightMode === value ? 'bg-opacity-20' : ''} 
                     ${isLightMode ? 'bg-sky-300 text-black' : 'bg-violet-600 text-white'} 
                     ${addClass}`}
@@ -94,9 +94,9 @@ export default function Header({
                 ))}
               </div>
             </div>
-            <div className='border-zinc-300 border-opacity-50 border-t-2 pt-1'>
+            <div className='border-t-2 border-zinc-300 border-opacity-50 pt-1'>
               <p className='text-md'>Time Format</p>
-              <div className='flex flex-row items-center rounded-full m-1.5'>
+              <div className='m-1.5 flex flex-row items-center rounded-full'>
                 {[
                   ['12 Hour', 'true', 'rounded-l-full'],
                   ['System', 'system', 'border-x-2 border-zinc-300 border-opacity-50'],
@@ -104,7 +104,7 @@ export default function Header({
                 ].map(([label, value, addClass]) => (
                   <button
                     key={value}
-                    className={`flex-1  text-xs p-1 whitespace-nowrap 
+                    className={`flex-1  whitespace-nowrap p-1 text-xs 
                       ${twelveHourModeSetting === value ? ' bg-opacity-20' : ''} 
                       ${isLightMode ? 'bg-sky-300 text-black' : 'bg-violet-600 text-white'}
                       ${addClass}`}
@@ -115,18 +115,18 @@ export default function Header({
                 ))}
               </div>
             </div>
-            <div className='border-zinc-300 border-opacity-50 border-t-2 pt-1'>
+            <div className='border-t-2 border-zinc-300 border-opacity-50 pt-1'>
               <div className='flex flex-row items-center justify-between px-1'>
                 <p className='text-md'>Timezone</p>
                 <p
-                  className='text-xs underline cursor-pointer'
+                  className='cursor-pointer text-xs underline'
                   onClick={() => setTimezone(Intl.DateTimeFormat().resolvedOptions().timeZone)}
                 >
                   Reset
                 </p>
               </div>
               <select
-                className={`w-full rounded-lg shadow-xl shadow-zinc-70 px-1 py-0.5 no-scrollbar
+                className={`shadow-zinc-70 no-scrollbar w-full rounded-lg px-1 py-0.5 shadow-xl
                 ${isLightMode ? 'bg-sky-300 text-black' : 'bg-violet-600 text-white'}`}
                 onChange={e => setTimezone(e.target.value)}
                 value={timezone}
