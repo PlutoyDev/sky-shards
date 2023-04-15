@@ -32,11 +32,11 @@ const subfooters = [
     </div>
   ),
   () => (
-    <div key='inspiration' className='flex max-h-full flex-col flex-wrap items-center justify-center'>
+    <div key='inspiration' className='flex h-full max-h-full flex-col flex-wrap items-center justify-around'>
       <p>The creation of Sky Shard was inspired by:</p>
       <button
-        className='glass grid cursor-pointer grid-rows-2 text-center'
-        style={{ gridTemplateColumns: 'min-content max-context min-content' }}
+        className='z-10 grid cursor-pointer grid-rows-2 rounded-lg border border-zinc-500 px-2 text-center shadow-2xl shadow-zinc-700  '
+        style={{ gridTemplateColumns: 'max-content min-content max-content' }}
         onClick={e => (e.preventDefault(), window.open('https://sky-clock.netlify.com/', '_blank'))}
       >
         {useMemo(
@@ -45,7 +45,7 @@ const subfooters = [
           ),
           [],
         )}
-        <h2 className='text-center'>
+        <h2 className='mx-2 whitespace-nowrap text-center'>
           <span className='text-sm underline'>Sky Clock</span>
           <span className='text-xs'> by Chris Stead</span>
         </h2>
