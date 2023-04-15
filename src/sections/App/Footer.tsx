@@ -93,7 +93,7 @@ const subfooters = [
   },
 ];
 
-const durationPerSection = 5; // seconds
+const durationPerSection = 10; // seconds
 const durationCycle = durationPerSection * subfooters.length;
 
 if (durationCycle > 300) {
