@@ -12,6 +12,7 @@
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@fontsource/roboto": "^4.5.8",
+    "@headlessui/react": "^1.7.14",
     "@use-gesture/react": "^10.2.24",
     "framer-motion": "^10.9.1",
     "luxon": "^3.3.0",
