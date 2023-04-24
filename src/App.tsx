@@ -43,13 +43,13 @@ function App() {
       >
         <NowProvider>
           <div className='App'>
+            <Outlet />
             <Header
               setTwelveHourModeSetting={setTwelveHourModeSetting}
               setLightMode={setLightMode}
               twelveHourModeSetting={twelveHourModeSetting}
               lightMode={lightMode}
             />
-            <Outlet />
             <Footer />
           </div>
         </NowProvider>
