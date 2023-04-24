@@ -54,9 +54,9 @@ export default function Header({
             <FaCog size={18} />
           </Popover.Button>
           <Popover.Panel
-            className={`glass text-border absolute z-10 w-60 rounded-lg
-            text-white shadow-xl shadow-zinc-700`}
-            style={{ top: '4rem', right: '1.8rem' }}
+            className={`text-border absolute z-10 w-60 rounded-lg text-white shadow-xl shadow-zinc-700 backdrop-blur-3xl backdrop-saturate-150 backdrop-filter
+            ${isLightMode ? 'bg-sky-600' : 'bg-violet-900'}`}
+            style={{ top: '2rem', right: '0rem' }}
           >
             <div className='min-h-50 flex flex-col gap-2 p-2 '>
               <h3 className='text-center text-lg font-bold'>Settings</h3>
