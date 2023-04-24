@@ -1,4 +1,4 @@
-import { forwardRef, HTMLAttributes, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { CSSProperties, forwardRef, HTMLAttributes, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { BsChevronCompactUp } from 'react-icons/bs';
 import { LoaderFunction, redirect, useLoaderData, useNavigate } from 'react-router-dom';
 import { createUseGesture, dragAction, pinchAction } from '@use-gesture/react';
@@ -148,9 +148,6 @@ export default function Shard() {
     [pending, date.day, date.month, date.year, draggedX, contentX],
   );
 
-  const { setNavigateDay } = useHeaderFx();
-  useEffect(() => setNavigateDay(navigateDay), [navigateDay]);
-
   const bind = useGesture(
     {
       onDrag: ({ movement: [mx] }) => {
@@ -203,8 +200,15 @@ export default function Shard() {
     }, 20);
   }, []);
 
+  const { setNavigateDay, fontSize } = useHeaderFx();
+  const dynamicStyle = {
+    fontSize: `${fontSize}rem`,
+  };
+
+  useEffect(() => setNavigateDay(navigateDay), [navigateDay]);
+
   return (
-    <div className='Page ShardPage'>
+    <div className='Page ShardPage' style={dynamicStyle}>
       <ShardPageContent
         isMain={true}
         ref={activeContentRef}

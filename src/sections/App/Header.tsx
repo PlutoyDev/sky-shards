@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { FaCog } from 'react-icons/fa';
+import { FaCog, FaMinus, FaPlus } from 'react-icons/fa';
 import { DateTime, Settings, Zone } from 'luxon';
 import Clock from '../../components/Clock';
 import Date from '../../components/Date';
@@ -24,7 +24,7 @@ export default function Header({
 }: HeaderProp) {
   const { isLightMode } = useSettings();
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-  const { navigateDay } = useHeaderFx();
+  const { navigateDay, fontSize: fontSizeAdjust, setFontSize: setFontSizeAdjust } = useHeaderFx();
 
   const navigateToday = () => navigateDay(DateTime.local({ zone: 'America/Los_Angeles' }));
 
@@ -66,7 +66,7 @@ export default function Header({
           <FaCog size={18} />
         </button>
         <div
-          className={`absolute z-10 w-60 rounded-lg shadow-xl shadow-zinc-700
+          className={`absolute z-50 w-60 rounded-lg shadow-xl shadow-zinc-700
           ${isPopoverOpen ? 'block' : 'hidden'} glass text-border text-white`}
           style={{ top: '4rem', right: '1.8rem' }}
           onMouseLeave={onSettingsNotUse}
@@ -141,6 +141,26 @@ export default function Header({
                   ))
                 }
               </select>
+            </div>
+            <div className='border-t-2 border-zinc-300 border-opacity-50 pt-1'>
+              <p className='text-md'>Font Size</p>
+              <div className='flex w-full flex-row items-center justify-center gap-2 pt-1'>
+                <button
+                  className={`rounded-full p-1.5 shadow-xl shadow-zinc-700 hover:bg-opacity-50
+                    ${isLightMode ? 'bg-sky-300 text-black' : 'bg-violet-600 text-white'}`}
+                  onClick={() => setFontSizeAdjust(fontSizeAdjust - 0.1)}
+                >
+                  <FaMinus size={12} />
+                </button>
+                <p>{fontSizeAdjust.toFixed(1)}</p>
+                <button
+                  className={`rounded-full p-1.5 shadow-xl shadow-zinc-700 hover:bg-opacity-50
+                    ${isLightMode ? 'bg-sky-300 text-black' : 'bg-violet-600 text-white'}`}
+                  onClick={() => setFontSizeAdjust(fontSizeAdjust + 0.1)}
+                >
+                  <FaPlus size={12} />
+                </button>
+              </div>
             </div>
           </div>
         </div>
