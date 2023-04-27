@@ -1,4 +1,3 @@
-import { memo } from 'react';
 import { DateTime } from 'luxon';
 import { useNow } from '../context/Now';
 import { useSettings } from '../context/Settings';

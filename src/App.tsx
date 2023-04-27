@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { Outlet } from 'react-router-dom';
-import { HeaderFxConsumer, HeaderFxProvider } from './context/HeaderFx';
+import { HeaderFxProvider } from './context/HeaderFx';
 import { NowProvider } from './context/Now';
 import { SettingsProvider } from './context/Settings';
 import useLocalStorageState from './hooks/useLocalStorageState';

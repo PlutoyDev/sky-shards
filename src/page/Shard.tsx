@@ -1,4 +1,4 @@
-import { CSSProperties, forwardRef, HTMLAttributes, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { forwardRef, HTMLAttributes, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { BsChevronCompactUp } from 'react-icons/bs';
 import { LoaderFunction, redirect, useLoaderData, useNavigate } from 'react-router-dom';
 import { createUseGesture, dragAction, pinchAction } from '@use-gesture/react';
