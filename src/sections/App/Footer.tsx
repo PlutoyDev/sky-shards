@@ -15,10 +15,10 @@ const subfooters = [
             if (u.includes('#')) {
               const [name, tag] = u.split('#');
               return (
-                <p key={u}>
+                <span key={u}>
                   <span>{name}</span>
                   <span className='hidden md:inline'>#{tag}</span>
-                </p>
+                </span>
               );
             } else return <p key={u}>{u}</p>;
           })}
