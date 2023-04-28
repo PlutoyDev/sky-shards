@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
 import { useMediaQuery } from 'react-responsive';
-import { Outlet } from 'react-router-dom';
 import { HeaderFxProvider } from './context/HeaderFx';
 import { NowProvider } from './context/Now';
 import { SettingsProvider } from './context/Settings';
 import useLocalStorageState from './hooks/useLocalStorageState';
 import Footer from './sections/App/Footer';
 import Header from './sections/App/Header';
+import ShardCarousel from './sections/Shard/Carousel';
 
 function App() {
   const [twelveHourModeSetting, setTwelveHourModeSetting] = useLocalStorageState('twelveHourMode', 'system');
@@ -43,7 +43,7 @@ function App() {
       >
         <NowProvider>
           <div className='App'>
-            <Outlet />
+            <ShardCarousel />
             <Header
               setTwelveHourModeSetting={setTwelveHourModeSetting}
               setLightMode={setLightMode}
