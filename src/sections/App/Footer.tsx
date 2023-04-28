@@ -41,7 +41,7 @@ const subfooters = [
       >
         {useMemo(
           () => (
-            <img className='emoji ml-auto mt-1.5 block' src='/ext/sky-clock.png' />
+            <img className='ml-auto mt-1.5 h-4 w-4' src='/ext/sky-clock.png' />
           ),
           [],
         )}
