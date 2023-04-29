@@ -117,6 +117,24 @@ export default function ShardCarousel() {
     return () => window.removeEventListener('popstate', handlePopState);
   }, [getDateFromUrl]);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') {
+        navigateDate(-1);
+      } else if (e.key === 'ArrowRight') {
+        navigateDate(1);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [navigateDate]);
+
+  useEffect(() => {
+    const { haveShard, isRed, map } = info;
+    document.title =
+      (haveShard ? `${isRed ? 'Red' : 'Black'} Shard in ${map}` : 'No Shard') + ' on ' + date.toFormat('dd LLL yy');
+  }, [date, info.haveShard, info.isRed]);
+
   return (
     <motion.div
       className='Page ShardPage'
