@@ -67,8 +67,21 @@ const subfooters = [
           <p className='flex justify-center gap-2 text-sm'>
             <span>Version: {version}</span>
             <span className='hidden md:block'>
-              Branch: <a href={`https://github.com/PlutoyDev/sky-shards/tree/${branchName}`}>{branchName}</a> (
-              <a href={`https://github.com/PlutoyDev/sky-shards/commit/${commitSha}`}>{commitSha}</a>)
+              Branch:{' '}
+              <a
+                className='underline decoration-dashed'
+                href={`https://github.com/PlutoyDev/sky-shards/tree/${branchName}`}
+              >
+                {branchName}
+              </a>{' '}
+              (
+              <a
+                className='underline decoration-dashed'
+                href={`https://github.com/PlutoyDev/sky-shards/commit/${commitSha}`}
+              >
+                {commitSha}
+              </a>
+              )
             </span>
           </p>
         </div>
@@ -132,17 +145,15 @@ if (durationCycle > 300) {
 
 const variants = {
   enter: {
-    x: -1000,
+    y: '-100%',
     opacity: 0,
   },
   center: {
-    zIndex: 1,
-    x: 0,
+    y: '0%',
     opacity: 1,
   },
   exit: {
-    zIndex: 0,
-    x: 1000,
+    y: '100%',
     opacity: 0,
   },
 };
@@ -163,7 +174,7 @@ export default function Footer() {
 
   return (
     <footer ref={footerEl} className='footer glass container mx-auto overflow-hidden'>
-      <AnimatePresence initial={false} mode='wait'>
+      <AnimatePresence initial={false} mode='popLayout'>
         <motion.div
           key={displaySection}
           variants={variants}
