@@ -1,7 +1,8 @@
-import { useState, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 import { AnimatePresence, motion } from 'framer-motion';
 import { DateTime } from 'luxon';
+import { useHeaderFx } from '../../context/HeaderFx';
 import { useNow } from '../../context/Now';
 import { getShardInfo, findNextShard } from '../../shardPredictor';
 import { ShardMapInfographic, ShardDataInfographic } from './Infographic';
@@ -45,7 +46,8 @@ const varients = {
 export default function ShardCarousel() {
   const { application: now } = useNow();
   const [direction, setDirection] = useState(0);
-  const [date, setDate] = useState(() => {
+
+  const getDateFromUrl = useCallback(() => {
     const path = window.location.pathname;
     if (path === '/') return now;
     const [route, ...params] = path.split('/').slice(1);
@@ -79,26 +81,41 @@ export default function ShardCarousel() {
     }
     replaceUrl('/', false);
     return now;
-  });
+  }, [now]);
+
+  const [date, setDate] = useState(() => getDateFromUrl());
 
   const info = getShardInfo(date);
 
   const navigateDate = useCallback(
-    (d: DateTime | number) => {
+    (d: DateTime | number, reUrl = true) => {
       if (typeof d === 'number') {
         d = date.plus({ days: d });
       }
       setDirection(d > date ? 1 : -1);
       if (d.hasSame(now, 'day')) {
-        replaceUrl('/', false);
+        if (reUrl) replaceUrl('/', false);
         setDate(now);
       } else {
-        replaceUrl(`/date/${d.toFormat('yyyy/MM/dd')}`);
+        if (reUrl) replaceUrl(`/date/${d.toFormat('yyyy/MM/dd')}`);
         setDate(roundToRefDate(d, now));
       }
     },
     [date, now],
   );
+
+  const { fontSize, setNavigateDay } = useHeaderFx();
+  useEffect(() => {
+    setNavigateDay(navigateDate);
+  }, [navigateDate, setNavigateDay]);
+
+  useEffect(() => {
+    const handlePopState = () => {
+      navigateDate(getDateFromUrl(), false);
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [getDateFromUrl]);
 
   return (
     <motion.div
@@ -115,6 +132,7 @@ export default function ShardCarousel() {
           navigateDate(swipe);
         }
       }}
+      style={{ fontSize: `${fontSize}em` }}
     >
       <AnimatePresence initial={false} custom={direction}>
         <motion.main
