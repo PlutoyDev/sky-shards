@@ -13,15 +13,13 @@
     "@emotion/styled": "^11.10.6",
     "@fontsource/roboto": "^4.5.8",
     "@headlessui/react": "^1.7.14",
-    "@use-gesture/react": "^10.2.24",
     "framer-motion": "^10.9.1",
     "luxon": "^3.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.8.0",
     "react-modal": "^3.16.1",
-    "react-responsive": "^9.0.2",
-    "react-router-dom": "^6.9.0"
+    "react-responsive": "^9.0.2"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^4.1.1",
