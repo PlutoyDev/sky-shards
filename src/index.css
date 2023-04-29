@@ -461,8 +461,8 @@ body.light {
   justify-content: center;
 }
 
-#shardSummary .Clock,
-#shardSummary .Date {
+#shardTiming .Clock,
+#shardTiming .Date {
   font-size: 1.1em;
   font-weight: 800;
 }
