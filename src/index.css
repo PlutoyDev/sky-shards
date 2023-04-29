@@ -60,6 +60,7 @@ body.light {
   right: 7px;
   bottom: 7px;
 
+  overflow: hidden;
   display: grid;
   grid-template-rows: var(--header-height) auto min-content;
   grid-template-columns: 1fr;
@@ -121,144 +122,8 @@ body.light {
 }
 
 .footer {
-  /* grid-area: footer;
-  font-size: var(--footer-font-size);
-
-  display: grid;
-  grid-template-rows: auto auto auto;
-  grid-template-columns: auto;
-  grid-template-areas:
-    'disclaimer'
-    'credits'
-    'author';
-
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 0 20px; */
-
   height: var(--footer-height);
   padding: 2px 10px;
-}
-
-#footer-disclaimer {
-  grid-area: disclaimer;
-  padding: 2px 20px;
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: center;
-  align-items: center;
-  column-gap: 0.5rem;
-  font-size: calc(var(--footer-font-size) * 0.8);
-}
-#footer-credits {
-  grid-area: credits;
-  padding: 5px 20px;
-  overflow: hidden;
-  border-top: 1px solid rgba(192, 192, 192, 0.3);
-  border-bottom: 1px solid rgba(192, 192, 192, 0.3);
-}
-#footer-author {
-  grid-area: author;
-  padding: 2px 20px;
-
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-around;
-  align-items: center;
-  gap: 0.2rem 0.5rem;
-}
-
-#footer-author > div {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 0.2rem 0.5rem;
-}
-
-#credits {
-  display: flex;
-  flex-flow: row nowrap;
-  column-gap: 0.5rem;
-  animation: scroll 20s linear infinite;
-  white-space: nowrap;
-  width: fit-content;
-  overflow: hidden;
-}
-
-@keyframes scroll {
-  0% {
-    transform: translateX(70%);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
-}
-
-@media (min-width: 670px) {
-  /* #footer {
-    grid-template-rows: auto auto;
-    grid-template-columns: fit-content(75%) fit-content(25%);
-    grid-template-areas:
-      'disclaimer author'
-      'credits author';
-  } */
-
-  #footer-credits {
-    padding: 2px 20px;
-    border-bottom: none;
-  }
-
-  #footer-author {
-    padding: 1px 10px;
-    border-left: 1px solid rgba(192, 192, 192, 0.3);
-  }
-
-  #credits {
-    animation: none;
-    flex-flow: row wrap;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-  }
-}
-
-#author-link,
-#project-link {
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: center;
-  align-items: center;
-  column-gap: 0.5rem;
-  text-decoration: none;
-}
-
-.circular-icon {
-  width: calc(var(--footer-font-size) * 1.4);
-  height: calc(var(--footer-font-size) * 1.4);
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-}
-
-.circular-icon:not(.disabled):hover {
-  transform: scale(1.1);
-}
-
-.circular-icon > svg {
-  width: calc(var(--footer-font-size) * 1.3);
-  height: calc(var(--footer-font-size) * 1.3);
-  fill: var(--color-secondary);
-}
-
-.circular-icon.disabled {
-  display: none;
-  opacity: 0.5;
-  cursor: not-allowed;
 }
 
 .modal {
