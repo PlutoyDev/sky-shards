@@ -3,7 +3,7 @@
 
 /
   X-Frame-Options: DENY
-  Content-Security-Policy: default-src 'self'; script-src 'self' https://static.cloudflareinsights.com/; connect-src 'self' https://cloudflareinsights.com
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://static.cloudflareinsights.com/; connect-src 'self' https://cloudflareinsights.com; style-src 'self' 'unsafe-inline';
   X-XSS-Protection: 1; mode=block
   X-Content-Type-Options: nosniff
   Referrer-Policy: same-origin
