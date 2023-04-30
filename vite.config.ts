@@ -17,7 +17,15 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'fonts/*', 'backgrounds/*', 'icons/*', 'infographics/**/*.webp', 'emojis/*.webp'],
+      includeAssets: [
+        'favicon.ico',
+        'fonts/*',
+        'backgrounds/*',
+        'icons/*',
+        'infographics/**/*.webp',
+        'emojis/*.webp',
+        'ext/*',
+      ],
       manifest,
       workbox,
     }),
