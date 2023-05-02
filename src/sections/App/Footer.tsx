@@ -127,20 +127,6 @@ const subfooters = [
             <TbForms className='text-md mr-2 inline-block' />
             <span className='text-sm font-bold '>Submit Feedback</span>
           </a>
-          {/* <button
-            className='rounded-xl bg-yellow-400 text-black'
-            onClick={e => (e.preventDefault(), window.open('https://www.buymeacoffee.com/plutoy', '_blank'))}
-          >
-            {useMemo(
-              () => (
-                <img
-                  className='m-0 inline h-7 w-32 rounded-xl p-0'
-                  src='https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20coffee&emoji=&slug=plutoy&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff'
-                />
-              ),
-              [],
-            )}
-          </button> */}
         </div>
       </div>
     );
