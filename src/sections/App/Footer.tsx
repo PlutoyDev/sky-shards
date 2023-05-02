@@ -71,6 +71,8 @@ const subfooters = [
             <span className='hidden md:block'>
               Branch:{' '}
               <a
+                target='_blank'
+                rel='noreferrer'
                 className='underline decoration-dashed'
                 href={`https://github.com/PlutoyDev/sky-shards/tree/${branchName}`}
               >
@@ -78,10 +80,12 @@ const subfooters = [
               </a>{' '}
               (
               <a
+                target='_blank'
+                rel='noreferrer'
                 className='underline decoration-dashed'
                 href={`https://github.com/PlutoyDev/sky-shards/commit/${commitSha}`}
               >
-                {commitSha}
+                {commitSha.slice(0, 7)}
               </a>
               )
             </span>
