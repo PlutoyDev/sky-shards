@@ -12,7 +12,7 @@ const subfooters = [
         <p className='text-center text-xs md:text-sm'>
           Thank you to those who helped to discover the patterns shard eruption:
         </p>
-        <p className='flex w-fit flex-row flex-wrap justify-center gap-x-1.5 overflow-hidden whitespace-nowrap text-xs '>
+        <p className='flex w-fit select-none flex-row flex-wrap justify-center gap-x-1.5 overflow-hidden whitespace-nowrap text-xs'>
           {patternCredits.map(u => {
             if (u.includes('#')) {
               const [name, tag] = u.split('#');
