@@ -36,10 +36,12 @@ const subfooters = [
   () => (
     <div key='inspiration' className='flex h-full max-h-full flex-col flex-wrap items-center justify-around'>
       <p>The creation of Sky Shard was inspired by:</p>
-      <button
+      <a
+        target='_blank'
+        rel='noreferrer'
+        href='https://sky-clock.netlify.com/'
         className='z-10 grid cursor-pointer grid-rows-2 rounded-lg border border-zinc-500 px-2 text-center shadow-2xl shadow-zinc-700  '
         style={{ gridTemplateColumns: 'max-content min-content max-content' }}
-        onClick={e => (e.preventDefault(), window.open('https://sky-clock.netlify.com/', '_blank'))}
       >
         {useMemo(
           () => (
@@ -55,13 +57,28 @@ const subfooters = [
         <p className='col-span-3 whitespace-normal text-xs'>
           Visit it for timing of Geyser, Grandma, Turtle and many more
         </p>
-      </button>
+      </a>
     </div>
   ),
   () => {
     const version = import.meta.env.VITE_VERSION_MINOR ?? 'undefiend';
     const branchName = import.meta.env.VITE_GIT_BRANCH ?? 'undefiend';
     const commitSha = import.meta.env.VITE_GIT_COMMIT ?? 'undefiend';
+
+    const size = window.innerWidth + 'x' + window.innerHeight;
+    const baseLink =
+      'https://docs.google.com/forms/d/e/1FAIpQLSf8CvIDxHz9hFkzaK-CFsGDKqIjiuAt4IDzigI8WjQnNBx6Ww/viewform';
+
+    const params = new URLSearchParams();
+    params.append('usp', 'pp_url');
+    params.append(
+      'entry.402545620',
+      `--App related--\nVersion: ${version}\nBranch: ${branchName}\nCommit: ${commitSha}\n--Device related (Feel free to delete it)--\n` +
+        `Size: ${size}\nTimezone: ${Intl.DateTimeFormat().resolvedOptions().timeZone}`,
+    );
+
+    const feedbackUrl = baseLink + '?' + params.toString();
+
     return (
       <div className='flex h-full max-w-full flex-col flex-wrap justify-around' key='social-links'>
         <div>
@@ -92,35 +109,24 @@ const subfooters = [
           </p>
         </div>
         <div className='mx-auto mt-1 flex max-w-fit flex-row flex-wrap items-center justify-center gap-1'>
-          <button
+          <a
+            href='https://github.com/PlutoyDev/sky-shards'
+            target='_blank'
+            rel='noreferrer'
             className=' rounded-xl bg-black px-2 pt-0.5 pb-1 text-white'
-            onClick={e => (e.preventDefault(), window.open('https://github.com/PlutoyDev/sky-shards', '_blank'))}
           >
             <BsGithub className='text-md mr-2 inline-block' />
             <span className='text-sm font-bold '>Source on GitHub</span>
-          </button>
-          <button
+          </a>
+          <a
+            href={feedbackUrl}
+            target='_blank'
+            rel='noreferrer'
             className='rounded-xl bg-purple-700 px-2 pt-0.5 pb-1 text-white'
-            onClick={e => {
-              e.preventDefault();
-              const size = window.innerWidth + 'x' + window.innerHeight;
-              const baseLink =
-                'https://docs.google.com/forms/d/e/1FAIpQLSf8CvIDxHz9hFkzaK-CFsGDKqIjiuAt4IDzigI8WjQnNBx6Ww/viewform';
-
-              const params = new URLSearchParams();
-              params.append('usp', 'pp_url');
-              params.append(
-                'entry.402545620',
-                `--App related--\nVersion: ${version}\nBranch: ${branchName}\nCommit: ${commitSha}\n--Device related (Feel free to delete it)--\n` +
-                  `Size: ${size}\nTimezone: ${Intl.DateTimeFormat().resolvedOptions().timeZone}`,
-              );
-
-              window.open(`${baseLink}?${params.toString()}`, '_blank');
-            }}
           >
             <TbForms className='text-md mr-2 inline-block' />
             <span className='text-sm font-bold '>Submit Feedback</span>
-          </button>
+          </a>
           {/* <button
             className='rounded-xl bg-yellow-400 text-black'
             onClick={e => (e.preventDefault(), window.open('https://www.buymeacoffee.com/plutoy', '_blank'))}
