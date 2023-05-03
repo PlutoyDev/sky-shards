@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState, useMemo } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { BiLinkExternal } from 'react-icons/bi';
 import { BsGithub } from 'react-icons/bs';
 import { TbForms } from 'react-icons/tb';
@@ -30,7 +30,7 @@ const subfooters = [
       </div>
       <p className='text-center text-[8px] md:text-xs'>
         <span>This website is not affiliated with thatgamecompany or </span>
-        <span className='whitespace-nowrap'>Sky: Children of the Light.</span>
+        <span className='whitespace-nowrap'>Sky: Children of the Light. </span>
         <span className='whitespace-nowrap'>(It might not reflect what is in-game)</span>
       </p>
     </div>
@@ -87,15 +87,18 @@ const subfooters = [
         <div>
           <p className='text-center text-sm'>Created by: Plutoy#5022</p>
           <p className='flex justify-center gap-2 text-sm'>
-            <span>Version: {version}</span>
+            <span>Version:</span>
             <a
               target='_blank'
               rel='noreferrer'
-              className='hidden underline md:block'
+              className='underline'
               href={`https://github.com/PlutoyDev/sky-shards/commits/${branchName}`}
             >
-              ({branchName}-{commitSha.slice(0, 7)})
-              <BiLinkExternal className='inline' width='0.8em' height='0.8em' />
+              <span>{version} </span>
+              <span className='hidden lg:inline'>
+                ({branchName}-{commitSha.slice(0, 7)})
+                <BiLinkExternal className='inline' width='0.8em' height='0.8em' />
+              </span>
             </a>
           </p>
         </div>
