@@ -88,27 +88,15 @@ const subfooters = [
           <p className='text-center text-sm'>Created by: Plutoy#5022</p>
           <p className='flex justify-center gap-2 text-sm'>
             <span>Version: {version}</span>
-            <span className='hidden md:block'>
-              Branch:{' '}
-              <a
-                target='_blank'
-                rel='noreferrer'
-                className='underline decoration-dashed'
-                href={`https://github.com/PlutoyDev/sky-shards/tree/${branchName}`}
-              >
-                {branchName}
-              </a>{' '}
-              (
-              <a
-                target='_blank'
-                rel='noreferrer'
-                className='underline decoration-dashed'
-                href={`https://github.com/PlutoyDev/sky-shards/commit/${commitSha}`}
-              >
-                {commitSha.slice(0, 7)}
-              </a>
-              )
-            </span>
+            <a
+              target='_blank'
+              rel='noreferrer'
+              className='hidden underline md:block'
+              href={`https://github.com/PlutoyDev/sky-shards/commits/${branchName}`}
+            >
+              ({branchName}-{commitSha.slice(0, 7)})
+              <BiLinkExternal className='inline' width='0.8em' height='0.8em' />
+            </a>
           </p>
         </div>
         <div className='mt-1 flex max-w-fit flex-row flex-wrap items-center justify-center gap-1'>
