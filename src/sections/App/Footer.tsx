@@ -36,7 +36,10 @@ const subfooters = [
     </div>
   ),
   () => (
-    <div key='inspiration' className='flex h-full max-h-full flex-col flex-wrap items-center justify-around'>
+    <div
+      key='inspiration'
+      className='flex h-full max-h-full flex-row flex-wrap items-center justify-center gap-x-1 lg:gap-x-3'
+    >
       <p>The creation of Sky Shard was inspired by:</p>
       <a
         target='_blank'
@@ -77,7 +80,10 @@ const subfooters = [
     const feedbackUrl = baseLink + '?' + params.toString();
 
     return (
-      <div className='flex h-full max-w-full flex-col flex-wrap justify-around' key='social-links'>
+      <div
+        className='flex h-full max-w-full flex-row flex-wrap items-center justify-center gap-x-1 lg:gap-x-3'
+        key='social-links'
+      >
         <div>
           <p className='text-center text-sm'>Created by: Plutoy#5022</p>
           <p className='flex justify-center gap-2 text-sm'>
@@ -105,7 +111,7 @@ const subfooters = [
             </span>
           </p>
         </div>
-        <div className='mx-auto mt-1 flex max-w-fit flex-row flex-wrap items-center justify-center gap-1'>
+        <div className='mt-1 flex max-w-fit flex-row flex-wrap items-center justify-center gap-1'>
           <a
             href='https://github.com/PlutoyDev/sky-shards'
             target='_blank'
