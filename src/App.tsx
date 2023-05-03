@@ -44,13 +44,13 @@ function App() {
         <NowProvider>
           <div className='App'>
             <ShardCarousel />
+            <Footer />
             <Header
               setTwelveHourModeSetting={setTwelveHourModeSetting}
               setLightMode={setLightMode}
               twelveHourModeSetting={twelveHourModeSetting}
               lightMode={lightMode}
             />
-            <Footer />
           </div>
         </NowProvider>
       </SettingsProvider>
