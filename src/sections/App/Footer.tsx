@@ -5,6 +5,8 @@ import { TbForms } from 'react-icons/tb';
 import { AnimatePresence, motion } from 'framer-motion';
 import { patternCredits } from '../../data/credits';
 
+const SkyClockImg = <img className='ml-auto mt-1.5 h-4 w-4' src='/ext/sky-clock.png' />;
+
 const subfooters = [
   () => (
     <div key='credits' className='flex h-full flex-col items-center justify-around gap-y-1'>
@@ -43,12 +45,7 @@ const subfooters = [
         className='z-10 grid cursor-pointer grid-rows-2 rounded-lg border border-zinc-500 px-2 text-center shadow-2xl shadow-zinc-700  '
         style={{ gridTemplateColumns: 'max-content min-content max-content' }}
       >
-        {useMemo(
-          () => (
-            <img className='ml-auto mt-1.5 h-4 w-4' src='/ext/sky-clock.png' />
-          ),
-          [],
-        )}
+        {SkyClockImg}
         <h2 className='mx-2 whitespace-nowrap text-center'>
           <span className='text-sm underline'>Sky Clock</span>
           <span className='text-xs'> by Chris Stead</span>
@@ -133,7 +130,7 @@ const subfooters = [
   },
 ];
 
-const durationPerSection = 10; // seconds
+const durationPerSection = 5; // seconds
 const durationCycle = durationPerSection * subfooters.length;
 
 if (durationCycle > 300) {
