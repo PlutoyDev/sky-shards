@@ -108,6 +108,7 @@ export default function ShardCarousel() {
   }, [navigateDate, setNavigateDay]);
 
   useEffect(() => {
+    let timeout: string | number | NodeJS.Timeout | undefined = undefined;
     const handleDateChange = () => {
       const date = getDateFromUrl();
       console.log('Date Changed to', date.toFormat('yyyy/MM/dd'));
@@ -115,7 +116,8 @@ export default function ShardCarousel() {
         navigateDate(date, false);
       }
       const msToNextDay = DateTime.local().setZone('America/Los_Angeles').endOf('day').diffNow().as('milliseconds');
-      setTimeout(handleDateChange, msToNextDay);
+      clearTimeout(timeout);
+      timeout = setTimeout(handleDateChange, msToNextDay);
     };
     handleDateChange();
     window.addEventListener('popstate', handleDateChange);
