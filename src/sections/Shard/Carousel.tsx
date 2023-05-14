@@ -110,10 +110,9 @@ export default function ShardCarousel() {
   useEffect(() => {
     let timeout: string | number | NodeJS.Timeout | undefined = undefined;
     const handleDateChange = () => {
-      const date = getDateFromUrl();
-      console.log('Date Changed to', date.toFormat('yyyy/MM/dd'));
-      if (!date.hasSame(date, 'day')) {
-        navigateDate(date, false);
+      const newDate = getDateFromUrl();
+      if (!newDate.hasSame(date, 'day')) {
+        navigateDate(newDate, false);
       }
       const msToNextDay = DateTime.local().setZone('America/Los_Angeles').endOf('day').diffNow().as('milliseconds');
       clearTimeout(timeout);
