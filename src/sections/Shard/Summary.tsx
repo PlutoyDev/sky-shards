@@ -3,6 +3,7 @@ import { BsChevronCompactDown } from 'react-icons/bs';
 import { DateTime, Settings, Zone } from 'luxon';
 import Clock from '../../components/Clock';
 import Date from '../../components/Date';
+import { useNow } from '../../context/Now';
 import { getUpcommingShardPhase, ShardInfo } from '../../shardPredictor';
 
 interface ShardSummarySectionProp {
@@ -11,6 +12,9 @@ interface ShardSummarySectionProp {
 }
 
 export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
+  const { application: now } = useNow();
+  if (date.hasSame(now, 'day')) date = now;
+
   const summaryRef = useRef<HTMLDivElement>(null);
   if (!info.haveShard) {
     return (

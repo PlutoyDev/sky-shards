@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { FaCog, FaMinus, FaPlus } from 'react-icons/fa';
+import { FaCog, FaMinus, FaPlus, FaBell } from 'react-icons/fa';
 import { Popover } from '@headlessui/react';
 import { DateTime, Settings, Zone } from 'luxon';
 import Clock from '../../components/Clock';
