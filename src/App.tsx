@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { HeaderFxProvider } from './context/HeaderFx';
+import { ModalProvider } from './context/ModalContext';
 import { NowProvider } from './context/Now';
 import { SettingsProvider } from './context/Settings';
 import useLocalStorageState from './hooks/useLocalStorageState';
@@ -37,24 +38,26 @@ function App() {
   }, [lightMode]);
 
   return (
-    <HeaderFxProvider>
-      <SettingsProvider
-        value={{ isTwelveHourMode: twelveHourMode, isLightMode: boolLightMode, isCompactMode: compactMode }}
-      >
-        <NowProvider>
-          <div className='App'>
-            <Header
-              setTwelveHourModeSetting={setTwelveHourModeSetting}
-              setLightMode={setLightMode}
-              twelveHourModeSetting={twelveHourModeSetting}
-              lightMode={lightMode}
-            />
-            <ShardCarousel />
-            <Footer />
-          </div>
-        </NowProvider>
-      </SettingsProvider>
-    </HeaderFxProvider>
+    <ModalProvider>
+      <HeaderFxProvider>
+        <SettingsProvider
+          value={{ isTwelveHourMode: twelveHourMode, isLightMode: boolLightMode, isCompactMode: compactMode }}
+        >
+          <NowProvider>
+            <div className='App'>
+              <Header
+                setTwelveHourModeSetting={setTwelveHourModeSetting}
+                setLightMode={setLightMode}
+                twelveHourModeSetting={twelveHourModeSetting}
+                lightMode={lightMode}
+              />
+              <ShardCarousel />
+              <Footer />
+            </div>
+          </NowProvider>
+        </SettingsProvider>
+      </HeaderFxProvider>
+    </ModalProvider>
   );
 }
 
