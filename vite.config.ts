@@ -30,8 +30,5 @@ export default defineConfig({
       manifest,
       workbox,
     }),
-    legacy({
-      targets: ['defaults', 'last 4 major versions and not dead', '> 0.3%'],
-    }),
   ],
 });
