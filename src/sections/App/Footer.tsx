@@ -8,58 +8,6 @@ import { patternCredits } from '../../data/credits';
 const SkyClockImg = <img className='ml-auto mt-1.5 h-4 w-4' src='/ext/sky-clock.png' />;
 
 const subfooters = [
-  () => (
-    <div key='credits' className='flex h-full flex-col items-center justify-around gap-y-1'>
-      <div>
-        <p className='text-center text-xs md:text-sm'>
-          Thank you to those who helped to discover the patterns shard eruption:
-        </p>
-        <p className='flex w-fit select-none flex-row flex-wrap justify-center gap-x-1.5 overflow-hidden whitespace-nowrap text-xs'>
-          {patternCredits.map(u => {
-            if (u.includes('#')) {
-              const [name, tag] = u.split('#');
-              return (
-                <span key={u}>
-                  <span>{name}</span>
-                  <span className='hidden md:inline'>#{tag}</span>
-                </span>
-              );
-            } else return <p key={u}>{u}</p>;
-          })}
-        </p>
-      </div>
-      <p className='text-center text-[8px] md:text-xs'>
-        <span>This website is not affiliated with thatgamecompany or </span>
-        <span className='whitespace-nowrap'>Sky: Children of the Light. </span>
-        <span className='whitespace-nowrap'>(It might not reflect what is in-game)</span>
-      </p>
-    </div>
-  ),
-  () => (
-    <div
-      key='inspiration'
-      className='flex h-full max-h-full flex-row flex-wrap items-center justify-center gap-x-1 lg:gap-x-3'
-    >
-      <p>The creation of Sky Shard was inspired by:</p>
-      <a
-        target='_blank'
-        rel='noreferrer'
-        href='https://sky-clock.netlify.com/'
-        className='z-10 grid cursor-pointer grid-rows-2 rounded-lg border border-zinc-500 px-2 text-center shadow-2xl shadow-zinc-700  '
-        style={{ gridTemplateColumns: 'max-content min-content max-content' }}
-      >
-        {SkyClockImg}
-        <h2 className='mx-2 whitespace-nowrap text-center'>
-          <span className='text-sm underline'>Sky Clock</span>
-          <span className='text-xs'> by Chris Stead</span>
-        </h2>
-        <BiLinkExternal className='mt-1.5 self-start' />
-        <p className='col-span-3 whitespace-normal text-xs'>
-          Visit it for timing of Geyser, Grandma, Turtle and many more
-        </p>
-      </a>
-    </div>
-  ),
   () => {
     const version = import.meta.env.VITE_VERSION_MINOR ?? 'undefiend';
     const branchName = import.meta.env.VITE_GIT_BRANCH ?? 'undefiend';
@@ -125,6 +73,58 @@ const subfooters = [
       </div>
     );
   },
+  () => (
+    <div key='credits' className='flex h-full flex-col items-center justify-around gap-y-1'>
+      <div>
+        <p className='text-center text-xs md:text-sm'>
+          Thank you to those who helped to discover the patterns shard eruption:
+        </p>
+        <p className='flex w-fit select-none flex-row flex-wrap justify-center gap-x-1.5 overflow-hidden whitespace-nowrap text-xs'>
+          {patternCredits.map(u => {
+            if (u.includes('#')) {
+              const [name, tag] = u.split('#');
+              return (
+                <span key={u}>
+                  <span>{name}</span>
+                  <span className='hidden md:inline'>#{tag}</span>
+                </span>
+              );
+            } else return <p key={u}>{u}</p>;
+          })}
+        </p>
+      </div>
+      <p className='text-center text-[8px] md:text-xs'>
+        <span>This website is not affiliated with thatgamecompany or </span>
+        <span className='whitespace-nowrap'>Sky: Children of the Light. </span>
+        <span className='whitespace-nowrap'>(It might not reflect what is in-game)</span>
+      </p>
+    </div>
+  ),
+  () => (
+    <div
+      key='inspiration'
+      className='flex h-full max-h-full flex-row flex-wrap items-center justify-center gap-x-1 lg:gap-x-3'
+    >
+      <p>The creation of Sky Shard was inspired by:</p>
+      <a
+        target='_blank'
+        rel='noreferrer'
+        href='https://sky-clock.netlify.com/'
+        className='z-10 grid cursor-pointer grid-rows-2 rounded-lg border border-zinc-500 px-2 text-center shadow-2xl shadow-zinc-700  '
+        style={{ gridTemplateColumns: 'max-content min-content max-content' }}
+      >
+        {SkyClockImg}
+        <h2 className='mx-2 whitespace-nowrap text-center'>
+          <span className='text-sm underline'>Sky Clock</span>
+          <span className='text-xs'> by Chris Stead</span>
+        </h2>
+        <BiLinkExternal className='mt-1.5 self-start' />
+        <p className='col-span-3 whitespace-normal text-xs'>
+          Visit it for timing of Geyser, Grandma, Turtle and many more
+        </p>
+      </a>
+    </div>
+  ),
 ];
 
 const durationPerSection = 5; // seconds
