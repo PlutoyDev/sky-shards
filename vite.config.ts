@@ -1,3 +1,4 @@
+import legacy from '@vitejs/plugin-legacy';
 import react from '@vitejs/plugin-react-swc';
 import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
@@ -28,6 +29,9 @@ export default defineConfig({
       ],
       manifest,
       workbox,
+    }),
+    legacy({
+      targets: ['defaults', 'last 4 major versions and not dead', '> 0.3%'],
     }),
   ],
 });
