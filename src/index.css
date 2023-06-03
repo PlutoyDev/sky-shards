@@ -60,7 +60,6 @@ body.light {
   right: 7px;
   bottom: 7px;
 
-  overflow: hidden;
   display: grid;
   grid-template-rows: var(--header-height) auto min-content;
   grid-template-columns: 1fr;
