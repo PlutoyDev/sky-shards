@@ -130,22 +130,7 @@ export default function ShardCarousel() {
   }, [date, info.haveShard, info.isRed]);
 
   return (
-    <motion.div
-      className='Page ShardPage'
-      drag='x'
-      dragConstraints={{ left: 0, right: 0 }}
-      dragElastic={0.5}
-      dragMomentum={false}
-      onDragEnd={(_, { offset, velocity }) => {
-        const swipe = offset.x > 0 ? -1 : 1;
-        const swipePower = offset.x * velocity.x;
-        console.log('drag ended', swipe, swipePower);
-        if (swipePower > 500) {
-          navigateDate(swipe);
-        }
-      }}
-      style={{ fontSize: `${fontSize}em` }}
-    >
+    <div className='Page ShardPage'>
       <AnimatePresence initial={false} custom={direction}>
         <motion.main
           key={date.toISO()}
@@ -156,6 +141,20 @@ export default function ShardCarousel() {
           variants={varients}
           transition={{ type: 'spring', duration: 0.3 }}
           custom={direction}
+          drag='x'
+          // dragSnapToOrigin={true}
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={0.8}
+          dragMomentum={false}
+          onDragEnd={(_, { offset, velocity }) => {
+            const swipe = offset.x > 0 ? -1 : 1;
+            const swipePower = offset.x * velocity.x;
+            console.log('drag ended', swipe, swipePower);
+            if (swipePower > 4000) {
+              navigateDate(swipe);
+            }
+          }}
+          style={{ fontSize: `${fontSize}em` }}
         >
           <ShardSummary date={date} info={info} />
           {info.haveShard && (
@@ -175,6 +174,6 @@ export default function ShardCarousel() {
         <span>Swipe left or Click here for next shard</span>
         <BsChevronLeft />
       </div>
-    </motion.div>
+    </div>
   );
 }
