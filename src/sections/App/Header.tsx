@@ -17,7 +17,7 @@ export default function Header() {
         <span>Sky Shards</span>
       </a>
 
-      <time dateTime={DateTime.utc().toISO()} id='header-dateTime' onClick={navigateToday}>
+      <time dateTime={DateTime.utc().toISO() ?? undefined} id='header-dateTime' onClick={navigateToday}>
         <Date hideYear short />
         <Clock sky hideSeconds />
       </time>

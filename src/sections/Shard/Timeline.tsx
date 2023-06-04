@@ -97,7 +97,7 @@ export default function ShardTimeline({ date, info }: ShardTimelineSectionProp) 
                       {/* Content */}
                       <div className='timeline-item-content'>
                         <h3 className='timeline-item-header'>{phasesName[pName]}</h3>
-                        <time dateTime={phases[pName].toISO()}>
+                        <time dateTime={phases[pName].toISO() ?? undefined}>
                           <p>
                             Relative: <Clock date={phases[pName]} inline relative twoUnits />
                           </p>

@@ -89,13 +89,16 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
                 <Clock date={next} relative trim useSemantic fontSize='1.2em' />
                 <small> which is</small>
               </div>
-              <time id='shardAbsLocal' dateTime={next?.setZone('local')?.toISO({ suppressMilliseconds: true })}>
+              <time
+                id='shardAbsLocal'
+                dateTime={next?.setZone('local')?.toISO({ suppressMilliseconds: true }) ?? undefined}
+              >
                 <strong>Your Time: </strong>
                 <small className='block'>({(Settings.defaultZone as Zone).name})</small>
                 <Date date={next} local />
                 <Clock date={next} local />
               </time>
-              <time id='shardAbsSky' dateTime={next?.toISO({ suppressMilliseconds: true })}>
+              <time id='shardAbsSky' dateTime={next?.toISO({ suppressMilliseconds: true }) ?? undefined}>
                 <strong>Sky Time: </strong>
                 <small className='block'>(America/Los_Angeles)</small>
                 <Date date={next} />

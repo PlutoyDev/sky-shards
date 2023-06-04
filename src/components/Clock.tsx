@@ -60,7 +60,7 @@ export default function Clock({
       ? duration?.toISO()
       : date.toISO({ suppressMilliseconds: true, suppressSeconds: hideSeconds });
     return (
-      <time className='Clock' style={style} dateTime={isoDateTime}>
+      <time className='Clock' style={style} dateTime={isoDateTime ?? undefined}>
         {text}
       </time>
     );
