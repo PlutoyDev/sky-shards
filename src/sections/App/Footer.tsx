@@ -55,7 +55,7 @@ const subfooters = [
             href='https://github.com/PlutoyDev/sky-shards'
             target='_blank'
             rel='noreferrer'
-            className=' rounded-xl bg-black px-2 pt-0.5 pb-1 text-white'
+            className=' rounded-xl bg-black px-2 pb-1 pt-0.5 text-white'
           >
             <BsGithub className='text-md mr-2 inline-block' />
             <span className='text-sm font-bold '>Source on GitHub</span>
@@ -64,7 +64,7 @@ const subfooters = [
             href={feedbackUrl}
             target='_blank'
             rel='noreferrer'
-            className='rounded-xl bg-purple-700 px-2 pt-0.5 pb-1 text-white'
+            className='rounded-xl bg-purple-700 px-2 pb-1 pt-0.5 text-white'
           >
             <TbForms className='text-md mr-2 inline-block' />
             <span className='text-sm font-bold '>Submit Feedback</span>
@@ -77,7 +77,7 @@ const subfooters = [
     <div key='credits' className='flex h-full flex-col items-center justify-around gap-y-1'>
       <div>
         <p className='text-center text-xs md:text-sm'>
-          Thank you to those who helped to discover the patterns shard eruption:
+          Thank you to the following Discord users who helped to discover the patterns shard eruption:
         </p>
         <p className='flex w-fit select-none flex-row flex-wrap justify-center gap-x-1.5 overflow-hidden whitespace-nowrap text-xs'>
           {patternCredits.map(u => {
