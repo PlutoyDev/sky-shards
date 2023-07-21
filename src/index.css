@@ -61,13 +61,8 @@ body.light {
   --footer-height: clamp(50px, 15vh, 88px);
 
   overflow: hidden;
-  display: grid;
-  grid-template-rows: var(--header-height) 1fr var(--footer-height);
-  grid-template-columns: 1fr;
-  grid-template-areas:
-    'header'
-    'main'
-    'footer';
+  display: flex;
+  flex-flow: column nowrap;
 }
 
 #header {
@@ -185,16 +180,6 @@ body.light {
   display: none;
 }
 
-#OptOut {
-  text-decoration: underline;
-  color: blue;
-  cursor: pointer;
-}
-
-.Page {
-  grid-area: main;
-}
-
 .text-border {
   text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
@@ -212,12 +197,9 @@ body.light {
 
 .ShardPage {
   --nav-hint-height: 30px;
-  gap: 0.2rem;
 
-  display: grid;
-  grid-template-rows: auto;
-  grid-template-columns: 30px auto 30px;
-  grid-template-areas: 'leftNavHint shardContent rightNavHint';
+  flex: 1;
+  display: flex;
 
   height: 100%;
   width: 100%;
@@ -227,6 +209,7 @@ body.light {
   justify-items: center;
   align-items: center;
   text-align: center;
+  gap: 0.2rem;
 
   overflow: hidden;
   padding: 0.5rem;
@@ -249,13 +232,13 @@ body.light {
 }
 
 #leftNavHint {
-  grid-area: leftNavHint;
+  order: 0;
   flex-direction: column-reverse;
   writing-mode: vertical-rl;
 }
 
 #rightNavHint {
-  grid-area: rightNavHint;
+  order: 2;
   writing-mode: vertical-rl;
   flex-direction: column;
 }
@@ -282,7 +265,8 @@ body.light {
 }
 
 .shardContent {
-  grid-area: shardContent;
+  order: 1;
+  flex: 1;
   width: 90%;
   height: 100%;
   max-height: 100%;
