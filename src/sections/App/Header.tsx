@@ -23,7 +23,7 @@ export default function Header() {
         });
       }, 5000);
     }
-  }, [showModal]);
+  }, []);
 
   return (
     <header id='header' className='glass'>
