@@ -198,8 +198,10 @@ body.light {
 .ShardPage {
   --nav-hint-height: 30px;
 
-  flex: 1;
-  display: flex;
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: 30px auto 30px;
+  grid-template-areas: 'leftNavHint shardContent rightNavHint';
 
   height: 100%;
   width: 100%;
@@ -232,13 +234,13 @@ body.light {
 }
 
 #leftNavHint {
-  order: 0;
+  grid-area: leftNavHint;
   flex-direction: column-reverse;
   writing-mode: vertical-rl;
 }
 
 #rightNavHint {
-  order: 2;
+  grid-area: rightNavHint;
   writing-mode: vertical-rl;
   flex-direction: column;
 }
@@ -265,8 +267,7 @@ body.light {
 }
 
 .shardContent {
-  order: 1;
-  flex: 1;
+  grid-area: shardContent;
   width: 90%;
   height: 100%;
   max-height: 100%;
