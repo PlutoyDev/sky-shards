@@ -1,13 +1,15 @@
 import { ImCross } from 'react-icons/im';
 import { ModalProps } from '../../context/ModalContext';
 
+export const dismissed_key = 'v4AnnouncementDismissed'
+
 export default function Announcement_V4({ hideModal }: ModalProps) {
   return (
     <div className='glass w-full max-w-xs rounded-lg transition-[height] md:mx-auto md:max-w-lg'>
       <button
         className='absolute right-4 top-2'
         onClick={() => {
-          localStorage.setItem('v4AnnouncementDismissed', 'true');
+          localStorage.setItem(dismissed_key, 'true');
           hideModal();
         }}
       >

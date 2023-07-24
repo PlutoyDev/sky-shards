@@ -5,7 +5,7 @@ import Clock from '../../components/Clock';
 import Date from '../../components/Date';
 import { useHeaderFx } from '../../context/HeaderFx';
 import { useModal } from '../../context/ModalContext';
-import Announcement_V4 from '../Modals/Announcement_V4';
+import Announcement_V4, { dismissed_key } from '../Modals/Announcement_V4';
 import SettingsModal from '../Modals/Settings';
 
 export default function Header() {
@@ -14,15 +14,14 @@ export default function Header() {
   const navigateToday = () => navigateDay(DateTime.local({ zone: 'America/Los_Angeles' }));
 
   useEffect(() => {
+    if (localStorage.getItem(dismissed_key) == 'true') return;
     // Read if v4 announcement has been dismissed
-    const v4AnnouncementDismissed = localStorage.getItem('v4AnnouncementDismissed');
-    if (!v4AnnouncementDismissed) {
-      setTimeout(() => {
-        showModal({
-          children: Announcement_V4,
-        });
-      }, 5000);
-    }
+    setTimeout(() => {
+      if (localStorage.getItem(dismissed_key) == 'true') return;
+      showModal({
+        children: Announcement_V4,
+      });
+    }, 5000);
   }, []);
 
   return (
