@@ -4,6 +4,7 @@ import { BsGithub } from 'react-icons/bs';
 import { TbForms } from 'react-icons/tb';
 import { AnimatePresence, motion } from 'framer-motion';
 import { patternCredits } from '../../data/credits';
+import useFeedbackFormUrl from '../../hooks/useFeedbackFom';
 
 const SkyClockImg = <img className='ml-auto mt-1.5 h-4 w-4' src='/ext/sky-clock.png' />;
 
@@ -13,19 +14,7 @@ const subfooters = [
     const branchName = import.meta.env.VITE_GIT_BRANCH ?? 'undefiend';
     const commitSha = import.meta.env.VITE_GIT_COMMIT ?? 'undefiend';
 
-    const size = window.innerWidth + 'x' + window.innerHeight;
-    const baseLink =
-      'https://docs.google.com/forms/d/e/1FAIpQLSf8CvIDxHz9hFkzaK-CFsGDKqIjiuAt4IDzigI8WjQnNBx6Ww/viewform';
-
-    const params = new URLSearchParams();
-    params.append('usp', 'pp_url');
-    params.append(
-      'entry.402545620',
-      `--App related--\nVersion: ${version}\nBranch: ${branchName}\nCommit: ${commitSha}\n--Device related (Feel free to delete it)--\n` +
-        `Size: ${size}\nTimezone: ${Intl.DateTimeFormat().resolvedOptions().timeZone}`,
-    );
-
-    const feedbackUrl = baseLink + '?' + params.toString();
+    const feedbackUrl = useFeedbackFormUrl();
 
     return (
       <div
