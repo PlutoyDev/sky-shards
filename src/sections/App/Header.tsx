@@ -5,8 +5,10 @@ import Clock from '../../components/Clock';
 import Date from '../../components/Date';
 import { useHeaderFx } from '../../context/HeaderFx';
 import { useModal } from '../../context/ModalContext';
-import Announcement_V4, { dismissed_key } from '../Modals/Announcement_V4';
+import Announcement_V4 from '../Modals/Announcement_V4';
 import SettingsModal from '../Modals/Settings';
+
+const dismissed_key = 'v4AnnouncementDismissed';
 
 export default function Header() {
   const { showModal } = useModal();
@@ -20,6 +22,9 @@ export default function Header() {
       if (localStorage.getItem(dismissed_key) == 'true') return;
       showModal({
         children: Announcement_V4,
+        hideOnOverlayClick: true,
+        title: 'V4 Announcement',
+        onHidden: () => localStorage.setItem(dismissed_key, 'true'),
       });
     }, 5000);
   }, []);
@@ -41,6 +46,8 @@ export default function Header() {
           onClick={() => {
             showModal({
               children: SettingsModal,
+              hideOnOverlayClick: true,
+              title: 'Settings',
             });
           }}
         >
