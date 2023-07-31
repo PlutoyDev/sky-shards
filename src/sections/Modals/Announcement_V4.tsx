@@ -1,7 +1,7 @@
 import { ImCross } from 'react-icons/im';
 import { ModalProps } from '../../context/ModalContext';
 
-export const dismissed_key = 'v4AnnouncementDismissed'
+export const dismissed_key = 'v4AnnouncementDismissed';
 
 export default function Announcement_V4({ hideModal }: ModalProps) {
   return (
@@ -32,6 +32,14 @@ export default function Announcement_V4({ hideModal }: ModalProps) {
         <p> It might still have bugs though, so please report them to me.</p>
         <p>
           <span>You can find the a feedback Google Form at the bottom of the page.</span>
+        </p>
+        &nbsp;
+        <p>
+          <span className='text-lg font-semibold'>Breaking changes</span>
+        </p>
+        <p>
+          The automatic resizing of font size has been remove. If the text are too small or too big, you can change it
+          in the settings.
         </p>
         &nbsp;
         <p>
