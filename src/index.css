@@ -58,7 +58,7 @@ body.light {
   bottom: 7px;
 
   --header-height: clamp(24px, 10vh, 56px);
-  --footer-height: clamp(50px, 15vh, 88px);
+  --footer-height: clamp(50px, 18vh, 124px);
 
   overflow: hidden;
   display: flex;
@@ -181,7 +181,11 @@ body.light {
 }
 
 .text-border {
-  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  text-shadow:
+    -1px 0 black,
+    0 1px black,
+    1px 0 black,
+    0 -1px black;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */

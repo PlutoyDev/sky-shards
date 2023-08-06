@@ -65,7 +65,7 @@ const subfooters = [
   () => (
     <div key='credits' className='flex h-full flex-col items-center justify-around gap-y-1'>
       <div>
-        <p className='text-center text-xs md:text-sm'>
+        <p className='text-center text-xs'>
           Thank you to the following Discord users who helped to discover the patterns shard eruption:
         </p>
         <p className='flex w-full select-none flex-row flex-wrap items-center justify-center gap-x-1.5 overflow-hidden whitespace-nowrap text-xs'>
