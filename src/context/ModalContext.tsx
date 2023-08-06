@@ -58,11 +58,11 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
           <>
             {/* Overlay */}
             <motion.div
-              className='fixed inset-0 z-50 bg-black bg-opacity-50'
+              className='fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm backdrop-filter'
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={hideModal}
+              onClick={() => modalProps.hideOnOverlayClick && hideModal()}
             />
             {/* Modal */}
             <motion.div
