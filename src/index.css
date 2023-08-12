@@ -43,6 +43,10 @@ body.light {
 }
 
 .glass {
+  background-image: unset;
+  box-shadow: unset;
+  text-shadow: unset;
+  /* ^ Remove the glass default from daisyUI */
   background-color: var(--glass-background-color);
   backdrop-filter: var(--glass-backdrop-filter);
   border-radius: var(--glass-border-radius);
@@ -116,7 +120,7 @@ body.light {
   color: var(--color-secondary);
 }
 
-.footer {
+footer {
   height: var(--footer-height);
   padding: 2px 10px;
 }
