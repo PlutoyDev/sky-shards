@@ -7,9 +7,6 @@ html {
 }
 
 body {
-  --color-primary: #242424;
-  --color-secondary: #fffd;
-
   --glass-background-color: rgba(128, 128, 128, 0.3);
 
   position: absolute;
@@ -24,18 +21,16 @@ body {
   background-position: 90% center;
   background-attachment: fixed;
 
-  background-color: var(--color-primary);
-  color: var(--color-secondary);
-}
+  background-color: #242424;
+  color: #fffd;
 
-body.light {
-  --color-primary: #f0f0f0;
-  --color-secondary: #fffd;
+  /* Light theme */
+  [data-theme='light'] & {
+    --glass-background-color: rgba(64, 64, 64, 0.2);
 
-  --glass-background-color: rgba(64, 64, 64, 0.2);
-
-  background-position: 10% center;
-  background-image: url('/backgrounds/SkyBackgroundLight.webp');
+    background-position: 10% center;
+    background-image: url('/backgrounds/SkyBackgroundLight.webp');
+  }
 }
 
 .glass {
@@ -106,14 +101,6 @@ body.light {
   place-items: center right;
   gap: 0.8rem;
   margin-right: 0.5rem;
-}
-
-.header-buttons > button {
-  border: none;
-  cursor: pointer;
-  outline: none;
-  font-size: 1.2rem;
-  color: var(--color-secondary);
 }
 
 footer {
@@ -366,7 +353,7 @@ footer {
   width: 8px;
   height: 8px;
   border-radius: 8px;
-  background-color: var(--color-secondary);
+  background-color: #fffd;
 }
 
 .timeline-item-content {
