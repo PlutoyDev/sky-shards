@@ -7,18 +7,14 @@ html {
 }
 
 body {
-  --glass-background-color: rgba(128, 128, 128, 0.3);
-
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
 
-  background-image: url('/backgrounds/SkyBackgroundDark.webp');
   background-repeat: no-repeat;
   background-size: cover;
-  background-position: 90% center;
   background-attachment: fixed;
 
   background-color: #242424;
@@ -31,6 +27,14 @@ body {
     background-position: 10% center;
     background-image: url('/backgrounds/SkyBackgroundLight.webp');
   }
+
+  /* Dark theme */
+  [data-theme='dark'] & {
+    --glass-background-color: rgba(128, 128, 128, 0.3);
+
+    background-position: 90% center;
+    background-image: url('/backgrounds/SkyBackgroundDark.webp');
+  }
 }
 
 .glass {
@@ -40,7 +44,7 @@ body {
   /* ^ Remove the glass default from daisyUI */
   background-color: var(--glass-background-color);
   backdrop-filter: blur(10px);
-  border-radius: 15px;
+  border-radius: 1rem;
   padding: 2px 20px;
   border: 1px solid rgba(192, 192, 192, 0.2);
 }
