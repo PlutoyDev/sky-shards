@@ -90,7 +90,7 @@ const subfooters = [
       <a
         target='_blank'
         rel='noreferrer'
-        href='https://sky-clock.netlify.com/'
+        href='https://sky-clock.netlify.app/'
         className='z-10 grid cursor-pointer grid-rows-2 rounded-lg border border-zinc-500 px-2 text-center shadow-2xl shadow-zinc-700  '
         style={{ gridTemplateColumns: 'max-content min-content max-content' }}
       >
