@@ -50,14 +50,14 @@ export function SettingsProvider({ children }: SettingsProviderProps) {
     if (lightMode === 'system') {
       const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
       if (prefersDarkMode) {
-        document.body.classList.remove('light');
+        document.documentElement.setAttribute('data-theme', 'dark');
       } else {
-        document.body.classList.add('light');
+        document.documentElement.setAttribute('data-theme', 'light');
       }
     } else if (lightMode === 'true') {
-      document.body.classList.add('light');
+      document.documentElement.setAttribute('data-theme', 'light');
     } else if (lightMode === 'false') {
-      document.body.classList.remove('light');
+      document.documentElement.setAttribute('data-theme', 'dark');
     }
   }, [lightMode]);
 
