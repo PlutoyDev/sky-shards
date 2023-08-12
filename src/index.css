@@ -10,9 +10,7 @@ body {
   --color-primary: #242424;
   --color-secondary: #fffd;
 
-  --glass-backdrop-filter: blur(10px);
   --glass-background-color: rgba(128, 128, 128, 0.3);
-  --glass-border-radius: 20px;
 
   position: absolute;
   top: 0;
@@ -34,9 +32,7 @@ body.light {
   --color-primary: #f0f0f0;
   --color-secondary: #fffd;
 
-  --glass-backdrop-filter: blur(10px);
   --glass-background-color: rgba(64, 64, 64, 0.2);
-  --glass-border-radius: 10px;
 
   background-position: 10% center;
   background-image: url('/backgrounds/SkyBackgroundLight.webp');
@@ -48,8 +44,8 @@ body.light {
   text-shadow: unset;
   /* ^ Remove the glass default from daisyUI */
   background-color: var(--glass-background-color);
-  backdrop-filter: var(--glass-backdrop-filter);
-  border-radius: var(--glass-border-radius);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
   padding: 2px 20px;
   border: 1px solid rgba(192, 192, 192, 0.2);
 }
@@ -135,7 +131,7 @@ footer {
 
   background-color: var(--glass-background-color);
   backdrop-filter: blur(200px);
-  border-radius: var(--glass-border-radius);
+  border-radius: 15px;
 
   padding: 10px;
 
