@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
 import { FaCog } from 'react-icons/fa';
 import { DateTime } from 'luxon';
-import Clock from '../../components/Clock';
+import { Clock } from '../../components/Clock';
 import Date from '../../components/Date';
 import { useHeaderFx } from '../../context/HeaderFx';
 import { useModal } from '../../context/ModalContext';
+import { useNow } from '../../context/Now';
 import Announcement_V4 from '../Modals/Announcement_V4';
 import SettingsModal from '../Modals/Settings';
 
@@ -14,6 +15,7 @@ export default function Header() {
   const { showModal } = useModal();
   const { navigateDay } = useHeaderFx();
   const navigateToday = () => navigateDay(DateTime.local({ zone: 'America/Los_Angeles' }));
+  const { application } = useNow();
 
   useEffect(() => {
     if (localStorage.getItem(dismissed_key) == 'true') return;
@@ -37,7 +39,7 @@ export default function Header() {
 
       <time dateTime={DateTime.utc().toISO() ?? undefined} id='header-dateTime' onClick={navigateToday}>
         <Date hideYear short />
-        <Clock sky hideSeconds />
+        <Clock hideSeconds time={application} className='text-2xl' relFontSize={0} />
       </time>
 
       <div id='header-buttons'>

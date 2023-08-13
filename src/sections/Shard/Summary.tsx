@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { BsChevronCompactDown } from 'react-icons/bs';
 import { DateTime, Settings, Zone } from 'luxon';
-import Clock from '../../components/Clock';
+import { Clock, Countdown } from '../../components/Clock';
 import Date from '../../components/Date';
 import { useNow } from '../../context/Now';
 import { getUpcommingShardPhase, ShardInfo } from '../../shardPredictor';
@@ -73,7 +73,7 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
                     <>
                       <span className='whitespace-nowrap'>
                         has <strong>landed </strong>
-                        <Clock date={upcomming.land} relative negate inline hideSeconds fontSize='0.9em' />
+                        <Clock duration={now.diff(upcomming.land)} hideSeconds relFontSize={0.8} />
                       </span>
                       <span> ago. </span>
                       <span className='whitespace-nowrap'>
@@ -86,7 +86,7 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
                     </span>
                   )}
                 </span>
-                <Clock date={next} relative trim useSemantic fontSize='1.2em' />
+                <Countdown duration={now.diff(next as DateTime)} />
                 <small> which is</small>
               </div>
               <time
@@ -96,19 +96,19 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
                 <strong>Your Time: </strong>
                 <small className='block'>({(Settings.defaultZone as Zone).name})</small>
                 <Date date={next} local />
-                <Clock date={next} local />
+                <Clock time={next} convertTo='local' className='block font-bold' />
               </time>
               <time id='shardAbsSky' dateTime={next?.toISO({ suppressMilliseconds: true }) ?? undefined}>
                 <strong>Sky Time: </strong>
                 <small className='block'>(America/Los_Angeles)</small>
                 <Date date={next} />
-                <Clock date={next} />
+                <Clock time={next} className='block font-bold' />
               </time>
             </>
           ) : (
             <div id='shardCountdown'>
               <span> All shard has ended </span>
-              <Clock date={info.lastEnd} relative negate useSemantic fontSize='1.2em' />
+              <Countdown duration={now.diff(info.lastEnd)} />
               <span> ago </span>
             </div>
           )}
