@@ -75,7 +75,7 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
                     <>
                       <span className='whitespace-nowrap'>
                         has <strong>landed </strong>
-                        <Clock duration={now.diff(upcomming.land)} hideSeconds relFontSize={0.8} />
+                        <Clock duration={now.diff(upcomming.land)} hideSeconds className='font-bold' />
                       </span>
                       <span> ago. </span>
                       <span className='whitespace-nowrap'>

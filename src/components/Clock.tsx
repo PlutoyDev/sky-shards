@@ -26,7 +26,7 @@ export function Clock({
 
   const formattedTime = duration
     ? duration.toFormat(
-        hideSeconds ? (Math.abs(duration.as('hours')) > 2 ? `hh'h' mm'm'` : `mm'm' ss's'`) : `hh'h' mm'm' ss's'`,
+        hideSeconds ? (Math.abs(duration.as('minutes')) > 90 ? `hh'h' mm'm'` : `mm'm' ss's'`) : `hh'h' mm'm' ss's'`,
       )
     : time?.setZone(convertTo === 'local' ? 'local' : 'America/Los_Angeles')?.toLocaleString({
         hourCycle: 'h23',
