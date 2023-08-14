@@ -13,7 +13,7 @@ interface SubFooterProps {
 
 function SubFooter({ key, className, children }: SubFooterProps) {
   return (
-    <div key={key} className={`carousel-item h-full max-w-full ${className}`}>
+    <div key={key} className={`max-w-full ${className}`} style={{ height: 'calc(100% - 4rem)' }}>
       {children}
     </div>
   );
@@ -24,32 +24,33 @@ function AppDetailFooter() {
 
   const feedbackUrl = useFeedbackFormUrl();
   return (
-    <SubFooter
-      key='app-detail'
-      className='grid auto-cols-fr grid-flow-col grid-cols-2 place-items-center max-md:grid-rows-2 md:px-[calc((50%-7rem)/2)] '
-    >
-      <div className='max-md:col-span-2'>
+    <SubFooter key='app-detail' className='flex flex-row flex-wrap items-center justify-center gap-x-1 lg:gap-x-3'>
+      <div>
         <p className='text-center text-sm'>Created by: Plutoy#5022</p>
-        <p className='flex justify-center gap-2 text-sm'>Version: {version}</p>
+        <p className='text-center'>Version: {version}</p>
       </div>
-      <a
-        href='https://github.com/PlutoyDev/sky-shards'
-        target='_blank'
-        rel='noreferrer'
-        className=' whitespace-nowrap rounded-xl bg-black px-2 pb-1 pt-0.5 text-white'
-      >
-        <BsGithub className='text-md mr-2 inline-block' />
-        <span className='text-sm font-bold '>Source on GitHub</span>
-      </a>
-      <a
-        href={feedbackUrl}
-        target='_blank'
-        rel='noreferrer'
-        className='whitespace-nowrap rounded-xl bg-purple-700 px-2 pb-1 pt-0.5 text-white'
-      >
-        <TbForms className='text-md mr-2 inline-block' />
-        <span className='text-sm font-bold '>Submit Feedback</span>
-      </a>
+      <div className='mt-1 flex flex-row flex-wrap items-center justify-center gap-1'>
+        <a
+          href='https://github.com/PlutoyDev/sky-shards'
+          target='_blank'
+          rel='noreferrer'
+          className='rounded-xl bg-black px-2 pb-1 pt-0.5 text-white'
+        >
+          <BsGithub className='text-md mr-2 inline-block' />
+          <span className='text-sm font-bold max-xs:hidden'>Source on</span>
+          <span className='text-sm font-bold '>GitHub</span>
+        </a>
+        <a
+          href={feedbackUrl}
+          target='_blank'
+          rel='noreferrer'
+          className='rounded-xl bg-purple-700 px-2 pb-1 pt-0.5 text-white'
+        >
+          <TbForms className='text-md mr-2 inline-block' />
+          <span className='text-sm font-bold max-xs:hidden'>Submit</span>
+          <span className='text-sm font-bold '>Feedback</span>
+        </a>
+      </div>
     </SubFooter>
   );
 }
@@ -69,7 +70,7 @@ function PattenCreditFooter() {
       <p className='text-center max-xs:hidden xs:text-[8px] md:text-xs'>
         <span>This website is not affiliated with thatgamecompany or </span>
         <span className='whitespace-nowrap'>Sky: Children of the Light. </span>
-        <span className='whitespace-nowrap'>(It might not reflect what is in-game)</span>
+        <span className='whitespace-nowrap max-sm:hidden'>(It might not reflect what is in-game)</span>
       </p>
     </SubFooter>
   );
@@ -100,9 +101,9 @@ function InspiredByFooter() {
   );
 }
 
-const subfooters = [InspiredByFooter];
+const subfooters = [AppDetailFooter, PattenCreditFooter, InspiredByFooter] as const;
+const numSubfooters = subfooters.length;
 const durationPerSection = 5; // seconds
-const durationCycle = durationPerSection * subfooters.length;
 
 interface FooterProps {}
 
@@ -112,15 +113,26 @@ export function Footer({}: FooterProps) {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSection(prev => (prev + 1) % subfooters.length);
+      console.log('interval');
     }, durationPerSection * 1000);
     return () => clearInterval(interval);
   }, []);
 
-  const CurrentFooter = subfooters[currentSection];
+  const transY = (-100 / numSubfooters) * currentSection;
 
   return (
-    <footer className='carousel carousel-vertical glass mx-auto w-full'>
-      <CurrentFooter />
+    <footer className='glass mx-auto w-full overflow-y-hidden !py-0'>
+      <div
+        className='flex w-full flex-col items-center justify-evenly transition-transform'
+        style={{
+          height: numSubfooters * 100 + '%',
+          transform: `translateY(${transY}%)`,
+        }}
+      >
+        {subfooters.map(Footer => (
+          <Footer />
+        ))}
+      </div>
     </footer>
   );
 }
