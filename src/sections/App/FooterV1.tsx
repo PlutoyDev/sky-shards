@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, ReactNode } from 'react';
 import { BiLinkExternal } from 'react-icons/bi';
 import { BsGithub } from 'react-icons/bs';
 import { TbForms } from 'react-icons/tb';
@@ -146,7 +146,7 @@ export default function Footer() {
   const SubFooter = subfooters[displaySection];
 
   return (
-    <footer ref={footerEl} className='glass container mx-auto overflow-hidden'>
+    <footer ref={footerEl} className='container glass mx-auto overflow-hidden'>
       <AnimatePresence initial={false} mode='popLayout'>
         <motion.div
           key={displaySection}
