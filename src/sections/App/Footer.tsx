@@ -13,7 +13,7 @@ interface SubFooterProps {
 
 function SubFooter({ key, className, children }: SubFooterProps) {
   return (
-    <div key={key} className={`carousel-item h-full ${className}`}>
+    <div key={key} className={`carousel-item h-full max-w-full ${className}`}>
       {children}
     </div>
   );
@@ -75,7 +75,32 @@ function PattenCreditFooter() {
   );
 }
 
-const subfooters = [PattenCreditFooter];
+function InspiredByFooter() {
+  return (
+    <SubFooter key='inspiration' className='flex flex-row flex-wrap items-center justify-center gap-x-1 lg:gap-x-3'>
+      <p>The creation of Sky Shard was inspired by:</p>
+      <a
+        target='_blank'
+        rel='noreferrer'
+        href='https://sky-clock.netlify.app/'
+        className='z-10 grid cursor-pointer grid-rows-2 rounded-lg border border-zinc-500 px-2 text-center shadow-2xl shadow-zinc-700  '
+        style={{ gridTemplateColumns: 'max-content min-content max-content' }}
+      >
+        <img className='ml-auto mt-1.5 h-4 w-4' src='/ext/sky-clock.png' />
+        <h2 className='mx-2 whitespace-nowrap text-center'>
+          <span className='text-sm underline'>Sky Clock</span>
+          <span className='text-xs'> by Chris Stead</span>
+        </h2>
+        <BiLinkExternal className='mt-1.5 self-start' />
+        <p className='col-span-3 whitespace-normal text-xs'>
+          Visit it for timing of Geyser, Grandma, Turtle and many more
+        </p>
+      </a>
+    </SubFooter>
+  );
+}
+
+const subfooters = [InspiredByFooter];
 const durationPerSection = 5; // seconds
 const durationCycle = durationPerSection * subfooters.length;
 
