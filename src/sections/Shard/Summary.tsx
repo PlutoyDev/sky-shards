@@ -1,8 +1,8 @@
 import { useRef } from 'react';
 import { BsChevronCompactDown } from 'react-icons/bs';
 import { DateTime, Settings, Zone } from 'luxon';
-import { Calendar } from '../../components/Calendar';
-import { Clock, Countdown } from '../../components/Clock';
+import Calendar from '../../components/Calendar';
+import Clock, { Countdown } from '../../components/Clock';
 import { useNow } from '../../context/Now';
 import { getUpcommingShardPhase, ShardInfo } from '../../shardPredictor';
 

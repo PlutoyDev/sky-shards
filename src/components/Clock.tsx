@@ -44,6 +44,8 @@ export function Clock({
   );
 }
 
+export default Clock;
+
 interface CountdownProp {
   duration: Duration;
 }

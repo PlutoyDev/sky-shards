@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef } from 'react';
 import { MdExpandMore, MdExpandLess } from 'react-icons/md';
 import { DateTime } from 'luxon';
-import { Calendar } from '../../components/Calendar';
-import { Clock } from '../../components/Clock';
+import Calendar from '../../components/Calendar';
+import Clock from '../../components/Clock';
 import { useNow } from '../../context/Now';
 import { getAllShardFullPhases, ShardFullPhases, ShardInfo } from '../../shardPredictor';
 

@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { FaCog } from 'react-icons/fa';
 import { DateTime } from 'luxon';
-import { Calendar } from '../../components/Calendar';
-import { Clock } from '../../components/Clock';
+import Calendar from '../../components/Calendar';
+import Clock from '../../components/Clock';
 import { useHeaderFx } from '../../context/HeaderFx';
 import { useModal } from '../../context/ModalContext';
 import { useNow } from '../../context/Now';
