@@ -2,6 +2,7 @@ import { ReactNode, useEffect, useState } from 'react';
 import { BiLinkExternal } from 'react-icons/bi';
 import { BsGithub } from 'react-icons/bs';
 import { TbForms } from 'react-icons/tb';
+import { patternCredits } from '../../data/credits';
 import useFeedbackFormUrl from '../../hooks/useFeedbackFom';
 
 interface SubFooterProps {
@@ -53,7 +54,28 @@ function AppDetailFooter() {
   );
 }
 
-const subfooters = [AppDetailFooter];
+function PattenCreditFooter() {
+  return (
+    <SubFooter key='patten-credit' className='flex flex-col items-center justify-center gap-y-1'>
+      <p className='text-center max-sm:text-[10px] sm:text-sm'>
+        Thanks to these Discord users for aiding in discovering shard eruption patterns:
+      </p>
+      <p className='flex w-full select-none flex-row flex-wrap items-center justify-center gap-x-1.5 whitespace-nowrap max-sm:text-xs'>
+        {patternCredits.map(u => (
+          <span key={u}>{u}</span>
+        ))}
+      </p>
+      <div className='flex-1' />
+      <p className='text-center max-xs:hidden xs:text-[8px] md:text-xs'>
+        <span>This website is not affiliated with thatgamecompany or </span>
+        <span className='whitespace-nowrap'>Sky: Children of the Light. </span>
+        <span className='whitespace-nowrap'>(It might not reflect what is in-game)</span>
+      </p>
+    </SubFooter>
+  );
+}
+
+const subfooters = [PattenCreditFooter];
 const durationPerSection = 5; // seconds
 const durationCycle = durationPerSection * subfooters.length;
 
