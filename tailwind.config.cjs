@@ -1,4 +1,5 @@
 const colors = require('tailwindcss/colors')
+const defaultTheme = require('tailwindcss/defaultTheme')
 
 const themeDef = {
   "base-100": colors.neutral[800],
@@ -12,6 +13,12 @@ module.exports = {
     require('@tailwindcss/typography'),
     require('daisyui'),
   ],
+  theme: {
+    screens: {
+      'xs': '375px',
+      ...defaultTheme.screens,
+    },
+  },
   daisyui: {
     darkTheme: "night",
     themes: [
