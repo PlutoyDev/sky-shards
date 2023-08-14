@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { FaCog } from 'react-icons/fa';
 import { DateTime } from 'luxon';
+import { Calendar } from '../../components/Calendar';
 import { Clock } from '../../components/Clock';
-import Date from '../../components/Date';
 import { useHeaderFx } from '../../context/HeaderFx';
 import { useModal } from '../../context/ModalContext';
 import { useNow } from '../../context/Now';
@@ -38,7 +38,7 @@ export default function Header() {
       </a>
 
       <time dateTime={DateTime.utc().toISO() ?? undefined} id='header-dateTime' onClick={navigateToday}>
-        <Date hideYear short />
+        <Calendar date={application} className='text-lg' relFontSize={0} />
         <Clock hideSeconds time={application} className='text-2xl' relFontSize={0} />
       </time>
 

@@ -1,8 +1,8 @@
 import { useRef } from 'react';
 import { BsChevronCompactDown } from 'react-icons/bs';
 import { DateTime, Settings, Zone } from 'luxon';
+import { Calendar } from '../../components/Calendar';
 import { Clock, Countdown } from '../../components/Clock';
-import Date from '../../components/Date';
 import { useNow } from '../../context/Now';
 import { getUpcommingShardPhase, ShardInfo } from '../../shardPredictor';
 
@@ -22,7 +22,8 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
         <section id='shardInfo' className='glass'>
           <span>There is </span>
           <strong>No Shard</strong>
-          <Date date={date} describeClose describeClosePrefix />
+          <span>, </span>
+          <Calendar date={info.date} relativeFrom={now} />
         </section>
       </div>
     );
@@ -44,7 +45,8 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
             <strong>
               {info.map}, {info.realmNick}
             </strong>
-            <Date date={date} describeClose describeClosePrefix />
+            <span>, </span>
+            <Calendar date={info.date} relativeFrom={now} />
           </p>
           <p>
             <span>Giving </span>
@@ -95,13 +97,15 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
               >
                 <strong>Your Time: </strong>
                 <small className='block'>({(Settings.defaultZone as Zone).name})</small>
-                <Date date={next} local />
+                {/* <Date date={next} local /> */}
+                <Calendar date={next!} convertTo='local' className='block font-bold' />
                 <Clock time={next} convertTo='local' className='block font-bold' />
               </time>
               <time id='shardAbsSky' dateTime={next?.toISO({ suppressMilliseconds: true }) ?? undefined}>
                 <strong>Sky Time: </strong>
                 <small className='block'>(America/Los_Angeles)</small>
-                <Date date={next} />
+                {/* <Date date={next} /> */}
+                <Calendar date={next!} className='block font-bold' />
                 <Clock time={next} className='block font-bold' />
               </time>
             </>

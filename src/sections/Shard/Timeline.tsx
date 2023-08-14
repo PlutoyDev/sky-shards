@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef } from 'react';
 import { MdExpandMore, MdExpandLess } from 'react-icons/md';
 import { DateTime } from 'luxon';
+import { Calendar } from '../../components/Calendar';
 import { Clock } from '../../components/Clock';
-import Date from '../../components/Date';
 import { useNow } from '../../context/Now';
 import { getAllShardFullPhases, ShardFullPhases, ShardInfo } from '../../shardPredictor';
 
@@ -50,7 +50,8 @@ export default function ShardTimeline({ date, info }: ShardTimelineSectionProp) 
     <section id='shardTimeline' className='glass'>
       <h1 className='title'>
         <span>Timeline for </span>
-        <Date date={date} describeClose />
+        {/* <Date date={date} describeClose /> */}
+        <Calendar date={date} inline /> (<Calendar date={date} relativeFrom={now} />)
       </h1>
       <div className='timelines'>
         {occurrences.map((phases, oI) => {
