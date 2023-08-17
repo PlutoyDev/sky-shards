@@ -77,7 +77,7 @@ export default function SettingModal() {
           </span>
         </p>
         <select
-          className='select select-primary select-xs mt-1 w-full bg-primary'
+          className='no-scrollbar select select-primary select-xs mt-1 w-full bg-primary text-primary-content'
           onChange={e => setTimezone(e.target.value)}
           value={timezone}
         >
