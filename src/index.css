@@ -49,69 +49,6 @@ body {
   border: 1px solid rgba(192, 192, 192, 0.2);
 }
 
-.App {
-  position: absolute;
-  top: 7px;
-  left: 7px;
-  right: 7px;
-  bottom: 7px;
-
-  --header-height: clamp(24px, 10vh, 56px);
-  --footer-height: clamp(50px, 18vh, 124px);
-
-  overflow: hidden;
-  display: flex;
-  flex-flow: column nowrap;
-}
-
-#header {
-  grid-area: header;
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 20px;
-}
-
-#title {
-  font-size: 30px;
-  font-weight: 700;
-  font-family: 'Caramel', cursive;
-  text-align: left;
-  cursor: pointer;
-  margin-left: 0.5rem;
-  margin-bottom: 3px;
-}
-
-#header-dateTime {
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: center;
-  text-align: center;
-  font-weight: 500;
-  cursor: pointer;
-}
-
-@media screen and (max-height: 386px) {
-  #header-dateTime {
-    flex-flow: row nowrap;
-    column-gap: 1rem;
-  }
-}
-
-#header-buttons {
-  display: flex;
-  flex-flow: row nowrap;
-  place-items: center right;
-  gap: 0.8rem;
-  margin-right: 0.5rem;
-}
-
-footer {
-  height: var(--footer-height);
-  padding: 2px 10px;
-}
-
 /* Hide scrollbar for Chrome, Safari and Opera */
 .no-scrollbar::-webkit-scrollbar {
   display: none;

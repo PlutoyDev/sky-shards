@@ -13,7 +13,7 @@ interface SubFooterProps {
 
 function SubFooter({ key, className, children }: SubFooterProps) {
   return (
-    <div key={key} className={`max-w-full ${className}`} style={{ height: 'calc(100% - 4rem)' }}>
+    <div key={key} className={`w-full max-w-full ${className}`} style={{ height: 'calc(100% - 4rem)' }}>
       {children}
     </div>
   );
@@ -78,8 +78,11 @@ function PattenCreditFooter() {
 
 function InspiredByFooter() {
   return (
-    <SubFooter key='inspiration' className='flex flex-row flex-wrap items-center justify-center gap-x-1 lg:gap-x-3'>
-      <p>The creation of Sky Shard was inspired by:</p>
+    <SubFooter
+      key='inspiration'
+      className='justify-cen ter flex flex-col flex-nowrap items-center justify-center gap-x-3 md:gap-x-6 landscape:flex-row'
+    >
+      <p>Inspired by</p>
       <a
         target='_blank'
         rel='noreferrer'
@@ -120,7 +123,7 @@ export function Footer({}: FooterProps) {
   const transY = (-100 / numSubfooters) * currentSection;
 
   return (
-    <footer className='glass mx-auto w-full overflow-y-hidden !py-0'>
+    <footer className='glass h-28 w-full overflow-y-hidden !py-0'>
       <div
         className='flex w-full flex-col items-center justify-evenly transition-transform'
         style={{

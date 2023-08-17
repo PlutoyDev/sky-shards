@@ -32,17 +32,25 @@ export default function Header() {
   }, []);
 
   return (
-    <header id='header' className='glass'>
-      <a id='title' href='/' onClick={e => (navigateToday(), e.preventDefault())}>
-        <span>Sky Shards</span>
+    <header className='glass flex max-h-min flex-row flex-nowrap items-center justify-between px-5'>
+      <a
+        href='/'
+        onClick={e => (navigateToday(), e.preventDefault())}
+        className='mb-1 ml-1 cursor-pointer text-left font-[Caramel,_cursive] text-3xl font-bold lg:text-3xl landscape:max-md:text-lg'
+      >
+        Sky Shards
       </a>
 
-      <time dateTime={DateTime.utc().toISO() ?? undefined} id='header-dateTime' onClick={navigateToday}>
+      <time
+        dateTime={DateTime.utc().toISO() ?? undefined}
+        onClick={navigateToday}
+        className='flex cursor-pointer flex-col flex-nowrap items-center justify-center gap-x-3 text-center lg:flex-row landscape:flex-row'
+      >
         <Calendar date={application} className='text-lg' relFontSize={0} />
-        <Clock hideSeconds time={application} className='text-2xl' relFontSize={0} />
+        <Clock hideSeconds time={application} className='text-2xl landscape:max-lg:text-lg' relFontSize={0} />
       </time>
 
-      <div id='header-buttons'>
+      <div className='mr-1 flex flex-row flex-nowrap items-center justify-end gap-x-1 lg:gap-x-4'>
         <button
           className='w-min rounded-lg bg-slate-50 bg-opacity-25 p-1.5 shadow-xl shadow-zinc-700 hover:bg-opacity-50'
           onClick={() => {
