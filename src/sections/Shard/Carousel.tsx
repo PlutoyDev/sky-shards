@@ -149,7 +149,6 @@ export default function ShardCarousel() {
           onDragEnd={(_, { offset, velocity }) => {
             const swipe = offset.x > 0 ? -1 : 1;
             const swipePower = offset.x * velocity.x;
-            console.log('drag ended', swipe, swipePower);
             if (swipePower > 4000) {
               navigateDate(swipe);
             }
