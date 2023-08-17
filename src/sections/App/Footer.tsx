@@ -37,7 +37,7 @@ function AppDetailFooter() {
           className='rounded-xl bg-black px-2 pb-1 pt-0.5 text-white'
         >
           <BsGithub className='text-md mr-2 inline-block' />
-          <span className='text-sm font-bold max-xs:hidden'>Source on</span>
+          <span className='text-sm font-bold max-xs:hidden'>Source on </span>
           <span className='text-sm font-bold '>GitHub</span>
         </a>
         <a
@@ -47,7 +47,7 @@ function AppDetailFooter() {
           className='rounded-xl bg-purple-700 px-2 pb-1 pt-0.5 text-white'
         >
           <TbForms className='text-md mr-2 inline-block' />
-          <span className='text-sm font-bold max-xs:hidden'>Submit</span>
+          <span className='text-sm font-bold max-xs:hidden'>Submit </span>
           <span className='text-sm font-bold '>Feedback</span>
         </a>
       </div>
