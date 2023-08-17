@@ -1,6 +1,6 @@
 export default function Announcement_V4() {
   return (
-    <div className='px-4 py-2 [&>*]:pb-2'>
+    <div className='no-scrollbar max-h-[90%] overflow-y-scroll px-4 py-2 [&>*]:pb-2'>
       <p>
         <span className='text-lg font-semibold'>Hi Skykids!</span>
         <span>, Plutoy here.</span>
