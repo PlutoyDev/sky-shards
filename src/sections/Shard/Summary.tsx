@@ -18,11 +18,12 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
   const summaryRef = useRef<HTMLDivElement>(null);
   if (!info.haveShard) {
     return (
-      <div id='shardSummary'>
-        <section id='shardInfo' className='glass'>
-          <span>There is </span>
-          <strong>No Shard</strong>
-          <span>, </span>
+      <div
+        className='flex max-h-screen min-h-full w-full flex-col flex-nowrap items-center justify-center gap-1'
+        ref={summaryRef}
+      >
+        <section className='glass'>
+          <strong>No shard eruption </strong>
           <Calendar date={info.date} relativeFrom={now} />
         </section>
       </div>
@@ -34,18 +35,27 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
     const ordinalIndex = upcomming?.index !== undefined && ['1st', '2nd', '3rd'][upcomming.index];
 
     return (
-      <div id='shardSummary' ref={summaryRef}>
-        <section id='shardInfo' className='glass'>
+      <div
+        className='flex max-h-screen min-h-full w-full flex-col flex-nowrap items-center justify-center gap-1'
+        ref={summaryRef}
+      >
+        <section className='glass'>
           <p className='whitespace-normal'>
-            <span>There {upcomming ? (landed ? 'is' : 'will be') : 'was'} </span>
-            <strong className={`${info.isRed ? 'Red' : 'Black'} whitespace-nowrap`}>
-              {info.isRed ? 'Red' : 'Black'} Shard
-            </strong>
+            {info.isRed ? (
+              <>
+                <img className='emoji' src='/emojis/ShardRed.webp' alt='' />
+                <span className='whitespace-nowrap font-bold text-red-600'>Red shard</span>
+              </>
+            ) : (
+              <>
+                <img className='emoji' src='/emojis/ShardBlack.webp' alt='' />
+                <span className='whitespace-nowrap font-bold text-black'>Black shard</span>
+              </>
+            )}
             <span> in </span>
-            <strong>
-              {info.map}, {info.realmNick}
-            </strong>
-            <span>, </span>
+            <span className='font-bold'>{info.map}, </span>
+            <span className='font-bold lg:hidden '>{info.realmNick} </span>
+            <span className='hidden font-bold lg:inline'>{info.realmFull} </span>
             <Calendar date={info.date} relativeFrom={now} />
           </p>
           <p>
@@ -62,7 +72,6 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
                 <span> of wax</span>
               </>
             )}
-            <span> after first clear</span>
           </p>
         </section>
         <section id='shardTiming' className='glass'>
