@@ -78,25 +78,10 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
           {upcomming ? (
             <>
               <div id='shardCountdown'>
-                <span>
+                <p className='whitespace-nowrap'>
                   <strong>{ordinalIndex ? `${ordinalIndex} shard` : 'Shard'} </strong>
-                  {landed ? (
-                    <>
-                      <span className='whitespace-nowrap'>
-                        has <strong>landed </strong>
-                        <Clock duration={now.diff(upcomming.land)} hideSeconds className='font-bold' />
-                      </span>
-                      <span> ago. </span>
-                      <span className='whitespace-nowrap'>
-                        it will <strong>end in</strong>{' '}
-                      </span>
-                    </>
-                  ) : (
-                    <span className='whitespace-nowrap'>
-                      will <strong>land in</strong>
-                    </span>
-                  )}
-                </span>
+                  <span>{landed ? 'landed. Ending in' : 'landing in'}</span>
+                </p>
                 <Countdown duration={now.diff(next as DateTime)} />
                 <small> which is</small>
               </div>
@@ -120,7 +105,8 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
             </>
           ) : (
             <div id='shardCountdown'>
-              <span> All shard has ended </span>
+              <span> All 3 shard has </span>
+              <span className='whitespace-nowrap font-bold'>ended </span>
               <Countdown duration={now.diff(info.lastEnd)} />
               <span> ago </span>
             </div>
