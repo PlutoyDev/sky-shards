@@ -37,119 +37,29 @@ body {
   }
 }
 
-.glass {
-  background-image: unset;
-  box-shadow: unset;
-  text-shadow: unset;
-  /* ^ Remove the glass default from daisyUI */
-  background-color: var(--glass-background-color);
-  backdrop-filter: blur(10px);
-  border-radius: 1rem;
-  padding: 2px 20px;
-  border: 1px solid rgba(192, 192, 192, 0.2);
-}
+@layer components {
+  .glass {
+    background-image: unset;
+    box-shadow: unset;
+    text-shadow: unset;
+    /* ^ Remove the glass default from daisyUI */
+    background-color: var(--glass-background-color);
+    backdrop-filter: blur(10px);
+    border-radius: 1rem;
+    padding: 2px 20px;
+    border: 1px solid rgba(192, 192, 192, 0.2);
+  }
 
-/* Hide scrollbar for Chrome, Safari and Opera */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
 
-/* Hide scrollbar for IE, Edge and Firefox */
-.no-scrollbar {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-}
-
-.ShardPage {
-  --nav-hint-height: 30px;
-
-  display: grid;
-  grid-template-rows: auto;
-  grid-template-columns: 30px auto 30px;
-  grid-template-areas: 'leftNavHint shardContent rightNavHint';
-
-  height: 100%;
-  width: 100%;
-
-  max-height: 100%;
-
-  justify-items: center;
-  align-items: center;
-  text-align: center;
-  gap: 0.2rem;
-
-  overflow: hidden;
-  padding: 0.5rem;
-
-  user-select: none;
-}
-
-.scrollHint {
-  cursor: pointer;
-  width: 100%;
-  font-family: 'Bubblegum Sans', cursive;
-  font-size: 0.75rem;
-  line-height: 1.25rem;
-  white-space: nowrap;
-}
-
-.scrollHint > svg {
-  margin: 0 auto;
-  stroke-width: 0.15rem;
-}
-
-#leftNavHint {
-  grid-area: leftNavHint;
-  flex-direction: column-reverse;
-  writing-mode: vertical-rl;
-}
-
-#rightNavHint {
-  grid-area: rightNavHint;
-  writing-mode: vertical-rl;
-  flex-direction: column;
-}
-
-.navHint {
-  position: relative;
-  cursor: pointer;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  flex-wrap: nowrap;
-  gap: 2px;
-
-  font-family: 'Bubblegum Sans', cursive;
-  font-size: 0.75rem;
-  line-height: 1.25rem;
-  white-space: nowrap;
-}
-
-.navHint.disabled {
-  display: none;
-}
-
-.shardContent {
-  grid-area: shardContent;
-  width: 90%;
-  height: 100%;
-  max-height: 100%;
-  display: flex;
-  flex-flow: column nowrap;
-  gap: 1rem;
-  justify-content: flex-start;
-  align-items: center;
-  text-align: center;
-  overflow: hidden scroll;
-  touch-action: pan-y;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.shardContent::-webkit-scrollbar {
-  display: none;
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
 }
 
 /* Summary Section */
