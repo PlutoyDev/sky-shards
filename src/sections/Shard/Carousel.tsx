@@ -134,7 +134,7 @@ export default function ShardCarousel() {
       <AnimatePresence initial={false} custom={direction}>
         <motion.main
           key={date.toISO()}
-          className='no-scrollbar col-start-2 row-start-1 flex h-full max-h-full w-[90%] flex-col items-center justify-start gap-2 overflow-x-hidden overflow-y-scroll text-center'
+          className='no-scrollbar col-start-2 row-start-1 flex h-full max-h-full w-full flex-col items-center justify-start gap-2 overflow-x-hidden overflow-y-scroll text-center'
           initial='enter'
           animate='center'
           exit='exit'
