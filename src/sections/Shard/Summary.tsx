@@ -75,10 +75,10 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
             )}
           </p>
         </section>
-        <section className='glass grid min-w-[12rem] auto-cols-auto auto-rows-auto place-items-center gap-x-4 lg:min-w-[16rem] [@media_(max-height:_375px)]:items-end'>
+        <section className='glass grid min-w-[12rem] auto-cols-auto auto-rows-auto place-items-center gap-x-4 md:min-w-[16rem] [@media_(max-height:_375px)]:items-end'>
           {upcomming ? (
             <>
-              <div className='col-start-1 row-start-1 w-full lg:col-span-2 landscape:col-span-2 [@media_(max-height:_375px)]:col-span-1 [@media_(max-height:_375px)]:col-start-2 [@media_(max-height:_375px)]:row-start-1'>
+              <div className='col-start-1 row-start-1 w-full md:col-span-2 landscape:col-span-2 [@media_(max-height:_375px)]:col-span-1 [@media_(max-height:_375px)]:col-start-2 [@media_(max-height:_375px)]:row-start-1'>
                 <p className='whitespace-nowrap'>
                   <strong>{ordinalIndex ? `${ordinalIndex} shard` : 'Shard'} </strong>
                   <span>{landed ? 'landed. Ending in' : 'landing in'}</span>
@@ -98,7 +98,7 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
                 <Clock time={next} convertTo='local' className='block font-bold' />
               </time>
               <time
-                className='col-start-1 row-start-3 lg:col-start-2 lg:row-start-2 landscape:col-start-2 landscape:row-start-2 [@media_(max-height:_375px)]:col-start-3 [@media_(max-height:_375px)]:row-start-1'
+                className='col-start-1 row-start-3 md:col-start-2 md:row-start-2 landscape:col-start-2 landscape:row-start-2 [@media_(max-height:_375px)]:col-start-3 [@media_(max-height:_375px)]:row-start-1'
                 dateTime={next?.toISO({ suppressMilliseconds: true }) ?? undefined}
               >
                 <strong>Sky Time: </strong>
