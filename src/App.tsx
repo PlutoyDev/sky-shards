@@ -1,4 +1,5 @@
 import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
+import { Settings as LuxonSettings, Zone } from 'luxon';
 import { HeaderFxProvider } from './context/HeaderFx';
 import { ModalProvider } from './context/ModalContext';
 import { NowProvider } from './context/Now';
@@ -7,6 +8,8 @@ import useFeedbackFormUrl from './hooks/useFeedbackFom';
 import Footer from './sections/App/Footer';
 import Header from './sections/App/Header';
 import ShardCarousel from './sections/Shard/Carousel';
+
+LuxonSettings.defaultLocale = 'en';
 
 function ErrorFallback({ error }: FallbackProps) {
   const feedbackUrl = useFeedbackFormUrl({

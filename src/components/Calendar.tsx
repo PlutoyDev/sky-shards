@@ -30,7 +30,7 @@ export function Calendar({
   }
 
   if (relativeFrom) {
-    const rtf = new Intl.RelativeTimeFormat(undefined, { numeric: 'auto' });
+    const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
     if (convertTo === 'local') {
       date = date.toLocal();
       relativeFrom = relativeFrom.toLocal();
