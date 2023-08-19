@@ -6,14 +6,13 @@ import { patternCredits } from '../../data/credits';
 import useFeedbackFormUrl from '../../hooks/useFeedbackFom';
 
 interface SubFooterProps {
-  key: string;
   className?: string;
   children: ReactNode;
 }
 
-function SubFooter({ key, className, children }: SubFooterProps) {
+function SubFooter({ className, children }: SubFooterProps) {
   return (
-    <div key={key} className={`w-full max-w-full ${className}`} style={{ height: 'calc(100% - 4rem)' }}>
+    <div className={`w-full max-w-full ${className}`} style={{ height: 'calc(100% - 4rem)' }}>
       {children}
     </div>
   );
@@ -24,7 +23,7 @@ function AppDetailFooter() {
 
   const feedbackUrl = useFeedbackFormUrl();
   return (
-    <SubFooter key='app-detail' className='flex flex-row flex-wrap items-center justify-center gap-x-1 lg:gap-x-3'>
+    <SubFooter className='flex flex-row flex-wrap items-center justify-center gap-x-1 lg:gap-x-3'>
       <div>
         <p className='text-center text-sm'>Created by: Plutoy#5022</p>
         <p className='text-center'>Version: {version}</p>
@@ -57,7 +56,7 @@ function AppDetailFooter() {
 
 function PattenCreditFooter() {
   return (
-    <SubFooter key='patten-credit' className='flex flex-col items-center justify-center gap-y-1'>
+    <SubFooter className='flex flex-col items-center justify-center gap-y-1'>
       <p className='text-center max-sm:text-[10px] sm:text-sm'>
         Thanks to these Discord users for aiding in discovering shard eruption patterns:
       </p>
@@ -78,10 +77,7 @@ function PattenCreditFooter() {
 
 function InspiredByFooter() {
   return (
-    <SubFooter
-      key='inspiration'
-      className='justify-cen ter flex flex-col flex-nowrap items-center justify-center gap-x-3 md:gap-x-6 landscape:flex-row'
-    >
+    <SubFooter className='justify-cen ter flex flex-col flex-nowrap items-center justify-center gap-x-3 md:gap-x-6 landscape:flex-row'>
       <p>Inspired by</p>
       <a
         target='_blank'
@@ -104,8 +100,13 @@ function InspiredByFooter() {
   );
 }
 
-const subfooters = [AppDetailFooter, PattenCreditFooter, InspiredByFooter] as const;
-const numSubfooters = subfooters.length;
+const subfooters = {
+  'app-detail': AppDetailFooter,
+  'pattern-credit': PattenCreditFooter,
+  'inspired-by': InspiredByFooter,
+};
+
+const numSubfooters = Object.keys(subfooters).length;
 const durationPerSection = 5; // seconds
 
 interface FooterProps {}
@@ -115,7 +116,7 @@ export function Footer({}: FooterProps) {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentSection(prev => (prev + 1) % subfooters.length);
+      setCurrentSection(prev => (prev + 1) % numSubfooters);
     }, durationPerSection * 1000);
     return () => clearInterval(interval);
   }, []);
@@ -131,8 +132,8 @@ export function Footer({}: FooterProps) {
           transform: `translateY(${transY}%)`,
         }}
       >
-        {subfooters.map(Footer => (
-          <Footer />
+        {Object.entries(subfooters).map(([key, Footer]) => (
+          <Footer key={key} />
         ))}
       </div>
     </footer>
