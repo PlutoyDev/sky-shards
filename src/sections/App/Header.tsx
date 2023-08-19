@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+// import { useEffect } from 'react';
 import { FaCog } from 'react-icons/fa';
 import { DateTime } from 'luxon';
 import Calendar from '../../components/Calendar';
@@ -6,7 +6,7 @@ import Clock from '../../components/Clock';
 import { useHeaderFx } from '../../context/HeaderFx';
 import { useModal } from '../../context/ModalContext';
 import { useNow } from '../../context/Now';
-import Announcement_V4 from '../Modals/Announcement_V4';
+// import Announcement_V4 from '../Modals/Announcement_V4';
 import SettingsModal from '../Modals/Settings';
 
 const dismissed_key = 'v4AnnouncementDismissed';
@@ -17,19 +17,19 @@ export default function Header() {
   const navigateToday = () => navigateDay(DateTime.local({ zone: 'America/Los_Angeles' }));
   const { application } = useNow();
 
-  useEffect(() => {
-    if (localStorage.getItem(dismissed_key) == 'true') return;
-    // Read if v4 announcement has been dismissed
-    setTimeout(() => {
-      if (localStorage.getItem(dismissed_key) == 'true') return;
-      showModal({
-        children: Announcement_V4,
-        hideOnOverlayClick: true,
-        title: 'V4 Announcement',
-        onHidden: () => localStorage.setItem(dismissed_key, 'true'),
-      });
-    }, 5000);
-  }, []);
+  // useEffect(() => {
+  //   if (localStorage.getItem(dismissed_key) == 'true') return;
+  //   // Read if v4 announcement has been dismissed
+  //   setTimeout(() => {
+  //     if (localStorage.getItem(dismissed_key) == 'true') return;
+  //     showModal({
+  //       children: Announcement_V4,
+  //       hideOnOverlayClick: true,
+  //       title: 'V4 Announcement',
+  //       onHidden: () => localStorage.setItem(dismissed_key, 'true'),
+  //     });
+  //   }, 5000);
+  // }, []);
 
   return (
     <header className='glass flex max-h-min flex-row flex-nowrap items-center justify-between px-5'>
