@@ -75,10 +75,10 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
             )}
           </p>
         </section>
-        <section className='glass grid min-w-[12rem] auto-cols-auto auto-rows-auto place-items-center gap-x-4 md:min-w-[16rem] [@media_(max-height:_375px)]:items-end'>
+        <section className='glass grid min-w-[12rem] auto-cols-auto auto-rows-auto place-items-center gap-x-4 md:min-w-[16rem] [@media_(max-height:_375px)]:min-w-[32rem] [@media_(max-height:_375px)]:items-end'>
           {upcomming ? (
             <>
-              <div className='col-start-1 row-start-1 w-full md:col-span-2 landscape:col-span-2 [@media_(max-height:_375px)]:col-span-1 [@media_(max-height:_375px)]:col-start-2 [@media_(max-height:_375px)]:row-start-1'>
+              <div className='col-start-1 row-start-1 w-full md:col-span-2 landscape:col-span-2 [@media_(max-height:_375px)]:col-span-1 [@media_(max-height:_375px)]:col-start-2 [@media_(max-height:_375px)]:row-start-1 '>
                 <p className='whitespace-nowrap'>
                   <strong>{ordinalIndex ? `${ordinalIndex} shard` : 'Shard'} </strong>
                   <span>{landed ? 'landed. Ending in' : 'landing in'}</span>
@@ -94,7 +94,7 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
                 <small className='block [@media_(max-height:_375px)]:hidden'>
                   ({(Settings.defaultZone as Zone).name})
                 </small>
-                <Calendar date={next!} convertTo='local' className='block font-bold' />
+                <Calendar date={next!} convertTo='local' className='block font-bold opacity-80' relFontSize={0.8} />
                 <Clock time={next} convertTo='local' className='block font-bold' />
               </time>
               <time
@@ -103,7 +103,7 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
               >
                 <strong>Sky Time: </strong>
                 <small className='block [@media_(max-height:_375px)]:hidden'>(America/Los_Angeles)</small>
-                <Calendar date={next!} className='block font-bold' />
+                <Calendar date={next!} className='block font-bold opacity-80' relFontSize={0.8} />
                 <Clock time={next} className='block font-bold' />
               </time>
             </>
@@ -117,7 +117,7 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
           )}
         </section>
         <small
-          className="flex cursor-pointer flex-col items-center justify-center whitespace-nowrap font-['Bubblegum_Sans',_cursive] text-xs lg:text-xl"
+          className="flex cursor-pointer flex-col items-center justify-center whitespace-nowrap font-['Bubblegum_Sans',_cursive] text-xs [@media_(min-height:_640px)]:lg:text-lg"
           onClick={() => {
             summaryRef.current?.parentElement?.scrollBy({
               top: summaryRef.current?.offsetHeight,
