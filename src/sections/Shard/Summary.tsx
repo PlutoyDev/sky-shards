@@ -3,6 +3,7 @@ import { BsChevronCompactDown } from 'react-icons/bs';
 import { DateTime, Settings, Zone } from 'luxon';
 import Calendar from '../../components/Calendar';
 import Clock, { Countdown } from '../../components/Clock';
+import Emoji from '../../components/Emoji';
 import { useNow } from '../../context/Now';
 import { getUpcommingShardPhase, ShardInfo } from '../../shardPredictor';
 
@@ -43,12 +44,12 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
           <p className='whitespace-normal'>
             {info.isRed ? (
               <>
-                <img className='emoji' src='/emojis/ShardRed.webp' alt='' />
+                <Emoji name='Red shard' />
                 <span className='whitespace-nowrap font-bold text-red-600'>Red shard</span>
               </>
             ) : (
               <>
-                <img className='emoji' src='/emojis/ShardBlack.webp' alt='' />
+                <Emoji name='Black shard' />
                 <span className='whitespace-nowrap font-bold text-black'>Black shard</span>
               </>
             )}
@@ -63,12 +64,12 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
             {info.isRed ? (
               <>
                 <strong> max of {info.rewardAC}</strong>
-                <img className='emoji' src='/emojis/AscendedCandle.webp' alt='Ascended Candles' />
+                <Emoji name='Ascended candle' />
               </>
             ) : (
               <>
                 <strong>4</strong>
-                <img className='emoji' src='/emojis/CandleCake.webp' alt='Candle Cakes' />
+                <Emoji name='Candle cake' />
                 <span> of wax</span>
               </>
             )}
