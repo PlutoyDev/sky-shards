@@ -61,56 +61,12 @@ body {
     scrollbar-width: none; /* Firefox */
   }
 }
-
-/* Summary Section */
-
-#shardTiming {
-  display: grid;
-  grid-template-rows: auto auto auto;
-  grid-template-columns: auto;
-  grid-template-areas:
-    'countdown'
-    'absLocal'
-    'absSky';
-  column-gap: 5%;
-  align-items: center;
-  justify-content: center;
-}
-
-#shardTiming .Clock,
-#shardTiming .Date {
-  font-size: 1.1em;
-  font-weight: 800;
-}
-
-#shardCountdown {
-  grid-area: countdown;
-}
-
-#shardAbsLocal {
-  grid-area: absLocal;
-}
-
-#shardAbsSky {
-  grid-area: absSky;
-}
-
 .emoji {
   display: inline;
   height: 1em;
   width: 1em;
   margin: 0 0.05em 0 0.1em;
   vertical-align: -0.1em;
-}
-
-@media (min-width: 480px) and (orientation: landscape) {
-  #shardTiming {
-    grid-template-rows: auto auto;
-    grid-template-columns: auto auto;
-    grid-template-areas:
-      'countdown countdown'
-      'absLocal absSky';
-  }
 }
 
 /* Full Shard Schedule */

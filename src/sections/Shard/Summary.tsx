@@ -74,10 +74,10 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
             )}
           </p>
         </section>
-        <section id='shardTiming' className='glass'>
+        <section className='glass grid min-w-[12rem] auto-cols-auto auto-rows-auto place-items-center gap-x-4 lg:min-w-[16rem] [@media_(max-height:_375px)]:items-end'>
           {upcomming ? (
             <>
-              <div id='shardCountdown'>
+              <div className='col-start-1 row-start-1 w-full lg:col-span-2 landscape:col-span-2 [@media_(max-height:_375px)]:col-span-1 [@media_(max-height:_375px)]:col-start-2 [@media_(max-height:_375px)]:row-start-1'>
                 <p className='whitespace-nowrap'>
                   <strong>{ordinalIndex ? `${ordinalIndex} shard` : 'Shard'} </strong>
                   <span>{landed ? 'landed. Ending in' : 'landing in'}</span>
@@ -86,26 +86,29 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
                 <small> which is</small>
               </div>
               <time
-                id='shardAbsLocal'
+                className='col-start-1 row-start-2 [@media_(max-height:_375px)]:row-start-1'
                 dateTime={next?.setZone('local')?.toISO({ suppressMilliseconds: true }) ?? undefined}
               >
                 <strong>Your Time: </strong>
-                <small className='block'>({(Settings.defaultZone as Zone).name})</small>
-                {/* <Date date={next} local /> */}
+                <small className='block [@media_(max-height:_375px)]:hidden'>
+                  ({(Settings.defaultZone as Zone).name})
+                </small>
                 <Calendar date={next!} convertTo='local' className='block font-bold' />
                 <Clock time={next} convertTo='local' className='block font-bold' />
               </time>
-              <time id='shardAbsSky' dateTime={next?.toISO({ suppressMilliseconds: true }) ?? undefined}>
+              <time
+                className='col-start-1 row-start-3 lg:col-start-2 lg:row-start-2 landscape:col-start-2 landscape:row-start-2 [@media_(max-height:_375px)]:col-start-3 [@media_(max-height:_375px)]:row-start-1'
+                dateTime={next?.toISO({ suppressMilliseconds: true }) ?? undefined}
+              >
                 <strong>Sky Time: </strong>
-                <small className='block'>(America/Los_Angeles)</small>
-                {/* <Date date={next} /> */}
+                <small className='block [@media_(max-height:_375px)]:hidden'>(America/Los_Angeles)</small>
                 <Calendar date={next!} className='block font-bold' />
                 <Clock time={next} className='block font-bold' />
               </time>
             </>
           ) : (
-            <div id='shardCountdown'>
-              <span> All 3 shard has </span>
+            <div className='col-start-1 row-start-1 w-full'>
+              <span> All shards have </span>
               <span className='whitespace-nowrap font-bold'>ended </span>
               <Countdown duration={now.diff(info.lastEnd)} />
               <span> ago </span>
@@ -113,7 +116,7 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
           )}
         </section>
         <small
-          className='scrollHint'
+          className="flex cursor-pointer flex-col items-center justify-center whitespace-nowrap font-['Bubblegum_Sans',_cursive] text-xs lg:landscape:text-sm"
           onClick={() => {
             summaryRef.current?.parentElement?.scrollBy({
               top: summaryRef.current?.offsetHeight,
