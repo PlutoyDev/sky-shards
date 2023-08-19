@@ -117,7 +117,7 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
           )}
         </section>
         <small
-          className="flex cursor-pointer flex-col items-center justify-center whitespace-nowrap font-['Bubblegum_Sans',_cursive] text-xs lg:landscape:text-sm"
+          className="flex cursor-pointer flex-col items-center justify-center whitespace-nowrap font-['Bubblegum_Sans',_cursive] text-xs lg:text-xl"
           onClick={() => {
             summaryRef.current?.parentElement?.scrollBy({
               top: summaryRef.current?.offsetHeight,

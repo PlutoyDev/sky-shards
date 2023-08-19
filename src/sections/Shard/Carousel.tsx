@@ -166,14 +166,14 @@ export default function ShardCarousel() {
         </motion.main>
       </AnimatePresence>
       <div
-        className="col-start-1 row-start-1 flex cursor-pointer flex-col items-center justify-center whitespace-nowrap font-['Bubblegum_Sans',_cursive] text-xs [writing-mode:vertical-lr] lg:landscape:text-sm"
+        className="col-start-1 row-start-1 flex cursor-pointer flex-col items-center justify-center whitespace-nowrap font-['Bubblegum_Sans',_cursive] text-xs [writing-mode:vertical-lr] [@media_(min-height:_640px)]:text-xl"
         onClick={() => navigateDate(-1)}
       >
         <span>Swipe right or Click here for previous shard</span>
         <BsChevronRight className='m-0' strokeWidth={'0.1rem'} />
       </div>
       <div
-        className="col-start-3 row-start-1 flex cursor-pointer flex-col-reverse items-center justify-center whitespace-nowrap font-['Bubblegum_Sans',_cursive] text-xs [writing-mode:vertical-lr] lg:landscape:text-sm"
+        className="col-start-3 row-start-1 flex cursor-pointer flex-col-reverse items-center justify-center whitespace-nowrap font-['Bubblegum_Sans',_cursive] text-xs [writing-mode:vertical-lr] [@media_(min-height:_640px)]:text-xl"
         onClick={() => navigateDate(1)}
       >
         <span>Swipe left or Click here for next shard</span>
