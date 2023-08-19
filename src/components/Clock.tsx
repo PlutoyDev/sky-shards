@@ -55,8 +55,6 @@ export function Countdown({ duration }: CountdownProp) {
   const isNegative = duration.as('seconds') < 0;
   if (isNegative) duration = duration.negate();
   const { hours, minutes, seconds } = duration;
-  const valueClassName = 'font-mono font-bold text-[1.2em] lg:text-[1.8em] countdown';
-  const labelClassName = 'font-mono text-[0.6em] lg:text-[1em] opacity-60';
 
   const days = hours > 99 ? Math.floor(hours / 24) : undefined;
 
@@ -68,24 +66,26 @@ export function Countdown({ duration }: CountdownProp) {
     >
       {days && (
         <>
-          <p className={valueClassName}>
-            <span style={{ '--value': days } as CSSProperties} />
-          </p>
-          <p className={labelClassName}>Days</p>
+          <p className='text-start align-top font-mono text-[1.2em] font-bold leading-[1em] lg:text-[1.8em]'>{days}</p>
+          <p className='font-mono text-[0.8em] opacity-60 md:hidden lg:text-[1em]'>Ds</p>
+          <p className='hidden font-mono text-[0.8em] opacity-60 md:block lg:text-[1em]'>Days</p>
         </>
       )}
-      <p className={valueClassName}>
+      <p className='countdown font-mono text-[1.2em] font-bold lg:text-[1.8em]'>
         <span style={{ '--value': days ? hours % 24 : hours } as CSSProperties} />
       </p>
-      <p className={labelClassName}>Hours</p>
-      <p className={valueClassName}>
+      <p className='font-mono text-[0.8em] opacity-60 md:hidden lg:text-[1em]'>Hrs</p>
+      <p className='hidden font-mono text-[0.8em] opacity-60 md:block lg:text-[1em]'>Hours</p>
+      <p className='countdown font-mono text-[1.2em] font-bold lg:text-[1.8em]'>
         <span style={{ '--value': minutes } as CSSProperties} />
       </p>
-      <p className={labelClassName}>Minutes</p>
-      <p className={valueClassName}>
+      <p className='font-mono text-[0.8em] opacity-60 md:hidden lg:text-[1em]'>Mins</p>
+      <p className='hidden font-mono text-[0.8em] opacity-60 md:block lg:text-[1em]'>Minutes</p>
+      <p className='countdown font-mono text-[1.2em] font-bold lg:text-[1.8em]'>
         <span style={{ '--value': seconds } as CSSProperties} />
       </p>
-      <p className={labelClassName}>Seconds</p>
+      <p className='font-mono text-[0.8em] opacity-60 md:hidden lg:text-[1em]'>Secs</p>
+      <p className='hidden font-mono text-[0.8em] opacity-60 md:block lg:text-[1em]'>Seconds</p>
     </div>
   );
 }
