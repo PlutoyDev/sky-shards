@@ -19,22 +19,22 @@ body {
 
   background-color: #242424;
   color: #fffd;
+}
 
-  /* Light theme */
-  [data-theme='light'] & {
-    --glass-background-color: rgba(64, 64, 64, 0.2);
+/* Light theme */
+[data-theme='light'] body {
+  --glass-background-color: rgba(64, 64, 64, 0.2);
 
-    background-position: 10% center;
-    background-image: url('/backgrounds/SkyBackgroundLight.webp');
-  }
+  background-position: 10% center;
+  background-image: url('/backgrounds/SkyBackgroundLight.webp');
+}
 
-  /* Dark theme */
-  [data-theme='dark'] & {
-    --glass-background-color: rgba(128, 128, 128, 0.3);
+/* Dark theme */
+[data-theme='dark'] body {
+  --glass-background-color: rgba(128, 128, 128, 0.3);
 
-    background-position: 90% center;
-    background-image: url('/backgrounds/SkyBackgroundDark.webp');
-  }
+  background-position: 90% center;
+  background-image: url('/backgrounds/SkyBackgroundDark.webp');
 }
 
 @layer components {
