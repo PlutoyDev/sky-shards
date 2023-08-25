@@ -10,10 +10,12 @@
   },
   "dependencies": {
     "framer-motion": "^10.15.0",
+    "i18next": "^23.4.6",
     "luxon": "^3.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-error-boundary": "^4.0.10",
+    "react-i18next": "^13.2.0",
     "react-icons": "^4.10.1",
     "react-responsive": "^9.0.2"
   },
