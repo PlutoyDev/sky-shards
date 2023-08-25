@@ -1,4 +1,5 @@
 // import { useEffect } from 'react';
+import { useState } from 'react';
 import { FaCog } from 'react-icons/fa';
 import { DateTime } from 'luxon';
 import Calendar from '../../components/Calendar';
@@ -16,6 +17,7 @@ export default function Header() {
   const { navigateDay } = useHeaderFx();
   const navigateToday = () => navigateDay(DateTime.local({ zone: 'America/Los_Angeles' }));
   const { application } = useNow();
+  const [dateSwitherState, setDateSwitcherState] = useState(false);
 
   // useEffect(() => {
   //   if (localStorage.getItem(dismissed_key) == 'true') return;
@@ -44,9 +46,12 @@ export default function Header() {
       <time
         dateTime={DateTime.utc().toISO() ?? undefined}
         onClick={navigateToday}
-        className='flex cursor-pointer flex-col flex-nowrap items-center justify-center gap-x-3 text-center lg:flex-row landscape:flex-row'
+        className='flex cursor-pointer flex-col flex-nowrap items-center justify-center gap-x-3 text-center md:flex-row landscape:flex-row'
       >
-        <Calendar date={application} className='text-lg' relFontSize={0} />
+        <div className='max-md::text-right flex-col gap-x-2 max-md:grid lg:flex max-md:[&>*]:col-start-1 max-md:[&>*]:row-start-1'>
+          <div className='max-md:animate-[dateSwap_10s_linear_infinite]'>Now in sky</div>
+          <Calendar date={application} relFontSize={1} className='max-md:animate-[dateSwap_10s_linear_-5s_infinite]' />
+        </div>
         <Clock hideSeconds time={application} className='text-2xl landscape:max-lg:text-lg' relFontSize={0} />
       </time>
 
