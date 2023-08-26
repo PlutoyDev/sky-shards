@@ -77,16 +77,26 @@ export const en = {
   },
   sky: {
     realms: {
-      prairie_long: 'Daylight Prairie',
-      prairie_short: 'Prairie',
-      forest_long: 'Hidden Forest',
-      forest_short: 'Forest',
-      valley_long: 'Valley of Triumph',
-      valley_short: 'Valley',
-      wasteland_long: 'Golden Wasteland',
-      wasteland_short: 'Wasteland',
-      vault_long: 'Vault of Knowledge',
-      vault_short: 'Vault',
+      prairie: {
+        long: 'Daylight Prairie',
+        short: 'Prairie',
+      },
+      forest: {
+        long: 'Hidden Forest',
+        short: 'Forest',
+      },
+      valley: {
+        long: 'Valley of Triumph',
+        short: 'Valley',
+      },
+      wasteland: {
+        long: 'Golden Wasteland',
+        short: 'Wasteland',
+      },
+      vault: {
+        long: 'Vault of Knowledge',
+        short: 'Vault',
+      },
     },
     areas: {
       prairie: {
@@ -145,3 +155,4 @@ export const en = {
 } as const;
 
 export default en;
+export type Translation = typeof en;
