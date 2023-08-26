@@ -1,4 +1,5 @@
 import { DateTime, Duration } from 'luxon';
+import type { Translation } from './i18n/en';
 
 const earlySkyOffset = Duration.fromObject({ minutes: -32, seconds: -10 }); //after start
 const eruptionOffset = Duration.fromObject({ minutes: 7 }); //after start
@@ -10,17 +11,20 @@ const redShardInterval = Duration.fromObject({ hours: 6 });
 
 // const realmsFull = ['Daylight Prairie', 'Hidden Forest', 'Valley Of Triumph', 'Golden Wasteland', 'Vault Of Knowledge'];
 // const realmsNick = ['Prairie', 'Forest', 'Valley', 'Wasteland', 'Vault'];
-const realms = ['prairie', 'forest', 'valley', 'wasteland', 'vault'] as const;
+type Realms = keyof Translation['sky']['realms'];
+const realms: Realms[] = ['prairie', 'forest', 'valley', 'wasteland', 'vault'];
+type Areas = keyof Translation['sky']['areas'];
 
 interface ShardConfig {
   noShardWkDay: number[];
   offset: Duration;
   interval: Duration;
-  maps: [string, string, string, string, string];
+  // maps: [string, string, string, string, string];
+  maps: [Areas, Areas, Areas, Areas, Areas];
   defRewardAC?: number;
 }
 
-const shardsInfo: ShardConfig[] = [
+const shardsInfo = [
   {
     noShardWkDay: [6, 7], //Sat;Sun
     interval: blackShardInterval,
@@ -74,7 +78,7 @@ const shardsInfo: ShardConfig[] = [
     maps: ['prairie.island', 'forest.sunny', 'valley.hermit', 'wasteland.ark', 'vault.jelly'],
     defRewardAC: 3.5,
   },
-];
+] satisfies ShardConfig[];
 
 const overrideRewardAC: Record<string, number> = {
   // 'Forest Garden': 2.5,
@@ -87,7 +91,7 @@ const overrideRewardAC: Record<string, number> = {
   'vault.jelly': 3.5,
 };
 
-export function getShardInfo(date: DateTime): ShardInfo {
+export function getShardInfo(date: DateTime) {
   date = date.setZone('America/Los_Angeles').startOf('day');
   const [dayOfMth, dayOfWk] = [date.day, date.weekday];
   const isRed = dayOfMth % 2 === 1;
@@ -114,17 +118,7 @@ export function getShardInfo(date: DateTime): ShardInfo {
   };
 }
 
-export type ShardInfo = {
-  date: DateTime;
-  isRed: boolean;
-  haveShard: boolean;
-  offset: Duration;
-  interval: Duration;
-  lastEnd: DateTime;
-  realm: (typeof realms)[number];
-  map: string;
-  rewardAC?: number;
-};
+export type ShardInfo = ReturnType<typeof getShardInfo>;
 
 export interface ShardSimplePhases {
   start: DateTime;
