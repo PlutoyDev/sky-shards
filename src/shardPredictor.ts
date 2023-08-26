@@ -8,8 +8,9 @@ const endOffset = Duration.fromObject({ hours: 4 }); //after start
 const blackShardInterval = Duration.fromObject({ hours: 8 });
 const redShardInterval = Duration.fromObject({ hours: 6 });
 
-const realmsFull = ['Daylight Prairie', 'Hidden Forest', 'Valley Of Triumph', 'Golden Wasteland', 'Vault Of Knowledge'];
-const realmsNick = ['Prairie', 'Forest', 'Valley', 'Wasteland', 'Vault'];
+// const realmsFull = ['Daylight Prairie', 'Hidden Forest', 'Valley Of Triumph', 'Golden Wasteland', 'Vault Of Knowledge'];
+// const realmsNick = ['Prairie', 'Forest', 'Valley', 'Wasteland', 'Vault'];
+const realms = ['prairie', 'forest', 'valley', 'wasteland', 'vault'] as const;
 
 interface ShardConfig {
   noShardWkDay: number[];
@@ -27,7 +28,8 @@ const shardsInfo: ShardConfig[] = [
       hours: 1,
       minutes: 50,
     }),
-    maps: ['Butterfly Field', 'Forest Brook', 'Ice Rink', 'Broken Temple', 'Starlight Desert'],
+    // maps: ['Butterfly Field', 'Forest Brook', 'Ice Rink', 'Broken Temple', 'Starlight Desert'],
+    maps: ['prairie.butterfly', 'forest.brook', 'valley.rink', 'wasteland.temple', 'vault.starlight'],
   },
   {
     noShardWkDay: [7, 1], //Sun;Mon
@@ -36,7 +38,8 @@ const shardsInfo: ShardConfig[] = [
       hours: 2,
       minutes: 10,
     }),
-    maps: ['Village Islands', 'Boneyard', 'Ice Rink', 'Battlefield', 'Starlight Desert'],
+    // maps: ['Village Islands', 'Boneyard', 'Ice Rink', 'Battlefield', 'Starlight Desert'],
+    maps: ['prairie.village', 'forest.boneyard', 'valley.rink', 'wasteland.battlefield', 'vault.starlight'],
   },
   {
     noShardWkDay: [1, 2], //Mon;Tue
@@ -45,7 +48,8 @@ const shardsInfo: ShardConfig[] = [
       hours: 7,
       minutes: 40,
     }),
-    maps: ['Cave', 'Forest Garden', 'Village of Dreams', 'Graveyard', 'Jellyfish Cove'],
+    // maps: ['Cave', 'Forest Garden', 'Village of Dreams', 'Graveyard', 'Jellyfish Cove'],
+    maps: ['prairie.cave', 'forest.end', 'valley.dreams', 'wasteland.graveyard', 'vault.jelly'],
     defRewardAC: 2,
   },
   {
@@ -55,7 +59,8 @@ const shardsInfo: ShardConfig[] = [
       hours: 2,
       minutes: 20,
     }),
-    maps: ['Bird Nest', 'Treehouse', 'Village of Dreams', 'Crabfield', 'Jellyfish Cove'],
+    // maps: ['Bird Nest', 'Treehouse', 'Village of Dreams', 'Crabfield', 'Jellyfish Cove'],
+    maps: ['prairie.bird', 'forest.tree', 'valley.dreams', 'wasteland.crab', 'vault.jelly'],
     defRewardAC: 2.5,
   },
   {
@@ -65,16 +70,21 @@ const shardsInfo: ShardConfig[] = [
       hours: 3,
       minutes: 30,
     }),
-    maps: ['Sanctuary Island', 'Elevated Clearing', 'Hermit valley', 'Forgotten Ark', 'Jellyfish Cove'],
+    // maps: ['Sanctuary Island', 'Elevated Clearing', 'Hermit valley', 'Forgotten Ark', 'Jellyfish Cove'],
+    maps: ['prairie.island', 'forest.sunny', 'valley.hermit', 'wasteland.ark', 'vault.jelly'],
     defRewardAC: 3.5,
   },
 ];
 
 const overrideRewardAC: Record<string, number> = {
-  'Forest Garden': 2.5,
-  'Village of Dreams': 2.5,
-  'Treehouse': 3.5,
-  'Jellyfish Cove': 3.5,
+  // 'Forest Garden': 2.5,
+  'forest.end': 2.5,
+  // 'Village of Dreams': 2.5,
+  'valley.dreams': 2.5,
+  // 'Treehouse': 3.5,
+  'forest.tree': 3.5,
+  // 'Jellyfish Cove': 3.5,
+  'vault.jelly': 3.5,
 };
 
 export function getShardInfo(date: DateTime): ShardInfo {
@@ -98,8 +108,7 @@ export function getShardInfo(date: DateTime): ShardInfo {
     offset,
     interval,
     lastEnd,
-    realmFull: realmsFull[realmIdx],
-    realmNick: realmsNick[realmIdx],
+    realm: realms[realmIdx],
     map,
     rewardAC,
   };
@@ -112,8 +121,7 @@ export type ShardInfo = {
   offset: Duration;
   interval: Duration;
   lastEnd: DateTime;
-  realmFull: string;
-  realmNick: string;
+  realm: (typeof realms)[number];
   map: string;
   rewardAC?: number;
 };
