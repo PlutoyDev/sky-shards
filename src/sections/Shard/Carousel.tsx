@@ -159,7 +159,7 @@ export default function ShardCarousel() {
           {info.haveShard && (
             <>
               <ShardMapInfographic info={info} />
-              <ShardTimeline date={date} info={info} />
+              {/* <ShardTimeline date={date} info={info} /> */}
               <ShardDataInfographic info={info} />
             </>
           )}
