@@ -1,4 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
+// import ShardTimeline from './Timeline';
+import { useTranslation } from 'react-i18next';
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 import { AnimatePresence, motion } from 'framer-motion';
 import { DateTime } from 'luxon';
@@ -6,7 +8,6 @@ import { useHeaderFx } from '../../context/HeaderFx';
 import { getShardInfo, findNextShard } from '../../shardPredictor';
 import { ShardMapInfographic, ShardDataInfographic } from './Infographic';
 import ShardSummary from './Summary';
-import ShardTimeline from './Timeline';
 
 const appZone = 'America/Los_Angeles';
 
@@ -80,6 +81,8 @@ const getDateFromUrl = () => {
 };
 
 export default function ShardCarousel() {
+  const { t } = useTranslation(['shardCarousel', 'shard']);
+
   const [direction, setDirection] = useState(0);
   const [date, setDate] = useState(() => getDateFromUrl());
   const info = useMemo(() => getShardInfo(date), [date]);
@@ -125,8 +128,14 @@ export default function ShardCarousel() {
 
   useEffect(() => {
     const { haveShard, isRed, map } = info;
+    const dateString = date.toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY);
     document.title =
-      (haveShard ? `${isRed ? 'Red' : 'Black'} Shard in ${map}` : 'No Shard') + ' on ' + date.toFormat('dd LLL yy');
+      'Sky Shards - ' + haveShard
+        ? t('dynamicTitle.hasShard', { color: isRed ? 'red' : 'black', map, date: dateString })
+        : t('dynamicTitle.noShard', { date: dateString });
+    // edit description
+    // document.querySelector('meta[name="description"]')?.setAttribute('content', description);
+    // (haveShard ? `${isRed ? 'Red' : 'Black'} Shard in ${map}` : 'No Shard') + ' on ' + date.toFormat('dd LLL yy');
   }, [date, info.haveShard, info.isRed]);
 
   return (
@@ -169,14 +178,14 @@ export default function ShardCarousel() {
         className="relative col-start-1 row-start-1 flex cursor-pointer flex-col items-center justify-center whitespace-nowrap font-['Bubblegum_Sans',_cursive] text-xs [writing-mode:vertical-lr] [@media_(min-height:_640px)]:lg:text-lg"
         onClick={() => navigateDate(-1)}
       >
-        <span>Swipe right or Click here for previous shard</span>
+        <span>{t('shardCarousel:navigation.rightwards')}</span>
         <BsChevronRight className='m-0' strokeWidth={'0.1rem'} />
       </div>
       <div
         className="relative col-start-3 row-start-1 flex cursor-pointer flex-col-reverse items-center justify-center whitespace-nowrap font-['Bubblegum_Sans',_cursive] text-xs [writing-mode:vertical-lr] [@media_(min-height:_640px)]:lg:text-lg"
         onClick={() => navigateDate(1)}
       >
-        <span>Swipe left or Click here for next shard</span>
+        <span>{t('shardCarousel:navigation.leftwards')}</span>
         <BsChevronLeft className='m-0' strokeWidth={'0.1rem'} />
       </div>
     </div>

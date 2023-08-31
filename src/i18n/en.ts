@@ -38,11 +38,6 @@ const en = {
     // Please remember to add yourself to the list if you translate this app for this language. Thanks!
     translators: [] satisfies string[] as string[],
   },
-  navigation: {
-    rightwards: 'Swipe right or Click here for previous shard',
-    leftwards: 'Swipe left or Click here for next shard',
-    downwards: 'Click here or Scroll down for more info',
-  },
   durationUnits: {
     'seconds.long_one': 'second',
     'seconds.long_other': 'seconds',
@@ -114,6 +109,12 @@ const en = {
     'ordinal.1': 'Second shard',
     'ordinal.2': 'Last shard',
   },
+  shardCarousel: {
+    'navigation.rightwards': 'Swipe right or Click here for previous shard',
+    'navigation.leftwards': 'Swipe left or Click here for next shard',
+    'dynamicTitle.noShard': 'No shard eruptions {{date}}',
+    'dynamicTitle.hasShard': '$t(shard:color.{{color}}) in $t(skyMaps:{{map}}) on {{date}}',
+  },
   shardSummary: {
     // <shard/> will be replaced with the shard type
     // <location/> will be replaced with the shard location
@@ -128,8 +129,9 @@ const en = {
     'countdown.landing': '$t(shard:ordinal.{{i}}) landing in',
     'countdown.landed': '$t(shard:ordinal.{{i}}) landed. Ending in',
     'countdown.allEnded': 'All shards ended',
-    'countdown.yourTime': 'Your time',
-    'countdown.skyTime': 'Sky time',
+    'countdown.yourTime': 'Your time:',
+    'countdown.skyTime': 'Sky time:',
+    'navigation.downwards': 'Click here or Scroll down for more info',
   },
 };
 

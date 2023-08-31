@@ -14,7 +14,7 @@ interface ShardSummarySectionProp {
 }
 
 export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
-  const { t } = useTranslation(['skyRealms', 'skyMaps', 'shard', 'shardSummary', 'navigation']);
+  const { t } = useTranslation(['skyRealms', 'skyMaps', 'shard', 'shardSummary']);
   const { application: now } = useNow();
   if (date.hasSame(now, 'day')) date = now;
 
@@ -97,7 +97,6 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
                   {t(`shardSummary:countdown.${landed ? 'landed' : 'landed'}`, { i: upcomming.index })}
                 </p>
                 <Countdown duration={now.diff(next as DateTime)} />
-                <small> which is</small>
               </div>
               <time
                 className='col-start-1 row-start-2 [@media_(max-height:_375px)]:row-start-1'
@@ -137,7 +136,7 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
             });
           }}
         >
-          <span>{t('navigation:downwards')}</span>
+          <span>{t('shardSummary:navigation.downwards')}</span>
           <BsChevronCompactDown />
         </small>
       </div>
