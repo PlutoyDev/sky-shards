@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import { Trans, useTranslation } from 'react-i18next';
 import { BsChevronCompactDown } from 'react-icons/bs';
 import { DateTime, Settings, Zone } from 'luxon';
 import Calendar from '../../components/Calendar';
@@ -13,6 +14,7 @@ interface ShardSummarySectionProp {
 }
 
 export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
+  const { t } = useTranslation(['skyRealms', 'skyMaps', 'shard', 'shardSummary', 'navigation']);
   const { application: now } = useNow();
   if (date.hasSame(now, 'day')) date = now;
 
@@ -42,37 +44,49 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
       >
         <section className='glass'>
           <p className='whitespace-normal'>
-            {info.isRed ? (
-              <>
-                <Emoji name='Red shard' />
-                <span className='whitespace-nowrap font-bold text-red-600'>Red shard</span>
-              </>
-            ) : (
-              <>
-                <Emoji name='Black shard' />
-                <span className='whitespace-nowrap font-bold text-black'>Black shard</span>
-              </>
-            )}
-            <span> in </span>
-            <span className='font-bold'>{info.map}, </span>
-            <span className='font-bold lg:hidden '>{info.realmNick} </span>
-            <span className='hidden font-bold lg:inline'>{info.realmFull} </span>
-            <Calendar date={info.date} relativeFrom={now} />
+            <Trans
+              t={t}
+              i18nKey='shardSummary:info.hasShard'
+              components={{
+                shard: info.isRed ? (
+                  <>
+                    <span className='font-bold text-red-600'>{t('shard:color.red')}</span>
+                    <Emoji name='Red shard' />
+                  </>
+                ) : (
+                  <>
+                    <span className='font-bold text-black'>{t('shard:color.black')}</span>
+                    <Emoji name='Black shard' />
+                  </>
+                ),
+                location: (
+                  <>
+                    <span className='font-bold lg:hidden'>
+                      {t(`shardSummary:info.location`, { map: info.map, realm: info.realm, len: 'short' })}
+                    </span>
+                    <span className='hidden font-bold lg:inline'>
+                      {t(`shardSummary:info.location`, { map: info.map, realm: info.realm, len: 'long' })}
+                    </span>
+                  </>
+                ),
+                date: <Calendar date={info.date} relativeFrom={now} />,
+              }}
+            />
           </p>
-          <p>
-            <span>Giving </span>
-            {info.isRed ? (
-              <>
-                <strong> max of {info.rewardAC}</strong>
-                <Emoji name='Ascended candle' />
-              </>
-            ) : (
-              <>
-                <strong>4</strong>
-                <Emoji name='Candle cake' />
-                <span> of wax</span>
-              </>
-            )}
+          <p className='whitespace-nowrap'>
+            <Trans
+              t={t}
+              {...(info.isRed
+                ? {
+                    i18nKey: 'shardSummary:info.redShardRewards',
+                    values: { qty: info.rewardAC },
+                    components: { emoji: <Emoji name='Ascended candle' /> },
+                  }
+                : {
+                    i18nKey: 'shardSummary:info.blackShardRewards',
+                    components: { emoji: <Emoji name='Candle cake' /> },
+                  })}
+            />
           </p>
         </section>
         <section className='glass grid min-w-[12rem] auto-cols-auto auto-rows-auto place-items-center gap-x-4 md:min-w-[16rem] [@media_(max-height:_375px)]:min-w-[32rem] [@media_(max-height:_375px)]:items-end'>
@@ -80,8 +94,7 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
             <>
               <div className='col-start-1 row-start-1 w-full md:col-span-2 landscape:col-span-2 [@media_(max-height:_375px)]:col-span-1 [@media_(max-height:_375px)]:col-start-2 [@media_(max-height:_375px)]:row-start-1 '>
                 <p className='whitespace-nowrap'>
-                  <strong>{ordinalIndex ? `${ordinalIndex} shard` : 'Shard'} </strong>
-                  <span>{landed ? 'landed. Ending in' : 'landing in'}</span>
+                  {t(`shardSummary:countdown.${landed ? 'landed' : 'landed'}`, { i: upcomming.index })}
                 </p>
                 <Countdown duration={now.diff(next as DateTime)} />
                 <small> which is</small>
@@ -90,7 +103,7 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
                 className='col-start-1 row-start-2 [@media_(max-height:_375px)]:row-start-1'
                 dateTime={next?.setZone('local')?.toISO({ suppressMilliseconds: true }) ?? undefined}
               >
-                <strong>Your Time: </strong>
+                <strong>{t('shardSummary:countdown.yourTime')}</strong>
                 <small className='block [@media_(max-height:_375px)]:hidden'>
                   ({(Settings.defaultZone as Zone).name})
                 </small>
@@ -101,7 +114,7 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
                 className='col-start-1 row-start-3 md:col-start-2 md:row-start-2 landscape:col-start-2 landscape:row-start-2 [@media_(max-height:_375px)]:col-start-3 [@media_(max-height:_375px)]:row-start-1'
                 dateTime={next?.toISO({ suppressMilliseconds: true }) ?? undefined}
               >
-                <strong>Sky Time: </strong>
+                <strong>{t('shardSummary:countdown.skyTime')}</strong>
                 <small className='block [@media_(max-height:_375px)]:hidden'>(America/Los_Angeles)</small>
                 <Calendar date={next!} className='block font-bold opacity-80' relFontSize={0.8} />
                 <Clock time={next} className='block font-bold' />
@@ -109,8 +122,7 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
             </>
           ) : (
             <div className='col-start-1 row-start-1 w-full'>
-              <span> All shards have </span>
-              <span className='whitespace-nowrap font-bold'>ended </span>
+              <p className='whitespace-nowrap'>{t('shardSummary:countdown.allEnded')}</p>
               <Countdown duration={now.diff(info.lastEnd)} />
               <span> ago </span>
             </div>
@@ -125,7 +137,7 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
             });
           }}
         >
-          <span>Click here or Scroll down for more info</span>
+          <span>{t('navigation:downwards')}</span>
           <BsChevronCompactDown />
         </small>
       </div>
