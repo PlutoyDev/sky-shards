@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FaMinus, FaPlus } from 'react-icons/fa';
 import { Settings as LuxonSettings, Zone } from 'luxon';
 import { useHeaderFx } from '../../context/HeaderFx';
@@ -12,6 +13,7 @@ const timezones = JSON.parse(timezonesJson);
 const stringifyZone = (zone: string | Zone) => (typeof zone === 'string' ? zone : zone.name);
 
 export default function SettingModal() {
+  const { t } = useTranslation('application');
   const { lightMode, setLightMode, twelveHourModeSetting, setTwelveHourModeSetting } = useSettings();
   const [timezone, setTimezone] = useLocalStorageState('timezone', stringifyZone(LuxonSettings.defaultZone));
   const { fontSize: fontSizeAdjust, setFontSize: setFontSizeAdjust } = useHeaderFx();
@@ -27,12 +29,12 @@ export default function SettingModal() {
     <div className='mb-4 flex flex-col justify-center gap-2 md:grid md:grid-cols-2'>
       {/* Theme */}
       <div className='w-full'>
-        <p className='text-bold w-full md:text-center'>Theme</p>
+        <p className='text-bold w-full md:text-center'>{t('settings.title')}</p>
         <div className='join m-1.5 mx-auto w-full rounded-full px-2'>
           {[
-            ['Light', 'true'],
-            ['System', 'system'],
-            ['Dark', 'false'],
+            [t('settings.theme.light'), 'true'],
+            [t('settings.theme.system'), 'system'],
+            [t('settings.theme.dark'), 'false'],
           ].map(([label, value]) => (
             <button
               key={value}
@@ -47,12 +49,12 @@ export default function SettingModal() {
       </div>
       {/* Time format */}
       <div className='w-full'>
-        <p className='text-bold w-full md:text-center'>Time format</p>
+        <p className='text-bold w-full md:text-center'>{t('settings.clockFmt.title')}</p>
         <div className='join m-1.5 mx-auto w-full rounded-full px-2'>
           {[
-            ['12 Hour', 'true'],
-            ['System', 'system'],
-            ['24 Hour', 'false'],
+            [t('settings.clockFmt.twelve'), 'true'],
+            [t('settings.clockFmt.system'), 'system'],
+            [t('settings.clockFmt.twentyFour'), 'false'],
           ].map(([label, value]) => (
             <button
               key={value}
@@ -68,12 +70,12 @@ export default function SettingModal() {
       {/* Timezone */}
       <div className='w-full'>
         <p className='text-md flex w-full justify-around md:block md:text-center'>
-          <span>Timezone</span>
+          <span>{t('settings.timezones.title')}</span>
           <span
             className='ml-auto cursor-pointer text-xs underline md:ml-4'
             onClick={() => setTimezone(Intl.DateTimeFormat().resolvedOptions().timeZone)}
           >
-            Reset
+            {t('settings.timezones.reset')}
           </span>
         </p>
         <select
@@ -90,7 +92,7 @@ export default function SettingModal() {
       </div>
       {/* Font Size */}
       <div className='w-full'>
-        <p className='text-bold w-full text-center'>Content font size</p>
+        <p className='text-bold w-full text-center'>{t('settings.fontSize.title')}</p>
         <div className='mt-1 flex w-full flex-row items-center justify-center gap-2'>
           <button className='btn btn-circle btn-primary btn-xs' onClick={() => setFontSizeAdjust(fontSizeAdjust - 0.1)}>
             <FaMinus size={12} />

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { FaCog } from 'react-icons/fa';
 import { DateTime } from 'luxon';
 import Calendar from '../../components/Calendar';
@@ -8,6 +9,7 @@ import { useNow } from '../../context/Now';
 import SettingsModal from '../Modals/Settings';
 
 export default function Header() {
+  const { t } = useTranslation(['application']);
   const { showModal } = useModal();
   const { navigateDay } = useHeaderFx();
   const navigateToday = () => navigateDay(DateTime.local({ zone: 'America/Los_Angeles' }));
@@ -29,7 +31,9 @@ export default function Header() {
         className='flex cursor-pointer flex-col flex-nowrap items-center justify-center gap-x-3 text-center md:flex-row landscape:flex-row'
       >
         <div className='max-md::text-right flex-col gap-x-2 max-md:grid lg:flex max-md:[&>*]:col-start-1 max-md:[&>*]:row-start-1'>
-          <div className='max-md:animate-[dateSwap_10s_linear_infinite]'>Now in sky</div>
+          <div className='max-md:animate-[dateSwap_10s_linear_infinite]'>
+            {t('application:headerDateTimeIndicator')}
+          </div>
           <Calendar date={application} relFontSize={1} className='max-md:animate-[dateSwap_10s_linear_-5s_infinite]' />
         </div>
         <Clock hideSeconds time={application} className='text-2xl landscape:max-lg:text-lg' relFontSize={0} />
