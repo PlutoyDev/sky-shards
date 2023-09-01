@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef } from 'react';
 import { MdExpandMore, MdExpandLess } from 'react-icons/md';
 import { DateTime } from 'luxon';
+import Calendar from '../../components/Calendar';
 import Clock from '../../components/Clock';
-import Date from '../../components/Date';
 import { useNow } from '../../context/Now';
 import { getAllShardFullPhases, ShardFullPhases, ShardInfo } from '../../shardPredictor';
 
@@ -50,7 +50,8 @@ export default function ShardTimeline({ date, info }: ShardTimelineSectionProp) 
     <section id='shardTimeline' className='glass'>
       <h1 className='title'>
         <span>Timeline for </span>
-        <Date date={date} describeClose />
+        {/* <Date date={date} describeClose /> */}
+        <Calendar date={date} inline /> (<Calendar date={date} relativeFrom={now} />)
       </h1>
       <div className='timelines'>
         {occurrences.map((phases, oI) => {
@@ -67,13 +68,11 @@ export default function ShardTimeline({ date, info }: ShardTimelineSectionProp) 
                   <span className='mini-clock'>
                     (<span>Landing {miniClockType < 2 ? `[${miniClockType ? 'Your ' : 'Sky '} Time]:` : 'in'} </span>
                     <Clock
-                      date={phases.land}
-                      inline
+                      {...(miniClockType !== 2
+                        ? { time: phases.land, convertTo: (['sky', 'local'] as const)[miniClockType] }
+                        : { duration: now.diff(phases.land) })}
                       hideSeconds
-                      useSemantic
-                      local={miniClockType === 1}
-                      relative={miniClockType === 2}
-                      twoUnits={miniClockType === 2}
+                      disableMonoFont
                     />
                     )
                   </span>
@@ -97,15 +96,15 @@ export default function ShardTimeline({ date, info }: ShardTimelineSectionProp) 
                       {/* Content */}
                       <div className='timeline-item-content'>
                         <h3 className='timeline-item-header'>{phasesName[pName]}</h3>
-                        <time dateTime={phases[pName].toISO() ?? undefined}>
+                        <time dateTime={phases[pName].toISO() ?? undefined} style={{ fontSize: '0.8em' }}>
                           <p>
-                            Relative: <Clock date={phases[pName]} inline relative twoUnits />
+                            Relative: <Clock duration={now.diff(phases[pName])} hideSeconds />
                           </p>
                           <p>
-                            Sky Time: <Clock date={phases[pName]} inline hideSeconds />
+                            Sky Time: <Clock time={phases[pName]} convertTo='sky' hideSeconds />
                           </p>
                           <p>
-                            Your Time: <Clock date={phases[pName]} inline local hideSeconds />
+                            Your Time: <Clock time={phases[pName]} convertTo='local' hideSeconds />
                           </p>
                         </time>
                       </div>

@@ -1,8 +1,9 @@
 import { useRef } from 'react';
 import { BsChevronCompactDown } from 'react-icons/bs';
 import { DateTime, Settings, Zone } from 'luxon';
-import Clock from '../../components/Clock';
-import Date from '../../components/Date';
+import Calendar from '../../components/Calendar';
+import Clock, { Countdown } from '../../components/Clock';
+import Emoji from '../../components/Emoji';
 import { useNow } from '../../context/Now';
 import { getUpcommingShardPhase, ShardInfo } from '../../shardPredictor';
 
@@ -18,11 +19,13 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
   const summaryRef = useRef<HTMLDivElement>(null);
   if (!info.haveShard) {
     return (
-      <div id='shardSummary'>
-        <section id='shardInfo' className='glass'>
-          <span>There is </span>
-          <strong>No Shard</strong>
-          <Date date={date} describeClose describeClosePrefix />
+      <div
+        className='flex max-h-screen min-h-full w-full flex-col flex-nowrap items-center justify-center gap-1'
+        ref={summaryRef}
+      >
+        <section className='glass'>
+          <strong>No shard eruption </strong>
+          <Calendar date={info.date} relativeFrom={now} />
         </section>
       </div>
     );
@@ -33,88 +36,88 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
     const ordinalIndex = upcomming?.index !== undefined && ['1st', '2nd', '3rd'][upcomming.index];
 
     return (
-      <div id='shardSummary' ref={summaryRef}>
-        <section id='shardInfo' className='glass'>
+      <div
+        className='flex max-h-screen min-h-full w-full flex-col flex-nowrap items-center justify-center gap-1'
+        ref={summaryRef}
+      >
+        <section className='glass'>
           <p className='whitespace-normal'>
-            <span>There {upcomming ? (landed ? 'is' : 'will be') : 'was'} </span>
-            <strong className={`${info.isRed ? 'Red' : 'Black'} whitespace-nowrap`}>
-              {info.isRed ? 'Red' : 'Black'} Shard
-            </strong>
+            {info.isRed ? (
+              <>
+                <Emoji name='Red shard' />
+                <span className='whitespace-nowrap font-bold text-red-600'>Red shard</span>
+              </>
+            ) : (
+              <>
+                <Emoji name='Black shard' />
+                <span className='whitespace-nowrap font-bold text-black'>Black shard</span>
+              </>
+            )}
             <span> in </span>
-            <strong>
-              {info.map}, {info.realmNick}
-            </strong>
-            <Date date={date} describeClose describeClosePrefix />
+            <span className='font-bold'>{info.map}, </span>
+            <span className='font-bold lg:hidden '>{info.realmNick} </span>
+            <span className='hidden font-bold lg:inline'>{info.realmFull} </span>
+            <Calendar date={info.date} relativeFrom={now} />
           </p>
           <p>
             <span>Giving </span>
             {info.isRed ? (
               <>
                 <strong> max of {info.rewardAC}</strong>
-                <img className='emoji' src='/emojis/AscendedCandle.webp' alt='Ascended Candles' />
+                <Emoji name='Ascended candle' />
               </>
             ) : (
               <>
                 <strong>4</strong>
-                <img className='emoji' src='/emojis/CandleCake.webp' alt='Candle Cakes' />
+                <Emoji name='Candle cake' />
                 <span> of wax</span>
               </>
             )}
-            <span> after first clear</span>
           </p>
         </section>
-        <section id='shardTiming' className='glass'>
+        <section className='glass grid min-w-[12rem] auto-cols-auto auto-rows-auto place-items-center gap-x-4 md:min-w-[16rem] [@media_(max-height:_375px)]:min-w-[32rem] [@media_(max-height:_375px)]:items-end'>
           {upcomming ? (
             <>
-              <div id='shardCountdown'>
-                <span>
+              <div className='col-start-1 row-start-1 w-full md:col-span-2 landscape:col-span-2 [@media_(max-height:_375px)]:col-span-1 [@media_(max-height:_375px)]:col-start-2 [@media_(max-height:_375px)]:row-start-1 '>
+                <p className='whitespace-nowrap'>
                   <strong>{ordinalIndex ? `${ordinalIndex} shard` : 'Shard'} </strong>
-                  {landed ? (
-                    <>
-                      <span className='whitespace-nowrap'>
-                        has <strong>landed </strong>
-                        <Clock date={upcomming.land} relative negate inline hideSeconds fontSize='0.9em' />
-                      </span>
-                      <span> ago. </span>
-                      <span className='whitespace-nowrap'>
-                        it will <strong>end in</strong>{' '}
-                      </span>
-                    </>
-                  ) : (
-                    <span className='whitespace-nowrap'>
-                      will <strong>land in</strong>
-                    </span>
-                  )}
-                </span>
-                <Clock date={next} relative trim useSemantic fontSize='1.2em' />
+                  <span>{landed ? 'landed. Ending in' : 'landing in'}</span>
+                </p>
+                <Countdown duration={now.diff(next as DateTime)} />
                 <small> which is</small>
               </div>
               <time
-                id='shardAbsLocal'
+                className='col-start-1 row-start-2 [@media_(max-height:_375px)]:row-start-1'
                 dateTime={next?.setZone('local')?.toISO({ suppressMilliseconds: true }) ?? undefined}
               >
                 <strong>Your Time: </strong>
-                <small className='block'>({(Settings.defaultZone as Zone).name})</small>
-                <Date date={next} local />
-                <Clock date={next} local />
+                <small className='block [@media_(max-height:_375px)]:hidden'>
+                  ({(Settings.defaultZone as Zone).name})
+                </small>
+                <Calendar date={next!} convertTo='local' className='block font-bold opacity-80' relFontSize={0.8} />
+                <Clock time={next} convertTo='local' className='block font-bold' />
               </time>
-              <time id='shardAbsSky' dateTime={next?.toISO({ suppressMilliseconds: true }) ?? undefined}>
+              <time
+                className='col-start-1 row-start-3 md:col-start-2 md:row-start-2 landscape:col-start-2 landscape:row-start-2 [@media_(max-height:_375px)]:col-start-3 [@media_(max-height:_375px)]:row-start-1'
+                dateTime={next?.toISO({ suppressMilliseconds: true }) ?? undefined}
+              >
                 <strong>Sky Time: </strong>
-                <small className='block'>(America/Los_Angeles)</small>
-                <Date date={next} />
-                <Clock date={next} />
+                <small className='block [@media_(max-height:_375px)]:hidden'>(America/Los_Angeles)</small>
+                <Calendar date={next!} className='block font-bold opacity-80' relFontSize={0.8} />
+                <Clock time={next} className='block font-bold' />
               </time>
             </>
           ) : (
-            <div id='shardCountdown'>
-              <span> All shard has ended </span>
-              <Clock date={info.lastEnd} relative negate useSemantic fontSize='1.2em' />
+            <div className='col-start-1 row-start-1 w-full'>
+              <span> All shards have </span>
+              <span className='whitespace-nowrap font-bold'>ended </span>
+              <Countdown duration={now.diff(info.lastEnd)} />
               <span> ago </span>
             </div>
           )}
         </section>
         <small
-          className='scrollHint'
+          className="flex cursor-pointer flex-col items-center justify-center whitespace-nowrap font-['Bubblegum_Sans',_cursive] text-xs [@media_(min-height:_640px)]:lg:text-lg"
           onClick={() => {
             summaryRef.current?.parentElement?.scrollBy({
               top: summaryRef.current?.offsetHeight,

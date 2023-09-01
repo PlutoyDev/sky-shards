@@ -1,74 +1,90 @@
 import { CSSProperties } from 'react';
 import { DateTime, Duration } from 'luxon';
-import { useNow } from '../context/Now';
 import { useSettings } from '../context/Settings';
-import './Clock.css';
 
 interface ClockProp {
-  local?: boolean;
-  sky?: boolean;
-  negate?: boolean;
-  relative?: boolean;
-  trim?: boolean;
-  date?: DateTime;
+  time?: DateTime;
   duration?: Duration;
-  fontSize?: CSSProperties['fontSize'];
-  inline?: boolean;
-  twoUnits?: boolean;
   hideSeconds?: boolean;
-  useSemantic?: boolean;
+  convertTo?: 'local' | 'sky';
+  className?: string;
+  relFontSize?: number;
+  disableMonoFont?: boolean;
 }
 
-export default function Clock({
-  local,
-  sky,
-  negate,
-  relative,
-  trim,
-  date,
+export function Clock({
+  time,
   duration,
-  fontSize,
-  inline,
-  twoUnits,
   hideSeconds,
-  useSemantic,
+  convertTo,
+  className = '',
+  relFontSize = 1,
+  disableMonoFont,
 }: ClockProp) {
-  const { isTwelveHourMode } = useSettings();
-  date = local
-    ? date?.toLocal() ?? useNow().local
-    : (sky ? date?.setZone('America/Los_Angeles') : date) ?? useNow().application;
-  duration =
-    duration ?? relative ? (negate ? useNow().application.diff(date) : date.diff(useNow().application)) : undefined;
+  const { twelveHourModeSetting } = useSettings();
+  if (!duration && !time) throw new Error('Time component requires either time or duration prop');
 
-  let text = duration
+  const formattedTime = duration
     ? duration.toFormat(
-        twoUnits || hideSeconds
-          ? Math.abs(duration.shiftTo('hours').hours) > 2 || hideSeconds
-            ? `hh'h' mm'm'`
-            : `mm'm' ss's'`
-          : `hh'h' mm'm' ss's'`,
+        hideSeconds ? (Math.abs(duration.as('minutes')) > 90 ? `hh'h' mm'm'` : `mm'm' ss's'`) : `hh'h' mm'm' ss's'`,
       )
-    : date.toFormat(
-        hideSeconds ? (isTwelveHourMode ? 'hh:mm a' : 'HH:mm') : isTwelveHourMode ? 'hh:mm:ss a' : 'HH:mm:ss',
-      );
+    : time?.setZone(convertTo === 'local' ? 'local' : 'America/Los_Angeles')?.toLocaleString({
+        hourCycle: twelveHourModeSetting === 'system' ? undefined : twelveHourModeSetting === 'true' ? 'h23' : 'h12',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: hideSeconds ? undefined : '2-digit',
+      });
 
-  if (trim) text = text.replace(/^(0+\w )+/, '');
-  const style: CSSProperties = { fontSize, display: inline ? 'inline-block' : undefined };
+  className += disableMonoFont ? '' : ' font-mono';
+  return (
+    <span className={className} style={relFontSize ? { fontSize: `${relFontSize}em` } : undefined}>
+      {formattedTime}
+    </span>
+  );
+}
 
-  if (useSemantic) {
-    const isoDateTime = relative
-      ? duration?.toISO()
-      : date.toISO({ suppressMilliseconds: true, suppressSeconds: hideSeconds });
-    return (
-      <time className='Clock' style={style} dateTime={isoDateTime ?? undefined}>
-        {text}
-      </time>
-    );
-  } else {
-    return (
-      <span className='Clock' style={style}>
-        {text}
-      </span>
-    );
-  }
+export default Clock;
+
+interface CountdownProp {
+  duration: Duration;
+}
+
+export function Countdown({ duration }: CountdownProp) {
+  duration = duration.shiftTo('hours', 'minutes', 'seconds', 'milliseconds');
+  const isNegative = duration.as('seconds') < 0;
+  if (isNegative) duration = duration.negate();
+  const { hours, minutes, seconds } = duration;
+
+  const days = hours > 99 ? Math.floor(hours / 24) : undefined;
+
+  return (
+    <div
+      className={`grid auto-cols-max grid-flow-col grid-rows-2 justify-center justify-items-center ${
+        days ? 'grid-cols-4' : 'grid-cols-3'
+      }`}
+    >
+      {days && (
+        <>
+          <p className='text-start align-top font-mono text-[1.2em] font-bold leading-[1em] lg:text-[1.8em]'>{days}</p>
+          <p className='font-mono text-[0.8em] opacity-60 md:hidden lg:text-[1em]'>Ds</p>
+          <p className='hidden font-mono text-[0.8em] opacity-60 md:block lg:text-[1em]'>Days</p>
+        </>
+      )}
+      <p className='countdown font-mono text-[1.2em] font-bold lg:text-[1.8em]'>
+        <span style={{ '--value': days ? hours % 24 : hours } as CSSProperties} />
+      </p>
+      <p className='font-mono text-[0.8em] opacity-60 md:hidden lg:text-[1em]'>Hrs</p>
+      <p className='hidden font-mono text-[0.8em] opacity-60 md:block lg:text-[1em]'>Hours</p>
+      <p className='countdown font-mono text-[1.2em] font-bold lg:text-[1.8em]'>
+        <span style={{ '--value': minutes } as CSSProperties} />
+      </p>
+      <p className='font-mono text-[0.8em] opacity-60 md:hidden lg:text-[1em]'>Mins</p>
+      <p className='hidden font-mono text-[0.8em] opacity-60 md:block lg:text-[1em]'>Minutes</p>
+      <p className='countdown font-mono text-[1.2em] font-bold lg:text-[1.8em]'>
+        <span style={{ '--value': seconds } as CSSProperties} />
+      </p>
+      <p className='font-mono text-[0.8em] opacity-60 md:hidden lg:text-[1em]'>Secs</p>
+      <p className='hidden font-mono text-[0.8em] opacity-60 md:block lg:text-[1em]'>Seconds</p>
+    </div>
+  );
 }

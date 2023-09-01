@@ -12,11 +12,9 @@ const timezones = JSON.parse(timezonesJson);
 const stringifyZone = (zone: string | Zone) => (typeof zone === 'string' ? zone : zone.name);
 
 export default function SettingModal() {
-  console.log('rendering settings modal');
   const { lightMode, setLightMode, twelveHourModeSetting, setTwelveHourModeSetting } = useSettings();
   const [timezone, setTimezone] = useLocalStorageState('timezone', stringifyZone(LuxonSettings.defaultZone));
   const { fontSize: fontSizeAdjust, setFontSize: setFontSizeAdjust } = useHeaderFx();
-  const isLightMode = lightMode === 'true';
 
   useEffect(() => {
     LuxonSettings.defaultZone = timezone;
@@ -30,18 +28,16 @@ export default function SettingModal() {
       {/* Theme */}
       <div className='w-full'>
         <p className='text-bold w-full md:text-center'>Theme</p>
-        <div className='m-1.5 flex flex-row items-center rounded-full'>
+        <div className='join m-1.5 mx-auto w-full rounded-full px-2'>
           {[
-            ['Light', 'true', 'rounded-l-full'],
-            ['System', 'system', 'border-x-2 border-zinc-300 border-opacity-50'],
-            ['Dark', 'false', 'rounded-r-full'],
-          ].map(([label, value, addClass]) => (
+            ['Light', 'true'],
+            ['System', 'system'],
+            ['Dark', 'false'],
+          ].map(([label, value]) => (
             <button
               key={value}
-              className={`flex-1  whitespace-nowrap p-1 text-xs 
-              ${lightMode === value ? 'bg-opacity-20' : ''} 
-              ${isLightMode ? 'bg-sky-300 text-black' : 'bg-violet-600 text-white'} 
-              ${addClass}`}
+              className='btn btn-primary join-item btn-xs flex-1 whitespace-nowrap'
+              disabled={lightMode === value}
               onClick={() => setLightMode(value)}
             >
               {label}
@@ -52,18 +48,16 @@ export default function SettingModal() {
       {/* Time format */}
       <div className='w-full'>
         <p className='text-bold w-full md:text-center'>Time format</p>
-        <div className='m-1.5 flex flex-row items-center rounded-full'>
+        <div className='join m-1.5 mx-auto w-full rounded-full px-2'>
           {[
-            ['12 Hour', 'true', 'rounded-l-full'],
-            ['System', 'system', 'border-x-2 border-zinc-300 border-opacity-50'],
-            ['24 Hour', 'false', 'rounded-r-full'],
-          ].map(([label, value, addClass]) => (
+            ['12 Hour', 'true'],
+            ['System', 'system'],
+            ['24 Hour', 'false'],
+          ].map(([label, value]) => (
             <button
               key={value}
-              className={`flex-1  whitespace-nowrap p-1 text-xs 
-              ${twelveHourModeSetting === value ? ' bg-opacity-20' : ''} 
-              ${isLightMode ? 'bg-sky-300 text-black' : 'bg-violet-600 text-white'}
-              ${addClass}`}
+              className='btn btn-primary join-item btn-xs flex-1 whitespace-nowrap'
+              disabled={twelveHourModeSetting === value}
               onClick={() => setTwelveHourModeSetting(value)}
             >
               {label}
@@ -83,8 +77,7 @@ export default function SettingModal() {
           </span>
         </p>
         <select
-          className={`shadow-zinc-70 no-scrollbar w-full rounded-lg px-1 py-0.5 shadow-xl
-    ${isLightMode ? 'bg-sky-300 text-black' : 'bg-violet-600 text-white'}`}
+          className='no-scrollbar select select-primary select-xs mt-1 w-full bg-primary text-primary-content'
           onChange={e => setTimezone(e.target.value)}
           value={timezone}
         >
@@ -97,21 +90,13 @@ export default function SettingModal() {
       </div>
       {/* Font Size */}
       <div className='w-full'>
-        <p className='text-bold w-full text-center'>Font Size</p>
-        <div className='flex w-full flex-row items-center justify-center gap-2 pt-1'>
-          <button
-            className={`rounded-full p-1.5 shadow-xl shadow-zinc-700 hover:bg-opacity-50
-        ${isLightMode ? 'bg-sky-300 text-black' : 'bg-violet-600 text-white'}`}
-            onClick={() => setFontSizeAdjust(fontSizeAdjust - 0.1)}
-          >
+        <p className='text-bold w-full text-center'>Content font size</p>
+        <div className='mt-1 flex w-full flex-row items-center justify-center gap-2'>
+          <button className='btn btn-circle btn-primary btn-xs' onClick={() => setFontSizeAdjust(fontSizeAdjust - 0.1)}>
             <FaMinus size={12} />
           </button>
           <p>{fontSizeAdjust.toFixed(1)}</p>
-          <button
-            className={`rounded-full p-1.5 shadow-xl shadow-zinc-700 hover:bg-opacity-50
-        ${isLightMode ? 'bg-sky-300 text-black' : 'bg-violet-600 text-white'}`}
-            onClick={() => setFontSizeAdjust(fontSizeAdjust + 0.1)}
-          >
+          <button className='btn btn-circle btn-primary btn-xs' onClick={() => setFontSizeAdjust(fontSizeAdjust + 0.1)}>
             <FaPlus size={12} />
           </button>
         </div>

@@ -130,11 +130,11 @@ export default function ShardCarousel() {
   }, [date, info.haveShard, info.isRed]);
 
   return (
-    <div className='Page ShardPage'>
+    <div className='grid h-full max-h-full w-full select-none grid-cols-[2rem_auto_2rem] grid-rows-[auto] items-center justify-items-center gap-1 overflow-hidden p-2 text-center'>
       <AnimatePresence initial={false} custom={direction}>
         <motion.main
           key={date.toISO()}
-          className='shardContent'
+          className='no-scrollbar col-start-2 row-start-1 flex h-full max-h-full w-full flex-col flex-nowrap items-center justify-start gap-2 overflow-x-hidden overflow-y-scroll text-center'
           initial='enter'
           animate='center'
           exit='exit'
@@ -149,7 +149,6 @@ export default function ShardCarousel() {
           onDragEnd={(_, { offset, velocity }) => {
             const swipe = offset.x > 0 ? -1 : 1;
             const swipePower = offset.x * velocity.x;
-            console.log('drag ended', swipe, swipePower);
             if (swipePower > 4000) {
               navigateDate(swipe);
             }
@@ -166,13 +165,19 @@ export default function ShardCarousel() {
           )}
         </motion.main>
       </AnimatePresence>
-      <div id='leftNavHint' className='navHint' onClick={() => navigateDate(-1)}>
+      <div
+        className="relative col-start-1 row-start-1 flex cursor-pointer flex-col items-center justify-center whitespace-nowrap font-['Bubblegum_Sans',_cursive] text-xs [writing-mode:vertical-lr] [@media_(min-height:_640px)]:lg:text-lg"
+        onClick={() => navigateDate(-1)}
+      >
         <span>Swipe right or Click here for previous shard</span>
-        <BsChevronRight />
+        <BsChevronRight className='m-0' strokeWidth={'0.1rem'} />
       </div>
-      <div id='rightNavHint' className='navHint' onClick={() => navigateDate(1)}>
+      <div
+        className="relative col-start-3 row-start-1 flex cursor-pointer flex-col-reverse items-center justify-center whitespace-nowrap font-['Bubblegum_Sans',_cursive] text-xs [writing-mode:vertical-lr] [@media_(min-height:_640px)]:lg:text-lg"
+        onClick={() => navigateDate(1)}
+      >
         <span>Swipe left or Click here for next shard</span>
-        <BsChevronLeft />
+        <BsChevronLeft className='m-0' strokeWidth={'0.1rem'} />
       </div>
     </div>
   );
