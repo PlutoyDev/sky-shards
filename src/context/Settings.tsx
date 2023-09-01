@@ -72,9 +72,9 @@ export function SettingsProvider({ children }: SettingsProviderProps) {
   useEffect(() => {
     if (i18next.language === language) return;
     const prevLanguage = i18next.language;
-    LuxonSettings.defaultLocale = language;
     if (language === 'en') {
       i18next.changeLanguage(language);
+      LuxonSettings.defaultLocale = language;
     } else if (language in languageResources) {
       console.log('downloading language resources for', language);
       languageResources[language]()
@@ -91,6 +91,9 @@ export function SettingsProvider({ children }: SettingsProviderProps) {
             i18next.addResourceBundle(language, ns, res);
           }
           return i18next.changeLanguage(language);
+        })
+        .then(() => {
+          LuxonSettings.defaultLocale = language;
         })
         .catch(err => {
           console.error('failed to load language resources', language, err);
