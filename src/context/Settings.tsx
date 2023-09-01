@@ -1,6 +1,9 @@
 import { createContext, useContext, useEffect } from 'react';
 import { useMediaQuery } from 'react-responsive';
+import i18next from 'i18next';
+import { Settings as LuxonSettings } from 'luxon';
 import useLocalStorageState from '../hooks/useLocalStorageState';
+import { languageResources } from '../i18n';
 
 export interface Settings {
   isTwelveHourMode: boolean;
@@ -9,8 +12,10 @@ export interface Settings {
 
   setTwelveHourModeSetting: (value: string) => void;
   setLightMode: (value: string) => void;
+  setLanguage: (value: string) => void;
   twelveHourModeSetting: string;
   lightMode: string;
+  language: string;
 }
 
 export const SettingsContext = createContext<Settings>({
@@ -20,9 +25,11 @@ export const SettingsContext = createContext<Settings>({
 
   setTwelveHourModeSetting: () => console.log('setTwelveHourModeSetting not yet initialized'),
   setLightMode: () => console.log('setLightMode not yet initialized'),
+  setLanguage: () => console.log('setLanguage not yet initialized'),
 
   twelveHourModeSetting: 'system',
   lightMode: 'system',
+  language: 'en',
 });
 
 export const useSettings = () => useContext(SettingsContext);
@@ -36,6 +43,7 @@ interface SettingsProviderProps {
 export function SettingsProvider({ children }: SettingsProviderProps) {
   const [twelveHourModeSetting, setTwelveHourModeSetting] = useLocalStorageState('twelveHourMode', 'system');
   const [lightMode, setLightMode] = useLocalStorageState<'false' | 'true' | 'system'>('lightMode', 'system');
+  const [language, setLanguage] = useLocalStorageState('language', 'en');
   const compactMode = useMediaQuery({ maxWidth: '300px' });
 
   const twelveHourMode =
@@ -61,6 +69,39 @@ export function SettingsProvider({ children }: SettingsProviderProps) {
     }
   }, [lightMode]);
 
+  useEffect(() => {
+    if (i18next.language === language) return;
+    const prevLanguage = i18next.language;
+    LuxonSettings.defaultLocale = language;
+    if (language === 'en') {
+      i18next.changeLanguage(language);
+    } else if (language in languageResources) {
+      console.log('downloading language resources for', language);
+      languageResources[language]()
+        .then(module => {
+          if (!module.default) {
+            console.error('failed to load language resources', language, 'no default export');
+            i18next.changeLanguage(prevLanguage);
+            LuxonSettings.defaultLocale = prevLanguage;
+            return;
+          }
+          const resources = module.default;
+          console.log('loaded language resources', language);
+          for (const [ns, res] of Object.entries(resources)) {
+            i18next.addResourceBundle(language, ns, res);
+          }
+          return i18next.changeLanguage(language);
+        })
+        .catch(err => {
+          console.error('failed to load language resources', language, err);
+          i18next.changeLanguage(prevLanguage);
+        });
+    } else {
+      console.error('unknown language', language);
+      i18next.changeLanguage(prevLanguage);
+    }
+  }, [language]);
+
   return (
     <SettingsContext.Provider
       value={{
@@ -70,8 +111,10 @@ export function SettingsProvider({ children }: SettingsProviderProps) {
 
         setTwelveHourModeSetting,
         setLightMode,
+        setLanguage,
         twelveHourModeSetting,
         lightMode,
+        language,
       }}
     >
       {children}

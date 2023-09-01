@@ -1,11 +1,10 @@
 import { initReactI18next } from 'react-i18next';
 import i18n from 'i18next';
-import LanguageDetector from 'i18next-browser-languagedetector';
+// import LanguageDetector from 'i18next-browser-languagedetector';
 import resourceEn from './en';
 
-// const languageResources = import.meta.glob(['./*.json', '!./en.json']);
 i18n
-  .use(LanguageDetector)
+  // .use(LanguageDetector)
   .use(initReactI18next)
   .init({
     resources: {
@@ -25,3 +24,19 @@ declare module 'i18next' {
     resources: typeof resourceEn;
   }
 }
+
+const resources = import.meta.glob(['./*.ts', '!./en.ts', '!./template.ts']);
+
+export const languageResources = Object.fromEntries(
+  Object.entries(resources).map(([path, loader]) => {
+    // remove './' and '.ts'
+    const language = path.slice(2, -3);
+    return [language, loader];
+  }),
+) as Record<string, () => Promise<{ default: typeof resourceEn }>>;
+
+export const languageCode = {
+  en: 'English',
+  zh: '简体中文',
+  jp: '日本語',
+};

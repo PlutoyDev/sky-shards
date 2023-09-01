@@ -24,6 +24,7 @@ const en = {
     'settings.clockFmt.twentyFour': '24-hour',
     'settings.timezones.title': 'Timezone',
     'settings.timezones.reset': 'Reset',
+    'settings.language.title': 'Language',
     'settings.fontSize.title': 'Content font size',
   },
   about: {
