@@ -28,10 +28,12 @@ export const HeaderFxContext = createContext<HeaderFx>({
 export const useHeaderFx = () => useContext(HeaderFxContext);
 export const HeaderFxConsumer = HeaderFxContext.Consumer;
 
+const defaultFontSize = window.innerWidth > 768 ? 1.4 : 0.8;
+
 export function HeaderFxProvider({ children }: { children: React.ReactNode }) {
   const [navigateDay, _setNavigateDay] = useState(() => defaultNavigateDay);
   const setNavigateDay = (dfx: (d: DateTime | number) => void) => _setNavigateDay(() => dfx);
-  const [fontSize, setFontSize] = useLocalStorageState('fontSize', 0.8);
+  const [fontSize, setFontSize] = useLocalStorageState('fontSize', defaultFontSize);
   return (
     <HeaderFxContext.Provider value={{ navigateDay, setNavigateDay, fontSize, setFontSize }}>
       {children}
