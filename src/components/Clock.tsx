@@ -29,11 +29,10 @@ export function Clock({
         hideSeconds ? (Math.abs(duration.as('minutes')) > 90 ? `hh'h' mm'm'` : `mm'm' ss's'`) : `hh'h' mm'm' ss's'`,
       )
     : time?.setZone(convertTo === 'local' ? 'local' : 'America/Los_Angeles')?.toLocaleString({
-        hourCycle: 'h23',
+        hourCycle: twelveHourModeSetting === 'system' ? undefined : twelveHourModeSetting === 'true' ? 'h23' : 'h12',
         hour: '2-digit',
         minute: '2-digit',
         second: hideSeconds ? undefined : '2-digit',
-        hour12: twelveHourModeSetting === 'system' ? undefined : twelveHourModeSetting === 'true',
       });
 
   className += disableMonoFont ? '' : ' font-mono';
