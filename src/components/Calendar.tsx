@@ -1,5 +1,5 @@
 import { CSSProperties } from 'react';
-import { DateTime } from 'luxon';
+import { DateTime, Settings as LuxonSettings } from 'luxon';
 
 interface CalendarProp {
   date: DateTime;
@@ -30,7 +30,7 @@ export function Calendar({
   }
 
   if (relativeFrom) {
-    const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
+    const rtf = new Intl.RelativeTimeFormat(LuxonSettings.defaultLocale, { numeric: 'auto' });
     if (convertTo === 'local') {
       date = date.toLocal();
       relativeFrom = relativeFrom.toLocal();
@@ -52,6 +52,10 @@ export function Calendar({
       date = date.toLocal();
     } else if (convertTo === 'sky') {
       date = date.setZone('America/Los_Angeles');
+    }
+
+    if (date.locale !== LuxonSettings.defaultLocale) {
+      date = date.setLocale(LuxonSettings.defaultLocale);
     }
 
     const shortDate = date.toLocaleString({
