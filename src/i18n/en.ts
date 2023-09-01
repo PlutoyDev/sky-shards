@@ -10,6 +10,7 @@
       - key can be number or string but only string are used in this app for easier reference
       - More info: https://react.i18next.com/latest/trans-component
 */
+
 const en = {
   application: {
     'headerDateTimeIndicator': 'Now in Sky',
@@ -27,17 +28,22 @@ const en = {
     'settings.language.title': 'Language',
     'settings.fontSize.title': 'Content font size',
   },
-  about: {
+  footer: {
     createdBy: 'Created by: {{author}}',
     version: 'Version: {{version}}',
-    credits: 'Thanks to these Discord users for aiding in discovering shard eruption patterns:',
     githubSourceLong: 'Source on GitHub',
     githubSourceShort: 'GitHub',
     feedbackLong: 'Submit Feedback',
     feedbackShort: 'Feedback',
-    translatedBy: 'Translated by: {{translator}}',
+    disclaimer: 'This app is not affiliated with That Game Company or Sky: Children of the Light',
+    patternCredit: 'Thanks to these Discord users for aiding in discovering shard eruption patterns:',
+
+    translatedBy: 'Translated by:',
     // Please remember to add yourself to the list if you translate this app for this language. Thanks!
-    translators: [] satisfies string[] as string[],
+    translators: [] as string[],
+    translationErrors: 'If you find any errors in the translation please report it <link>here</link>.',
+    translationErrorLink:
+      'https://docs.google.com/forms/d/e/1FAIpQLSf8CvIDxHz9hFkzaK-CFsGDKqIjiuAt4IDzigI8WjQnNBx6Ww/viewform?usp=pp_url&entry.402545620=Commit:{{commitHash}}%0ALang:{{language}}&entry.1859327625=Translation+Error',
   },
   durationUnits: {
     'seconds.long_one': 'second',

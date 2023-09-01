@@ -1,7 +1,9 @@
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useEffect, useMemo, useState } from 'react';
+import { Trans, useTranslation } from 'react-i18next';
 import { BiLinkExternal } from 'react-icons/bi';
 import { BsGithub } from 'react-icons/bs';
 import { TbForms } from 'react-icons/tb';
+import i18next from 'i18next';
 import { patternCredits } from '../../data/credits';
 import useFeedbackFormUrl from '../../hooks/useFeedbackFom';
 
@@ -19,16 +21,18 @@ function SubFooter({ className, children }: SubFooterProps) {
 }
 
 function AppDetailFooter() {
+  const { t } = useTranslation('footer');
   const version = import.meta.env.VITE_VERSION_MINOR ?? 'undefiend';
 
   const feedbackUrl = useFeedbackFormUrl();
   return (
-    <SubFooter className='flex flex-row flex-wrap items-center justify-center gap-x-1 lg:gap-x-3'>
-      <div>
-        <p className='text-center text-sm'>Created by: Plutoy#5022</p>
-        <p className='text-center'>Version: {version}</p>
-      </div>
-      <div className='mt-1 flex flex-row flex-wrap items-center justify-center gap-1'>
+    <SubFooter className='flex flex-col gap-2'>
+      <div className='flex w-full flex-1 flex-row flex-wrap items-center justify-center gap-x-1 lg:gap-x-3'>
+        <div>
+          <p className='text-center text-sm'>{t('createdBy', { author: 'Plutoy' })}</p>
+          <p className='text-center'>{t('version', { version })}</p>
+        </div>
+        <div className='mt-1 flex flex-row flex-wrap items-center justify-center gap-1'></div>
         <a
           href='https://github.com/PlutoyDev/sky-shards'
           target='_blank'
@@ -36,8 +40,8 @@ function AppDetailFooter() {
           className='rounded-xl bg-black px-2 pb-1 pt-0.5 text-white'
         >
           <BsGithub className='text-md mr-2 inline-block' />
-          <span className='text-sm font-bold max-xs:hidden'>Source on </span>
-          <span className='text-sm font-bold '>GitHub</span>
+          <span className='text-sm font-bold max-sm:hidden'>{t('githubSourceLong')}</span>
+          <span className='text-sm font-bold sm:hidden'>{t('githubSourceShort')}</span>
         </a>
         <a
           href={feedbackUrl}
@@ -46,30 +50,49 @@ function AppDetailFooter() {
           className='rounded-xl bg-purple-700 px-2 pb-1 pt-0.5 text-white'
         >
           <TbForms className='text-md mr-2 inline-block' />
-          <span className='text-sm font-bold max-xs:hidden'>Submit </span>
-          <span className='text-sm font-bold '>Feedback</span>
+          <span className='text-sm font-bold max-sm:hidden'>{t('feedbackLong')}</span>
+          <span className='text-sm font-bold sm:hidden'>{t('feedbackShort')}</span>
         </a>
       </div>
+      <p className='text-center max-xs:hidden xs:text-[8px] md:text-xs'>{t('disclaimer')}</p>
     </SubFooter>
   );
 }
 
 function PattenCreditFooter() {
+  const { t } = useTranslation('footer');
   return (
     <SubFooter className='flex flex-col items-center justify-center gap-y-1'>
-      <p className='text-center max-sm:text-[10px] sm:text-sm'>
-        Thanks to these Discord users for aiding in discovering shard eruption patterns:
-      </p>
-      <p className='flex w-full select-none flex-row flex-wrap items-center justify-center gap-x-1.5 whitespace-nowrap max-sm:text-xs'>
+      <p className='text-center text-xs md:text-sm'>{t('patternCredit')}</p>
+      <p className='flex w-full select-none flex-row flex-wrap items-center justify-center gap-x-1.5 whitespace-nowrap max-md:text-xs'>
         {patternCredits.map(u => (
           <span key={u}>{u}</span>
         ))}
       </p>
-      <div className='flex-1' />
-      <p className='text-center max-xs:hidden xs:text-[8px] md:text-xs'>
-        <span>This website is not affiliated with thatgamecompany or </span>
-        <span className='whitespace-nowrap'>Sky: Children of the Light. </span>
-        <span className='whitespace-nowrap max-sm:hidden'>(It might not reflect what is in-game)</span>
+    </SubFooter>
+  );
+}
+
+function TranslatorsFooter() {
+  const { t } = useTranslation('footer');
+  const translationErrorLink = t('translationErrorLink', {
+    commit: import.meta.env.VITE_GIT_COMMIT,
+    language: i18next.language,
+  });
+  return (
+    <SubFooter className='flex flex-col items-center justify-center gap-y-1'>
+      <p className='text-center text-xs md:text-sm'>{t('translatedBy')}</p>
+      <p className='text- flex w-full select-none flex-row flex-wrap items-center justify-center gap-x-1.5 whitespace-nowrap'>
+        {t('translators', { returnObjects: true }).map(t => (
+          <span key={t}>{t}</span>
+        ))}
+      </p>
+      <p className='text-center text-[8px] md:text-xs'>
+        <Trans
+          t={t}
+          i18nKey='translationErrors'
+          components={{ link: <a href={translationErrorLink} target='_blank' rel='noreferrer' /> }}
+        />
       </p>
     </SubFooter>
   );
@@ -100,26 +123,38 @@ function InspiredByFooter() {
   );
 }
 
-const subfooters = {
-  'app-detail': AppDetailFooter,
-  'pattern-credit': PattenCreditFooter,
-  'inspired-by': InspiredByFooter,
-};
-
-const numSubfooters = Object.keys(subfooters).length;
 const durationPerSection = 5; // seconds
 
 interface FooterProps {}
 
 export function Footer({}: FooterProps) {
   const [currentSection, setCurrentSection] = useState(0);
+  const { i18n, t } = useTranslation();
+
+  const subfooters = useMemo(() => {
+    const subfooters = [
+      { key: 'app-detail', Footer: AppDetailFooter },
+      { key: 'pattern-credit', Footer: PattenCreditFooter },
+      { key: 'inspired-by', Footer: InspiredByFooter },
+    ] as { key: string; Footer: () => JSX.Element }[];
+
+    const translators = t('footer:translators', { returnObjects: true }) as string[];
+
+    if (i18n.language !== 'en' && translators.length > 0) {
+      subfooters.splice(2, 0, { key: 'translators-credit', Footer: TranslatorsFooter });
+    }
+
+    return subfooters;
+  }, [i18n.language]);
+
+  const numSubfooters = subfooters.length;
 
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSection(prev => (prev + 1) % numSubfooters);
     }, durationPerSection * 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [numSubfooters]);
 
   const transY = (-100 / numSubfooters) * currentSection;
 
@@ -132,7 +167,7 @@ export function Footer({}: FooterProps) {
           transform: `translateY(${transY}%)`,
         }}
       >
-        {Object.entries(subfooters).map(([key, Footer]) => (
+        {subfooters.map(({ key, Footer }) => (
           <Footer key={key} />
         ))}
       </div>
