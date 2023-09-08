@@ -60,50 +60,51 @@ export function Countdown({ duration }: CountdownProp) {
   if (isNegative) duration = duration.negate();
   const { hours, minutes, seconds } = duration;
 
-  const days = hours > 99 ? Math.floor(hours / 24) : undefined;
+  const days = hours > 60 ? Math.floor(hours / 24) : undefined;
 
   return (
-    <div
-      className={`grid auto-cols-max grid-flow-col grid-rows-2 justify-center justify-items-center ${
-        days ? 'grid-cols-4' : 'grid-cols-3'
-      }`}
-    >
+    <div className='grid auto-cols-fr grid-flow-col grid-rows-2 justify-center justify-items-center'>
       {days && (
-        <>
-          <p className='text-start align-top font-mono text-[1.2em] font-bold leading-[1em] lg:text-[1.8em]'>{days}</p>
-          <p className='font-mono text-[0.8em] opacity-60 md:hidden lg:text-[1em]'>
-            {t('days.short', { count: days })}
-          </p>
-          <p className='hidden font-mono text-[0.8em] opacity-60 md:block lg:text-[1em]'>
-            {t('days.long', { count: days })}
-          </p>
-        </>
+        <CountdownParts
+          value={days}
+          unitShort={t('days.short', { count: days })}
+          unitLong={t('days.long', { count: days })}
+        />
       )}
-      <p className='countdown font-mono text-[1.2em] font-bold lg:text-[1.8em]'>
-        <span style={{ '--value': days ? hours % 24 : hours } as CSSProperties} />
-      </p>
-      <p className='font-mono text-[0.8em] opacity-60 md:hidden lg:text-[1em]'>{t('hours.long', { count: hours })}</p>
-      <p className='hidden font-mono text-[0.8em] opacity-60 md:block lg:text-[1em]'>
-        {t('hours.short', { count: hours })}
-      </p>
-      <p className='countdown font-mono text-[1.2em] font-bold lg:text-[1.8em]'>
-        <span style={{ '--value': minutes } as CSSProperties} />
-      </p>
-      <p className='font-mono text-[0.8em] opacity-60 md:hidden lg:text-[1em]'>
-        {t('minutes.short', { count: minutes })}
-      </p>
-      <p className='hidden font-mono text-[0.8em] opacity-60 md:block lg:text-[1em]'>
-        {t('minutes.long', { count: minutes })}
-      </p>
-      <p className='countdown font-mono text-[1.2em] font-bold lg:text-[1.8em]'>
-        <span style={{ '--value': seconds } as CSSProperties} />
-      </p>
-      <p className='font-mono text-[0.8em] opacity-60 md:hidden lg:text-[1em]'>
-        {t('seconds.short', { count: seconds })}
-      </p>
-      <p className='hidden font-mono text-[0.8em] opacity-60 md:block lg:text-[1em]'>
-        {t('seconds.long', { count: seconds })}
-      </p>
+      <CountdownParts
+        value={days ? hours % 24 : hours}
+        unitShort={t('hours.long', { count: hours })}
+        unitLong={t('hours.short', { count: hours })}
+      />
+      <CountdownParts
+        value={minutes}
+        unitShort={t('minutes.short', { count: minutes })}
+        unitLong={t('minutes.long', { count: minutes })}
+      />
+      <CountdownParts
+        value={seconds}
+        unitShort={t('seconds.short', { count: seconds })}
+        unitLong={t('seconds.long', { count: seconds })}
+      />
     </div>
+  );
+}
+
+export function CountdownParts({
+  value,
+  unitShort,
+  unitLong,
+}: {
+  value: number;
+  unitShort?: string;
+  unitLong?: string;
+}) {
+  const valueStr = value.toString().padStart(2, '0');
+  return (
+    <>
+      <p className='text-start align-top font-mono text-[1.2em] font-bold leading-[1em] lg:text-[1.8em]'>{valueStr}</p>
+      <p className='font-mono text-[0.8em] opacity-60 md:hidden lg:text-[1em]'>{unitShort}</p>
+      <p className='hidden font-mono text-[0.8em] opacity-60 md:block lg:text-[1em]'>{unitLong}</p>
+    </>
   );
 }

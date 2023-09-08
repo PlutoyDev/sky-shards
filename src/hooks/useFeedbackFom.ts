@@ -27,27 +27,26 @@ export default function useFeedbackFormUrl(params?: FeedbackFormParams) {
   const baseLink =
     'https://docs.google.com/forms/d/e/1FAIpQLSf8CvIDxHz9hFkzaK-CFsGDKqIjiuAt4IDzigI8WjQnNBx6Ww/viewform';
 
-  let debugInfo = '';
-  const appInfo = `--App info--\nBranch: ${branchName}\nCommit: ${commitSha}\n`;
+  let debugInfo = `--App info--\nBranch: ${branchName}\nCommit: ${commitSha}\n`;
+
+  const size = window.innerWidth + 'x' + window.innerHeight;
+  const locale = navigator.language;
+  const timeZone = tryDefault(
+    () => LuxonSettings.defaultZone.name,
+    tryDefault(() => Intl.DateTimeFormat().resolvedOptions().timeZone, 'unknown'),
+  );
+  const userAgent = tryDefault(() => navigator.userAgent, 'unknown');
+
+  debugInfo +=
+    `--Device info (Feel free to delete it)--\n` +
+    `Size: ${size}\nLocale: ${locale}\nTime zone: ${timeZone}\nUser agent: ${userAgent}\n`;
 
   if (params?.debugInfo) {
-    debugInfo = params.debugInfo;
+    debugInfo += `--Custom--\n${params.debugInfo}\n`;
   } else if (params?.error) {
     const error = params.error;
-    debugInfo = appInfo + `--App crashed--\n` + (error instanceof Error ? `${error.stack}` : error);
-  } else {
-    const size = window.innerWidth + 'x' + window.innerHeight;
-    const locale = navigator.language;
-    const timeZone = tryDefault(
-      () => LuxonSettings.defaultZone.name,
-      tryDefault(() => Intl.DateTimeFormat().resolvedOptions().timeZone, 'unknown'),
-    );
-    const userAgent = tryDefault(() => navigator.userAgent, 'unknown');
-
-    debugInfo =
-      appInfo +
-      `--Device info (Feel free to delete it)--\n` +
-      `Size: ${size}\nLocale: ${locale}\nTime zone: ${timeZone}\nUser agent: ${userAgent}`;
+    debugInfo += `--App crashed--\n` + (error instanceof Error ? `${error.stack}` : error) + '\n';
+    params.type = 'App Crashed';
   }
 
   const formUrlParams = new URLSearchParams();
