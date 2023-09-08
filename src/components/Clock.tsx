@@ -58,56 +58,30 @@ export function Countdown({ duration }: CountdownProp) {
   const days = hours > 60 ? Math.floor(hours / 24) : undefined;
 
   return (
-    <div
-      className={`grid auto-cols-max grid-flow-col grid-rows-2 justify-center justify-items-center ${
-        days ? 'grid-cols-4' : 'grid-cols-3'
-      }`}
-    >
-      {days && (
-        <>
-          <p className='text-start align-top font-mono text-[1.2em] font-bold leading-[1em] lg:text-[1.8em]'>{days}</p>
-          <p className='font-mono text-[0.8em] opacity-60 md:hidden lg:text-[1em]'>Ds</p>
-          <p className='hidden font-mono text-[0.8em] opacity-60 md:block lg:text-[1em]'>Days</p>
-        </>
-      )}
-      <CountdownParts value={days ? hours % 24 : hours} />
-      <p className='font-mono text-[0.8em] opacity-60 md:hidden lg:text-[1em]'>Hrs</p>
-      <p className='hidden font-mono text-[0.8em] opacity-60 md:block lg:text-[1em]'>Hours</p>
-      <CountdownParts value={minutes} />
-      <p className='font-mono text-[0.8em] opacity-60 md:hidden lg:text-[1em]'>Mins</p>
-      <p className='hidden font-mono text-[0.8em] opacity-60 md:block lg:text-[1em]'>Minutes</p>
-
-      <CountdownParts value={seconds} />
-      <p className='font-mono text-[0.8em] opacity-60 md:hidden lg:text-[1em]'>Secs</p>
-      <p className='hidden font-mono text-[0.8em] opacity-60 md:block lg:text-[1em]'>Seconds</p>
+    <div className='grid auto-cols-fr grid-flow-col grid-rows-2 justify-center justify-items-center'>
+      {days && <CountdownParts value={days} unitShort='d' unitLong='Days' />}
+      <CountdownParts value={days ? hours % 24 : hours} unitShort='h' unitLong='Hours' />
+      <CountdownParts value={minutes} unitShort='m' unitLong='Minutes' />
+      <CountdownParts value={seconds} unitShort='s' unitLong='Seconds' />
     </div>
   );
 }
 
-function CountdownParts({ value }: { value: number }) {
-  const tensNumbers = useMemo(() => Array.from({ length: 6 }, (_, i) => <p key={i}>{i}</p>), []);
-  const onesNumbers = useMemo(() => Array.from({ length: 60 }, (_, i) => <p key={i}>{i % 10}</p>), []);
-
+export function CountdownParts({
+  value,
+  unitShort,
+  unitLong,
+}: {
+  value: number;
+  unitShort?: string;
+  unitLong?: string;
+}) {
+  const valueStr = value.toString().padStart(2, '0');
   return (
-    <div>
-      {/* Tens */}
-      <div className='inline-block h-[1em] overflow-hidden text-center align-bottom font-mono text-[1.2em] font-bold leading-none lg:text-[1.8em]'>
-        <div
-          className='relative h-[600%] origin-bottom transform transition-transform duration-700 ease-in-out [&>p]:h-[1em]'
-          style={{ transform: `translateY(calc(${Math.floor(value / 10)} * -16.6667%)` }}
-        >
-          {tensNumbers}
-        </div>
-      </div>
-      {/* Ones */}
-      <div className='inline-block h-[1em] overflow-hidden text-center align-bottom font-mono text-[1.2em] font-bold leading-none lg:text-[1.8em]'>
-        <div
-          className='relative h-[6000%] origin-bottom transform transition-transform duration-700 ease-in-out [&>p]:h-[1em]'
-          style={{ transform: `translateY(calc(${value} * -1.66667%)` }}
-        >
-          {onesNumbers}
-        </div>
-      </div>
-    </div>
+    <>
+      <p className='text-start align-top font-mono text-[1.2em] font-bold leading-[1em] lg:text-[1.8em]'>{valueStr}</p>
+      <p className='font-mono text-[0.8em] opacity-60 md:hidden lg:text-[1em]'>{unitShort}</p>
+      <p className='hidden font-mono text-[0.8em] opacity-60 md:block lg:text-[1em]'>{unitLong}</p>
+    </>
   );
 }
