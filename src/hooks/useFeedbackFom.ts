@@ -39,13 +39,13 @@ export default function useFeedbackFormUrl(params?: FeedbackFormParams) {
 
   debugInfo +=
     `--Device info (Feel free to delete it)--\n` +
-    `Size: ${size}\nLocale: ${locale}\nTime zone: ${timeZone}\nUser agent: ${userAgent}`;
+    `Size: ${size}\nLocale: ${locale}\nTime zone: ${timeZone}\nUser agent: ${userAgent}\n`;
 
   if (params?.debugInfo) {
-    debugInfo += `--Custom--\n${params.debugInfo}`;
+    debugInfo += `--Custom--\n${params.debugInfo}\n`;
   } else if (params?.error) {
     const error = params.error;
-    debugInfo += `--App crashed--\n` + (error instanceof Error ? `${error.stack}` : error);
+    debugInfo += `--App crashed--\n` + (error instanceof Error ? `${error.stack}` : error) + '\n';
     params.type = 'App Crashed';
   }
 
