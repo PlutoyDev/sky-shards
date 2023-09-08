@@ -28,9 +28,9 @@ export default function SettingModal() {
   }, [timezone]);
 
   return (
-    <div className='mb-4 flex flex-col justify-center gap-2 md:grid md:grid-cols-2'>
+    <div className='mb-4 flex flex-col justify-center gap-2 md:grid md:grid-cols-2 [&>div]:w-full [&>div]:px-2'>
       {/* Theme */}
-      <div className='w-full'>
+      <div>
         <p className='text-bold w-full md:text-center'>{t('settings.title')}</p>
         <div className='join m-1.5 mx-auto w-full rounded-full px-2'>
           {[
@@ -50,7 +50,7 @@ export default function SettingModal() {
         </div>
       </div>
       {/* Time format */}
-      <div className='w-full'>
+      <div>
         <p className='text-bold w-full md:text-center'>{t('settings.clockFmt.title')}</p>
         <div className='join m-1.5 mx-auto w-full rounded-full px-2'>
           {[
@@ -70,7 +70,7 @@ export default function SettingModal() {
         </div>
       </div>
       {/* Timezone */}
-      <div className='w-full'>
+      <div>
         <p className='text-md flex w-full justify-around md:block md:text-center'>
           <span>{t('settings.timezones.title')}</span>
           <span
@@ -93,7 +93,7 @@ export default function SettingModal() {
         </select>
       </div>
       {/* Language */}
-      <div className='w-full'>
+      <div>
         <p className='text-bold w-full md:text-center'>{t('settings.language.title')}</p>
         <select
           className='no-scrollbar select select-primary select-xs mt-1 w-full bg-primary text-primary-content'
@@ -110,7 +110,7 @@ export default function SettingModal() {
       </div>
 
       {/* Font Size */}
-      <div className='w-full'>
+      <div className='w-full md:col-span-2'>
         <p className='text-bold w-full text-center'>{t('settings.fontSize.title')}</p>
         <div className='mt-1 flex w-full flex-row items-center justify-center gap-2'>
           <button className='btn btn-circle btn-primary btn-xs' onClick={() => setFontSizeAdjust(fontSizeAdjust - 0.1)}>
