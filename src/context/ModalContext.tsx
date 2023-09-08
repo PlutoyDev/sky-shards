@@ -71,7 +71,7 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
             >
-              <div className='glass max-h-[80%] w-full max-w-xs rounded-lg transition-[height] md:mx-auto md:max-w-lg'>
+              <div className='glass w-full max-w-xs rounded-lg transition-[height] md:mx-auto md:max-w-lg'>
                 <button className='absolute right-4 top-2' onClick={() => hideModal()}>
                   <ImCross />
                 </button>
