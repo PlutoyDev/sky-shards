@@ -1,4 +1,4 @@
-import { CSSProperties } from 'react';
+import { CSSProperties, useMemo } from 'react';
 import { DateTime, Duration } from 'luxon';
 import { useSettings } from '../context/Settings';
 
@@ -55,36 +55,33 @@ export function Countdown({ duration }: CountdownProp) {
   if (isNegative) duration = duration.negate();
   const { hours, minutes, seconds } = duration;
 
-  const days = hours > 99 ? Math.floor(hours / 24) : undefined;
+  const days = hours > 60 ? Math.floor(hours / 24) : undefined;
 
   return (
-    <div
-      className={`grid auto-cols-max grid-flow-col grid-rows-2 justify-center justify-items-center ${
-        days ? 'grid-cols-4' : 'grid-cols-3'
-      }`}
-    >
-      {days && (
-        <>
-          <p className='text-start align-top font-mono text-[1.2em] font-bold leading-[1em] lg:text-[1.8em]'>{days}</p>
-          <p className='font-mono text-[0.8em] opacity-60 md:hidden lg:text-[1em]'>Ds</p>
-          <p className='hidden font-mono text-[0.8em] opacity-60 md:block lg:text-[1em]'>Days</p>
-        </>
-      )}
-      <p className='countdown font-mono text-[1.2em] font-bold lg:text-[1.8em]'>
-        <span style={{ '--value': days ? hours % 24 : hours } as CSSProperties} />
-      </p>
-      <p className='font-mono text-[0.8em] opacity-60 md:hidden lg:text-[1em]'>Hrs</p>
-      <p className='hidden font-mono text-[0.8em] opacity-60 md:block lg:text-[1em]'>Hours</p>
-      <p className='countdown font-mono text-[1.2em] font-bold lg:text-[1.8em]'>
-        <span style={{ '--value': minutes } as CSSProperties} />
-      </p>
-      <p className='font-mono text-[0.8em] opacity-60 md:hidden lg:text-[1em]'>Mins</p>
-      <p className='hidden font-mono text-[0.8em] opacity-60 md:block lg:text-[1em]'>Minutes</p>
-      <p className='countdown font-mono text-[1.2em] font-bold lg:text-[1.8em]'>
-        <span style={{ '--value': seconds } as CSSProperties} />
-      </p>
-      <p className='font-mono text-[0.8em] opacity-60 md:hidden lg:text-[1em]'>Secs</p>
-      <p className='hidden font-mono text-[0.8em] opacity-60 md:block lg:text-[1em]'>Seconds</p>
+    <div className='grid auto-cols-fr grid-flow-col grid-rows-2 justify-center justify-items-center'>
+      {days && <CountdownParts value={days} unitShort='d' unitLong='Days' />}
+      <CountdownParts value={days ? hours % 24 : hours} unitShort='h' unitLong='Hours' />
+      <CountdownParts value={minutes} unitShort='m' unitLong='Minutes' />
+      <CountdownParts value={seconds} unitShort='s' unitLong='Seconds' />
     </div>
+  );
+}
+
+export function CountdownParts({
+  value,
+  unitShort,
+  unitLong,
+}: {
+  value: number;
+  unitShort?: string;
+  unitLong?: string;
+}) {
+  const valueStr = value.toString().padStart(2, '0');
+  return (
+    <>
+      <p className='text-start align-top font-mono text-[1.2em] font-bold leading-[1em] lg:text-[1.8em]'>{valueStr}</p>
+      <p className='font-mono text-[0.8em] opacity-60 md:hidden lg:text-[1em]'>{unitShort}</p>
+      <p className='hidden font-mono text-[0.8em] opacity-60 md:block lg:text-[1em]'>{unitLong}</p>
+    </>
   );
 }
