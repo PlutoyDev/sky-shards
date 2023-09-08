@@ -84,7 +84,6 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
                   <span>{landed ? 'landed. Ending in' : 'landing in'}</span>
                 </p>
                 <Countdown duration={now.diff(next as DateTime)} />
-                <small> which is</small>
               </div>
               <time
                 className='col-start-1 row-start-2 [@media_(max-height:_375px)]:row-start-1'
