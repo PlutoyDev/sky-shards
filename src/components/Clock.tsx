@@ -67,12 +67,13 @@ export function ClockNow({ time, showLocal = false, invertDiff, ...clockParam }:
 }
 
 interface CountdownProp {
-  duration: Duration;
+  to: DateTime;
 }
 
-export function Countdown({ duration }: CountdownProp) {
+export function Countdown({ to }: CountdownProp) {
+  const { application: now } = useNow();
   const { t } = useTranslation('durationUnits');
-  duration = duration.shiftTo('hours', 'minutes', 'seconds', 'milliseconds');
+  let duration = now.diff(to).shiftTo('hours', 'minutes', 'seconds', 'milliseconds');
   const isNegative = duration.as('seconds') < 0;
   if (isNegative) duration = duration.negate();
   const { hours, minutes, seconds } = duration;

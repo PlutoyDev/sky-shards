@@ -95,7 +95,7 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
                 <p className='whitespace-nowrap'>
                   {t(`shardSummary:countdown.${landed ? 'landed' : 'landed'}`, { i: upcomming.index })}
                 </p>
-                <Countdown duration={now.diff(next as DateTime)} />
+                <Countdown to={next!} />
               </div>
               <time
                 className='col-start-1 row-start-2 [@media_(max-height:_375px)]:row-start-1'
@@ -121,7 +121,7 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
           ) : (
             <div className='col-start-1 row-start-1 w-full'>
               <p className='whitespace-nowrap'>{t('shardSummary:countdown.allEnded')}</p>
-              <Countdown duration={now.diff(info.lastEnd)} />
+              <Countdown to={info.lastEnd!} />
               <span> ago </span>
             </div>
           )}
