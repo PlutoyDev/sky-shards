@@ -92,8 +92,8 @@ const overrideRewardAC: Record<string, number> = {
 };
 
 export function getShardInfo(date: DateTime) {
-  date = date.setZone('America/Los_Angeles').startOf('day');
-  const [dayOfMth, dayOfWk] = [date.day, date.weekday];
+  const today = date.setZone('America/Los_Angeles').startOf('day');
+  const [dayOfMth, dayOfWk] = [today.day, today.weekday];
   const isRed = dayOfMth % 2 === 1;
   const realmIdx = (dayOfMth - 1) % 5;
   const infoIndex = isRed ? (((dayOfMth - 1) / 2) % 3) + 2 : (dayOfMth / 2) % 2;
@@ -101,20 +101,23 @@ export function getShardInfo(date: DateTime) {
   const haveShard = !noShardWkDay.includes(dayOfWk);
   const map = maps[realmIdx];
   const rewardAC = isRed ? overrideRewardAC[map] ?? defRewardAC : undefined;
-  const lastEnd = date
-    .plus(offset)
-    .plus(interval.mapUnits(x => x * 2))
-    .plus(endOffset);
+  const occurrences = Array.from({ length: 3 }, (_, i) => {
+    const start = today.plus(offset).plus(interval.mapUnits(x => x * i));
+    const land = start.plus(landOffset);
+    const end = start.plus(endOffset);
+    return { start, land, end };
+  });
   return {
     date,
     isRed,
     haveShard,
     offset,
     interval,
-    lastEnd,
+    lastEnd: occurrences[2].end,
     realm: realms[realmIdx],
     map,
     rewardAC,
+    occurrences,
   };
 }
 
