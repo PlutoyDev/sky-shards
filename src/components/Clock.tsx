@@ -1,6 +1,7 @@
 import { CSSProperties } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DateTime, Duration, Settings as LuxonSettings } from 'luxon';
+import { useNow } from '../context/Now';
 import { useSettings } from '../context/Settings';
 
 interface ClockProp {
@@ -13,7 +14,7 @@ interface ClockProp {
   disableMonoFont?: boolean;
 }
 
-export function Clock({
+export function StaticClock({
   time,
   duration,
   hideSeconds,
@@ -47,7 +48,23 @@ export function Clock({
   );
 }
 
-export default Clock;
+export default StaticClock;
+
+type ClockNowProp = Omit<ClockProp, 'convertTo' | 'duration'> & {
+  showLocal?: boolean;
+  invertDiff?: boolean;
+};
+
+export function ClockNow({ time, showLocal = false, invertDiff, ...clockParam }: ClockNowProp) {
+  const { application, local } = useNow();
+  if (time) {
+    const duration = invertDiff ? application.diff(time) : time.diff(application);
+    return <StaticClock {...clockParam} duration={duration} />;
+  } else {
+    const now = showLocal ? local : application;
+    return <StaticClock {...clockParam} time={now} />;
+  }
+}
 
 interface CountdownProp {
   duration: Duration;

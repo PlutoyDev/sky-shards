@@ -85,7 +85,7 @@ export default function ShardCarousel() {
 
   const [direction, setDirection] = useState(0);
   const [date, setDate] = useState(() => getDateFromUrl());
-  const info = useMemo(() => getShardInfo(date), [date]);
+  const info = useMemo(() => getShardInfo(date), [date.day, date.month, date.year]);
 
   const navigateDate = useCallback(
     (d: DateTime | number, reUrl = true) => {

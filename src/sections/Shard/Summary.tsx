@@ -2,8 +2,8 @@ import { useRef } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { BsChevronCompactDown } from 'react-icons/bs';
 import { DateTime, Settings, Zone } from 'luxon';
-import Calendar from '../../components/Calendar';
-import Clock, { Countdown } from '../../components/Clock';
+import { Calendar, DynamicCalendar } from '../../components/Calendar';
+import StaticClock, { Countdown } from '../../components/Clock';
 import Emoji from '../../components/Emoji';
 import { useNow } from '../../context/Now';
 import { getUpcommingShardPhase, ShardInfo } from '../../shardPredictor';
@@ -27,7 +27,7 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
       >
         <section className='glass'>
           <strong>No shard eruption </strong>
-          <Calendar date={info.date} relativeFrom={now} />
+          <DynamicCalendar date={info.date} />
         </section>
       </div>
     );
@@ -35,7 +35,6 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
     const upcomming = getUpcommingShardPhase(date, info);
     const landed = upcomming && upcomming.land < date;
     const next = upcomming ? (landed ? upcomming.end : upcomming.land) : undefined;
-    const ordinalIndex = upcomming?.index !== undefined && ['1st', '2nd', '3rd'][upcomming.index];
 
     return (
       <div
@@ -69,7 +68,7 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
                     </span>
                   </>
                 ),
-                date: <Calendar date={info.date} relativeFrom={now} />,
+                date: <DynamicCalendar date={info.date} />,
               }}
             />
           </p>
@@ -107,7 +106,7 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
                   ({(Settings.defaultZone as Zone).name})
                 </small>
                 <Calendar date={next!} convertTo='local' className='block font-bold opacity-80' relFontSize={0.8} />
-                <Clock time={next} convertTo='local' className='block font-bold' />
+                <StaticClock time={next} convertTo='local' className='block font-bold' />
               </time>
               <time
                 className='col-start-1 row-start-3 md:col-start-2 md:row-start-2 landscape:col-start-2 landscape:row-start-2 [@media_(max-height:_375px)]:col-start-3 [@media_(max-height:_375px)]:row-start-1'
@@ -116,7 +115,7 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
                 <strong>{t('shardSummary:countdown.skyTime')}</strong>
                 <small className='block [@media_(max-height:_375px)]:hidden'>(America/Los_Angeles)</small>
                 <Calendar date={next!} className='block font-bold opacity-80' relFontSize={0.8} />
-                <Clock time={next} className='block font-bold' />
+                <StaticClock time={next} className='block font-bold' />
               </time>
             </>
           ) : (

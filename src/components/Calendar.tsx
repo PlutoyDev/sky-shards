@@ -1,9 +1,9 @@
-import { CSSProperties } from 'react';
+import { CSSProperties, useMemo } from 'react';
 import { DateTime, Settings as LuxonSettings } from 'luxon';
+import { useNow } from '../context/Now';
 
 interface CalendarProp {
   date: DateTime;
-  relativeFrom?: DateTime;
   convertTo?: 'local' | 'sky';
   className?: string;
   relFontSize?: number;
@@ -15,7 +15,6 @@ interface CalendarProp {
 
 export function Calendar({
   date,
-  relativeFrom,
   convertTo,
   className = '',
   relFontSize = 1,
@@ -23,31 +22,13 @@ export function Calendar({
   allowWrap,
   inline,
 }: CalendarProp) {
-  const style = relFontSize ? ({ fontSize: `${relFontSize}em` } as CSSProperties) : undefined;
+  return useMemo(() => {
+    const style = relFontSize ? ({ fontSize: `${relFontSize}em` } as CSSProperties) : undefined;
 
-  if (!allowWrap) {
-    className = `${className} whitespace-nowrap`;
-  }
-
-  if (relativeFrom) {
-    const rtf = new Intl.RelativeTimeFormat(LuxonSettings.defaultLocale, { numeric: 'auto' });
-    if (convertTo === 'local') {
-      date = date.toLocal();
-      relativeFrom = relativeFrom.toLocal();
-    } else if (convertTo === 'sky') {
-      date = date.setZone('America/Los_Angeles');
-      relativeFrom = relativeFrom.setZone('America/Los_Angeles');
+    if (!allowWrap) {
+      className = `${className} whitespace-nowrap`;
     }
-    date = date.startOf('day');
-    relativeFrom = relativeFrom.startOf('day');
-    const days = date.diff(relativeFrom, 'days').days;
 
-    return (
-      <span className={className} style={style}>
-        {rtf.format(days, 'day')}
-      </span>
-    );
-  } else {
     if (convertTo === 'local') {
       date = date.toLocal();
     } else if (convertTo === 'sky') {
@@ -113,7 +94,43 @@ export function Calendar({
         </>
       );
     }
-  }
+  }, [date.day, date.month, date.year]);
 }
 
 export default Calendar;
+
+type DynamicCalendarProp = Omit<CalendarProp, 'convertTo' | 'date'> & {
+  date?: DateTime;
+  invertDiff?: boolean;
+};
+
+export function DynamicCalendar({ date, invertDiff, ...calendarProp }: DynamicCalendarProp) {
+  const { application, local } = useNow();
+  return useMemo(() => {
+    if (date) {
+      const style = calendarProp.relFontSize
+        ? ({ fontSize: `${calendarProp.relFontSize}em` } as CSSProperties)
+        : undefined;
+      const today = application.startOf('day');
+      const rtf = new Intl.RelativeTimeFormat(LuxonSettings.defaultLocale, { numeric: 'auto' });
+      date = date.startOf('day');
+      const days = date.diff(today, 'days').days;
+
+      return (
+        <span className={calendarProp.className} style={style}>
+          {rtf.format(days, 'day')}
+        </span>
+      );
+    } else {
+      return <Calendar date={application} {...calendarProp} />;
+    }
+  }, [
+    date?.day,
+    invertDiff,
+    application.day,
+    application.month,
+    application.year,
+    local.day,
+    ...Object.values(calendarProp),
+  ]);
+}
