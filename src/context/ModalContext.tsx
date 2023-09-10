@@ -66,17 +66,17 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
             />
             {/* Modal */}
             <motion.div
-              className='fixed inset-0 z-50 mx-auto flex flex-col items-center justify-center lg:container'
+              className='fixed inset-0 z-50 mx-auto flex flex-col items-center justify-center'
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
             >
-              <div className='glass w-full max-w-xs rounded-lg transition-[height] md:mx-auto md:max-w-lg'>
+              <div className='glass my-4 !w-max overflow-y-auto rounded-lg transition-[height] sm:container max-sm:max-w-[80vw] sm:mx-auto [@media_(max-height:_375px)]:max-h-[80vh]'>
                 <button className='absolute right-4 top-2' onClick={() => hideModal()}>
                   <ImCross />
                 </button>
                 {title && <h1 className='text-center text-lg font-semibold'>{title}</h1>}
-                <div className='max-h-[80vh] w-full max-w-[80vw] overflow-y-auto'>
+                <div className='overflow-y-auto'>
                   <modalProps.children hideModal={hideModal} setOnHidden={setOnHiddenWrapper} setTitle={setTitle} />
                 </div>
               </div>
