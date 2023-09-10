@@ -46,7 +46,7 @@ export default function Header() {
             showModal({
               children: DateSelectionModal,
               hideOnOverlayClick: true,
-              title: 'Date Selector',
+              title: t('application:dateSelector.title'),
             });
           }}
         >
@@ -58,7 +58,7 @@ export default function Header() {
             showModal({
               children: SettingsModal,
               hideOnOverlayClick: true,
-              title: 'Settings',
+              title: t('application:settings.title'),
             });
           }}
         >
