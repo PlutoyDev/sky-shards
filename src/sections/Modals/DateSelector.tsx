@@ -26,6 +26,7 @@ export function DateSelectionModal({ hideModal }: ModalProps) {
   });
 
   const startOfMth = DateTime.local(year, month, 1, { zone: 'America/Los_Angeles' });
+  const endOfMth = startOfMth.endOf('month');
   const daysInMonth = startOfMth.daysInMonth!;
 
   const shardInfos: [DateTime, ShardInfo][] = useMemo(
@@ -41,14 +42,12 @@ export function DateSelectionModal({ hideModal }: ModalProps) {
   const prevMonth = startOfMth.minus({ months: 1 });
 
   const calStart = startOfMth.startOf('week');
-  const calEnd = startOfMth.endOf('month').endOf('week');
+  const calEnd = endOfMth.endOf('week');
 
   const changeMonth = (delta: -1 | 1) => {
     const newDate = startOfMth.plus({ months: delta });
     setYearMonth({ year: newDate.year, month: newDate.month });
   };
-
-  console.log(calStart.hasSame(startOfMth, 'day'), calStart.diff(startOfMth, 'days').days);
 
   return (
     <div className='flex max-h-full w-full flex-col flex-nowrap items-center justify-center gap-y-2'>
@@ -58,13 +57,19 @@ export function DateSelectionModal({ hideModal }: ModalProps) {
           ({new Intl.RelativeTimeFormat('en', { numeric: 'auto' }).format(month - today.month, 'months')})
         </span>
       </p>
-      <div className='no-scrollbar grid max-h-min w-full flex-shrink auto-rows-fr grid-cols-1 grid-rows-[auto] gap-2 overflow-y-scroll px-2 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-7'>
+      <div
+        className={
+          'no-scrollbar grid max-h-min w-full flex-shrink auto-rows-fr grid-cols-1 gap-2 overflow-y-scroll px-2 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-7' +
+          (showNoShard ? ' sm:grid-rows-[auto]' : '')
+        }
+      >
         {showNoShard &&
           Array.from({ length: 7 }, (_, i) => {
             const { realm, isRed } = shardInfos[i][1];
             const date = calStart.plus({ days: i });
             return (
               <p
+                key={`header-${i}`}
                 className={
                   'hidden text-center ' +
                   (i < 2 ? 'sm:block ' : i < 4 ? 'lg:block' : i < 5 ? 'xl:block' : i < 7 ? '2xl:block' : '')
@@ -86,8 +91,8 @@ export function DateSelectionModal({ hideModal }: ModalProps) {
             const date = calStart.plus({ days: i });
             return (
               <button
-                key={date.day}
-                className='btn btn-outline btn-xs !hidden h-full w-full opacity-30 2xl:!block'
+                key={`filler-start-${i}`}
+                className='btn btn-outline btn-xs !hidden h-full w-full text-white opacity-30 2xl:!block '
                 onClick={() => changeMonth(-1)}
               >
                 {date.toLocaleString({ day: 'numeric', month: 'long' })}
@@ -99,13 +104,12 @@ export function DateSelectionModal({ hideModal }: ModalProps) {
           const location = info && t('application:dateSelector.location', { map, realm, len: 'short' });
           const isToday = date.hasSame(today, 'day');
 
+          if (!isToday && !showNoShard && !haveShard) return null;
+
           return (
             <button
               key={date.day}
-              className={
-                'btn btn-outline btn-xs grid h-full w-full grid-cols-[min-content_auto] grid-rows-2 place-items-center justify-between gap-1 px-4 lg:grid-cols-1 lg:grid-rows-[auto_1fr_1fr] ' +
-                (!haveShard && !isToday && !showNoShard ? 'hidden ' : '')
-              }
+              className='btn btn-outline btn-xs grid h-full w-full grid-cols-[min-content_auto] grid-rows-2 place-items-center justify-between gap-0.5 px-4 py-0.5 text-white lg:grid-cols-1 lg:grid-rows-[auto_1fr_1fr]'
               onClick={() => {
                 hideModal();
                 setTimeout(() => navigateDay(date), 100);
@@ -113,9 +117,9 @@ export function DateSelectionModal({ hideModal }: ModalProps) {
             >
               <p
                 className={
-                  'rounded-full px-0.5 text-center align-middle text-lg font-bold max-lg:row-span-2 lg:text-xl ' +
-                  (isToday ? 'border-2 border-dashed border-white ' : '') +
-                  (haveShard ? (isRed ? 'text-red-600 ' : 'text-black ') : 'opacity-40 ')
+                  'rounded-full px-0.5 text-center align-middle text-lg font-bold max-lg:row-span-2 lg:text-xl' +
+                  (isToday ? ' border-2 border-dashed border-white' : '') +
+                  (haveShard ? (isRed ? ' text-red-600' : ' text-black') : ' opacity-40')
                 }
               >
                 {date.toFormat('dd')}
@@ -136,13 +140,13 @@ export function DateSelectionModal({ hideModal }: ModalProps) {
           );
         })}
         {showNoShard &&
-          !calEnd.hasSame(startOfMth.endOf('month'), 'day') &&
-          Array.from({ length: calEnd.diff(startOfMth.endOf('month'), 'days').days }, (_, i) => {
-            const date = startOfMth.endOf('month').plus({ days: i + 1 });
+          !calEnd.hasSame(endOfMth, 'day') &&
+          Array.from({ length: calEnd.diff(endOfMth, 'days').days }, (_, i) => {
+            const date = endOfMth.plus({ days: i + 1 });
             return (
               <button
-                key={date.day}
-                className='btn btn-outline btn-xs !hidden h-full w-full opacity-30 2xl:!block'
+                key={`filler-end-${i}`}
+                className='btn btn-outline btn-xs !hidden h-full w-full text-white opacity-30 2xl:!block '
                 onClick={() => changeMonth(1)}
               >
                 {date.toLocaleString({ day: 'numeric', month: 'long' })}
@@ -151,8 +155,8 @@ export function DateSelectionModal({ hideModal }: ModalProps) {
           })}
       </div>
       <div className='form-control w-full'>
-        <label className='label w-min cursor-pointer'>
-          <span className='label-text whitespace-nowrap'>Show no shard</span>
+        <label className='label w-full cursor-pointer sm:w-min'>
+          <span className='label-text whitespace-nowrap text-white'>Show no shard</span>
           <input
             type='checkbox'
             className='toggle toggle-primary ml-3'
