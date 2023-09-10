@@ -40,10 +40,15 @@ export function DateSelectionModal({ hideModal }: ModalProps) {
   const nextMonth = startOfMth.plus({ months: 1 });
   const prevMonth = startOfMth.minus({ months: 1 });
 
+  const calStart = startOfMth.startOf('week');
+  const calEnd = startOfMth.endOf('month').endOf('week');
+
   const changeMonth = (delta: -1 | 1) => {
     const newDate = startOfMth.plus({ months: delta });
     setYearMonth({ year: newDate.year, month: newDate.month });
   };
+
+  console.log(calStart.hasSame(startOfMth, 'day'), calStart.diff(startOfMth, 'days').days);
 
   return (
     <div className='flex max-h-full w-full flex-col flex-nowrap items-center justify-center gap-y-2'>
@@ -56,7 +61,8 @@ export function DateSelectionModal({ hideModal }: ModalProps) {
       <div className='no-scrollbar grid max-h-min w-full flex-shrink auto-rows-fr grid-cols-1 grid-rows-[auto] gap-2 overflow-y-scroll px-2 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-7'>
         {showNoShard &&
           Array.from({ length: 7 }, (_, i) => {
-            const [date, { realm, isRed }] = shardInfos[i];
+            const { realm, isRed } = shardInfos[i][1];
+            const date = calStart.plus({ days: i });
             return (
               <p
                 className={
@@ -72,6 +78,20 @@ export function DateSelectionModal({ hideModal }: ModalProps) {
                 <span className='hidden xl:max-2xl:inline'>{t(`skyRealms:${realm}.long`)}</span>
                 <span className='hidden 2xl:inline'>{date.toLocaleString({ weekday: 'long' })}</span>
               </p>
+            );
+          })}
+        {showNoShard &&
+          !calStart.hasSame(startOfMth, 'day') &&
+          Array.from({ length: startOfMth.diff(calStart, 'days').days }, (_, i) => {
+            const date = calStart.plus({ days: i });
+            return (
+              <button
+                key={date.day}
+                className='btn btn-outline btn-xs !hidden h-full w-full opacity-30 2xl:!block'
+                onClick={() => changeMonth(-1)}
+              >
+                {date.toLocaleString({ day: 'numeric', month: 'long' })}
+              </button>
             );
           })}
         {shardInfos.map(([date, info]) => {
@@ -115,6 +135,20 @@ export function DateSelectionModal({ hideModal }: ModalProps) {
             </button>
           );
         })}
+        {showNoShard &&
+          !calEnd.hasSame(startOfMth.endOf('month'), 'day') &&
+          Array.from({ length: calEnd.diff(startOfMth.endOf('month'), 'days').days }, (_, i) => {
+            const date = startOfMth.endOf('month').plus({ days: i + 1 });
+            return (
+              <button
+                key={date.day}
+                className='btn btn-outline btn-xs !hidden h-full w-full opacity-30 2xl:!block'
+                onClick={() => changeMonth(1)}
+              >
+                {date.toLocaleString({ day: 'numeric', month: 'long' })}
+              </button>
+            );
+          })}
       </div>
       <div className='form-control w-full'>
         <label className='label w-min cursor-pointer'>
