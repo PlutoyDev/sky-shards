@@ -27,6 +27,8 @@ const en = {
     'settings.timezones.reset': 'Reset',
     'settings.language.title': 'Language',
     'settings.fontSize.title': 'Content font size',
+    'dateSelector.title': 'Select a date',
+    'dateSelector.location': '$t(skyMaps:{{map}}), $t(skyRealms:{{realm}}.{{len}})',
   },
   footer: {
     createdBy: 'Created by: {{author}}',

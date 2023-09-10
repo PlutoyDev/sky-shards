@@ -1,11 +1,12 @@
 import { useTranslation } from 'react-i18next';
-import { FaCog } from 'react-icons/fa';
+import { FaCog, FaCalendarDay } from 'react-icons/fa';
 import { DateTime } from 'luxon';
 import { DynamicCalendar } from '../../components/Calendar';
 import { ClockNow } from '../../components/Clock';
 import { useHeaderFx } from '../../context/HeaderFx';
 import { useModal } from '../../context/ModalContext';
 import { useNow } from '../../context/Now';
+import DateSelectionModal from '../Modals/DateSelector';
 import SettingsModal from '../Modals/Settings';
 
 export default function Header() {
@@ -38,7 +39,19 @@ export default function Header() {
         <ClockNow hideSeconds className='text-2xl landscape:max-lg:text-lg' relFontSize={0} />
       </time>
 
-      <div className='mr-1 flex flex-row flex-nowrap items-center justify-end gap-x-1 lg:gap-x-4'>
+      <div className='mr-1 flex flex-row flex-nowrap items-center justify-end gap-x-2 lg:gap-x-4'>
+        <button
+          className='w-min rounded-lg bg-slate-50 bg-opacity-25 p-1.5 shadow-xl shadow-zinc-700 hover:bg-opacity-50'
+          onClick={() => {
+            showModal({
+              children: DateSelectionModal,
+              hideOnOverlayClick: true,
+              title: 'Date Selector',
+            });
+          }}
+        >
+          <FaCalendarDay size={18} />
+        </button>
         <button
           className='w-min rounded-lg bg-slate-50 bg-opacity-25 p-1.5 shadow-xl shadow-zinc-700 hover:bg-opacity-50'
           onClick={() => {
