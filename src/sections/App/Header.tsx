@@ -5,12 +5,11 @@ import { DynamicCalendar } from '../../components/Calendar';
 import { ClockNow } from '../../components/Clock';
 import { useHeaderFx } from '../../context/HeaderFx';
 import { useModal } from '../../context/ModalContext';
-import { useNow } from '../../context/Now';
 import DateSelectionModal from '../Modals/DateSelector';
 import SettingsModal from '../Modals/Settings';
 
 export default function Header() {
-  const { t } = useTranslation(['application']);
+  const { t } = useTranslation(['application', 'dateSelector', 'settings']);
   const { showModal } = useModal();
   const { navigateDay } = useHeaderFx();
   const navigateToday = () => navigateDay(DateTime.local({ zone: 'America/Los_Angeles' }));
@@ -46,7 +45,7 @@ export default function Header() {
             showModal({
               children: DateSelectionModal,
               hideOnOverlayClick: true,
-              title: t('application:dateSelector.title'),
+              title: t('dateSelector:title'),
             });
           }}
         >
@@ -58,7 +57,7 @@ export default function Header() {
             showModal({
               children: SettingsModal,
               hideOnOverlayClick: true,
-              title: t('application:settings.title'),
+              title: t('settings:title'),
             });
           }}
         >

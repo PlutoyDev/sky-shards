@@ -14,7 +14,7 @@ const realms = ['prairie', 'forest', 'valley', 'wasteland', 'vault'] as const;
 export function DateSelectionModal({ hideModal }: ModalProps) {
   const today = DateTime.local({ zone: 'America/Los_Angeles' });
 
-  const { t } = useTranslation(['application', 'shard', 'shardSummary', 'skyRealms', 'skyMaps']);
+  const { t } = useTranslation(['dateSelector', 'skyRealms', 'skyMaps']);
   const { navigateDay } = useHeaderFx();
   // const [showNoShard, setShowNoShard] = useState(() => window.innerWidth >= 768);
   const [numCols, setNumCols] = useLocalStorageState<'5' | '7'>('dateSelector.numCols', '5');
@@ -104,13 +104,14 @@ export function DateSelectionModal({ hideModal }: ModalProps) {
         {
           // Day cells
           shardInfos.map(([date, info]) => {
-            const { haveShard, isRed, occurrences, realm, map } = info;
+            const { haveShard, isRed, map } = info;
             const isToday = date.hasSame(today, 'day');
 
             return (
               <button
                 key={date.day}
-                className='btn btn-outline btn-xs grid h-full w-full auto-rows-auto grid-cols-1 grid-rows-[auto] place-items-center justify-between gap-0.5 py-0.5 text-white backdrop-blur'
+                title={date.toLocaleString({ month: 'short', day: 'numeric', year: 'numeric' })}
+                className='btn btn-outline btn-xs grid h-full w-full auto-rows-auto grid-cols-1 grid-rows-[auto] place-items-center content-center justify-between gap-0.5 overflow-x-clip py-0.5 !text-white backdrop-blur'
                 onClick={() => {
                   hideModal();
                   setTimeout(() => navigateDay(date), 100);
@@ -120,12 +121,12 @@ export function DateSelectionModal({ hideModal }: ModalProps) {
                   className={
                     'rounded-full px-1 text-center align-middle text-lg font-bold lg:text-xl' +
                     (isToday ? ' border-2 border-dashed border-white' : '') +
-                    (haveShard ? (isRed ? ' text-red-600' : ' text-black') : ' opacity-40')
+                    (haveShard ? (isRed ? ' text-red-600' : ' text-black') : ' opacity-30 dark:opacity-60')
                   }
                 >
                   {date.toFormat('dd')}
                 </p>
-                <p className='w-full whitespace-nowrap text-center align-middle text-xs max-sm:hidden'>
+                <p className='w-full whitespace-nowrap text-center align-middle text-xs max-md:hidden'>
                   {haveShard ? t(`skyMaps:${map}`) : 'No shard'}
                 </p>
               </button>
@@ -150,15 +151,15 @@ export function DateSelectionModal({ hideModal }: ModalProps) {
             })
         }
       </div>
-      <div className='grid-row-2 mb-2 grid w-full grid-cols-2 place-items-center gap-2'>
-        <p className='text-bold justify-self-end'>Column type:</p>
+      <div className='mb-2 grid w-full grid-cols-2 grid-rows-2 place-items-center gap-2 lg:grid-cols-4 lg:grid-rows-1'>
+        <p className='text-bold justify-self-end'>{t('columnType')}:</p>
         <select
           className='no-scrollbar select select-primary select-xs mt-1 inline-block justify-self-start bg-primary text-primary-content'
           onChange={e => setNumCols(e.target.value as typeof numCols)}
           value={numCols}
         >
-          <option value={5}>Algin Realm</option>
-          <option value={7}>Align Weekday</option>
+          <option value={5}>{t('columnType.realm')}</option>
+          <option value={7}>{t('columnType.weekday')}</option>
         </select>
         <button className='btn btn-primary btn-xs justify-self-end whitespace-nowrap' onClick={e => changeMonth(-1)}>
           <BsChevronLeft />
