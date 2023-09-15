@@ -14,7 +14,6 @@ export function DateSelectionModal({ hideModal }: ModalProps) {
 
   const { t } = useTranslation(['dateSelector', 'skyRealms', 'skyMaps']);
   const { navigateDay } = useHeaderFx();
-  // const [showNoShard, setShowNoShard] = useState(() => window.innerWidth >= 768);
   const [numCols, setNumCols] = useLocalStorageState<'5' | '7'>('dateSelector.numCols', '5');
   const [{ year, month }, setYearMonth] = useState(() => {
     const date = parseUrl();
@@ -81,72 +80,63 @@ export function DateSelectionModal({ hideModal }: ModalProps) {
                 </p>
               );
             })}
-        {
-          // Filler cells
-          numCols === '7' &&
-            !calStart.hasSame(startOfMth, 'day') &&
-            Array.from({ length: startOfMth.diff(calStart, 'days').days }, (_, i) => {
-              const date = calStart.plus({ days: i });
-              return (
-                <button
-                  key={`filler-start-${i}`}
-                  className='btn btn-outline btn-xs h-full w-full text-white opacity-30 '
-                  onClick={() => changeMonth(-1)}
-                >
-                  {date.toLocaleString({ day: 'numeric' })}
-                </button>
-              );
-            })
-        }
-        {
-          // Day cells
-          shardInfos.map(([date, info]) => {
-            const { haveShard, isRed, map } = info;
-            const isToday = date.hasSame(today, 'day');
-
+        {numCols === '7' &&
+          !calStart.hasSame(startOfMth, 'day') &&
+          Array.from({ length: startOfMth.diff(calStart, 'days').days }, (_, i) => {
+            const date = calStart.plus({ days: i });
             return (
               <button
-                key={date.day}
-                title={date.toLocaleString({ month: 'short', day: 'numeric', year: 'numeric' })}
-                className='btn btn-outline btn-xs grid h-full w-full auto-rows-auto grid-cols-1 grid-rows-[auto] place-items-center content-center justify-between gap-0.5 overflow-x-clip py-0.5 !text-white backdrop-blur'
-                onClick={() => {
-                  hideModal();
-                  setTimeout(() => navigateDay(date), 100);
-                }}
+                key={`filler-start-${i}`}
+                className='btn btn-outline btn-xs h-full w-full text-white opacity-30 '
+                onClick={() => changeMonth(-1)}
               >
-                <p
-                  className={
-                    'rounded-full px-1 text-center align-middle text-lg font-bold lg:text-xl' +
-                    (isToday ? ' border-2 border-dashed border-white' : '') +
-                    (haveShard ? (isRed ? ' text-red-600' : ' text-black') : ' opacity-30 dark:opacity-60')
-                  }
-                >
-                  {date.toFormat('dd')}
-                </p>
-                <p className='w-full whitespace-nowrap text-center align-middle text-xs max-md:hidden'>
-                  {haveShard ? t(`skyMaps:${map}`) : 'No shard'}
-                </p>
+                {date.toLocaleString({ day: 'numeric' })}
               </button>
             );
-          })
-        }
-        {
-          // Filler cells
-          numCols === '7' &&
-            !calEnd.hasSame(endOfMth, 'day') &&
-            Array.from({ length: calEnd.diff(endOfMth, 'days').days }, (_, i) => {
-              const date = endOfMth.plus({ days: i + 1 });
-              return (
-                <button
-                  key={`filler-end-${i}`}
-                  className='btn btn-outline btn-xs h-full w-full text-white opacity-30 '
-                  onClick={() => changeMonth(1)}
-                >
-                  {date.toLocaleString({ day: 'numeric' })}
-                </button>
-              );
-            })
-        }
+          })}
+        {shardInfos.map(([date, info]) => {
+          const { haveShard, isRed, map } = info;
+          const isToday = date.hasSame(today, 'day');
+
+          return (
+            <button
+              key={date.day}
+              title={date.toLocaleString({ month: 'short', day: 'numeric', year: 'numeric' })}
+              className='btn btn-outline btn-xs grid h-full w-full auto-rows-auto grid-cols-1 grid-rows-[auto] place-items-center content-center justify-between gap-0.5 overflow-x-clip py-0.5 !text-white backdrop-blur'
+              onClick={() => {
+                hideModal();
+                setTimeout(() => navigateDay(date), 100);
+              }}
+            >
+              <p
+                className={
+                  'rounded-full px-1 text-center align-middle text-lg font-bold lg:text-xl' +
+                  (isToday ? ' border-2 border-dashed border-white' : '') +
+                  (haveShard ? (isRed ? ' text-red-600' : ' text-black') : ' opacity-30 dark:opacity-60')
+                }
+              >
+                {date.toFormat('dd')}
+              </p>
+              <p className='w-full whitespace-nowrap text-center align-middle text-xs max-md:hidden'>
+                {haveShard ? t(`skyMaps:${map}`) : 'No shard'}
+              </p>
+            </button>
+          );
+        })}
+        {numCols === '7' &&
+          !calEnd.hasSame(endOfMth, 'day') &&
+          Array.from({ length: calEnd.diff(endOfMth, 'days').days }, (_, i) => {
+            const date = endOfMth.plus({ days: i + 1 });
+            return (
+              <button
+                key={`filler-end-${i}`}
+                className='btn btn-outline btn-xs h-full w-full text-white opacity-30 '
+                onClick={() => changeMonth(1)}
+              >
+                {date.toLocaleString({ day: 'numeric' })}
+              </button>
+            );
+          })}
       </div>
       <div className='mb-2 grid w-full grid-cols-2 grid-rows-2 place-items-center gap-2 lg:grid-cols-4 lg:grid-rows-1'>
         <p className='text-bold justify-self-end'>{t('columnType')}:</p>
