@@ -9,8 +9,6 @@ import { getShardInfo } from '../../shardPredictor';
 import type { ShardInfo } from '../../shardPredictor';
 import { parseUrl } from '../../utils/parseUrl';
 
-const realms = ['prairie', 'forest', 'valley', 'wasteland', 'vault'] as const;
-
 export function DateSelectionModal({ hideModal }: ModalProps) {
   const today = DateTime.local({ zone: 'America/Los_Angeles' });
 
@@ -73,8 +71,7 @@ export function DateSelectionModal({ hideModal }: ModalProps) {
                 </p>
               );
             })
-          : Array.from({ length: 5 }, (_, i) => {
-              const realm = realms[i];
+          : (['prairie', 'forest', 'valley', 'wasteland', 'vault'] as const).map(realm => {
               const shortText = t(`skyRealms:${realm}.short`);
               const longText = t(`skyRealms:${realm}.long`);
               return (
