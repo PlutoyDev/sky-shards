@@ -1,14 +1,16 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 // import ShardTimeline from './Timeline';
 import { useTranslation } from 'react-i18next';
-import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
+import { BsChevronCompactDown, BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 import { AnimatePresence, motion } from 'framer-motion';
 import { DateTime } from 'luxon';
 import { useHeaderFx } from '../../context/HeaderFx';
 import { getShardInfo } from '../../shardPredictor';
 import { parseUrl, replaceUrl } from '../../utils/parseUrl';
+import { ShardCountdownSection } from './Countdown';
+import ShardInfoSection from './Info';
 import { ShardMapInfographic, ShardDataInfographic } from './Infographic';
-import ShardSummary from './Summary';
+import ShardProgress from './Progress';
 
 const appZone = 'America/Los_Angeles';
 
@@ -31,11 +33,12 @@ const varients = {
 };
 
 export default function ShardCarousel() {
-  const { t } = useTranslation(['shardCarousel', 'shard']);
+  const { t } = useTranslation(['shardCarousel']);
 
   const [direction, setDirection] = useState(0);
   const [date, setDate] = useState(() => roundToRefDate(parseUrl(), DateTime.local().setZone(appZone).startOf('day')));
   const info = useMemo(() => getShardInfo(date), [date.day, date.month, date.year]);
+  const summaryRef = useRef<HTMLDivElement>(null);
 
   const navigateDate = useCallback(
     (d: DateTime | number, reUrl = true) => {
@@ -114,11 +117,33 @@ export default function ShardCarousel() {
           }}
           style={{ fontSize: `${fontSize}em` }}
         >
-          <ShardSummary date={date} info={info} />
+          <div
+            className='flex max-h-screen min-h-full w-full flex-col flex-nowrap items-center justify-center gap-1'
+            ref={summaryRef}
+          >
+            <ShardInfoSection info={info} />
+            {info.haveShard && (
+              <>
+                <ShardProgress info={info} />
+                <ShardCountdownSection info={info} />
+              </>
+            )}
+            <small
+              className="flex cursor-pointer flex-col items-center justify-center whitespace-nowrap font-['Bubblegum_Sans',_cursive] text-xs [@media_(min-height:_640px)]:lg:text-lg"
+              onClick={() => {
+                summaryRef.current?.parentElement?.scrollBy({
+                  top: summaryRef.current?.offsetHeight,
+                  behavior: 'smooth',
+                });
+              }}
+            >
+              <span>{t('navigation.downwards')}</span>
+              <BsChevronCompactDown />
+            </small>
+          </div>
           {info.haveShard && (
             <>
               <ShardMapInfographic info={info} />
-              {/* <ShardTimeline date={date} info={info} /> */}
               <ShardDataInfographic info={info} />
             </>
           )}
@@ -128,14 +153,14 @@ export default function ShardCarousel() {
         className="relative col-start-1 row-start-1 flex cursor-pointer flex-col items-center justify-center whitespace-nowrap font-['Bubblegum_Sans',_cursive] text-xs [writing-mode:vertical-lr] [@media_(min-height:_640px)]:lg:text-lg"
         onClick={() => navigateDate(-1)}
       >
-        <span>{t('shardCarousel:navigation.rightwards')}</span>
+        <span>{t('navigation.rightwards')}</span>
         <BsChevronRight className='m-0' strokeWidth={'0.1rem'} />
       </div>
       <div
         className="relative col-start-3 row-start-1 flex cursor-pointer flex-col-reverse items-center justify-center whitespace-nowrap font-['Bubblegum_Sans',_cursive] text-xs [writing-mode:vertical-lr] [@media_(min-height:_640px)]:lg:text-lg"
         onClick={() => navigateDate(1)}
       >
-        <span>{t('shardCarousel:navigation.leftwards')}</span>
+        <span>{t('navigation.leftwards')}</span>
         <BsChevronLeft className='m-0' strokeWidth={'0.1rem'} />
       </div>
     </div>

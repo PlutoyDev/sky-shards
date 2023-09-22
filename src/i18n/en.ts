@@ -127,33 +127,32 @@ const en = {
   shardCarousel: {
     'navigation.rightwards': 'Swipe right or Click here for previous shard',
     'navigation.leftwards': 'Swipe left or Click here for next shard',
+    'navigation.downwards': 'Click here or Scroll down for more info',
     'dynamicTitle.noShard': 'No shard eruptions {{date}}',
     'dynamicTitle.hasShard': '$t(shard:color.{{color}}) in $t(skyMaps:{{map}}) on {{date}}',
   },
-  shardSummary: {
+  infoSection: {
     // <shard/> will be replaced with the shard type
     // <emoji /> will be replace with image representation
     // <date/> will be replaced with the relative date
-    'info.redShard': '<color>Red shard</color> <emoji/>',
-    'info.blackShard': '<color>Black shard</color> <emoji/>',
-
-    'info.noShard': '<bold>No shard</bold> eruptions <date/>',
-    'info.hasShard': '<shard/> in <bold>$t(skyMaps:{{map}})</bold>, <bold><realm/></bold>, <date/>',
-
-    'info.blackShardRewards': 'Giving 4 <emoji/> of wax',
-    'info.redShardRewards': 'Giving max of {{qty}} <emoji/>',
-
-    'progress.showTimeIn.skyTime': 'Showing time in <a>Sky time</a>',
-    'progress.showTimeIn.localTime': 'Showing time in <a>Your time</a>',
-    'progress.startTimeOnly': 'Limited width: Start time only',
-
-    'countdown.landing': '<bold>$t(shard:ordinal.{{i}})</bold> landing in <countdown/>',
-    'countdown.landed':
-      '<bold>$t(shard:ordinal.{{i}})</bold> landed <bold>{{landedSince}}</bold> ago. Ending in <countdown/>',
-    'countdown.allEnded': 'All shards has ended <countdown/> ago',
-    'countdown.yourTime': 'Your time:',
-    'countdown.skyTime': 'Sky time:',
-    'navigation.downwards': 'Click here or Scroll down for more info',
+    redShard: '<color>Red shard</color> <emoji/>',
+    blackShard: '<color>Black shard</color> <emoji/>',
+    noShard: '<bold>No shard</bold> eruptions <date/>',
+    hasShard: '<shard/> in <bold>$t(skyMaps:{{map}})</bold>, <bold><realm/></bold>, <date/>',
+    blackShardRewards: 'Giving 4 <emoji/> of wax',
+    redShardRewards: 'Giving max of {{qty}} <emoji/>',
+  },
+  progressSection: {
+    'showTimeIn.skyTime': 'Showing time in <a>Sky time</a>',
+    'showTimeIn.localTime': 'Showing time in <a>Your time</a>',
+    'startTimeOnly': 'Limited width: Start time only',
+  },
+  countdownSection: {
+    landing: '<bold>$t(shard:ordinal.{{i}})</bold> landing in <countdown/>',
+    landed: '<bold>$t(shard:ordinal.{{i}})</bold> landed <bold>{{landedSince}}</bold> ago. Ending in <countdown/>',
+    allEnded: 'All shards has ended <countdown/> ago',
+    yourTime: 'Your time:',
+    skyTime: 'Sky time:',
   },
 };
 

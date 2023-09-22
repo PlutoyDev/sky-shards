@@ -11,18 +11,17 @@ import { useNow } from '../../context/Now';
 import { ShardInfo } from '../../shardPredictor';
 
 interface ShardProgressProps {
-  date: DateTime;
   info: ShardInfo;
 }
 
-export function ShardProgress({ date, info }: ShardProgressProps) {
+export function ShardProgress({ info }: ShardProgressProps) {
   const { application: now } = useNow();
+  const { t } = useTranslation('progressSection');
   const [useLocalTz, setUseLocalTz] = useState(true); //Use local time or sky time
-  const { t } = useTranslation('shardSummary');
 
-  const startOfDay = date.startOf('day');
-  const endOfDay = date.endOf('day');
-  const isToday = date.hasSame(now, 'day');
+  const startOfDay = info.date.startOf('day');
+  const endOfDay = info.date.endOf('day');
+  const isToday = info.date.hasSame(now, 'day');
 
   const staticElements = useMemo(
     () => (
@@ -68,7 +67,7 @@ export function ShardProgress({ date, info }: ShardProgressProps) {
         <div>
           <Trans
             t={t}
-            i18nKey={`progress.showTimeIn.${useLocalTz ? 'localTime' : 'skyTime'}`}
+            i18nKey={`showTimeIn.${useLocalTz ? 'localTime' : 'skyTime'}`}
             components={{
               a: (
                 <a
@@ -98,7 +97,7 @@ export function ShardProgress({ date, info }: ShardProgressProps) {
             )}
           </div>
         </div>
-        <p className='text-[8px] sm:hidden'>{t('progress.startTimeOnly')}</p>
+        <p className='text-[8px] sm:hidden'>{t('startTimeOnly')}</p>
       </div>
     ),
     [t, now.year, now.month, now.day, now.hour, Math.floor(now.minute / 10), info.offset, info.isRed, useLocalTz],
