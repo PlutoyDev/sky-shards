@@ -7,6 +7,7 @@ import StaticClock, { Countdown } from '../../components/Clock';
 import Emoji from '../../components/Emoji';
 import { useNow } from '../../context/Now';
 import { getUpcommingShardPhase, ShardInfo } from '../../shardPredictor';
+import ShardProgress from './Progress';
 
 interface ShardSummarySectionProp {
   date: DateTime;
@@ -100,6 +101,7 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
             />
           </p>
         </section>
+        <ShardProgress date={date} info={info} />
         <section className='glass grid min-w-[12rem] auto-cols-auto auto-rows-auto place-items-center gap-x-4 md:min-w-[16rem] [@media_(max-height:_375px)]:min-w-[32rem] [@media_(max-height:_375px)]:items-end'>
           {upcomming ? (
             <>
