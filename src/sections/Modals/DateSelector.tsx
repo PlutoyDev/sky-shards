@@ -64,7 +64,10 @@ export function DateSelectionModal({ hideModal }: ModalProps) {
               const shortText = date.toLocaleString({ weekday: 'short' });
               const longText = date.toLocaleString({ weekday: 'long' });
               return (
-                <p className='w-full text-center text-xs font-semibold xs:text-sm md:text-lg lg:text-xl'>
+                <p
+                  key={`header-${i}`}
+                  className='w-full text-center text-xs font-semibold xs:text-sm md:text-lg lg:text-xl'
+                >
                   <span className='lg:hidden'>{shortText}</span>
                   <span className='max-lg:hidden'>{longText}</span>
                 </p>
@@ -74,7 +77,10 @@ export function DateSelectionModal({ hideModal }: ModalProps) {
               const shortText = t(`skyRealms:${realm}.short`);
               const longText = t(`skyRealms:${realm}.long`);
               return (
-                <p className='w-full overflow-clip text-center text-xs font-semibold xs:text-sm md:text-lg lg:text-xl'>
+                <p
+                  key={`header-${realm}`}
+                  className='w-full overflow-clip text-center text-xs font-semibold xs:text-sm md:text-lg lg:text-xl'
+                >
                   <span className='lg:hidden'>{shortText}</span>
                   <span className='max-lg:hidden'>{longText}</span>
                 </p>
