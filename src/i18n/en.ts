@@ -132,11 +132,13 @@ const en = {
   },
   shardSummary: {
     // <shard/> will be replaced with the shard type
-    // <location/> will be replaced with the shard location
-    // <date/> will be replaced with the shard
-    'info.noShard': 'No shard eruptions <date/>',
-    'info.hasShard': '<shard/> in <location/>, <date/>',
-    'info.location': '$t(skyMaps:{{map}}), $t(skyRealms:{{realm}}.{{len}})',
+    // <emoji /> will be replace with image representation
+    // <date/> will be replaced with the relative date
+    'info.redShard': '<color>Red shard</color> <emoji/>',
+    'info.blackShard': '<color>Black shard</color> <emoji/>',
+
+    'info.noShard': '<bold>No shard</bold> eruptions <date/>',
+    'info.hasShard': '<shard/> in <bold>$t(skyMaps:{{map}})</bold>, <bold><realm/></bold>, <date/>',
 
     'info.blackShardRewards': 'Giving 4 <emoji/> of wax',
     'info.redShardRewards': 'Giving max of {{qty}} <emoji/>',

@@ -26,8 +26,14 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
         ref={summaryRef}
       >
         <section className='glass'>
-          <strong>No shard eruption </strong>
-          <DynamicCalendar date={info.date} />
+          <Trans
+            t={t}
+            i18nKey='shardSummary:info.noShard'
+            components={{
+              date: <DynamicCalendar date={info.date} />,
+              bold: <span className='font-bold' />,
+            }}
+          />
         </section>
       </div>
     );
@@ -47,29 +53,35 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
               t={t}
               i18nKey='shardSummary:info.hasShard'
               components={{
-                shard: info.isRed ? (
-                  <>
-                    <span className='font-bold text-red-600'>{t('shard:color.red')}</span>
-                    <Emoji name='Red shard' />
-                  </>
-                ) : (
-                  <>
-                    <span className='font-bold text-black'>{t('shard:color.black')}</span>
-                    <Emoji name='Black shard' />
-                  </>
-                ),
-                location: (
-                  <>
-                    <span className='font-bold lg:hidden'>
-                      {t(`shardSummary:info.location`, { map: info.map, realm: info.realm, len: 'short' })}
-                    </span>
-                    <span className='hidden font-bold lg:inline'>
-                      {t(`shardSummary:info.location`, { map: info.map, realm: info.realm, len: 'long' })}
-                    </span>
-                  </>
-                ),
                 date: <DynamicCalendar date={info.date} />,
+                bold: <span className='font-bold' />,
+                realm: (
+                  <>
+                    <span className='lg:hidden'>{t(`skyRealms:${info.realm}.short`)}</span>
+                    <span className='max-lg:hidden'>{t(`skyRealms:${info.realm}.long`)}</span>
+                  </>
+                ),
+                shard: info.isRed ? (
+                  <Trans
+                    t={t}
+                    i18nKey='shardSummary:info.redShard'
+                    components={{
+                      color: <span className='font-bold text-red-600 ' />,
+                      emoji: <Emoji name='Red shard' />,
+                    }}
+                  />
+                ) : (
+                  <Trans
+                    t={t}
+                    i18nKey='shardSummary:info.blackShard'
+                    components={{
+                      color: <span className='font-bold text-black ' />,
+                      emoji: <Emoji name='Black shard' />,
+                    }}
+                  />
+                ),
               }}
+              values={{ color: info.isRed ? 'red' : 'black', map: info.map, realm: info.realm }}
             />
           </p>
           <p className='whitespace-nowrap'>
