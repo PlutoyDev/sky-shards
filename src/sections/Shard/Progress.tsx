@@ -68,7 +68,7 @@ export function ShardProgress({ date, info }: ShardProgressProps) {
         <div>
           <Trans
             t={t}
-            i18nKey={`progress.showTimeIn.${useLocalTz ? 'skyTime' : 'localTime'}`}
+            i18nKey={`progress.showTimeIn.${useLocalTz ? 'localTime' : 'skyTime'}`}
             components={{
               a: (
                 <a
