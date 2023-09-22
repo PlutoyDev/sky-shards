@@ -1,7 +1,7 @@
 import { initReactI18next } from 'react-i18next';
 import i18n from 'i18next';
 // import LanguageDetector from 'i18next-browser-languagedetector';
-import resourceEn from './en';
+import resourceEn from './en.json';
 
 i18n
   // .use(LanguageDetector)
@@ -25,7 +25,7 @@ declare module 'i18next' {
   }
 }
 
-const resources = import.meta.glob(['./*.ts', '!./en.ts', '!./template.ts']);
+const resources = import.meta.glob(['./*.json', '!./en.json']);
 
 export const languageResources = Object.fromEntries(
   Object.entries(resources).map(([path, loader]) => {

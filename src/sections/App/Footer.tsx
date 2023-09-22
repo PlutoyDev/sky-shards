@@ -79,11 +79,22 @@ function TranslatorsFooter() {
     commit: import.meta.env.VITE_GIT_COMMIT,
     language: i18next.language,
   });
+  let translators = [] as string[];
+  try {
+    const tCsv = t('translators');
+    if (tCsv.length !== 0) {
+      translators = t('translators')
+        .split(',')
+        .map(t => t.trim());
+    }
+  } catch (e) {
+    translators = [`Error in translator list: ${e}`];
+  }
   return (
     <SubFooter className='flex flex-col items-center justify-center gap-y-1'>
       <p className='text-center text-xs md:text-sm'>{t('translatedBy')}</p>
       <p className='text- flex w-full select-none flex-row flex-wrap items-center justify-center gap-x-1.5 whitespace-nowrap'>
-        {t('translators', { returnObjects: true }).map(t => (
+        {translators.map(t => (
           <span key={t}>{t}</span>
         ))}
       </p>
@@ -129,7 +140,7 @@ interface FooterProps {}
 
 export function Footer({}: FooterProps) {
   const [currentSection, setCurrentSection] = useState(0);
-  const { i18n, t } = useTranslation();
+  const { i18n, t } = useTranslation('footer');
 
   const subfooters = useMemo(() => {
     const subfooters = [
@@ -138,7 +149,7 @@ export function Footer({}: FooterProps) {
       { key: 'inspired-by', Footer: InspiredByFooter },
     ] as { key: string; Footer: () => JSX.Element }[];
 
-    const translators = t('footer:translators', { returnObjects: true }) as string[];
+    const translators = t('translators');
 
     if (i18n.language !== 'en' && translators.length > 0) {
       subfooters.splice(2, 0, { key: 'translators-credit', Footer: TranslatorsFooter });
