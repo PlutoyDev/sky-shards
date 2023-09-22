@@ -48,10 +48,10 @@ export function ShardProgress({ date, info }: ShardProgressProps) {
               style={{ width: `${(endPercent - startPercent) * 100}%`, left: `${startPercent * 100}%` }}
             >
               {/* Time Label */}
-              <span className='absolute -left-[1.5em] bottom-[0.25em]  whitespace-nowrap'>
+              <span className='relative bottom-[1.5em] float-left whitespace-nowrap'>
                 <StaticClock time={start} hideSeconds convertTo={useLocalTz ? 'local' : undefined} />
               </span>
-              <span className='absolute -right-[2em] top-[0.25em] whitespace-nowrap max-sm:hidden'>
+              <span className='relative top-[0.25em] float-right whitespace-nowrap max-sm:hidden'>
                 <StaticClock time={end} hideSeconds convertTo={useLocalTz ? 'local' : undefined} />
               </span>
             </div>
