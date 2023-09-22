@@ -102,7 +102,10 @@ export function DateSelectionModal({ hideModal }: ModalProps) {
             <button
               key={date.day}
               title={date.toLocaleString({ month: 'short', day: 'numeric', year: 'numeric' })}
-              className='btn btn-outline btn-xs grid h-full w-full auto-rows-auto grid-cols-1 grid-rows-[auto] place-items-center content-center justify-between gap-0.5 overflow-x-clip py-0.5 !text-white backdrop-blur'
+              className={
+                'btn btn-outline btn-xs grid h-full w-full auto-rows-auto grid-cols-1 grid-rows-[auto] place-items-center content-center justify-between gap-0.5 overflow-x-clip py-0.5 !text-white backdrop-blur' +
+                (haveShard ? '' : ' opacity-30')
+              }
               onClick={() => {
                 hideModal();
                 setTimeout(() => navigateDay(date), 100);
