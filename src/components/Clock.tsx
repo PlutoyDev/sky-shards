@@ -81,7 +81,7 @@ export function Countdown({ to }: CountdownProp) {
   const days = hours > 60 ? Math.floor(hours / 24) : undefined;
 
   return (
-    <div className='grid auto-cols-fr grid-flow-col grid-rows-2 justify-center justify-items-center'>
+    <div className='grid auto-cols-fr grid-flow-col grid-rows-2 justify-center justify-items-center gap-x-2 px-2'>
       {days && (
         <CountdownParts
           value={days}
