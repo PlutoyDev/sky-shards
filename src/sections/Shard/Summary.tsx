@@ -3,10 +3,10 @@ import { Trans, useTranslation } from 'react-i18next';
 import { BsChevronCompactDown } from 'react-icons/bs';
 import { DateTime, Settings, Zone } from 'luxon';
 import { Calendar, DynamicCalendar } from '../../components/Calendar';
-import StaticClock, { Countdown } from '../../components/Clock';
+import StaticClock, { ClockNow, Countdown } from '../../components/Clock';
 import Emoji from '../../components/Emoji';
 import { useNow } from '../../context/Now';
-import { getUpcommingShardPhase, ShardInfo } from '../../shardPredictor';
+import { ShardInfo } from '../../shardPredictor';
 import ShardProgress from './Progress';
 
 interface ShardSummarySectionProp {
@@ -15,7 +15,7 @@ interface ShardSummarySectionProp {
 }
 
 export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
-  const { t } = useTranslation(['skyRealms', 'skyMaps', 'shard', 'shardSummary']);
+  const { t } = useTranslation(['shardSummary', 'skyRealms', 'durationFmts']);
   const { application: now } = useNow();
   if (date.hasSame(now, 'day')) date = now;
 
@@ -39,9 +39,11 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
       </div>
     );
   } else {
-    const upcomming = getUpcommingShardPhase(date, info);
-    const landed = upcomming && upcomming.land < date;
-    const next = upcomming ? (landed ? upcomming.end : upcomming.land) : undefined;
+    const { occurrences } = info;
+    const upcommingIndex = occurrences.findIndex(({ end }) => end > now);
+    const upcomming = upcommingIndex >= 0 ? occurrences[upcommingIndex] : undefined;
+    const landed = upcomming && upcomming.start < now;
+    const next = upcomming && landed ? occurrences[upcommingIndex + 1]?.start : upcomming?.start;
 
     return (
       <div
@@ -106,10 +108,15 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
           {upcomming ? (
             <>
               <div className='col-start-1 row-start-1 w-full md:col-span-2 landscape:col-span-2 [@media_(max-height:_375px)]:col-span-1 [@media_(max-height:_375px)]:col-start-2 [@media_(max-height:_375px)]:row-start-1 '>
-                <p className='whitespace-nowrap'>
-                  {t(`shardSummary:countdown.${landed ? 'landed' : 'landed'}`, { i: upcomming.index })}
-                </p>
-                <Countdown to={next!} />
+                <Trans
+                  t={t}
+                  i18nKey={`countdown.${landed ? 'landed' : 'landing'}`}
+                  components={{ bold: <span className='font-bold' />, countdown: <Countdown to={next!} /> }}
+                  values={{
+                    i: upcommingIndex,
+                    landedSince: now.diff(upcomming.start, 'seconds').toFormat(t('durationFmts:hm')),
+                  }}
+                />
               </div>
               <time
                 className='col-start-1 row-start-2 [@media_(max-height:_375px)]:row-start-1'
@@ -134,9 +141,12 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
             </>
           ) : (
             <div className='col-start-1 row-start-1 w-full'>
-              <p className='whitespace-nowrap'>{t('shardSummary:countdown.allEnded')}</p>
-              <Countdown to={info.lastEnd!} />
-              <span> ago </span>
+              <Trans
+                t={t}
+                tOptions={{ transWrapTextNodes: 'p' }}
+                i18nKey='shardSummary:countdown.allEnded'
+                components={{ bold: <span className='font-bold' />, countdown: <Countdown to={info.lastEnd!} /> }}
+              />
             </div>
           )}
         </section>

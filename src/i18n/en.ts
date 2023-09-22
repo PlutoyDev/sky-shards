@@ -147,9 +147,10 @@ const en = {
     'progress.showTimeIn.localTime': 'Showing time in <a>Your time</a>',
     'progress.startTimeOnly': 'Limited width: Start time only',
 
-    'countdown.landing': '$t(shard:ordinal.{{i}}) landing in',
-    'countdown.landed': '$t(shard:ordinal.{{i}}) landed. Ending in',
-    'countdown.allEnded': 'All shards ended',
+    'countdown.landing': '<bold>$t(shard:ordinal.{{i}})</bold> landing in <countdown/>',
+    'countdown.landed':
+      '<bold>$t(shard:ordinal.{{i}})</bold> landed <bold>{{landedSince}}</bold> ago. Ending in <countdown/>',
+    'countdown.allEnded': 'All shards has ended <countdown/> ago',
     'countdown.yourTime': 'Your time:',
     'countdown.skyTime': 'Sky time:',
     'navigation.downwards': 'Click here or Scroll down for more info',
