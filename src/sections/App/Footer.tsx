@@ -152,7 +152,7 @@ export function Footer({}: FooterProps) {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSection(prev => (prev + 1) % numSubfooters);
-    }, durationPerSection * 1000);
+    }, durationPerSection * 5000);
     return () => clearInterval(interval);
   }, [numSubfooters]);
 
