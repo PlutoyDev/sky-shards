@@ -91,8 +91,8 @@ export function Countdown({ to }: CountdownProp) {
       )}
       <CountdownParts
         value={days ? hours % 24 : hours}
-        unitShort={t('hours.long', { count: hours })}
-        unitLong={t('hours.short', { count: hours })}
+        unitShort={t('hours.short', { count: hours })}
+        unitLong={t('hours.long', { count: hours })}
       />
       <CountdownParts
         value={minutes}
