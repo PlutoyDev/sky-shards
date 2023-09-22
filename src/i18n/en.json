@@ -1,5 +1,8 @@
 {
-  "application": { "headerDateTimeIndicator": "Now in Sky" },
+  "$schema": "./schema.json",
+  "application": {
+    "headerDateTimeIndicator": "Now in Sky"
+  },
   "settings": {
     "title": "Settings",
     "theme.title": "Theme",
@@ -45,7 +48,11 @@
     "days.long": "days",
     "days.short": "ds"
   },
-  "durationFmts": { "hm": "hh'h' mm'm'", "hms": "hh'h' mm'm' ss's'", "ms": "mm'm' ss's'" },
+  "durationFmts": {
+    "hm": "hh'h' mm'm'",
+    "hms": "hh'h' mm'm' ss's'",
+    "ms": "mm'm' ss's'"
+  },
   "skyRealms": {
     "prairie.long": "Daylight Prairie",
     "prairie.short": "Prairie",

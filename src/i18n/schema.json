@@ -1,0 +1,196 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "application": {
+      "type": "object",
+      "properties": {
+        "headerDateTimeIndicator": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "settings": {
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "theme.title": { "type": "string" },
+        "theme.light": { "type": "string" },
+        "theme.system": { "type": "string" },
+        "theme.dark": { "type": "string" },
+        "clockFmt.title": { "type": "string" },
+        "clockFmt.twelve": { "type": "string" },
+        "clockFmt.system": { "type": "string" },
+        "clockFmt.twentyFour": { "type": "string" },
+        "timezones.title": { "type": "string" },
+        "timezones.reset": { "type": "string" },
+        "language.title": { "type": "string" },
+        "fontSize.title": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "dateSelector": {
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "columnType": { "type": "string" },
+        "columnType.realm": { "type": "string" },
+        "columnType.weekday": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "footer": {
+      "type": "object",
+      "properties": {
+        "createdBy": { "type": "string" },
+        "version": { "type": "string" },
+        "githubSourceLong": { "type": "string" },
+        "githubSourceShort": { "type": "string" },
+        "feedbackLong": { "type": "string" },
+        "feedbackShort": { "type": "string" },
+        "disclaimer": { "type": "string" },
+        "patternCredit": { "type": "string" },
+        "translatedBy": { "type": "string" },
+        "translationErrors": { "type": "string" },
+        "translationErrorLink": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "durationUnits": {
+      "type": "object",
+      "properties": {
+        "seconds.long": { "type": "string" },
+        "seconds.short": { "type": "string" },
+        "minutes.long": { "type": "string" },
+        "minutes.short": { "type": "string" },
+        "hours.long": { "type": "string" },
+        "hours.short": { "type": "string" },
+        "days.long": { "type": "string" },
+        "days.short": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "durationFmts": {
+      "type": "object",
+      "properties": {
+        "hm": { "type": "string" },
+        "hms": { "type": "string" },
+        "ms": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "skyRealms": {
+      "type": "object",
+      "properties": {
+        "prairie.long": { "type": "string" },
+        "prairie.short": { "type": "string" },
+        "forest.long": { "type": "string" },
+        "forest.short": { "type": "string" },
+        "valley.long": { "type": "string" },
+        "valley.short": { "type": "string" },
+        "wasteland.long": { "type": "string" },
+        "wasteland.short": { "type": "string" },
+        "vault.long": { "type": "string" },
+        "vault.short": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "skyMaps": {
+      "type": "object",
+      "properties": {
+        "prairie.butterfly": { "type": "string" },
+        "prairie.village": { "type": "string" },
+        "prairie.cave": { "type": "string" },
+        "prairie.bird": { "type": "string" },
+        "prairie.island": { "type": "string" },
+        "forest.brook": { "type": "string" },
+        "forest.boneyard": { "type": "string" },
+        "forest.end": { "type": "string" },
+        "forest.tree": { "type": "string" },
+        "forest.sunny": { "type": "string" },
+        "valley.rink": { "type": "string" },
+        "valley.dreams": { "type": "string" },
+        "valley.hermit": { "type": "string" },
+        "wasteland.temple": { "type": "string" },
+        "wasteland.battlefield": { "type": "string" },
+        "wasteland.graveyard": { "type": "string" },
+        "wasteland.crab": { "type": "string" },
+        "wasteland.ark": { "type": "string" },
+        "vault.starlight": { "type": "string" },
+        "vault.jelly": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "shard": {
+      "type": "object",
+      "properties": {
+        "rewards.ascendedCandle": { "type": "string" },
+        "rewards.candleCake": { "type": "string" },
+        "color.black": { "type": "string" },
+        "color.red": { "type": "string" },
+        "ordinal.0": { "type": "string" },
+        "ordinal.1": { "type": "string" },
+        "ordinal.2": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "shardCarousel": {
+      "type": "object",
+      "properties": {
+        "navigation.rightwards": { "type": "string" },
+        "navigation.leftwards": { "type": "string" },
+        "navigation.downwards": { "type": "string" },
+        "dynamicTitle.noShard": { "type": "string" },
+        "dynamicTitle.hasShard": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "infoSection": {
+      "type": "object",
+      "properties": {
+        "redShard": { "type": "string" },
+        "blackShard": { "type": "string" },
+        "noShard": { "type": "string" },
+        "hasShard": { "type": "string" },
+        "blackShardRewards": { "type": "string" },
+        "redShardRewards": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "progressSection": {
+      "type": "object",
+      "properties": {
+        "showTimeIn.skyTime": { "type": "string" },
+        "showTimeIn.localTime": { "type": "string" },
+        "startTimeOnly": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "countdownSection": {
+      "type": "object",
+      "properties": {
+        "landing": { "type": "string" },
+        "landed": { "type": "string" },
+        "allEnded": { "type": "string" },
+        "yourTime": { "type": "string" },
+        "skyTime": { "type": "string" }
+      },
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "application",
+    "settings",
+    "dateSelector",
+    "footer",
+    "durationUnits",
+    "durationFmts",
+    "skyRealms",
+    "skyMaps",
+    "shard",
+    "shardCarousel",
+    "infoSection",
+    "progressSection",
+    "countdownSection"
+  ],
+  "additionalProperties": true
+}
