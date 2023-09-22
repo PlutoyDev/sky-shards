@@ -143,6 +143,10 @@ const en = {
     'info.blackShardRewards': 'Giving 4 <emoji/> of wax',
     'info.redShardRewards': 'Giving max of {{qty}} <emoji/>',
 
+    'progress.showTimeIn.skyTime': 'Showing time in <a>Sky time</a>',
+    'progress.showTimeIn.localTime': 'Showing time in <a>Your time</a>',
+    'progress.startTimeOnly': 'Limited width: Start time only',
+
     'countdown.landing': '$t(shard:ordinal.{{i}}) landing in',
     'countdown.landed': '$t(shard:ordinal.{{i}}) landed. Ending in',
     'countdown.allEnded': 'All shards ended',

@@ -4,6 +4,7 @@
 // If shard is inactive the progress bar is white
 // show past in grey
 import { useMemo, useState } from 'react';
+import { Trans, useTranslation } from 'react-i18next';
 import { DateTime } from 'luxon';
 import { StaticClock } from '../../components/Clock';
 import { useNow } from '../../context/Now';
@@ -17,6 +18,7 @@ interface ShardProgressProps {
 export function ShardProgress({ date, info }: ShardProgressProps) {
   const { application: now } = useNow();
   const [useLocalTz, setUseLocalTz] = useState(true); //Use local time or sky time
+  const { t } = useTranslation('shardSummary');
 
   const startOfDay = date.startOf('day');
   const endOfDay = date.endOf('day');
@@ -64,13 +66,18 @@ export function ShardProgress({ date, info }: ShardProgressProps) {
     () => (
       <div className='glass mx-auto flex w-full max-w-lg flex-col items-center justify-center lg:max-w-4xl '>
         <div>
-          <span className='text-bold justify-self-end'>Show time in </span>
-          <a
-            className='text-bold cursor-pointer underline decoration-dashed'
-            onClick={e => (e.preventDefault(), setUseLocalTz(!useLocalTz))}
-          >
-            {useLocalTz ? 'Sky Time' : 'Local Time'}
-          </a>
+          <Trans
+            t={t}
+            i18nKey={`progress.showTimeIn.${useLocalTz ? 'skyTime' : 'localTime'}`}
+            components={{
+              a: (
+                <a
+                  className='text-bold cursor-pointer underline decoration-dashed'
+                  onClick={e => (e.preventDefault(), setUseLocalTz(!useLocalTz))}
+                />
+              ),
+            }}
+          />
         </div>
         <div className='relative top-[1.5em] min-h-[3em] w-full'>
           <div className='relative -left-1 mx-1 h-1 w-full rounded-full'>
@@ -91,10 +98,10 @@ export function ShardProgress({ date, info }: ShardProgressProps) {
             )}
           </div>
         </div>
-        <p className='text-[8px] sm:hidden'>Limited width: Start time only</p>
+        <p className='text-[8px] sm:hidden'>{t('progress.startTimeOnly')}</p>
       </div>
     ),
-    [now.year, now.month, now.day, now.hour, Math.floor(now.minute / 10), info.offset, info.isRed, useLocalTz],
+    [t, now.year, now.month, now.day, now.hour, Math.floor(now.minute / 10), info.offset, info.isRed, useLocalTz],
   );
 }
 
