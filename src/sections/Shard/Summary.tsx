@@ -43,7 +43,7 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
     const upcommingIndex = occurrences.findIndex(({ end }) => end > now);
     const upcomming = upcommingIndex >= 0 ? occurrences[upcommingIndex] : undefined;
     const landed = upcomming && upcomming.start < now;
-    const next = upcomming && landed ? occurrences[upcommingIndex + 1]?.start : upcomming?.start;
+    const countdownTo = upcomming && landed ? occurrences[upcommingIndex]?.end : upcomming?.start;
 
     return (
       <div
@@ -111,7 +111,7 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
                 <Trans
                   t={t}
                   i18nKey={`countdown.${landed ? 'landed' : 'landing'}`}
-                  components={{ bold: <span className='font-bold' />, countdown: <Countdown to={next!} /> }}
+                  components={{ bold: <span className='font-bold' />, countdown: <Countdown to={countdownTo!} /> }}
                   values={{
                     i: upcommingIndex,
                     landedSince: now.diff(upcomming.start, 'seconds').toFormat(t('durationFmts:hm')),
@@ -120,23 +120,28 @@ export default function ShardSummary({ date, info }: ShardSummarySectionProp) {
               </div>
               <time
                 className='col-start-1 row-start-2 [@media_(max-height:_375px)]:row-start-1'
-                dateTime={next?.setZone('local')?.toISO({ suppressMilliseconds: true }) ?? undefined}
+                dateTime={countdownTo?.setZone('local')?.toISO({ suppressMilliseconds: true }) ?? undefined}
               >
                 <strong>{t('shardSummary:countdown.yourTime')}</strong>
                 <small className='block [@media_(max-height:_375px)]:hidden'>
                   ({(Settings.defaultZone as Zone).name})
                 </small>
-                <Calendar date={next!} convertTo='local' className='block font-bold opacity-80' relFontSize={0.8} />
-                <StaticClock time={next} convertTo='local' className='block font-bold' />
+                <Calendar
+                  date={countdownTo!}
+                  convertTo='local'
+                  className='block font-bold opacity-80'
+                  relFontSize={0.8}
+                />
+                <StaticClock time={countdownTo} convertTo='local' className='block font-bold' />
               </time>
               <time
                 className='col-start-1 row-start-3 md:col-start-2 md:row-start-2 landscape:col-start-2 landscape:row-start-2 [@media_(max-height:_375px)]:col-start-3 [@media_(max-height:_375px)]:row-start-1'
-                dateTime={next?.toISO({ suppressMilliseconds: true }) ?? undefined}
+                dateTime={countdownTo?.toISO({ suppressMilliseconds: true }) ?? undefined}
               >
                 <strong>{t('shardSummary:countdown.skyTime')}</strong>
                 <small className='block [@media_(max-height:_375px)]:hidden'>(America/Los_Angeles)</small>
-                <Calendar date={next!} className='block font-bold opacity-80' relFontSize={0.8} />
-                <StaticClock time={next} className='block font-bold' />
+                <Calendar date={countdownTo!} className='block font-bold opacity-80' relFontSize={0.8} />
+                <StaticClock time={countdownTo} className='block font-bold' />
               </time>
             </>
           ) : (
