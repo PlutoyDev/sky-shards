@@ -33,7 +33,7 @@ export function StaticClock({
 
   const formattedTime = duration
     ? duration.toFormat(t(hideSeconds ? (Math.abs(duration.as('minutes')) > 90 ? 'hm' : 'ms') : 'hms'))
-    : time?.setZone(convertTo === 'local' ? 'local' : 'America/Los_Angeles')?.toLocaleString({
+    : time?.setZone(convertTo === 'local' ? 'default' : 'America/Los_Angeles')?.toLocaleString({
         hourCycle: twelveHourModeSetting === 'system' ? undefined : twelveHourModeSetting === 'true' ? 'h12' : 'h23',
         hour: '2-digit',
         minute: '2-digit',
