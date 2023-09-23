@@ -33,9 +33,9 @@ export function ShardProgress({ info }: ShardProgressProps) {
           <StaticClock time={startOfDay} hideSeconds convertTo={useLocalTz ? 'local' : undefined} />
         </span>
         {/* End label */}
-        <span className='absolute -right-[0.5em] max-sm:top-0 sm:bottom-[0.25em]'>
+        {/* <span className='absolute -right-[0.5em] max-sm:hidden sm:bottom-0'>
           <StaticClock time={endOfDay} hideSeconds convertTo={useLocalTz ? 'local' : undefined} />
-        </span>
+        </span> */}
         {/* Segments */}
         {info.occurrences.map(({ start, end }, i) => {
           const startPercent = start.diff(startOfDay).as('seconds') / 86400;
@@ -47,10 +47,10 @@ export function ShardProgress({ info }: ShardProgressProps) {
               style={{ width: `${(endPercent - startPercent) * 100}%`, left: `${startPercent * 100}%` }}
             >
               {/* Time Label */}
-              <span className='relative bottom-[1.5em] float-left whitespace-nowrap'>
+              <span className='absolute -left-[0.5em] bottom-0 whitespace-nowrap'>
                 <StaticClock time={start} hideSeconds convertTo={useLocalTz ? 'local' : undefined} />
               </span>
-              <span className='relative top-[0.25em] float-right whitespace-nowrap max-sm:hidden'>
+              <span className='absolute -right-[0.5em] top-0 max-sm:hidden'>
                 <StaticClock time={end} hideSeconds convertTo={useLocalTz ? 'local' : undefined} />
               </span>
             </div>
