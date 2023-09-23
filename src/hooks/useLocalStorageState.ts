@@ -1,6 +1,10 @@
 import { useState } from 'react';
 
-export default function useLocalStorageState<T>(key: string, defaultValue?: T | (() => T), forcedStore?: boolean) {
+export default function useLocalStorageState<T>(
+  key: string,
+  defaultValue?: T | (() => T),
+  forcedStore?: boolean,
+): [T, (newValue: T) => void] {
   const storedValue = localStorage.getItem(key);
   const parsedValue = storedValue && JSON.parse(storedValue);
   const [value, _setValue] = useState(parsedValue ?? defaultValue);

@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect } from 'react';
+import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import i18next from 'i18next';
 import { Settings as LuxonSettings } from 'luxon';
@@ -14,9 +14,15 @@ export interface Settings {
   setTwelveHourModeSetting: (value: string) => void;
   setLightMode: (value: string) => void;
   setLanguage: (value: string) => void;
+
   twelveHourModeSetting: string;
   lightMode: string;
   language: string;
+  languageLoader?: {
+    error?: string;
+    loading?: boolean;
+    isGS?: boolean;
+  };
 }
 
 export const SettingsContext = createContext<Settings>({
@@ -43,9 +49,10 @@ interface SettingsProviderProps {
 
 export function SettingsProvider({ children }: SettingsProviderProps) {
   const [twelveHourModeSetting, setTwelveHourModeSetting] = useLocalStorageState('twelveHourMode', 'system');
-  const [lightMode, setLightMode] = useLocalStorageState<'false' | 'true' | 'system'>('lightMode', 'system');
+  const [lightMode, setLightMode] = useLocalStorageState('lightMode', 'system');
   const [language, setLanguage] = useLocalStorageState('language', () => parseUrl().lang ?? 'en');
   const compactMode = useMediaQuery({ maxWidth: '300px' });
+  const [languageLoader, setLanguageLoader] = useState<Settings['languageLoader']>({ loading: false });
 
   const twelveHourMode =
     twelveHourModeSetting === 'system'
@@ -70,65 +77,56 @@ export function SettingsProvider({ children }: SettingsProviderProps) {
     }
   }, [lightMode]);
 
+  const loadLanguage = useCallback(async (language: string, fallbackLang: string) => {
+    if (language === fallbackLang) {
+      return;
+    }
+    const isGS = language.endsWith('-GS');
+    console.log('downloading language resources', language, isGS);
+    setLanguageLoader({ loading: true, isGS });
+    try {
+      const promise: Promise<Record<string, any>> =
+        import.meta.env.VITE_GS_TRANSLATION_URL && isGS
+          ? fetch(`${import.meta.env.VITE_GS_TRANSLATION_URL}?lang=${language.slice(0, -3)}`)
+          : language in languageResources
+          ? languageResources[language]()
+          : Promise.reject(new Error('not found'));
+
+      const resource = await promise;
+      if ('error' in resource) {
+        throw new Error(resource.error);
+      }
+
+      for (const [ns, res] of Object.entries(resource)) {
+        i18next.addResourceBundle(language, ns, res);
+      }
+      i18next.changeLanguage(language);
+      LuxonSettings.defaultLocale = language;
+      console.log('loaded language resources', language);
+      setLanguageLoader({ loading: false, isGS });
+    } catch (err) {
+      console.error('failed to load language resources', language, err);
+      setLanguageLoader({
+        loading: false,
+        error:
+          err && typeof err === 'string'
+            ? err
+            : err && typeof err === 'object' && 'message' in err
+            ? (err.message as string)
+            : 'unknown error',
+        isGS,
+      });
+    }
+  }, []);
+
   useEffect(() => {
     if (i18next.language === language) return;
     const prevLanguage = i18next.language;
-    if (!parseUrl().gsTrans && language.endsWith('-GS')) {
-      setLanguage(language.slice(0, -3));
-      return;
-    }
-    if (language === 'en') {
+    if (language === 'en' || (i18next.hasResourceBundle(language, 'shard') && !language.endsWith('-GS'))) {
       i18next.changeLanguage(language);
       LuxonSettings.defaultLocale = language;
-    } else if (import.meta.env.VITE_GS_TRANSLATION_URL && language.endsWith('-GS')) {
-      console.log('downloading language resources from Google Sheets', language);
-      fetch(`${import.meta.env.VITE_GS_TRANSLATION_URL}?lang=${language.slice(0, -3)}`)
-        .then(res => res.json())
-        .then(response => {
-          if ('error' in response) {
-            throw new Error(response.error);
-          } else {
-            console.log('loaded language resources from Google Sheets', language);
-            for (const [ns, res] of Object.entries(response)) {
-              i18next.addResourceBundle(language, ns, res);
-            }
-            return i18next.changeLanguage(language);
-          }
-        })
-        .then(() => {
-          LuxonSettings.defaultLocale = language;
-        })
-        .catch(err => {
-          console.error('failed to load language resources', language, err);
-          i18next.changeLanguage(prevLanguage);
-          setLanguage(prevLanguage);
-        });
-    } else if (language in languageResources) {
-      console.log('downloading language resources for', language);
-      languageResources[language]()
-        .then(module => {
-          if (!module.default) {
-            throw new Error('no default export');
-          }
-          const resources = module.default;
-          console.log('loaded language resources', language);
-          for (const [ns, res] of Object.entries(resources)) {
-            i18next.addResourceBundle(language, ns, res);
-          }
-          return i18next.changeLanguage(language);
-        })
-        .then(() => {
-          LuxonSettings.defaultLocale = language;
-        })
-        .catch(err => {
-          console.error('failed to load language resources', language, err);
-          i18next.changeLanguage(prevLanguage);
-          setLanguage(prevLanguage);
-        });
     } else {
-      console.error('failed to load language resources', language, 'not found');
-      i18next.changeLanguage(prevLanguage);
-      setLanguage(prevLanguage);
+      loadLanguage(language, prevLanguage);
     }
   }, [language]);
 
@@ -145,6 +143,7 @@ export function SettingsProvider({ children }: SettingsProviderProps) {
         twelveHourModeSetting,
         lightMode,
         language,
+        languageLoader,
       }}
     >
       {children}
