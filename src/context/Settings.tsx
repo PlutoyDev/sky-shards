@@ -73,18 +73,42 @@ export function SettingsProvider({ children }: SettingsProviderProps) {
   useEffect(() => {
     if (i18next.language === language) return;
     const prevLanguage = i18next.language;
+    if (!parseUrl().gsTrans && language.endsWith('-GS')) {
+      setLanguage(language.slice(0, -3));
+      return;
+    }
     if (language === 'en') {
       i18next.changeLanguage(language);
       LuxonSettings.defaultLocale = language;
+    } else if (import.meta.env.VITE_GS_TRANSLATION_URL && language.endsWith('-GS')) {
+      console.log('downloading language resources from Google Sheets', language);
+      fetch(`${import.meta.env.VITE_GS_TRANSLATION_URL}?lang=${language.slice(0, -3)}`)
+        .then(res => res.json())
+        .then(response => {
+          if ('error' in response) {
+            throw new Error(response.error);
+          } else {
+            console.log('loaded language resources from Google Sheets', language);
+            for (const [ns, res] of Object.entries(response)) {
+              i18next.addResourceBundle(language, ns, res);
+            }
+            return i18next.changeLanguage(language);
+          }
+        })
+        .then(() => {
+          LuxonSettings.defaultLocale = language;
+        })
+        .catch(err => {
+          console.error('failed to load language resources', language, err);
+          i18next.changeLanguage(prevLanguage);
+          setLanguage(prevLanguage);
+        });
     } else if (language in languageResources) {
       console.log('downloading language resources for', language);
       languageResources[language]()
         .then(module => {
           if (!module.default) {
-            console.error('failed to load language resources', language, 'no default export');
-            i18next.changeLanguage(prevLanguage);
-            LuxonSettings.defaultLocale = prevLanguage;
-            return;
+            throw new Error('no default export');
           }
           const resources = module.default;
           console.log('loaded language resources', language);
@@ -99,10 +123,12 @@ export function SettingsProvider({ children }: SettingsProviderProps) {
         .catch(err => {
           console.error('failed to load language resources', language, err);
           i18next.changeLanguage(prevLanguage);
+          setLanguage(prevLanguage);
         });
     } else {
-      console.error('unknown language', language);
+      console.error('failed to load language resources', language, 'not found');
       i18next.changeLanguage(prevLanguage);
+      setLanguage(prevLanguage);
     }
   }, [language]);
 
