@@ -16,7 +16,7 @@ export function DateSelectionModal({ hideModal }: ModalProps) {
   const { navigateDay } = useHeaderFx();
   const [numCols, setNumCols] = useLocalStorageState<'5' | '7'>('dateSelector.numCols', '5');
   const [{ year, month }, setYearMonth] = useState(() => {
-    const date = parseUrl();
+    const { date } = parseUrl();
     return { year: date.year, month: date.month };
   });
 

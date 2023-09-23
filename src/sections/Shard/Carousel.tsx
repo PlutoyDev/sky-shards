@@ -36,7 +36,9 @@ export default function ShardCarousel() {
   const { t } = useTranslation(['shardCarousel']);
 
   const [direction, setDirection] = useState(0);
-  const [date, setDate] = useState(() => roundToRefDate(parseUrl(), DateTime.local().setZone(appZone).startOf('day')));
+  const [date, setDate] = useState(() =>
+    roundToRefDate(parseUrl().date, DateTime.local().setZone(appZone).startOf('day')),
+  );
   const info = useMemo(() => getShardInfo(date), [date.day, date.month, date.year]);
   const summaryRef = useRef<HTMLDivElement>(null);
 
@@ -48,10 +50,10 @@ export default function ShardCarousel() {
       }
       setDirection(d > date ? 1 : -1);
       if (d.hasSame(today, 'day')) {
-        if (reUrl) replaceUrl('/', false);
+        if (reUrl) replaceUrl({ date: today });
         setDate(today);
       } else {
-        if (reUrl) replaceUrl(`/date/${d.toFormat('yyyy/MM/dd')}`);
+        if (reUrl) replaceUrl({ date: d });
         setDate(roundToRefDate(d, today));
       }
     },
@@ -66,7 +68,7 @@ export default function ShardCarousel() {
   useEffect(() => {
     let timeout: string | number | NodeJS.Timeout | undefined = undefined;
     const handleDateChange = () => {
-      const newDate = roundToRefDate(parseUrl(), DateTime.local().setZone(appZone).startOf('day'));
+      const newDate = roundToRefDate(parseUrl().date, DateTime.local().setZone(appZone).startOf('day'));
       if (!newDate.hasSame(date, 'day')) {
         navigateDate(newDate, false);
       }

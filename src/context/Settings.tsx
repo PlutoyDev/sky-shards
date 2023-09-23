@@ -4,6 +4,7 @@ import i18next from 'i18next';
 import { Settings as LuxonSettings } from 'luxon';
 import useLocalStorageState from '../hooks/useLocalStorageState';
 import { languageResources } from '../i18n';
+import { parseUrl } from '../utils/parseUrl';
 
 export interface Settings {
   isTwelveHourMode: boolean;
@@ -43,7 +44,7 @@ interface SettingsProviderProps {
 export function SettingsProvider({ children }: SettingsProviderProps) {
   const [twelveHourModeSetting, setTwelveHourModeSetting] = useLocalStorageState('twelveHourMode', 'system');
   const [lightMode, setLightMode] = useLocalStorageState<'false' | 'true' | 'system'>('lightMode', 'system');
-  const [language, setLanguage] = useLocalStorageState('language', 'en');
+  const [language, setLanguage] = useLocalStorageState('language', () => parseUrl().lang ?? 'en');
   const compactMode = useMediaQuery({ maxWidth: '300px' });
 
   const twelveHourMode =
