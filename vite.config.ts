@@ -1,5 +1,5 @@
 import react from '@vitejs/plugin-react-swc';
-import { writeFile, readdir, unlink } from 'fs/promises';
+import { readFile, writeFile, readdir, unlink } from 'fs/promises';
 import fetch from 'node-fetch';
 import { defineConfig, normalizePath } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
@@ -21,6 +21,16 @@ const translationJsonUrl =
 const translationDir = normalizePath('./src/i18n');
 
 process.env.VITE_GS_TRANSLATION_URL = translationJsonUrl;
+
+// check public/_header csp allow translation url
+readFile('./public/_headers', 'utf-8').then(headers => {
+  if (!headers.includes(translationJsonUrl)) {
+    console.error('Translation url not allowed in public/_headers');
+    process.exit(1);
+  }
+});
+
+
 
 // https://vitejs.dev/config/
 export default defineConfig({
