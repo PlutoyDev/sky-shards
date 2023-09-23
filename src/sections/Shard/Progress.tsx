@@ -46,7 +46,11 @@ export function ShardProgress({ info }: ShardProgressProps) {
               style={{ width: `${(endPercent - startPercent) * 100}%`, left: `${startPercent * 100}%` }}
             >
               {/* Time Label */}
-              <span className='absolute -left-[0.5em] bottom-0 whitespace-nowrap'>
+              <span
+                className={
+                  'absolute -left-[0.5em] whitespace-nowrap' + (i === 1 ? ' max-sm:top-0 sm:bottom-0' : ' bottom-0')
+                }
+              >
                 <StaticClock time={start} hideSeconds convertTo={useLocalTz ? 'local' : undefined} />
               </span>
               <span className='absolute -right-[0.5em] top-0 max-sm:hidden'>
