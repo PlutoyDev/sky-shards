@@ -31,7 +31,7 @@ export default function SettingModal() {
     <div className='mb-4 flex flex-col justify-center gap-2 md:grid md:grid-cols-2 [&>div]:w-full [&>div]:px-2'>
       {/* Theme */}
       <div>
-        <p className='text-bold w-full md:text-center'>{t('title')}</p>
+        <p className='text-bold w-full md:text-center'>{t('theme.title')}</p>
         <div className='join m-1.5 mx-auto w-full rounded-full px-2'>
           {[
             [t('theme.light'), 'true'],
