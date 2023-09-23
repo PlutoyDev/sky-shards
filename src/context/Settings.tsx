@@ -116,6 +116,8 @@ export function SettingsProvider({ children }: SettingsProviderProps) {
             : 'unknown error',
         isGS,
       });
+      setLanguage(fallbackLang);
+      setTimeout(() => setLanguageLoader({ loading: false, isGS }), 2000);
     }
   }, []);
 
