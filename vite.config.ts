@@ -1,5 +1,6 @@
 import react from '@vitejs/plugin-react-swc';
 import { writeFile } from 'fs/promises';
+import fetch from 'node-fetch';
 import { defineConfig, normalizePath } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 import manifest from './manifest';
@@ -19,24 +20,26 @@ const translationJsonUrl =
   'https://script.google.com/macros/s/AKfycbwADUiztSSF89E92fOvZgMdTUFCOkCWhYilwrbC4Qf-d0Oqd9EsHmN8HIl8creFfO4/exec';
 const translationDir = normalizePath('./src/i18n');
 
-fetch(translationJsonUrl)
-  .then(res => res.json())
-  .then(json => {
-    const { codeLangs, translations } = json;
-    codeLangs['en'] = 'English';
-    const languageCodeFilename = translationDir + '/codeLangs.json';
-    const writePromises = [
-      writeFile(languageCodeFilename, JSON.stringify(codeLangs, null, 2)),
-      ...Object.entries(translations).map(([lang, translation]) =>
-        writeFile(translationDir + '/locales/' + lang + '.json', JSON.stringify(translation, null, 2)),
-      ),
-    ];
-    return Promise.all(writePromises);
-  });
-
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
+    {
+      name: 'translation',
+      async buildStart() {
+        const res = await fetch(translationJsonUrl);
+        const json = await res.json();
+        const { codeLangs, translations } = json as any;
+        codeLangs['en'] = 'English';
+        const languageCodeFilename = translationDir + '/codeLangs.json';
+        const writePromises = [
+          writeFile(languageCodeFilename, JSON.stringify(codeLangs, null, 2)),
+          ...Object.entries(translations).map(([lang, translation]) =>
+            writeFile(translationDir + '/locales/' + lang + '.json', JSON.stringify(translation, null, 2)),
+          ),
+        ];
+        await Promise.all(writePromises);
+      },
+    },
     react(),
     VitePWA({
       registerType: 'autoUpdate',
