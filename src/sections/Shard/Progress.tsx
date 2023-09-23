@@ -5,7 +5,6 @@
 // show past in grey
 import { useMemo, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import { DateTime } from 'luxon';
 import { StaticClock } from '../../components/Clock';
 import { useNow } from '../../context/Now';
 import { ShardInfo } from '../../shardPredictor';

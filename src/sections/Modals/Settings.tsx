@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FaMinus, FaPlus, FaExclamation } from 'react-icons/fa';
 import { Settings as LuxonSettings, Zone } from 'luxon';
@@ -27,7 +27,6 @@ export default function SettingModal() {
   } = useSettings();
   const [timezone, setTimezone] = useLocalStorageState('timezone', stringifyZone(LuxonSettings.defaultZone));
   const { fontSize: fontSizeAdjust, setFontSize: setFontSizeAdjust } = useHeaderFx();
-  // const gsTrans = useRef<{ state?: 'loading' | 'error'; codeLangs?: Record<string, string> }>({});
   const [gsTrans, setGsTrans] = useState<{ state?: 'loading' | 'error'; codeLangs?: Record<string, string> }>({});
 
   useEffect(() => {
@@ -39,7 +38,6 @@ export default function SettingModal() {
 
   useEffect(() => {
     if (parseUrl().gsTrans && import.meta.env.VITE_GS_TRANSLATION_URL) {
-      // gsTrans.current.state = 'loading';
       setGsTrans({ state: 'loading' });
       fetch((import.meta.env.VITE_GS_TRANSLATION_URL as string) + '?langCodeOnly=true')
         .then(res => res.json())

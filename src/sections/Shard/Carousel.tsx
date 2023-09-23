@@ -1,5 +1,4 @@
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-// import ShardTimeline from './Timeline';
 import { useTranslation } from 'react-i18next';
 import { BsChevronCompactDown, BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 import { AnimatePresence, motion } from 'framer-motion';
