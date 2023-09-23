@@ -1,7 +1,9 @@
 import { initReactI18next } from 'react-i18next';
 import i18n from 'i18next';
+import resourceEn from './locales/en.json';
+
 // import LanguageDetector from 'i18next-browser-languagedetector';
-import resourceEn from './en.json';
+export type Translation = typeof resourceEn;
 
 i18n
   // .use(LanguageDetector)
@@ -21,22 +23,18 @@ export default i18n;
 
 declare module 'i18next' {
   interface CustomTypeOptions {
-    resources: typeof resourceEn;
+    resources: Translation;
   }
 }
 
-const resources = import.meta.glob(['./*.json', '!./en.json']);
+const resources = import.meta.glob(['./locales/*.json', '!./locales/en.json']);
 
 export const languageResources = Object.fromEntries(
   Object.entries(resources).map(([path, loader]) => {
-    // remove './' and '.ts'
-    const language = path.slice(2, -3);
+    // remove './locales/' and '.ts'
+    const language = path.slice(10, -5);
     return [language, loader];
   }),
-) as Record<string, () => Promise<{ default: typeof resourceEn }>>;
+) as Record<string, () => Promise<{ default: Translation }>>;
 
-export const languageCode = {
-  en: 'English',
-  zh: '简体中文',
-  jp: '日本語',
-};
+export { default as languageCode } from './codeLangs.json';

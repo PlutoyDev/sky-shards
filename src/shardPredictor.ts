@@ -1,5 +1,5 @@
 import { DateTime, Duration } from 'luxon';
-import type { Translation } from './i18n/en';
+import type { Translation } from './i18n';
 
 const earlySkyOffset = Duration.fromObject({ minutes: -32, seconds: -10 }); //after start
 const eruptionOffset = Duration.fromObject({ minutes: 7 }); //after start
