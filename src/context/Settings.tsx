@@ -87,7 +87,9 @@ export function SettingsProvider({ children }: SettingsProviderProps) {
     try {
       const promise: Promise<Record<string, any>> =
         import.meta.env.VITE_GS_TRANSLATION_URL && isGS
-          ? fetch(`${import.meta.env.VITE_GS_TRANSLATION_URL}?lang=${language.slice(0, -3)}`).then(res => res.json())
+          ? fetch(`${import.meta.env.VITE_GS_TRANSLATION_URL}?lang=${language.slice(0, -3)}`, {
+              credentials: 'omit',
+            }).then(res => res.json())
           : language in languageResources
           ? languageResources[language]()
           : Promise.reject(new Error('not found'));

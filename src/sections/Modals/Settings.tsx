@@ -39,7 +39,7 @@ export default function SettingModal() {
   useEffect(() => {
     if (parseUrl().gsTrans && import.meta.env.VITE_GS_TRANSLATION_URL) {
       setGsTrans({ state: 'loading' });
-      fetch((import.meta.env.VITE_GS_TRANSLATION_URL as string) + '?langCodeOnly=true')
+      fetch((import.meta.env.VITE_GS_TRANSLATION_URL as string) + '?langCodeOnly=true', { credentials: 'omit' })
         .then(res => res.json())
         .then((response: Record<string, string>) => {
           setGsTrans({ codeLangs: response });
