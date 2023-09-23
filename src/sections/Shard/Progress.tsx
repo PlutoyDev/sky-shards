@@ -5,6 +5,7 @@
 // show past in grey
 import { useMemo, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
+import { Settings as LuxonSettings } from 'luxon';
 import { StaticClock } from '../../components/Clock';
 import { useNow } from '../../context/Now';
 import { ShardInfo } from '../../shardPredictor';
@@ -19,7 +20,6 @@ export function ShardProgress({ info }: ShardProgressProps) {
   const [useLocalTz, setUseLocalTz] = useState(true); //Use local time or sky time
 
   const startOfDay = info.date.startOf('day');
-  const endOfDay = info.date.endOf('day');
   const isToday = info.date.hasSame(now, 'day');
 
   const staticElements = useMemo(
@@ -61,7 +61,7 @@ export function ShardProgress({ info }: ShardProgressProps) {
         })}
       </>
     ),
-    [info.offset, info.isRed, useLocalTz],
+    [info.offset, info.isRed, useLocalTz, LuxonSettings.defaultZone.name],
   );
 
   return useMemo(
@@ -103,7 +103,18 @@ export function ShardProgress({ info }: ShardProgressProps) {
         <p className='text-[8px] sm:hidden'>{t('startTimeOnly')}</p>
       </div>
     ),
-    [t, now.year, now.month, now.day, now.hour, Math.floor(now.minute / 10), info.offset, info.isRed, useLocalTz],
+    [
+      t,
+      now.year,
+      now.month,
+      now.day,
+      now.hour,
+      Math.floor(now.minute / 10),
+      info.offset,
+      info.isRed,
+      useLocalTz,
+      LuxonSettings.defaultZone.name,
+    ],
   );
 }
 
