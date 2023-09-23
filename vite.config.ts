@@ -1,5 +1,5 @@
 import react from '@vitejs/plugin-react-swc';
-import { writeFile } from 'fs/promises';
+import { writeFile, readdir, unlink } from 'fs/promises';
 import fetch from 'node-fetch';
 import { defineConfig, normalizePath } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
@@ -28,15 +28,28 @@ export default defineConfig({
     {
       name: 'translation',
       async buildStart() {
-        const res = await fetch(translationJsonUrl);
-        const json = await res.json();
+        console.log('Fetching translation data...');
+        const [json, localLocales] = await Promise.all([
+          fetch(translationJsonUrl).then(res => res.json()),
+          readdir(translationDir + '/locales').then(files =>
+            files.filter(file => file.endsWith('.json') && file !== 'en.json').map(file => file.slice(0, -5)),
+          ),
+        ]);
         const { codeLangs, translations } = json as any;
         codeLangs['en'] = 'English';
         const languageCodeFilename = translationDir + '/codeLangs.json';
         const writePromises = [
           writeFile(languageCodeFilename, JSON.stringify(codeLangs, null, 2)),
-          ...Object.entries(translations).map(([lang, translation]) =>
-            writeFile(translationDir + '/locales/' + lang + '.json', JSON.stringify(translation, null, 2)),
+          ...Object.entries(translations).map(
+            ([lang, translation]) => (
+              console.log('\tWriting', lang),
+              writeFile(translationDir + '/locales/' + lang + '.json', JSON.stringify(translation, null, 2))
+            ),
+          ),
+          ...localLocales.map(l =>
+            l in translations
+              ? Promise.resolve()
+              : (console.log('\tDeleting', l), unlink(translationDir + '/locales/' + l + '.json')),
           ),
         ];
         await Promise.all(writePromises);
