@@ -128,20 +128,20 @@ export default function ShardCarousel() {
               <>
                 <ShardProgress info={info} />
                 <ShardCountdownSection info={info} />
+                <small
+                  className="flex cursor-pointer flex-col items-center justify-center whitespace-nowrap font-['Bubblegum_Sans',_cursive] text-xs [@media_(min-height:_640px)]:lg:text-lg"
+                  onClick={() => {
+                    summaryRef.current?.parentElement?.scrollBy({
+                      top: summaryRef.current?.offsetHeight,
+                      behavior: 'smooth',
+                    });
+                  }}
+                >
+                  <span>{t('navigation.downwards')}</span>
+                  <BsChevronCompactDown />
+                </small>
               </>
             )}
-            <small
-              className="flex cursor-pointer flex-col items-center justify-center whitespace-nowrap font-['Bubblegum_Sans',_cursive] text-xs [@media_(min-height:_640px)]:lg:text-lg"
-              onClick={() => {
-                summaryRef.current?.parentElement?.scrollBy({
-                  top: summaryRef.current?.offsetHeight,
-                  behavior: 'smooth',
-                });
-              }}
-            >
-              <span>{t('navigation.downwards')}</span>
-              <BsChevronCompactDown />
-            </small>
           </div>
           {info.haveShard && (
             <>
