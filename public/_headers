@@ -3,7 +3,7 @@
 
 /
   X-Frame-Options: DENY
-  Content-Security-Policy: default-src 'self'; script-src 'self' https://static.cloudflareinsights.com/; connect-src 'self' https://cloudflareinsights.com https://script.google.com/macros/s/AKfycbyUbkKZUPSQAqU5XiVOEpyCFRFP2BvFvmwB9UDyvEdoH3Q7mvf-oIbFq7X6o5D6_Jgm/exec https://script.googleusercontent.com/macros/echo; style-src 'self' 'unsafe-inline';
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://static.cloudflareinsights.com/; connect-src 'self' https://cloudflareinsights.com https://script.google.com/macros/s/AKfycbwMz1YzC-7FzrfC4B4NcRezlfvnK0M6W0dBR-peN-zsb-m0YXzB6w4fY0FdNZkHHRYJ/exec https://script.googleusercontent.com/macros/echo; style-src 'self' 'unsafe-inline';
   X-XSS-Protection: 1; mode=block
   X-Content-Type-Options: nosniff
   Referrer-Policy: same-origin

@@ -17,7 +17,7 @@ console.log('Branch', process.env.VITE_GIT_BRANCH);
 console.log('Commit Ref', process.env.VITE_GIT_COMMIT);
 
 const translationJsonUrl =
-  'https://script.google.com/macros/s/AKfycbyUbkKZUPSQAqU5XiVOEpyCFRFP2BvFvmwB9UDyvEdoH3Q7mvf-oIbFq7X6o5D6_Jgm/exec';
+  'https://script.google.com/macros/s/AKfycbwMz1YzC-7FzrfC4B4NcRezlfvnK0M6W0dBR-peN-zsb-m0YXzB6w4fY0FdNZkHHRYJ/exec';
 const translationDir = normalizePath('./src/i18n');
 
 process.env.VITE_GS_TRANSLATION_URL = translationJsonUrl;
@@ -29,8 +29,6 @@ readFile('./public/_headers', 'utf-8').then(headers => {
     process.exit(1);
   }
 });
-
-
 
 // https://vitejs.dev/config/
 export default defineConfig({
