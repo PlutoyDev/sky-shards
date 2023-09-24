@@ -94,7 +94,7 @@ export function Calendar({
         </>
       );
     }
-  }, [date.day, date.month, date.year]);
+  }, [date.day, date.month, date.year, LuxonSettings.defaultLocale]);
 }
 
 export default Calendar;
@@ -132,5 +132,6 @@ export function DynamicCalendar({ date, invertDiff, ...calendarProp }: DynamicCa
     application.year,
     local.day,
     ...Object.values(calendarProp),
+    LuxonSettings.defaultLocale,
   ]);
 }
