@@ -17,7 +17,7 @@ console.log('Branch', process.env.VITE_GIT_BRANCH);
 console.log('Commit Ref', process.env.VITE_GIT_COMMIT);
 
 const translationJsonUrl =
-  'https://script.google.com/macros/s/AKfycbwMz1YzC-7FzrfC4B4NcRezlfvnK0M6W0dBR-peN-zsb-m0YXzB6w4fY0FdNZkHHRYJ/exec';
+  'https://script.google.com/macros/s/AKfycbxc-VDrCpZHipFab4ZIQQLmWMbwcgrDZCpeZ-42eTtfmGmc6EWn0JnzmEGA1SG32kLd/exec';
 const translationDir = normalizePath('./src/i18n');
 
 process.env.VITE_GS_TRANSLATION_URL = translationJsonUrl;
