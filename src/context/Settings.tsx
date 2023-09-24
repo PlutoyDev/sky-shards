@@ -103,7 +103,7 @@ export function SettingsProvider({ children }: SettingsProviderProps) {
         i18next.addResourceBundle(language, ns, res);
       }
       i18next.changeLanguage(language);
-      LuxonSettings.defaultLocale = language;
+      LuxonSettings.defaultLocale = isGS ? language.slice(0, -3) : language;
       console.log('loaded language resources', language);
       setLanguageLoader({ loading: false, isGS });
     } catch (err) {
