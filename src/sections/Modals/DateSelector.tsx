@@ -127,7 +127,7 @@ export function DateSelectionModal({ hideModal }: ModalProps) {
                 {date.toFormat('dd')}
               </p>
               <p className='w-full whitespace-nowrap text-center align-middle text-xs max-md:hidden'>
-                {haveShard ? t(`skyMaps:${map}`) : 'No shard'}
+                {haveShard ? t(`skyMaps:${map}`) : t('noShard')}
               </p>
             </button>
           );

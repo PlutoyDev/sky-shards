@@ -22,7 +22,8 @@
     "title": "Select a date",
     "columnType": "Column type",
     "columnType.realm": "Realm",
-    "columnType.weekday": "Weekday"
+    "columnType.weekday": "Weekday",
+    "noShard": "No shard"
   },
   "footer": {
     "createdBy": "Created by: {{author}}",
