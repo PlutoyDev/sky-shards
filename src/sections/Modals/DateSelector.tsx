@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 import { DateTime } from 'luxon';
+import { Settings as LuxonSettings } from 'luxon';
 import { useHeaderFx } from '../../context/HeaderFx';
 import type { ModalProps } from '../../context/ModalContext';
 import useLocalStorageState from '../../hooks/useLocalStorageState';
@@ -44,13 +45,16 @@ export function DateSelectionModal({ hideModal }: ModalProps) {
     setYearMonth({ year: newDate.year, month: newDate.month });
   };
 
+  const rtf = useMemo(
+    () => new Intl.RelativeTimeFormat(LuxonSettings.defaultLocale, { numeric: 'auto' }),
+    [LuxonSettings.defaultLocale],
+  );
+
   return (
     <div className='flex max-h-full w-full flex-col flex-nowrap items-center justify-center gap-y-2'>
-      <p className='text-center text-lg font-semibold'>
+      <p className='text-center text-sm font-semibold'>
         <span className='whitespace-nowrap'>{startOfMth.toLocaleString({ month: 'long', year: 'numeric' })}</span>{' '}
-        <span className='whitespace-nowrap'>
-          ({new Intl.RelativeTimeFormat('en', { numeric: 'auto' }).format(month - today.month, 'months')})
-        </span>
+        <span className='whitespace-nowrap'>({rtf.format(month - today.month, 'months')})</span>
       </p>
       <div
         className={
