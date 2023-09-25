@@ -94,7 +94,10 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
               exit={{ scale: 0.8, opacity: 0 }}
               onClick={() => modalProps.hideOnOverlayClick && hideModal()}
             >
-              <div className='glass my-4 !w-max overflow-y-auto rounded-lg transition-[height] sm:container max-sm:max-w-[80vw] sm:mx-auto [@media_(max-height:_375px)]:max-h-[80vh]'>
+              <div
+                className='glass my-4 !w-max cursor-default overflow-y-auto rounded-lg transition-[height] sm:container max-sm:max-w-[80vw] sm:mx-auto [@media_(max-height:_375px)]:max-h-[80vh]'
+                onClick={e => e.stopPropagation()}
+              >
                 <button className='absolute right-4 top-2' onClick={() => hideModal()}>
                   <ImCross />
                 </button>
