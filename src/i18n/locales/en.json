@@ -120,7 +120,7 @@
   "countdownSection": {
     "landing": "<bold>$t(shard:ordinal.{{i}})</bold> landing in <countdown/>",
     "landed": "<bold>$t(shard:ordinal.{{i}})</bold> landed <bold>{{landedSince}}</bold> ago. Ending in <countdown/>",
-    "allEnded": "All shards has ended <countdown/> ago",
+    "allEnded": "All shards had ended <countdown/> ago",
     "yourTime": "Your time:",
     "skyTime": "Sky time:"
   }
