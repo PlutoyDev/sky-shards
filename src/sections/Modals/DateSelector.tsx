@@ -50,11 +50,13 @@ export function DateSelectionModal({ hideModal }: ModalProps) {
     [LuxonSettings.defaultLocale],
   );
 
+  const diffMonths = startOfMth.diff(today.startOf('month'), 'months').months;
+
   return (
     <div className='flex max-h-full w-full flex-col flex-nowrap items-center justify-center gap-y-2'>
       <p className='text-center text-sm font-semibold'>
         <span className='whitespace-nowrap'>{startOfMth.toLocaleString({ month: 'long', year: 'numeric' })}</span>{' '}
-        <span className='whitespace-nowrap'>({rtf.format(month - today.month, 'months')})</span>
+        <span className='whitespace-nowrap'>({rtf.format(diffMonths, 'month')})</span>
       </p>
       <div
         className={
