@@ -1,7 +1,7 @@
 import { ReactNode, useEffect, useMemo, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { BiLinkExternal } from 'react-icons/bi';
-import { BsGithub } from 'react-icons/bs';
+import { BsGithub, BsTable } from 'react-icons/bs';
 import { TbForms } from 'react-icons/tb';
 import { patternCredits } from '../../data/credits';
 import useFeedbackFormUrl from '../../hooks/useFeedbackFom';
@@ -36,7 +36,7 @@ function AppDetailFooter() {
           href='https://github.com/PlutoyDev/sky-shards'
           target='_blank'
           rel='noreferrer'
-          className='rounded-xl bg-black px-2 pb-1 pt-0.5 text-white'
+          className='block rounded-xl bg-black px-2 pb-1 pt-0.5 text-white'
         >
           <BsGithub className='text-md mr-2 inline-block' />
           <span className='text-sm font-bold max-sm:hidden'>{t('githubSourceLong')}</span>
@@ -46,7 +46,7 @@ function AppDetailFooter() {
           href={feedbackUrl}
           target='_blank'
           rel='noreferrer'
-          className='rounded-xl bg-purple-700 px-2 pb-1 pt-0.5 text-white'
+          className='block rounded-xl bg-purple-700 px-2 pb-1 pt-0.5 text-white'
         >
           <TbForms className='text-md mr-2 inline-block' />
           <span className='text-sm font-bold max-sm:hidden'>{t('feedbackLong')}</span>
@@ -118,6 +118,23 @@ function TranslatorsFooter() {
   );
 }
 
+function HelpTranslation() {
+  return (
+    <SubFooter className='flex flex-col items-center justify-center gap-y-1'>
+      <p className='text-center text-sm'>Help to translate this website to your language</p>
+      <a
+        href='https://docs.google.com/spreadsheets/d/16eSANTI310SY8uWjsjbxNBzyD-49hwF3OGYRkFPykoo/edit#gid=0&range=A5:B5'
+        target='_blank'
+        rel='noreferrer'
+        className='block rounded-xl bg-green-700 px-2 pb-1 pt-0.5 text-white'
+      >
+        <BsTable className='text-md mr-2 inline-block' />
+        <span className='text-sm font-bold'>Translation Sheet</span>
+      </a>
+    </SubFooter>
+  );
+}
+
 function InspiredByFooter() {
   const { t } = useTranslation('footer');
   return (
@@ -161,6 +178,8 @@ export function Footer({}: FooterProps) {
 
     if (i18n.language !== 'en' && translators.length > 0) {
       subfooters.splice(2, 0, { key: 'translators-credit', Footer: TranslatorsFooter });
+    } else if (i18n.language === 'en') {
+      subfooters.splice(2, 0, { key: 'help-translate', Footer: HelpTranslation });
     }
 
     return subfooters;
