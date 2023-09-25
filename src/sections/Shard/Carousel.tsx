@@ -32,7 +32,7 @@ const varients = {
 };
 
 export default function ShardCarousel() {
-  const { t } = useTranslation(['shardCarousel']);
+  const { t, i18n } = useTranslation(['shardCarousel']);
 
   const [direction, setDirection] = useState(0);
   const [date, setDate] = useState(() =>
@@ -84,13 +84,11 @@ export default function ShardCarousel() {
     const { haveShard, isRed, map } = info;
     const dateString = date.toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY);
     document.title =
-      'Sky Shards - ' + haveShard
+      'Sky Shards - ' +
+      (haveShard
         ? t('dynamicTitle.hasShard', { color: isRed ? 'red' : 'black', map, date: dateString })
-        : t('dynamicTitle.noShard', { date: dateString });
-    // edit description
-    // document.querySelector('meta[name="description"]')?.setAttribute('content', description);
-    // (haveShard ? `${isRed ? 'Red' : 'Black'} Shard in ${map}` : 'No Shard') + ' on ' + date.toFormat('dd LLL yy');
-  }, [date, info.haveShard, info.isRed]);
+        : t('dynamicTitle.noShard', { date: dateString }));
+  }, [date.day, date.month, date.year, info.haveShard, info.isRed, i18n.language]);
 
   return (
     <div className='grid h-full max-h-full w-full select-none grid-cols-[2rem_auto_2rem] grid-rows-[auto] items-center justify-items-center gap-1 overflow-hidden p-2 text-center'>
