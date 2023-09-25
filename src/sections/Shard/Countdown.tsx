@@ -22,7 +22,11 @@ export function ShardCountdownSection({ info }: { info: ShardInfo }) {
             <Trans
               t={t}
               i18nKey={landed ? 'landed' : 'landing'}
-              components={{ bold: <span className='font-bold' />, countdown: <Countdown to={countdownTo!} /> }}
+              components={{
+                bold: <span className='whitespace-nowrap font-bold' />,
+                countdown: <Countdown to={countdownTo!} />,
+                br: <br />,
+              }}
               values={{
                 i: upcommingIndex,
                 landedSince: now.diff(upcomming.start, 'seconds').toFormat(t('durationFmts:hm')),
