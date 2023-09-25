@@ -16,7 +16,7 @@ interface ShardProgressProps {
 
 export function ShardProgress({ info }: ShardProgressProps) {
   const { application: now } = useNow();
-  const { t } = useTranslation('progressSection');
+  const { t, i18n } = useTranslation('progressSection');
   const [useLocalTz, setUseLocalTz] = useState(true); //Use local time or sky time
 
   const startOfDay = info.date.startOf('day');
@@ -61,7 +61,7 @@ export function ShardProgress({ info }: ShardProgressProps) {
         })}
       </>
     ),
-    [info.offset, info.isRed, useLocalTz, LuxonSettings.defaultZone.name],
+    [info.offset, info.isRed, useLocalTz, LuxonSettings.defaultZone.name, i18n.language],
   );
 
   return useMemo(
@@ -114,6 +114,7 @@ export function ShardProgress({ info }: ShardProgressProps) {
       info.isRed,
       useLocalTz,
       LuxonSettings.defaultZone.name,
+      i18n.language,
     ],
   );
 }
