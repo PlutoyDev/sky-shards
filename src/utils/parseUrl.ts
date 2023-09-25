@@ -22,14 +22,14 @@ interface SkyShardUrl {
 
 export function replaceUrl(params: Partial<SkyShardUrl> = {}, pushHistory = true, state: unknown = null) {
   const today = DateTime.local().setZone('America/Los_Angeles').startOf('day');
-  const currentParams = parseUrl();
-  const { date, gsTrans, lang } = { ...currentParams, ...params };
+  const { date, gsTrans, lang } = params;
   const urlParams = new URLSearchParams();
   if (gsTrans) urlParams.set('gsTrans', '1');
   if (lang) urlParams.set('lang', lang);
-  const url = date.hasSame(today, 'day')
-    ? new URL('/', window.location.origin)
-    : new URL(`/date/${date.toFormat('yyyy/MM/dd')}`, window.location.origin);
+  const url =
+    !date || date.hasSame(today, 'day')
+      ? new URL('/', window.location.origin)
+      : new URL(`/date/${date.toFormat('yyyy/MM/dd')}`, window.location.origin);
   url.search = urlParams.toString();
   const urlStr = url.toString();
   if (pushHistory) {
