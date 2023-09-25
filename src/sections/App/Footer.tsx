@@ -110,9 +110,10 @@ function TranslatorsFooter() {
 }
 
 function InspiredByFooter() {
+  const { t } = useTranslation('footer');
   return (
     <SubFooter className='justify-cen ter flex flex-col flex-nowrap items-center justify-center gap-x-3 md:gap-x-6 landscape:flex-row'>
-      <p>Inspired by</p>
+      <p>{t('inspiredBy')}</p>
       <a
         target='_blank'
         rel='noreferrer'
@@ -126,9 +127,7 @@ function InspiredByFooter() {
           <span className='text-xs'> by Chris Stead</span>
         </h2>
         <BiLinkExternal className='mt-1.5 self-start' />
-        <p className='col-span-3 whitespace-normal text-xs'>
-          Visit it for timing of Geyser, Grandma, Turtle and many more
-        </p>
+        <p className='col-span-3 whitespace-normal text-xs'>{t('skyClockDescription')}</p>
       </a>
     </SubFooter>
   );
