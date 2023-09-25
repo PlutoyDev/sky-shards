@@ -3,7 +3,6 @@ import { Trans, useTranslation } from 'react-i18next';
 import { BiLinkExternal } from 'react-icons/bi';
 import { BsGithub } from 'react-icons/bs';
 import { TbForms } from 'react-icons/tb';
-import i18next from 'i18next';
 import { patternCredits } from '../../data/credits';
 import useFeedbackFormUrl from '../../hooks/useFeedbackFom';
 
@@ -74,10 +73,10 @@ function PattenCreditFooter() {
 }
 
 function TranslatorsFooter() {
-  const { t } = useTranslation('footer');
+  const { t, i18n } = useTranslation('footer');
   const translationErrorLink = t('translationErrorLink', {
-    commit: import.meta.env.VITE_GIT_COMMIT,
-    language: i18next.language,
+    commitHash: import.meta.env.VITE_GIT_COMMIT,
+    language: i18n.language,
   });
   let translators = [] as string[];
   try {
@@ -92,17 +91,27 @@ function TranslatorsFooter() {
   }
   return (
     <SubFooter className='flex flex-col items-center justify-center gap-y-1'>
-      <p className='text-center text-xs md:text-sm'>{t('translatedBy')}</p>
       <p className='text- flex w-full select-none flex-row flex-wrap items-center justify-center gap-x-1.5 whitespace-nowrap'>
+        <p className='text-center text-xs md:text-sm'>{t('translatedBy')}</p>
         {translators.map(t => (
           <span key={t}>{t}</span>
         ))}
       </p>
-      <p className='text-center text-[8px] md:text-xs'>
+      <p className='text-center text-xs'>
         <Trans
           t={t}
           i18nKey='translationErrors'
-          components={{ link: <a href={translationErrorLink} target='_blank' rel='noreferrer' /> }}
+          components={{
+            a: (
+              <a
+                className='underline decoration-dashed'
+                title='Report translation error'
+                href={translationErrorLink}
+                target='_blank'
+                rel='noreferrer'
+              />
+            ),
+          }}
         />
       </p>
     </SubFooter>

@@ -38,8 +38,8 @@
     "skyClockDescription": "Visit it for timing of Geyser, Grandma, Turtle and many more",
     "translatedBy": "Translated by:",
     "translators": "",
-    "translationErrors": "If you find any errors in the translation please report it <link>here</link>.",
-    "translationErrorLink": "https://docs.google.com/forms/d/e/1FAIpQLSf8CvIDxHz9hFkzaK-CFsGDKqIjiuAt4IDzigI8WjQnNBx6Ww/viewform?usp=pp_url&entry.402545620=Commit:{{commitHash}}%0ALang:{{language}}&entry.1859327625=Translation+Error"
+    "translationErrors": "If you find any errors in the translation please report it <a>here</a>.",
+    "translationErrorLink": "https://docs.google.com/forms/d/e/1FAIpQLSf8CvIDxHz9hFkzaK-CFsGDKqIjiuAt4IDzigI8WjQnNBx6Ww/viewform?usp=pp_url&entry.402545620=Commit:{{commitHash}}%0ALanguage:{{language}}&entry.1859327625=Translation+Error"
   },
   "durationUnits": {
     "seconds.long": "seconds",
