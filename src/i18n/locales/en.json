@@ -29,7 +29,7 @@
     "createdBy": "Created by: {{author}}",
     "version": "Version: {{version}}",
     "githubSourceLong": "Source on GitHub",
-    "githubSourceShort": "GitHub",
+    "githubSourceShort": "Source",
     "feedbackLong": "Submit Feedback",
     "feedbackShort": "Feedback",
     "disclaimer": "This app is not affiliated with That Game Company or Sky: Children of the Light",
