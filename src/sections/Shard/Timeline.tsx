@@ -70,7 +70,7 @@ export default function ShardTimeline({ date, info }: ShardTimelineSectionProp) 
                     <Clock
                       {...(miniClockType !== 2
                         ? { time: phases.land, convertTo: (['sky', 'local'] as const)[miniClockType] }
-                        : { duration: now.diff(phases.land) })}
+                        : { duration: phases.land.diff(now) })}
                       hideSeconds
                       disableMonoFont
                     />
