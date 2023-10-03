@@ -70,7 +70,7 @@ export default function ShardTimeline({ date, info }: ShardTimelineSectionProp) 
                     <Clock
                       {...(miniClockType !== 2
                         ? { time: phases.land, convertTo: (['sky', 'local'] as const)[miniClockType] }
-                        : { duration: now.diff(phases.land) })}
+                        : { duration: phases.land.diff(now) })}
                       hideSeconds
                       disableMonoFont
                     />
@@ -98,7 +98,7 @@ export default function ShardTimeline({ date, info }: ShardTimelineSectionProp) 
                         <h3 className='timeline-item-header'>{phasesName[pName]}</h3>
                         <time dateTime={phases[pName].toISO() ?? undefined} style={{ fontSize: '0.8em' }}>
                           <p>
-                            Relative: <Clock duration={now.diff(phases[pName])} hideSeconds />
+                            Relative: <Clock duration={phases[pName].diff(now)} hideSeconds />
                           </p>
                           <p>
                             Sky Time: <Clock time={phases[pName]} convertTo='sky' hideSeconds />
