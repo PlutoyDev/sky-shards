@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { BsChevronCompactDown, BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 import { AnimatePresence, motion } from 'framer-motion';
 import { DateTime } from 'luxon';
+import { Settings as LuxonSettings } from 'luxon';
 import { useHeaderFx } from '../../context/HeaderFx';
 import { getShardInfo } from '../../shardPredictor';
 import { parseUrl, replaceUrl } from '../../utils/parseUrl';
@@ -82,7 +83,7 @@ export default function ShardCarousel() {
 
   useEffect(() => {
     const { haveShard, isRed, map } = info;
-    const dateString = date.toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY);
+    const dateString = date.setLocale(LuxonSettings.defaultLocale).toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY);
     document.title =
       'Sky Shards - ' +
       (haveShard
