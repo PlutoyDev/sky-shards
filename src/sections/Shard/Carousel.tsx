@@ -40,7 +40,7 @@ export default function ShardCarousel() {
     roundToRefDate(parseUrl().date, DateTime.local().setZone(appZone).startOf('day')),
   );
   const info = useMemo(() => getShardInfo(date), [date.day, date.month, date.year]);
-  const summaryRef = useRef<HTMLDivElement>(null);
+  const carouselRef = useRef<HTMLDivElement>(null);
 
   const navigateDate = useCallback(
     (d: DateTime | number, reUrl = true) => {
@@ -92,7 +92,10 @@ export default function ShardCarousel() {
   }, [date.day, date.month, date.year, info.haveShard, info.isRed, i18n.language]);
 
   return (
-    <div className='grid h-full max-h-full w-full select-none grid-cols-[2rem_auto_2rem] grid-rows-[auto] items-center justify-items-center gap-1 overflow-hidden p-2 text-center'>
+    <div
+      className='grid h-full max-h-full w-full select-none grid-cols-[2rem_auto_2rem] grid-rows-[auto] items-center justify-items-center gap-1 overflow-hidden p-2 text-center'
+      ref={carouselRef}
+    >
       <AnimatePresence initial={false} custom={direction}>
         <motion.main
           key={date.toISO()}
@@ -117,10 +120,7 @@ export default function ShardCarousel() {
           }}
           style={{ fontSize: `${fontSize}em` }}
         >
-          <div
-            className='flex max-h-screen min-h-full w-full flex-col flex-nowrap items-center justify-center gap-1'
-            ref={summaryRef}
-          >
+          <div className='flex max-h-screen min-h-full w-full flex-col flex-nowrap items-center justify-center gap-1'>
             <ShardInfoSection info={info} />
             {info.haveShard && (
               <>
@@ -129,10 +129,10 @@ export default function ShardCarousel() {
                 <small
                   className="flex cursor-pointer flex-col items-center justify-center whitespace-nowrap font-['Bubblegum_Sans',_cursive] text-xs [@media_(min-height:_640px)]:lg:text-lg"
                   onClick={() => {
-                    summaryRef.current?.parentElement?.scrollBy({
-                      top: summaryRef.current?.offsetHeight,
-                      behavior: 'smooth',
-                    });
+                    const carousel = carouselRef.current;
+                    const content = carousel?.children[0];
+                    const summary = content?.children[0];
+                    content?.scrollTo({ top: summary?.clientHeight, behavior: 'smooth' });
                   }}
                 >
                   <span>{t('navigation.downwards')}</span>
