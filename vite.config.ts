@@ -12,12 +12,14 @@ process.env.VITE_VERSION_MINOR = packageJson.version.split('.').slice(0, 2).join
 process.env.VITE_GIT_BRANCH = process.env.CF_PAGES_BRANCH;
 process.env.VITE_GIT_COMMIT = process.env.CF_PAGES_COMMIT_SHA;
 
+const isCfPages = process.env.CF_PAGES === '1';
+
 console.log('Version', process.env.VITE_VERSION);
 console.log('Branch', process.env.VITE_GIT_BRANCH);
 console.log('Commit Ref', process.env.VITE_GIT_COMMIT);
 
 const translationJsonUrl =
-  'https://script.google.com/macros/s/AKfycbxc-VDrCpZHipFab4ZIQQLmWMbwcgrDZCpeZ-42eTtfmGmc6EWn0JnzmEGA1SG32kLd/exec';
+  'https://script.google.com/macros/s/AKfycbw3r2wYz_qnUf0shFqoZFTc5z6uQ1DNOdS54ZZ0vrfmcOl-OLKe-NW7GItLcLuNexr7/exec';
 const translationDir = normalizePath('./src/i18n');
 
 process.env.VITE_GS_TRANSLATION_URL = translationJsonUrl;
@@ -38,7 +40,7 @@ export default defineConfig({
       async buildStart() {
         console.log('Fetching translation data...');
         const [json, localLocales] = await Promise.all([
-          fetch(translationJsonUrl).then(res => res.json()),
+          fetch(translationJsonUrl + (isCfPages ? '?build=true' : '')).then(res => res.json()),
           readdir(translationDir + '/locales').then(files =>
             files.filter(file => file.endsWith('.json') && file !== 'en.json').map(file => file.slice(0, -5)),
           ),
