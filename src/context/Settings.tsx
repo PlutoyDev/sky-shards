@@ -50,7 +50,21 @@ interface SettingsProviderProps {
 export function SettingsProvider({ children }: SettingsProviderProps) {
   const [twelveHourModeSetting, setTwelveHourModeSetting] = useLocalStorageState('twelveHourMode', 'system');
   const [lightMode, setLightMode] = useLocalStorageState('lightMode', 'system');
-  const [language, setLanguage] = useLocalStorageState('language', () => parseUrl().lang ?? 'en');
+  const [language, setLanguage] = useLocalStorageState('language', () => {
+    const urlLang = parseUrl().lang;
+    if (urlLang) {
+      return urlLang;
+    }
+    const browserLang = navigator.language;
+    if (browserLang in languageResources) {
+      return browserLang;
+    }
+    const browserLangShort = browserLang.slice(0, 2);
+    if (browserLangShort in languageResources) {
+      return browserLangShort;
+    }
+    return 'en';
+  });
   const compactMode = useMediaQuery({ maxWidth: '300px' });
   const [languageLoader, setLanguageLoader] = useState<Settings['languageLoader']>({ loading: false });
 
