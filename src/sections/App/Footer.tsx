@@ -92,7 +92,7 @@ function TranslatorsFooter() {
   return (
     <SubFooter className='flex flex-col items-center justify-center gap-y-1'>
       <p className='text- flex w-full select-none flex-row flex-wrap items-center justify-center gap-x-1.5 whitespace-nowrap'>
-        <p className='text-center text-xs md:text-sm'>{t('translatedBy')}</p>
+        <span className='text-center text-xs md:text-sm'>{t('translatedBy')}</span>
         {translators.map(t => (
           <span key={t}>{t}</span>
         ))}
