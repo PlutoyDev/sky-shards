@@ -35,7 +35,7 @@ export default function Header() {
           </div>
           <DynamicCalendar className='max-md:animate-[dateSwap_10s_linear_-5s_infinite]' />
         </div>
-        <ClockNow hideSeconds className='text-2xl landscape:max-lg:text-lg' relFontSize={0} />
+        <ClockNow dualUnit className='text-2xl landscape:max-lg:text-lg' relFontSize={0} />
       </time>
 
       <div className='mr-1 flex flex-row flex-nowrap items-center justify-end gap-x-2 lg:gap-x-4'>

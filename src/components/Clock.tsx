@@ -1,4 +1,3 @@
-import { CSSProperties } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DateTime, Duration, Settings as LuxonSettings } from 'luxon';
 import { useNow } from '../context/Now';
@@ -7,21 +6,23 @@ import { useSettings } from '../context/Settings';
 interface ClockProp {
   time?: DateTime;
   duration?: Duration;
-  hideSeconds?: boolean;
+  dualUnit?: boolean;
   convertTo?: 'local' | 'sky';
   className?: string;
   relFontSize?: number;
   disableMonoFont?: boolean;
+  disableSeconds?: boolean;
 }
 
 export function StaticClock({
   time,
   duration,
-  hideSeconds,
+  dualUnit,
   convertTo,
   className = '',
   relFontSize = 1,
   disableMonoFont,
+  disableSeconds,
 }: ClockProp) {
   const { t } = useTranslation('durationFmts');
   const { twelveHourModeSetting } = useSettings();
@@ -31,13 +32,24 @@ export function StaticClock({
     time = time.setLocale(LuxonSettings.defaultLocale);
   }
 
+  //disableSeconds || dualUnit ? (Math.abs(duration.as('minutes')) > 90 ? 'hm' : disableSeconds ? 'm' : 'ms'  ) : 'hms'
   const formattedTime = duration
-    ? duration.toFormat(t(hideSeconds ? (Math.abs(duration.as('minutes')) > 90 ? 'hm' : 'ms') : 'hms'))
+    ? duration.toFormat(
+        t(
+          disableSeconds || dualUnit
+            ? Math.abs(duration.as('minutes')) > 90
+              ? 'hm'
+              : disableSeconds
+              ? 'm'
+              : 'ms'
+            : 'hms',
+        ),
+      )
     : time?.setZone(convertTo === 'local' ? 'default' : 'America/Los_Angeles')?.toLocaleString({
         hourCycle: twelveHourModeSetting === 'system' ? undefined : twelveHourModeSetting === 'true' ? 'h12' : 'h23',
         hour: '2-digit',
         minute: '2-digit',
-        second: hideSeconds ? undefined : '2-digit',
+        second: disableSeconds || dualUnit ? undefined : '2-digit',
       });
 
   className += disableMonoFont ? '' : ' font-mono';

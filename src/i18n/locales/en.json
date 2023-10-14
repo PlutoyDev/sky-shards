@@ -54,7 +54,8 @@
   "durationFmts": {
     "hm": "hh'h' mm'm'",
     "hms": "hh'h' mm'm' ss's'",
-    "ms": "mm'm' ss's'"
+    "ms": "mm'm' ss's'",
+    "m": "mm'm'"
   },
   "skyRealms": {
     "prairie.long": "Daylight Prairie",
@@ -116,14 +117,15 @@
   },
   "progressSection": {
     "showTimeIn.skyTime": "Showing time in <a>Sky time</a>",
-    "showTimeIn.localTime": "Showing time in <a>Your time</a>",
+    "showTimeIn.localTime": "Showing time in <a>Local time</a>",
+    "showTimeIn.relativeTime": "Showing time in <a>Relative time</a>",
     "startTimeOnly": "Limited width: Start time only"
   },
   "countdownSection": {
     "landing": "<bold>$t(shard:ordinal.{{i}})</bold> landing in <countdown/>",
     "landed": "<bold>$t(shard:ordinal.{{i}})</bold> landed <bold>{{landedSince}}</bold> ago. <br/>Ending in <countdown/>",
     "allEnded": "All shards had ended <countdown/> ago",
-    "yourTime": "Your time:",
+    "yourTime": "Local time:",
     "skyTime": "Sky time:"
   }
 }
