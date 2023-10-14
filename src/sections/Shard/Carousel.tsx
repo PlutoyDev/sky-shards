@@ -127,7 +127,7 @@ export default function ShardCarousel() {
                 <ShardProgress info={info} />
                 <ShardCountdownSection info={info} />
                 <small
-                  className="flex cursor-pointer flex-col items-center justify-center whitespace-nowrap font-['Bubblegum_Sans',_cursive] text-xs [@media_(min-height:_640px)]:lg:text-lg"
+                  className='flex cursor-pointer flex-col items-center justify-center font-serif text-xs [@media_(min-height:_640px)]:xl:text-lg'
                   onClick={() => {
                     const carousel = carouselRef.current;
                     const content = carousel?.children[0];
@@ -150,14 +150,14 @@ export default function ShardCarousel() {
         </motion.main>
       </AnimatePresence>
       <div
-        className="relative col-start-1 row-start-1 flex cursor-pointer flex-col items-center justify-center whitespace-nowrap font-['Bubblegum_Sans',_cursive] text-xs [writing-mode:vertical-lr] [@media_(min-height:_640px)]:lg:text-lg"
+        className='relative col-start-1 row-start-1 flex cursor-pointer flex-col-reverse items-center justify-center font-serif text-xs [writing-mode:vertical-rl] [@media_(min-height:_640px)]:xl:text-lg'
         onClick={() => navigateDate(-1)}
       >
         <span>{t('navigation.rightwards')}</span>
         <BsChevronRight className='m-0' strokeWidth={'0.1rem'} />
       </div>
       <div
-        className="relative col-start-3 row-start-1 flex cursor-pointer flex-col-reverse items-center justify-center whitespace-nowrap font-['Bubblegum_Sans',_cursive] text-xs [writing-mode:vertical-lr] [@media_(min-height:_640px)]:lg:text-lg"
+        className='relative col-start-3 row-start-1 flex cursor-pointer flex-col items-center justify-center font-serif text-xs [writing-mode:vertical-rl] [@media_(min-height:_640px)]:xl:text-lg'
         onClick={() => navigateDate(1)}
       >
         <span>{t('navigation.leftwards')}</span>
