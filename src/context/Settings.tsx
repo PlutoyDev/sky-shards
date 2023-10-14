@@ -55,6 +55,17 @@ export function SettingsProvider({ children }: SettingsProviderProps) {
     if (urlLang) {
       return urlLang;
     }
+
+    try {
+      for (const lang of navigator.languages) {
+        if (lang in languageResources) {
+          return lang;
+        }
+      }
+    } catch (err) {
+      console.error('failed to get navigator languages', err);
+    }
+
     const browserLang = navigator.language;
     if (browserLang in languageResources) {
       return browserLang;
@@ -63,6 +74,7 @@ export function SettingsProvider({ children }: SettingsProviderProps) {
     if (browserLangShort in languageResources) {
       return browserLangShort;
     }
+
     return 'en';
   });
   const compactMode = useMediaQuery({ maxWidth: '300px' });
