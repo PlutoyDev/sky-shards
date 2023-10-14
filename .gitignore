@@ -16,3 +16,5 @@ node_modules
 
 # Local Netlify folder
 .netlify
+
+src/i18n/locales/*.json

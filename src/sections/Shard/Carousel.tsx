@@ -1,28 +1,18 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
-import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
+import { BsChevronCompactDown, BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 import { AnimatePresence, motion } from 'framer-motion';
 import { DateTime } from 'luxon';
+import { Settings as LuxonSettings } from 'luxon';
 import { useHeaderFx } from '../../context/HeaderFx';
-import { getShardInfo, findNextShard } from '../../shardPredictor';
+import { getShardInfo } from '../../shardPredictor';
+import { parseUrl, replaceUrl } from '../../utils/parseUrl';
+import { ShardCountdownSection } from './Countdown';
+import ShardInfoSection from './Info';
 import { ShardMapInfographic, ShardDataInfographic } from './Infographic';
-import ShardSummary from './Summary';
-import ShardTimeline from './Timeline';
+import ShardProgress from './Progress';
 
 const appZone = 'America/Los_Angeles';
-
-const relDateMap = {
-  eytd: -2,
-  ereyesterday: -2,
-  ytd: -1,
-  yesterday: -1,
-  tmr: 1,
-  tomorrow: 1,
-  ovmr: 2,
-  overmorrow: 2,
-};
-
-const replaceUrl = (path: string, pushHistory = true, state: unknown = null) =>
-  pushHistory ? history.pushState(state, '', path) : history.replaceState(state, '', path);
 
 const roundToRefDate = (date: DateTime, ref: DateTime) =>
   date.hasSame(ref, 'day') ? ref : date < ref ? date.endOf('day') : date.startOf('day');
@@ -42,47 +32,15 @@ const varients = {
   }),
 };
 
-const getDateFromUrl = () => {
-  const today = DateTime.local().setZone('America/Los_Angeles').startOf('day');
-  const path = window.location.pathname;
-  if (path === '/') return today;
-  const [route, ...params] = path.split('/').slice(1);
-  if (route === 'date') {
-    const [yearStr, monthStr, dayStr] = params;
-    const year = parseInt(yearStr.length === 2 ? `20${yearStr}` : yearStr, 10);
-    const month = monthStr ? parseInt(monthStr, 10) : 1;
-    const day = dayStr ? parseInt(dayStr, 10) : 1;
-
-    if (year && month && day) {
-      const date = DateTime.local(year, month, day, { zone: appZone });
-      if (date.isValid) {
-        if (date < DateTime.local(2022, 10, 1, { zone: appZone })) {
-          return DateTime.local(2022, 10, 1, { zone: appZone });
-        } else if (!DateTime.local({ zone: appZone }).hasSame(date, 'day')) {
-          return roundToRefDate(date, today);
-        }
-      }
-    }
-  } else if (Object.keys(relDateMap).includes(route)) {
-    const offset = relDateMap[route as keyof typeof relDateMap];
-    const date = today.plus({ days: offset });
-    replaceUrl(`/date/${date.toFormat('yyyy/MM/dd')}`, false);
-    return roundToRefDate(date, today);
-  } else if (route === 'next') {
-    const today = DateTime.local().setZone('America/Los_Angeles');
-    const color = params[0] as 'red' | 'black' | undefined;
-    const date = findNextShard(today, color && { only: color }).date;
-    replaceUrl(`/date/${date.toFormat('yyyy/MM/dd')}`, false);
-    return roundToRefDate(date, today);
-  }
-  replaceUrl('/', false);
-  return today;
-};
-
 export default function ShardCarousel() {
+  const { t, i18n } = useTranslation(['shardCarousel']);
+
   const [direction, setDirection] = useState(0);
-  const [date, setDate] = useState(() => getDateFromUrl());
-  const info = useMemo(() => getShardInfo(date), [date]);
+  const [date, setDate] = useState(() =>
+    roundToRefDate(parseUrl().date, DateTime.local().setZone(appZone).startOf('day')),
+  );
+  const info = useMemo(() => getShardInfo(date), [date.day, date.month, date.year]);
+  const carouselRef = useRef<HTMLDivElement>(null);
 
   const navigateDate = useCallback(
     (d: DateTime | number, reUrl = true) => {
@@ -92,10 +50,10 @@ export default function ShardCarousel() {
       }
       setDirection(d > date ? 1 : -1);
       if (d.hasSame(today, 'day')) {
-        if (reUrl) replaceUrl('/', false);
+        if (reUrl) replaceUrl({ date: today });
         setDate(today);
       } else {
-        if (reUrl) replaceUrl(`/date/${d.toFormat('yyyy/MM/dd')}`);
+        if (reUrl) replaceUrl({ date: d });
         setDate(roundToRefDate(d, today));
       }
     },
@@ -110,7 +68,7 @@ export default function ShardCarousel() {
   useEffect(() => {
     let timeout: string | number | NodeJS.Timeout | undefined = undefined;
     const handleDateChange = () => {
-      const newDate = getDateFromUrl();
+      const newDate = roundToRefDate(parseUrl().date, DateTime.local().setZone(appZone).startOf('day'));
       if (!newDate.hasSame(date, 'day')) {
         navigateDate(newDate, false);
       }
@@ -125,12 +83,19 @@ export default function ShardCarousel() {
 
   useEffect(() => {
     const { haveShard, isRed, map } = info;
+    const dateString = date.setLocale(LuxonSettings.defaultLocale).toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY);
     document.title =
-      (haveShard ? `${isRed ? 'Red' : 'Black'} Shard in ${map}` : 'No Shard') + ' on ' + date.toFormat('dd LLL yy');
-  }, [date, info.haveShard, info.isRed]);
+      'Sky Shards - ' +
+      (haveShard
+        ? t('dynamicTitle.hasShard', { color: isRed ? 'red' : 'black', map, date: dateString })
+        : t('dynamicTitle.noShard', { date: dateString }));
+  }, [date.day, date.month, date.year, info.haveShard, info.isRed, i18n.language]);
 
   return (
-    <div className='grid h-full max-h-full w-full select-none grid-cols-[2rem_auto_2rem] grid-rows-[auto] items-center justify-items-center gap-1 overflow-hidden p-2 text-center'>
+    <div
+      className='grid h-full max-h-full w-full select-none grid-cols-[2rem_auto_2rem] grid-rows-[auto] items-center justify-items-center gap-1 overflow-hidden p-2 text-center'
+      ref={carouselRef}
+    >
       <AnimatePresence initial={false} custom={direction}>
         <motion.main
           key={date.toISO()}
@@ -155,28 +120,47 @@ export default function ShardCarousel() {
           }}
           style={{ fontSize: `${fontSize}em` }}
         >
-          <ShardSummary date={date} info={info} />
+          <div className='flex max-h-screen min-h-full w-full flex-col flex-nowrap items-center justify-center gap-1'>
+            <ShardInfoSection info={info} />
+            {info.haveShard && (
+              <>
+                <ShardProgress info={info} />
+                <ShardCountdownSection info={info} />
+                <small
+                  className='flex cursor-pointer flex-col items-center justify-center font-serif text-xs [@media_(min-height:_640px)]:xl:text-lg'
+                  onClick={() => {
+                    const carousel = carouselRef.current;
+                    const content = carousel?.children[0];
+                    const summary = content?.children[0];
+                    content?.scrollTo({ top: summary?.clientHeight, behavior: 'smooth' });
+                  }}
+                >
+                  <span>{t('navigation.downwards')}</span>
+                  <BsChevronCompactDown />
+                </small>
+              </>
+            )}
+          </div>
           {info.haveShard && (
             <>
               <ShardMapInfographic info={info} />
-              <ShardTimeline date={date} info={info} />
               <ShardDataInfographic info={info} />
             </>
           )}
         </motion.main>
       </AnimatePresence>
       <div
-        className="relative col-start-1 row-start-1 flex cursor-pointer flex-col items-center justify-center whitespace-nowrap font-['Bubblegum_Sans',_cursive] text-xs [writing-mode:vertical-lr] [@media_(min-height:_640px)]:lg:text-lg"
+        className='relative col-start-1 row-start-1 flex cursor-pointer flex-col-reverse items-center justify-center font-serif text-xs [writing-mode:vertical-rl] [@media_(min-height:_640px)]:xl:text-lg'
         onClick={() => navigateDate(-1)}
       >
-        <span>Swipe right or Click here for previous shard</span>
+        <span>{t('navigation.rightwards')}</span>
         <BsChevronRight className='m-0' strokeWidth={'0.1rem'} />
       </div>
       <div
-        className="relative col-start-3 row-start-1 flex cursor-pointer flex-col-reverse items-center justify-center whitespace-nowrap font-['Bubblegum_Sans',_cursive] text-xs [writing-mode:vertical-lr] [@media_(min-height:_640px)]:lg:text-lg"
+        className='relative col-start-3 row-start-1 flex cursor-pointer flex-col items-center justify-center font-serif text-xs [writing-mode:vertical-rl] [@media_(min-height:_640px)]:xl:text-lg'
         onClick={() => navigateDate(1)}
       >
-        <span>Swipe left or Click here for next shard</span>
+        <span>{t('navigation.leftwards')}</span>
         <BsChevronLeft className='m-0' strokeWidth={'0.1rem'} />
       </div>
     </div>

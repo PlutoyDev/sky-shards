@@ -1,17 +1,18 @@
-import { FaCog } from 'react-icons/fa';
+import { useTranslation } from 'react-i18next';
+import { FaCog, FaCalendarDay } from 'react-icons/fa';
 import { DateTime } from 'luxon';
-import Calendar from '../../components/Calendar';
-import Clock from '../../components/Clock';
+import { DynamicCalendar } from '../../components/Calendar';
+import { ClockNow } from '../../components/Clock';
 import { useHeaderFx } from '../../context/HeaderFx';
 import { useModal } from '../../context/ModalContext';
-import { useNow } from '../../context/Now';
+import DateSelectionModal from '../Modals/DateSelector';
 import SettingsModal from '../Modals/Settings';
 
 export default function Header() {
+  const { t } = useTranslation(['application', 'dateSelector', 'settings']);
   const { showModal } = useModal();
   const { navigateDay } = useHeaderFx();
   const navigateToday = () => navigateDay(DateTime.local({ zone: 'America/Los_Angeles' }));
-  const { application } = useNow();
 
   return (
     <header className='glass flex max-h-min flex-row flex-nowrap items-center justify-between px-5'>
@@ -29,20 +30,34 @@ export default function Header() {
         className='flex cursor-pointer flex-col flex-nowrap items-center justify-center gap-x-3 text-center md:flex-row landscape:flex-row'
       >
         <div className='max-md::text-right flex-col gap-x-2 max-md:grid lg:flex max-md:[&>*]:col-start-1 max-md:[&>*]:row-start-1'>
-          <div className='max-md:animate-[dateSwap_10s_linear_infinite]'>Now in sky</div>
-          <Calendar date={application} relFontSize={1} className='max-md:animate-[dateSwap_10s_linear_-5s_infinite]' />
+          <div className='max-md:animate-[dateSwap_10s_linear_infinite]'>
+            {t('application:headerDateTimeIndicator')}
+          </div>
+          <DynamicCalendar className='max-md:animate-[dateSwap_10s_linear_-5s_infinite]' />
         </div>
-        <Clock hideSeconds time={application} className='text-2xl landscape:max-lg:text-lg' relFontSize={0} />
+        <ClockNow dualUnit className='text-2xl landscape:max-lg:text-lg' relFontSize={0} />
       </time>
 
-      <div className='mr-1 flex flex-row flex-nowrap items-center justify-end gap-x-1 lg:gap-x-4'>
+      <div className='mr-1 flex flex-row flex-nowrap items-center justify-end gap-x-2 lg:gap-x-4'>
+        <button
+          className='w-min rounded-lg bg-slate-50 bg-opacity-25 p-1.5 shadow-xl shadow-zinc-700 hover:bg-opacity-50'
+          onClick={() => {
+            showModal({
+              children: DateSelectionModal,
+              hideOnOverlayClick: true,
+              title: t('dateSelector:title'),
+            });
+          }}
+        >
+          <FaCalendarDay size={18} />
+        </button>
         <button
           className='w-min rounded-lg bg-slate-50 bg-opacity-25 p-1.5 shadow-xl shadow-zinc-700 hover:bg-opacity-50'
           onClick={() => {
             showModal({
               children: SettingsModal,
               hideOnOverlayClick: true,
-              title: 'Settings',
+              title: t('settings:title'),
             });
           }}
         >

@@ -1,17 +1,3 @@
-/* bubblegum-sans-regular - latin */
-@font-face {
-  font-display: swap;
-  font-family: 'Bubblegum Sans';
-  font-style: normal;
-  font-weight: 400;
-  src: url('/fonts/bubblegum-sans-v16-latin-regular.eot');
-  src: url('/fonts/bubblegum-sans-v16-latin-regular.eot?#iefix') format('embedded-opentype'),
-    url('/fonts/bubblegum-sans-v16-latin-regular.woff2') format('woff2'),
-    url('/fonts/bubblegum-sans-v16-latin-regular.woff') format('woff'),
-    url('/fonts/bubblegum-sans-v16-latin-regular.ttf') format('truetype'),
-    url('/fonts/bubblegum-sans-v16-latin-regular.svg#BubblegumSans') format('svg');
-}
-
 /* caramel-regular - latin */
 @font-face {
   font-display: swap;
@@ -19,47 +5,10 @@
   font-style: normal;
   font-weight: 400;
   src: url('/fonts/caramel-v7-latin-regular.eot');
-  src: url('/fonts/caramel-v7-latin-regular.eot?#iefix') format('embedded-opentype'),
+  src:
+    url('/fonts/caramel-v7-latin-regular.eot?#iefix') format('embedded-opentype'),
     url('/fonts/caramel-v7-latin-regular.woff2') format('woff2'),
     url('/fonts/caramel-v7-latin-regular.woff') format('woff'),
     url('/fonts/caramel-v7-latin-regular.ttf') format('truetype'),
     url('/fonts/caramel-v7-latin-regular.svg#Caramel') format('svg');
-}
-
-/* orbitron-regular - latin */
-@font-face {
-  font-display: swap;
-  font-family: 'Orbitron';
-  font-style: normal;
-  font-weight: 400;
-  src: url('/fonts/orbitron-v25-latin-regular.eot');
-  src: url('/fonts/orbitron-v25-latin-regular.eot?#iefix') format('embedded-opentype'),
-    url('/fonts/orbitron-v25-latin-regular.woff2') format('woff2'),
-    url('/fonts/orbitron-v25-latin-regular.woff') format('woff'),
-    url('/fonts/orbitron-v25-latin-regular.ttf') format('truetype'),
-    url('/fonts/orbitron-v25-latin-regular.svg#Orbitron') format('svg');
-}
-/* orbitron-600 - latin */
-@font-face {
-  font-display: swap;
-  font-family: 'Orbitron';
-  font-style: normal;
-  font-weight: 600;
-  src: url('/fonts/orbitron-v25-latin-600.eot');
-  src: url('/fonts/orbitron-v25-latin-600.eot?#iefix') format('embedded-opentype'),
-    url('/fonts/orbitron-v25-latin-600.woff2') format('woff2'), url('/fonts/orbitron-v25-latin-600.woff') format('woff'),
-    url('/fonts/orbitron-v25-latin-600.ttf') format('truetype'),
-    url('/fonts/orbitron-v25-latin-600.svg#Orbitron') format('svg');
-}
-/* orbitron-800 - latin */
-@font-face {
-  font-display: swap;
-  font-family: 'Orbitron';
-  font-style: normal;
-  font-weight: 800;
-  src: url('/fonts/orbitron-v25-latin-800.eot');
-  src: url('/fonts/orbitron-v25-latin-800.eot?#iefix') format('embedded-opentype'),
-    url('/fonts/orbitron-v25-latin-800.woff2') format('woff2'), url('/fonts/orbitron-v25-latin-800.woff') format('woff'),
-    url('/fonts/orbitron-v25-latin-800.ttf') format('truetype'),
-    url('/fonts/orbitron-v25-latin-800.svg#Orbitron') format('svg');
 }

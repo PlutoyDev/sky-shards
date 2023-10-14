@@ -23,23 +23,24 @@ function ErrorFallback({ error }: FallbackProps) {
       </h1>
       <p className='text-sm'>Sorry, the app crashed</p>
       <p className='text-sm'>Please submit a bug report</p>
-      <a
-        href={feedbackUrl}
-        target='_blank'
-        rel='noreferrer'
-        className='mr-2 rounded-xl bg-purple-700 px-2 pb-1 pt-0.5 text-white'
-      >
-        <span className='text-sm font-bold '>Submit bug report</span>
-      </a>
-      <a
-        href='https://v3.sky-shards.pages.dev'
-        target='_blank'
-        rel='noreferrer'
-        className='ml-2 rounded-xl bg-purple-700 px-2 pb-1 pt-0.5 text-white'
-      >
-        <span className='text-sm font-bold '>Try the old version</span>
-      </a>
-      &nbsp;
+      <div className='mt-2 flex flex-row flex-wrap items-center justify-center gap-2'>
+        <a
+          href={feedbackUrl}
+          target='_blank'
+          rel='noreferrer'
+          className='whitespace-nowrap rounded-xl bg-purple-700 px-2 pb-1 pt-0.5 text-white'
+        >
+          <span className='text-sm font-bold '>Submit bug report</span>
+        </a>
+        <a
+          href='https://v3.sky-shards.pages.dev'
+          target='_blank'
+          rel='noreferrer'
+          className='whitespace-nowrap rounded-xl bg-purple-700 px-2 pb-1 pt-0.5 text-white'
+        >
+          <span className='text-sm font-bold '>Try the old version</span>
+        </a>
+      </div>
       <p>
         Sorry for the inconvenience, I will try to fix it as soon as possible. <br />
       </p>
