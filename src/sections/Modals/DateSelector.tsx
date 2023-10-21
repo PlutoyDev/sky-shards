@@ -25,14 +25,10 @@ export function DateSelectionModal({ hideModal }: ModalProps) {
   const endOfMth = startOfMth.endOf('month');
   const daysInMonth = startOfMth.daysInMonth!;
 
-  const shardInfos: [DateTime, ShardInfo][] = useMemo(
-    () =>
-      Array.from({ length: daysInMonth }, (_, i) => {
-        const date = startOfMth.plus({ days: i });
-        return [date, getShardInfo(date)];
-      }),
-    [year, month],
-  );
+  const shardInfos: [DateTime, ShardInfo][] = Array.from({ length: daysInMonth }, (_, i) => {
+    const date = startOfMth.plus({ days: i });
+    return [date, getShardInfo(date)];
+  });
 
   const nextMonth = startOfMth.plus({ months: 1 });
   const prevMonth = startOfMth.minus({ months: 1 });
@@ -45,10 +41,7 @@ export function DateSelectionModal({ hideModal }: ModalProps) {
     setYearMonth({ year: newDate.year, month: newDate.month });
   };
 
-  const rtf = useMemo(
-    () => new Intl.RelativeTimeFormat(LuxonSettings.defaultLocale, { numeric: 'auto' }),
-    [LuxonSettings.defaultLocale],
-  );
+  const rtf = new Intl.RelativeTimeFormat(LuxonSettings.defaultLocale, { numeric: 'auto' });
 
   const diffMonths = startOfMth.diff(today.startOf('month'), 'months').months;
 
@@ -115,7 +108,7 @@ export function DateSelectionModal({ hideModal }: ModalProps) {
               key={date.day}
               title={date.toLocaleString({ month: 'short', day: 'numeric', year: 'numeric' })}
               className={
-                'btn btn-outline btn-xs grid h-full w-full auto-rows-auto grid-cols-1 grid-rows-[auto] place-items-center content-center justify-between gap-0.5 overflow-x-clip py-0.5 !text-white backdrop-blur' +
+                'btn btn-outline btn-xs block h-full w-full overflow-x-clip py-0.5 !text-white' +
                 (haveShard ? '' : ' opacity-30')
               }
               onClick={() => {
@@ -125,7 +118,7 @@ export function DateSelectionModal({ hideModal }: ModalProps) {
             >
               <p
                 className={
-                  'rounded-full px-1 text-center align-middle text-lg font-bold lg:text-xl' +
+                  'mx-auto w-min rounded-full px-1 text-center align-middle text-lg font-bold lg:text-xl' +
                   (isToday ? ' border-2 border-dashed border-white' : '') +
                   (haveShard ? (isRed ? ' text-red-600' : ' text-black') : ' opacity-30 dark:opacity-60')
                 }
