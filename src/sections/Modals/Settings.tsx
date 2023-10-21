@@ -4,7 +4,6 @@ import { FaMinus, FaPlus, FaExclamation } from 'react-icons/fa';
 import { Settings as LuxonSettings, Zone } from 'luxon';
 import { useHeaderFx } from '../../context/HeaderFx';
 import { useSettings } from '../../context/Settings';
-import useLocalStorageState from '../../hooks/useLocalStorageState';
 import { languageCode, languageResources } from '../../i18n';
 import { parseUrl } from '../../utils/parseUrl';
 
