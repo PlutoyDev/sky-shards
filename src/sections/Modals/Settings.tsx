@@ -21,11 +21,12 @@ export default function SettingModal() {
     setLightMode,
     twelveHourModeSetting,
     setTwelveHourModeSetting,
+    timezone,
+    setTimezone,
     language,
     setLanguage,
     languageLoader,
   } = useSettings();
-  const [timezone, setTimezone] = useLocalStorageState('timezone', stringifyZone(LuxonSettings.defaultZone));
   const { fontSize: fontSizeAdjust, setFontSize: setFontSizeAdjust } = useHeaderFx();
   const [gsTrans, setGsTrans] = useState<{ state?: 'loading' | 'error'; codeLangs?: Record<string, string> }>({});
 

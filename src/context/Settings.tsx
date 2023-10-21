@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import i18next from 'i18next';
-import { Settings as LuxonSettings } from 'luxon';
+import { Zone, Settings as LuxonSettings } from 'luxon';
 import useLocalStorageState from '../hooks/useLocalStorageState';
 import { languageResources } from '../i18n';
 import { parseUrl } from '../utils/parseUrl';
@@ -13,10 +13,12 @@ export interface Settings {
 
   setTwelveHourModeSetting: (value: string) => void;
   setLightMode: (value: string) => void;
+  setTimezone: (value: string) => void;
   setLanguage: (value: string) => void;
 
   twelveHourModeSetting: string;
   lightMode: string;
+  timezone: string;
   language: string;
   languageLoader?: {
     error?: string;
@@ -32,10 +34,12 @@ export const SettingsContext = createContext<Settings>({
 
   setTwelveHourModeSetting: () => console.log('setTwelveHourModeSetting not yet initialized'),
   setLightMode: () => console.log('setLightMode not yet initialized'),
+  setTimezone: () => console.log('setTimezone not yet initialized'),
   setLanguage: () => console.log('setLanguage not yet initialized'),
 
   twelveHourModeSetting: 'system',
   lightMode: 'system',
+  timezone: LuxonSettings.defaultZone.name,
   language: 'en',
 });
 
@@ -50,6 +54,7 @@ interface SettingsProviderProps {
 export function SettingsProvider({ children }: SettingsProviderProps) {
   const [twelveHourModeSetting, setTwelveHourModeSetting] = useLocalStorageState('twelveHourMode', 'system');
   const [lightMode, setLightMode] = useLocalStorageState('lightMode', 'system');
+  const [timezone, setTimezone] = useLocalStorageState('timezone', LuxonSettings.defaultZone.name);
   const [language, setLanguage] = useLocalStorageState('language', () => {
     const urlLang = parseUrl().lang;
     if (urlLang) {
@@ -102,6 +107,12 @@ export function SettingsProvider({ children }: SettingsProviderProps) {
       document.documentElement.setAttribute('data-theme', 'dark');
     }
   }, [lightMode]);
+
+  useEffect(() => {
+    if (timezone !== LuxonSettings.defaultZone.name) {
+      LuxonSettings.defaultZone = timezone;
+    }
+  }, [timezone]);
 
   const loadLanguage = useCallback(async (language: string, fallbackLang: string) => {
     if (language === fallbackLang) {
@@ -169,9 +180,12 @@ export function SettingsProvider({ children }: SettingsProviderProps) {
 
         setTwelveHourModeSetting,
         setLightMode,
+        setTimezone,
         setLanguage,
+
         twelveHourModeSetting,
         lightMode,
+        timezone,
         language,
         languageLoader,
       }}
