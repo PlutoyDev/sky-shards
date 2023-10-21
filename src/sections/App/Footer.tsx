@@ -3,6 +3,7 @@ import { Trans, useTranslation } from 'react-i18next';
 import { BiLinkExternal } from 'react-icons/bi';
 import { BsGithub, BsTable } from 'react-icons/bs';
 import { TbForms } from 'react-icons/tb';
+import { Settings as LuxonSettings } from 'luxon';
 import { patternCredits } from '../../data/credits';
 import useFeedbackFormUrl from '../../hooks/useFeedbackFom';
 
@@ -183,7 +184,7 @@ export function Footer({}: FooterProps) {
     }
 
     return subfooters;
-  }, [i18n.language]);
+  }, [i18n.language, LuxonSettings.defaultZone.name]);
 
   const numSubfooters = subfooters.length;
 

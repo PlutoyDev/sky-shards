@@ -1,4 +1,5 @@
 import { Settings as LuxonSettings } from 'luxon';
+import i18n from '../i18n';
 
 const prefilledId = {
   debugInfo: 'entry.402545620',
@@ -29,17 +30,19 @@ export default function useFeedbackFormUrl(params?: FeedbackFormParams) {
 
   let debugInfo = `--App info--\nBranch: ${branchName}\nCommit: ${commitSha}\n`;
 
+  const appLang = i18n.language;
+  const appTimezone = LuxonSettings.defaultZone.name;
+
+  debugInfo += `Locale: ${appLang}\nTime zone: ${appTimezone}\n`;
+
   const size = window.innerWidth + 'x' + window.innerHeight;
-  const locale = navigator.language;
-  const timeZone = tryDefault(
-    () => LuxonSettings.defaultZone.name,
-    tryDefault(() => Intl.DateTimeFormat().resolvedOptions().timeZone, 'unknown'),
-  );
+  const locales = tryDefault(() => navigator.languages.join(', '), 'unknown');
+  const timeZone = tryDefault(() => Intl.DateTimeFormat().resolvedOptions().timeZone, 'unknown');
   const userAgent = tryDefault(() => navigator.userAgent, 'unknown');
 
   debugInfo +=
     `--Device info (Feel free to delete it)--\n` +
-    `Size: ${size}\nLocale: ${locale}\nTime zone: ${timeZone}\nUser agent: ${userAgent}\n`;
+    `Size: ${size}\nLocale: ${locales}\nTime zone: ${timeZone}\nUser agent: ${userAgent}\n`;
 
   if (params?.debugInfo) {
     debugInfo += `--Custom--\n${params.debugInfo}\n`;
