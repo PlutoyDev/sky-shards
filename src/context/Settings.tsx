@@ -129,7 +129,7 @@ export function SettingsProvider({ children }: SettingsProviderProps) {
         i18next.addResourceBundle(language, ns, res);
       }
       i18next.changeLanguage(language);
-      LuxonSettings.defaultLocale = isGS ? language.slice(0, -3) : language;
+      document.documentElement.lang = LuxonSettings.defaultLocale = isGS ? language.slice(0, -3) : language;
       console.log('loaded language resources', language);
       setLanguageLoader({ loading: false, isGS });
     } catch (err) {
@@ -154,7 +154,7 @@ export function SettingsProvider({ children }: SettingsProviderProps) {
     const prevLanguage = i18next.language;
     if (language === 'en' || (i18next.hasResourceBundle(language, 'shard') && !language.endsWith('-GS'))) {
       i18next.changeLanguage(language);
-      LuxonSettings.defaultLocale = language;
+      document.documentElement.lang = LuxonSettings.defaultLocale = language;
     } else {
       loadLanguage(language, prevLanguage);
     }
