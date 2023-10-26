@@ -12,7 +12,7 @@ export function ShardCountdownSection({ info }: { info: ShardInfo }) {
   const upcommingIndex = occurrences.findIndex(({ end }) => end > now);
   const upcomming = upcommingIndex >= 0 ? occurrences[upcommingIndex] : undefined;
   const landed = upcomming && upcomming.start < now;
-  const countdownTo = upcomming && landed ? occurrences[upcommingIndex]?.end : upcomming?.start;
+  const countdownTo = upcomming && landed ? occurrences[upcommingIndex]?.end : upcomming?.land;
 
   return (
     <section className='glass grid min-w-[12rem] auto-cols-auto auto-rows-auto place-items-center gap-x-4 md:min-w-[16rem] [@media_(max-height:_375px)]:min-w-[32rem] [@media_(max-height:_375px)]:items-end'>
