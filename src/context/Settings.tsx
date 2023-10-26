@@ -63,6 +63,9 @@ export function SettingsProvider({ children }: SettingsProviderProps) {
 
     try {
       for (const lang of navigator.languages) {
+        if (lang.slice(0,2) == 'en') {
+          return 'en'
+        }
         if (lang in languageResources) {
           return lang;
         }
