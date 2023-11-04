@@ -11,7 +11,7 @@ export function ShardCountdownSection({ info }: { info: ShardInfo }) {
   const { occurrences } = info;
   const upcommingIndex = occurrences.findIndex(({ end }) => end > now);
   const upcomming = upcommingIndex >= 0 ? occurrences[upcommingIndex] : undefined;
-  const landed = upcomming && upcomming.start < now;
+  const landed = upcomming && upcomming.land < now;
   const countdownTo = upcomming && landed ? occurrences[upcommingIndex]?.end : upcomming?.land;
 
   return (
@@ -29,7 +29,7 @@ export function ShardCountdownSection({ info }: { info: ShardInfo }) {
               }}
               values={{
                 i: upcommingIndex,
-                landedSince: now.diff(upcomming.start, 'seconds').toFormat(t('durationFmts:hm')),
+                landedSince: now.diff(upcomming.land, 'seconds').toFormat(t('durationFmts:hm')),
               }}
             />
           </div>

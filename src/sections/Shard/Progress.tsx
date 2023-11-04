@@ -41,8 +41,8 @@ export function ShardProgress({ info }: ShardProgressProps) {
           <Clock time={startOfDay} />
         </span>
         {/* Segments */}
-        {info.occurrences.map(({ start, end }, i) => {
-          const startPercent = start.diff(startOfDay).as('seconds') / 86400;
+        {info.occurrences.map(({ land, end }, i) => {
+          const startPercent = land.diff(startOfDay).as('seconds') / 86400;
           const endPercent = end.diff(startOfDay).as('seconds') / 86400;
           return (
             <div
@@ -57,7 +57,7 @@ export function ShardProgress({ info }: ShardProgressProps) {
                 }
               >
                 {/* <StaticClock time={start}  convertTo={useLocalTz ? 'local' : undefined} /> */}
-                <Clock time={start} />
+                <Clock time={land} />
               </span>
               <span className='absolute -right-[0.5em] top-0 max-sm:hidden'>
                 {/* <StaticClock time={end}  convertTo={useLocalTz ? 'local' : undefined} /> */}
