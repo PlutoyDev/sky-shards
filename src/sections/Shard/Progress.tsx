@@ -3,7 +3,7 @@
 // If shard is active the progress bar is the color of the shard
 // If shard is inactive the progress bar is white
 // show past in grey
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { DateTime, Settings as LuxonSettings } from 'luxon';
 import { StaticClock } from '../../components/Clock';
