@@ -31,7 +31,7 @@ export const ShardIsBuggedTrigger = memo(function BuggedShardTriger() {
           children: ShardIsBuggedModal,
           hideOnOverlayClick: true,
           onHidden: () => localStorage.setItem('buggedcleared-' + application.toSQLDate(), 'true'),
-          title: 'Bugged Shard Activated',
+          title: 'Bugged Shard Mode Activated',
         });
       }
     }
