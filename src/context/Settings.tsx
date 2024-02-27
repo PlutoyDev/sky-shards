@@ -1,7 +1,7 @@
-import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import i18next from 'i18next';
-import { Zone, Settings as LuxonSettings } from 'luxon';
+import { Settings as LuxonSettings } from 'luxon';
 import useLocalStorageState from '../hooks/useLocalStorageState';
 import { languageResources } from '../i18n';
 import { parseUrl } from '../utils/parseUrl';
@@ -63,8 +63,8 @@ export function SettingsProvider({ children }: SettingsProviderProps) {
 
     try {
       for (const lang of navigator.languages) {
-        if (lang.slice(0,2) == 'en') {
-          return 'en'
+        if (lang.slice(0, 2) == 'en') {
+          return 'en';
         }
         if (lang in languageResources) {
           return lang;
@@ -125,7 +125,7 @@ export function SettingsProvider({ children }: SettingsProviderProps) {
     console.log('downloading language resources', language, isGS);
     setLanguageLoader({ loading: true, isGS });
     try {
-      const promise: Promise<Record<string, any>> =
+      const promise =
         import.meta.env.VITE_GS_TRANSLATION_URL && isGS
           ? fetch(`${import.meta.env.VITE_GS_TRANSLATION_URL}?lang=${language.slice(0, -3)}`, {
               credentials: 'omit',
