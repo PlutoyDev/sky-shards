@@ -5,8 +5,31 @@ import { DynamicCalendar } from '../../components/Calendar';
 import { ClockNow } from '../../components/Clock';
 import { useHeaderFx } from '../../context/HeaderFx';
 import { useModal } from '../../context/ModalContext';
+import { useNow } from '../../context/Now';
 import DateSelectionModal from '../Modals/DateSelector';
 import SettingsModal from '../Modals/Settings';
+
+function HeaderDateTime({ navigateToday }: { navigateToday: () => void }) {
+  const { application: now } = useNow();
+  const { t } = useTranslation('application');
+  const dateActive = Math.floor(now.second / 6) % 2 === 0;
+
+  return (
+    <time
+      dateTime={now.toISO() ?? undefined}
+      onClick={navigateToday}
+      className='flex cursor-pointer flex-col flex-nowrap items-center justify-center gap-x-3 text-center md:flex-row landscape:flex-row'
+    >
+      <label
+        className={`max-md:swap ${dateActive ? 'max-md:swap-active' : ''} md:cursor-pointer md:flex-col md:gap-x-2 `}
+      >
+        <DynamicCalendar className='swap-on' />
+        <div className='swap-off'>{t('headerDateTimeIndicator')}</div>
+      </label>
+      <ClockNow dualUnit className='text-md xs:text-2xl' relFontSize={0} />
+    </time>
+  );
+}
 
 export default function Header() {
   const { t } = useTranslation(['application', 'dateSelector', 'settings']);
@@ -24,19 +47,7 @@ export default function Header() {
         Sky Shards
       </a>
 
-      <time
-        dateTime={DateTime.utc().toISO() ?? undefined}
-        onClick={navigateToday}
-        className='flex cursor-pointer flex-col flex-nowrap items-center justify-center gap-x-3 text-center md:flex-row landscape:flex-row'
-      >
-        <div className='max-md::text-right flex-col gap-x-2 max-md:grid lg:flex max-md:[&>*]:col-start-1 max-md:[&>*]:row-start-1'>
-          <div className='max-md:animate-[dateSwap_10s_linear_infinite]'>
-            {t('application:headerDateTimeIndicator')}
-          </div>
-          <DynamicCalendar className='max-md:animate-[dateSwap_10s_linear_-5s_infinite]' />
-        </div>
-        <ClockNow dualUnit className='text-2xl landscape:max-lg:text-lg' relFontSize={0} />
-      </time>
+      <HeaderDateTime navigateToday={navigateToday} />
 
       <div className='mr-1 flex flex-row flex-nowrap items-center justify-end gap-x-2 lg:gap-x-4'>
         <button
