@@ -1,5 +1,4 @@
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
-import { useMediaQuery } from 'react-responsive';
 import i18next from 'i18next';
 import { Settings as LuxonSettings } from 'luxon';
 import useLocalStorageState from '../hooks/useLocalStorageState';
@@ -9,7 +8,6 @@ import { parseUrl } from '../utils/parseUrl';
 export interface Settings {
   isTwelveHourMode: boolean;
   isLightMode: boolean;
-  isCompactMode: boolean;
 
   setTwelveHourModeSetting: (value: string) => void;
   setLightMode: (value: string) => void;
@@ -30,7 +28,6 @@ export interface Settings {
 export const SettingsContext = createContext<Settings>({
   isTwelveHourMode: false,
   isLightMode: false,
-  isCompactMode: false,
 
   setTwelveHourModeSetting: () => console.log('setTwelveHourModeSetting not yet initialized'),
   setLightMode: () => console.log('setLightMode not yet initialized'),
@@ -85,7 +82,6 @@ export function SettingsProvider({ children }: SettingsProviderProps) {
 
     return 'en';
   });
-  const compactMode = useMediaQuery({ maxWidth: '300px' });
   const [languageLoader, setLanguageLoader] = useState<Settings['languageLoader']>({ loading: false });
 
   const twelveHourMode =
@@ -179,7 +175,6 @@ export function SettingsProvider({ children }: SettingsProviderProps) {
       value={{
         isTwelveHourMode: twelveHourMode,
         isLightMode: boolLightMode,
-        isCompactMode: compactMode,
 
         setTwelveHourModeSetting,
         setLightMode,
