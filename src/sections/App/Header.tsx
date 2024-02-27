@@ -50,30 +50,38 @@ export default function Header() {
       <HeaderDateTime navigateToday={navigateToday} />
 
       <div className='mr-1 flex flex-row flex-nowrap items-center justify-end gap-x-2 lg:gap-x-4'>
-        <button
-          className='w-min rounded-lg bg-slate-50 bg-opacity-25 p-1.5 shadow-xl shadow-zinc-700 hover:bg-opacity-50'
-          onClick={() => {
-            showModal({
-              children: DateSelectionModal,
-              hideOnOverlayClick: true,
-              title: t('dateSelector:title'),
-            });
-          }}
-        >
-          <FaCalendarDay size={18} />
-        </button>
-        <button
-          className='w-min rounded-lg bg-slate-50 bg-opacity-25 p-1.5 shadow-xl shadow-zinc-700 hover:bg-opacity-50'
-          onClick={() => {
-            showModal({
-              children: SettingsModal,
-              hideOnOverlayClick: true,
-              title: t('settings:title'),
-            });
-          }}
-        >
-          <FaCog size={18} />
-        </button>
+        <div className='tooltip tooltip-bottom' data-tip={t('dateSelector:title')}>
+          <button
+            type='button'
+            title={t('dateSelector:title')}
+            className='w-min rounded-lg bg-slate-50 bg-opacity-25 p-1.5 shadow-xl shadow-zinc-700 hover:bg-opacity-50'
+            onClick={() => {
+              showModal({
+                children: DateSelectionModal,
+                hideOnOverlayClick: true,
+                title: t('dateSelector:title'),
+              });
+            }}
+          >
+            <FaCalendarDay size={18} />
+          </button>
+        </div>
+        <div className='tooltip tooltip-bottom' data-tip={t('settings:title')}>
+          <button
+            type='button'
+            title={t('settings:title')}
+            className='w-min rounded-lg bg-slate-50 bg-opacity-25 p-1.5 shadow-xl shadow-zinc-700 hover:bg-opacity-50'
+            onClick={() => {
+              showModal({
+                children: SettingsModal,
+                hideOnOverlayClick: true,
+                title: t('settings:title'),
+              });
+            }}
+          >
+            <FaCog size={18} />
+          </button>
+        </div>
       </div>
     </header>
   );
