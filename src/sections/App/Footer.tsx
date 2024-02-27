@@ -148,7 +148,7 @@ function InspiredByFooter() {
         className='z-10 grid cursor-pointer grid-rows-2 rounded-lg border border-zinc-500 px-2 text-center shadow-2xl shadow-zinc-700  '
         style={{ gridTemplateColumns: 'max-content min-content max-content' }}
       >
-        <img className='ml-auto mt-1.5 h-4 w-4' src='/ext/sky-clock.png' />
+        <img className='ml-auto mt-1.5 h-4 w-4' src='/ext/sky-clock.webp' />
         <h2 className='mx-2 whitespace-nowrap text-center'>
           <span className='text-sm underline'>Sky Clock</span>
           <span className='text-xs'> by Chris Stead</span>
