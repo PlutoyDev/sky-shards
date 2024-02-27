@@ -162,9 +162,7 @@ function InspiredByFooter() {
 
 const durationPerSection = 5; // seconds
 
-interface FooterProps {}
-
-export function Footer({}: FooterProps) {
+export function Footer() {
   const [currentSection, setCurrentSection] = useState(0);
   const { i18n, t } = useTranslation('footer');
 

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 import { DateTime } from 'luxon';
@@ -156,12 +156,12 @@ export function DateSelectionModal({ hideModal }: ModalProps) {
           <option value={5}>{t('columnType.realm')}</option>
           <option value={7}>{t('columnType.weekday')}</option>
         </select>
-        <button className='btn btn-primary btn-xs justify-self-end whitespace-nowrap' onClick={e => changeMonth(-1)}>
+        <button className='btn btn-primary btn-xs justify-self-end whitespace-nowrap' onClick={() => changeMonth(-1)}>
           <BsChevronLeft />
           <span className='max-md:hidden'>{prevMonth.toLocaleString({ month: 'long', year: 'numeric' })}</span>
           <span className='md:hidden'>{prevMonth.toLocaleString({ month: 'short', year: '2-digit' })}</span>
         </button>
-        <button className='btn btn-primary btn-xs justify-self-start whitespace-nowrap' onClick={e => changeMonth(1)}>
+        <button className='btn btn-primary btn-xs justify-self-start whitespace-nowrap' onClick={() => changeMonth(1)}>
           <span className='md:hidden'>{nextMonth.toLocaleString({ month: 'short', year: '2-digit' })}</span>
           <span className='max-md:hidden'>{nextMonth.toLocaleString({ month: 'long', year: 'numeric' })}</span>
           <BsChevronRight />

@@ -1,5 +1,5 @@
 import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
-import { Settings as LuxonSettings, Zone } from 'luxon';
+import { Settings as LuxonSettings } from 'luxon';
 import { HeaderFxProvider } from './context/HeaderFx';
 import { ModalProvider } from './context/ModalContext';
 import { NowProvider } from './context/Now';

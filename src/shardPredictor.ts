@@ -12,7 +12,6 @@ const redShardInterval = Duration.fromObject({ hours: 6 });
 // const realmsFull = ['Daylight Prairie', 'Hidden Forest', 'Valley Of Triumph', 'Golden Wasteland', 'Vault Of Knowledge'];
 // const realmsNick = ['Prairie', 'Forest', 'Valley', 'Wasteland', 'Vault'];
 const realms = ['prairie', 'forest', 'valley', 'wasteland', 'vault'] as const;
-type Realms = (typeof realms)[number];
 type Areas = keyof Translation['skyMaps'];
 
 interface ShardConfig {
