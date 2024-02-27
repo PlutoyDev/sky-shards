@@ -18,9 +18,7 @@ function ErrorFallback({ error }: FallbackProps) {
   });
   return (
     <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform text-center [&>*]:mb-2'>
-      <h1 className='text-5xl' style={{ fontFamily: "'Caramel', cursive" }}>
-        Sky Shards
-      </h1>
+      <h1 className='font-[cursive] text-5xl'>Sky Shards</h1>
       <p className='text-sm'>Sorry, the app crashed</p>
       <p className='text-sm'>Please submit a bug report</p>
       <div className='mt-2 flex flex-row flex-wrap items-center justify-center gap-2'>

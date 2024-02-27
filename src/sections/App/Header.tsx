@@ -42,7 +42,7 @@ export default function Header() {
       <a
         href='/'
         onClick={e => (navigateToday(), e.preventDefault())}
-        className='mb-1 ml-1 cursor-pointer text-left font-[Caramel,_cursive] text-3xl font-bold lg:text-3xl landscape:max-md:text-lg'
+        className='ml-1 cursor-pointer text-left font-[cursive] text-3xl font-bold lg:text-3xl landscape:max-md:text-lg'
       >
         Sky Shards
       </a>
