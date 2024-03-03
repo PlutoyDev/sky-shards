@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useMemo, useState } from 'react';
+import { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { BiLinkExternal } from 'react-icons/bi';
 import { BsGithub, BsTable } from 'react-icons/bs';
@@ -13,11 +13,7 @@ interface SubFooterProps {
 }
 
 function SubFooter({ className, children }: SubFooterProps) {
-  return (
-    <div className={`w-full max-w-full ${className}`} style={{ height: 'calc(100% - 4rem)' }}>
-      {children}
-    </div>
-  );
+  return <div className={`carousel-item h-full w-full max-w-full ${className}`}>{children}</div>;
 }
 
 function AppDetailFooter() {
@@ -160,11 +156,13 @@ function InspiredByFooter() {
   );
 }
 
-const durationPerSection = 5; // seconds
+const durationPerSection = 15; // seconds
 
 export function Footer() {
   const [currentSection, setCurrentSection] = useState(0);
   const { i18n, t } = useTranslation('footer');
+  const footerRef = useRef<HTMLDivElement>(null);
+  const timeoutRef = useRef<number | null>(null);
 
   const subfooters = useMemo(() => {
     const subfooters = [
@@ -187,27 +185,32 @@ export function Footer() {
   const numSubfooters = subfooters.length;
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSection(prev => (prev + 1) % numSubfooters);
-    }, durationPerSection * 5000);
-    return () => clearInterval(interval);
-  }, [numSubfooters]);
+    if (footerRef.current) {
+      footerRef.current.scrollTo({ top: currentSection * footerRef.current.clientHeight, behavior: 'smooth' });
+    }
+  }, [currentSection]);
 
-  const transY = (-100 / numSubfooters) * currentSection;
+  useEffect(() => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    timeoutRef.current = window.setTimeout(() => {
+      setCurrentSection((currentSection + 1) % numSubfooters);
+    }, durationPerSection * 1000);
+
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, [currentSection, numSubfooters]);
 
   return (
-    <footer className='glass h-28 w-full overflow-y-hidden !py-0'>
-      <div
-        className='flex w-full flex-col items-center justify-evenly transition-transform'
-        style={{
-          height: numSubfooters * 100 + '%',
-          transform: `translateY(${transY}%)`,
-        }}
-      >
-        {subfooters.map(({ key, Footer }) => (
-          <Footer key={key} />
-        ))}
-      </div>
+    <footer className='carousel carousel-vertical glass h-28 w-full cursor-row-resize !py-0' ref={footerRef}>
+      {subfooters.map(({ key, Footer }) => (
+        <Footer key={key} />
+      ))}
     </footer>
   );
 }
