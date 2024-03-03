@@ -39,12 +39,8 @@ export default function Header() {
 
   return (
     <header className='glass flex max-h-min flex-row flex-nowrap items-center justify-between px-5'>
-      <a
-        href='/'
-        onClick={e => (navigateToday(), e.preventDefault())}
-        className='ml-1 cursor-pointer text-left font-[cursive] text-3xl font-bold lg:text-3xl landscape:max-md:text-lg'
-      >
-        Sky Shards
+      <a href='/' onClick={e => (navigateToday(), e.preventDefault())}>
+        <img src='/icons/appName.webp' alt='Sky Shards' className='h-6 w-auto xs:h-10 ' />
       </a>
 
       <HeaderDateTime navigateToday={navigateToday} />
