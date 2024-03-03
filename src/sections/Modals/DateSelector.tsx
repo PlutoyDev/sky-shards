@@ -118,7 +118,7 @@ export function DateSelectionModal({ hideModal }: ModalProps) {
             >
               <p
                 className={
-                  'mx-auto w-min rounded-full px-1 text-center align-middle text-lg font-bold lg:text-xl' +
+                  'mx-auto w-min whitespace-nowrap rounded-full px-1 text-center align-middle text-lg font-bold lg:text-xl' +
                   (isToday ? ' border-2 border-dashed border-white' : '') +
                   (haveShard ? (isRed ? ' text-red-600' : ' text-black') : ' opacity-30 dark:opacity-60')
                 }
