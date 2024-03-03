@@ -142,10 +142,10 @@ export default function ShardCarousel() {
             )}
           </div>
           {info.haveShard && (
-            <>
+            <div className='flex flex-row flex-wrap items-start justify-center gap-6'>
               <ShardMapInfographic info={info} />
               <ShardDataInfographic info={info} />
-            </>
+            </div>
           )}
         </motion.main>
       </AnimatePresence>

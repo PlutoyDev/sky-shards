@@ -1,4 +1,4 @@
-import { ComponentPropsWithoutRef, ReactNode, CSSProperties, useState, useCallback, useEffect } from 'react';
+import { ReactNode, useState, useEffect } from 'react';
 import { BiLinkExternal } from 'react-icons/bi';
 import { BsDiscord } from 'react-icons/bs';
 import { ShardInfo } from '../../shardPredictor';
@@ -8,47 +8,47 @@ interface ShardInfographicsProps {
   image: string;
   imageAlt: string;
   credits: ReactNode;
-  minWidth?: CSSProperties['minWidth'];
-  minHeight?: CSSProperties['minHeight'];
-  maxWidth?: CSSProperties['maxWidth'];
-  maxHeight?: CSSProperties['maxHeight'];
-  divProps?: ComponentPropsWithoutRef<'div'>;
 }
 
-function ShardInfographics({
-  title,
-  image,
-  imageAlt,
-  minWidth = '50%',
-  minHeight = '50%',
-  maxWidth,
-  maxHeight,
-  credits,
-  divProps,
-}: ShardInfographicsProps) {
+function ShardInfographics({ title, image, imageAlt, credits }: ShardInfographicsProps) {
   const [noImg, setNoImg] = useState(image === '');
   useEffect(() => {
     setNoImg(image === '');
   }, [image]);
 
   return (
-    <section className='shard-infographics glass' {...divProps}>
-      <h1 className='title'>{title}</h1>
-      {noImg && (
-        <div className='no-img'>
-          <div className='text'>Infographic has yet to be created for the following</div>
+    <div className='glass'>
+      <h1 className='mb-1 font-extrabold underline'>{title}</h1>
+      {noImg ? (
+        <div role='alert' className='alert '>
+          {/* Copied from DaisyUI */}
+          <svg
+            xmlns='http://www.w3.org/2000/svg'
+            fill='none'
+            viewBox='0 0 24 24'
+            className='h-6 w-6 shrink-0 stroke-current'
+          >
+            <path
+              strokeLinecap='round'
+              strokeLinejoin='round'
+              strokeWidth='2'
+              d='M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'
+            ></path>
+          </svg>
+          <span>Unable to find image</span>
         </div>
+      ) : (
+        <a href={image} className='block p-0.5' target='_blank' rel='noreferrer'>
+          <img
+            src={image}
+            alt={imageAlt}
+            onError={() => setNoImg(true)}
+            className='mx-auto cursor-pointer rounded-md shadow-lg md:max-w-lg'
+          />
+        </a>
       )}
-      <div className='image'>
-        <img
-          src={image}
-          alt={imageAlt}
-          onError={() => setNoImg(true)}
-          style={{ minWidth, minHeight, maxWidth, maxHeight }}
-        />
-      </div>
-      <small className='credits'>{credits}</small>
-    </section>
+      <small>{credits}</small>
+    </div>
   );
 }
 
@@ -64,22 +64,18 @@ export function ShardMapInfographic({ info }: ShardMapInfographic) {
       image={map}
       imageAlt={info.map}
       credits={
-        <div
-          className='credit glass'
-          onClick={useCallback(() => window?.open('https://discord.gg/skyinfographicsdatabase'), [])}
-        >
-          <p>
-            <span>
-              <strong>Sky: COTL </strong>
-              <span>Infographic Database Discord Server </span>
-            </span>
-            <BsDiscord style={{ display: 'inline' }} />
-          </p>
-          <p>
-            <span>Click here to Join Server </span>
-            <BiLinkExternal style={{ display: 'inline' }} />
-          </p>
-        </div>
+        <a href='https://discord.gg/skyinfographicsdatabase' target='_blank' rel='noreferrer'>
+          <div className='glass'>
+            <p>
+              <strong>Sky: COTL </strong>Infographic Database Discord Server
+              <BsDiscord className='ml-1 inline' />
+            </p>
+            <p>
+              Click here to Join Server
+              <BiLinkExternal className='ml-1 inline' />
+            </p>
+          </div>
+        </a>
       }
     />
   );
@@ -97,12 +93,10 @@ export function ShardDataInfographic({ info }: ShardDataInfographic) {
       image={data}
       imageAlt={info.map}
       credits={
-        <div className='credit'>
-          <span>
-            By <s>Clam</s> <strong>Galerowfylery </strong>
-          </span>
-          <BsDiscord style={{ display: 'inline' }} />
-        </div>
+        <>
+          By <s>Clam</s> <strong>Galerowfylery </strong>
+          <BsDiscord className='ml-1 inline' />
+        </>
       }
     />
   );
