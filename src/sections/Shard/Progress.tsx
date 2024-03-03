@@ -86,14 +86,13 @@ export function ShardProgress({ info }: ShardProgressProps) {
             i18nKey={`showTimeIn.${timeType}Time`}
             components={{
               a: (
-                <a
+                <span
                   className='text-bold cursor-pointer underline decoration-dashed'
-                  onClick={e => (
-                    e.preventDefault(),
+                  onClick={e =>
                     setTimeType(
                       ({ local: isRecent ? 'relative' : 'sky', relative: 'sky', sky: 'local' } as const)[timeType],
                     )
-                  )}
+                  }
                 />
               ),
             }}
