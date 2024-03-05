@@ -98,8 +98,13 @@ export function getShardInfo(date: DateTime) {
   const haveShard = !noShardWkDay.includes(dayOfWk);
   const map = maps[realmIdx];
   const rewardAC = isRed ? overrideRewardAC[map] ?? defRewardAC : undefined;
+  let firstStart = today.plus(offset);
+  //Detect timezone changed, happens on Sunday, shardInfoIdx is 2,3 or 4. Offset > 2hrs
+  if (dayOfWk === 7 && today.isInDST !== firstStart.isInDST) {
+    firstStart = firstStart.plus({ hours: firstStart.isInDST ? -1 : 1 });
+  }
   const occurrences = Array.from({ length: 3 }, (_, i) => {
-    const start = today.plus(offset).plus(interval.mapUnits(x => x * i));
+    const start = firstStart.plus(interval.mapUnits(x => x * i));
     const land = start.plus(landOffset);
     const end = start.plus(endOffset);
     return { start, land, end };
