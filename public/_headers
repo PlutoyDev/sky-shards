@@ -7,6 +7,7 @@
   X-XSS-Protection: 1; mode=block
   X-Content-Type-Options: nosniff
   Referrer-Policy: same-origin
+  Link: <https://sky-shards.pages.dev/oembed>; rel="alternate"; type="application/json+oembed"; title="Sky Shards">
 
 /*.js
   ! Cache-Control
