@@ -6,5 +6,6 @@
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true
   },
-  "include": ["vite.config.ts", "manifest.ts", "workbox.ts", "package.json"]
+  "include": ["vite.config.ts", "manifest.ts", "workbox.ts", "package.json"],
+  "exclude": ["functions/**/*"]
 }

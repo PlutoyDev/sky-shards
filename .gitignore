@@ -18,3 +18,5 @@ node_modules
 .netlify
 
 src/i18n/locales/*.json
+
+.wrangler
