@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { FaMinus, FaPlus, FaExclamation } from 'react-icons/fa';
 import { Settings as LuxonSettings, Zone } from 'luxon';
 import { useHeaderFx } from '../../context/HeaderFx';
+import { ModalProps } from '../../context/ModalContext';
 import { useSettings } from '../../context/Settings';
 import { languageCode, languageResources } from '../../i18n';
 import { parseUrl } from '../../utils/parseUrl';
@@ -13,7 +14,7 @@ const timezones = JSON.parse(timezonesJson);
 
 const stringifyZone = (zone: string | Zone) => (typeof zone === 'string' ? zone : zone.name);
 
-export default function SettingModal() {
+export default function SettingModal({ hideModal }: ModalProps) {
   const { t } = useTranslation('settings');
   const {
     lightMode,
@@ -132,7 +133,7 @@ export default function SettingModal() {
 
         <select
           className='no-scrollbar select select-primary select-xs mt-1 w-full bg-primary text-primary-content'
-          onChange={e => setLanguage(e.target.value)}
+          onChange={e => (setLanguage(e.target.value), hideModal())}
           value={language}
         >
           <option value='en'>{languageCode.en}</option>
