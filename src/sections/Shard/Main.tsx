@@ -1,4 +1,4 @@
-import { ComponentProps, useMemo, useRef } from 'react';
+import { ComponentProps, useMemo, useRef, forwardRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BsChevronCompactDown } from 'react-icons/bs';
 import { DateTime, Settings as LuxonSettings } from 'luxon';
@@ -14,10 +14,10 @@ interface ShardMainProps extends Omit<ComponentProps<'div'>, 'className'> {
   isMain?: boolean;
 }
 
-export default function ShardMain({ date, isMain, ...props }: ShardMainProps) {
+export default forwardRef<HTMLElement, ShardMainProps>(function ShardMain({ date, isMain, ...props }, ref) {
   const { t, i18n } = useTranslation(['shardCarousel']);
   const info = useMemo(() => getShardInfo(date), [date.day, date.month, date.year]);
-  const ref = useRef<HTMLDivElement>(null);
+  const localRef = useRef<HTMLElement | null>(null);
 
   useLegacyEffect(() => {
     const { haveShard, isRed, map } = info;
@@ -28,12 +28,16 @@ export default function ShardMain({ date, isMain, ...props }: ShardMainProps) {
         : t('dynamicTitle.noShard', { date: dateString })) + ' - Sky Shards';
   }, [date.day, date.month, date.year, info.haveShard, info.isRed, i18n.language]);
 
-  const MainOrDiv = isMain ? 'main' : 'div';
-
   return (
-    <MainOrDiv
-      ref={ref}
-      className='no-scrollbar col-start-2 row-start-1 flex h-full max-h-full w-full flex-col flex-nowrap items-center justify-start gap-2 overflow-x-hidden overflow-y-scroll text-center'
+    <main
+      ref={i => {
+        localRef.current = i;
+        if (ref) {
+          if (typeof ref === 'function') ref(i);
+          else ref.current = i;
+        }
+      }}
+      className='no-scrollbar col-start-2 row-start-1 flex h-full max-h-full w-full touch-pan-y flex-col flex-nowrap items-center justify-start gap-2 overflow-x-hidden overflow-y-scroll text-center duration-150 ease-in-out'
       {...props}
     >
       <div className='flex max-h-screen min-h-full w-full flex-col flex-nowrap items-center justify-center gap-1'>
@@ -45,7 +49,7 @@ export default function ShardMain({ date, isMain, ...props }: ShardMainProps) {
             <small
               className='flex cursor-pointer flex-col items-center justify-center font-serif text-xs [@media_(min-height:_640px)]:xl:text-lg'
               onClick={() => {
-                const carousel = ref.current;
+                const carousel = localRef.current?.parentElement;
                 const content = carousel?.children[0];
                 const summary = content?.children[0];
                 content?.scrollTo({ top: summary?.clientHeight, behavior: 'smooth' });
@@ -63,6 +67,6 @@ export default function ShardMain({ date, isMain, ...props }: ShardMainProps) {
           <ShardDataInfographic info={info} />
         </div>
       )}
-    </MainOrDiv>
+    </main>
   );
-}
+});
