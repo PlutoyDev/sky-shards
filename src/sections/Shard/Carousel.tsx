@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BsChevronCompactDown, BsChevronLeft, BsChevronRight } from 'react-icons/bs';
-import { AnimatePresence, motion } from 'framer-motion';
 import { DateTime } from 'luxon';
 import { Settings as LuxonSettings } from 'luxon';
 import { useHeaderFx } from '../../context/HeaderFx';
@@ -96,8 +95,8 @@ export default function ShardCarousel() {
       className='grid h-full max-h-full w-full select-none grid-cols-[2rem_auto_2rem] grid-rows-[auto] items-center justify-items-center gap-1 overflow-hidden p-2 text-center'
       ref={carouselRef}
     >
-      <AnimatePresence initial={false} custom={direction}>
-        <motion.main
+      {/* <AnimatePresence initial={false} custom={direction}>
+        <main
           key={date.toISO()}
           className='no-scrollbar col-start-2 row-start-1 flex h-full max-h-full w-full flex-col flex-nowrap items-center justify-start gap-2 overflow-x-hidden overflow-y-scroll text-center'
           initial='enter'
@@ -147,8 +146,8 @@ export default function ShardCarousel() {
               <ShardDataInfographic info={info} />
             </div>
           )}
-        </motion.main>
-      </AnimatePresence>
+        </main>
+      </AnimatePresence> */}
       <div
         className='relative col-start-1 row-start-1 flex cursor-pointer flex-col-reverse items-center justify-center font-serif text-xs [writing-mode:vertical-rl] [@media_(min-height:_640px)]:xl:text-lg'
         onClick={() => navigateDate(-1)}

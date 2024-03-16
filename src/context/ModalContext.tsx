@@ -1,7 +1,6 @@
 // React Modal Context
 import { useState, createContext, useContext, ReactNode, FC, useEffect, useRef, useCallback } from 'react';
 import { ImCross } from 'react-icons/im';
-import { motion, AnimatePresence } from 'framer-motion';
 
 export interface ModalProps {
   hideModal: () => void;
