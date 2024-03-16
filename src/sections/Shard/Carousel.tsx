@@ -82,13 +82,14 @@ export default function ShardCarousel() {
     onDrag: ({ movement: [x] }) => {
       if (ref.current) {
         ref.current.style.transitionProperty = 'transform';
+        ref.current.style.transitionDuration = '25ms';
         ref.current.style.transform = `translateX(${x}px)`;
       }
     },
     onDragEnd: ({ movement: [x], velocity: [vx] }) => {
       if (ref.current) {
+        ref.current.style.transitionDuration = '150ms';
         const swipePower = x * vx;
-        console.log(swipePower);
         if (Math.abs(swipePower) > 400) navigateDate(Math.sign(x) * -1);
         else ref.current.style.transform = 'translateX(0)';
       }
