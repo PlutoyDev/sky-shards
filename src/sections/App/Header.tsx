@@ -21,7 +21,8 @@ function HeaderDateTime({ navigateToday }: { navigateToday: () => void }) {
       className='flex cursor-pointer flex-col flex-nowrap items-center justify-center gap-x-3 text-center md:flex-row landscape:flex-row'
     >
       <label
-        className={`max-md:swap ${dateActive ? 'max-md:swap-active' : ''} md:cursor-pointer md:flex-col md:gap-x-2 `}
+        className='short:swap data-[swap]:short:swap-active tall:md:cursor-pointer tall:md:flex-col tall:md:gap-x-2 max-md:swap data-[swap]:max-md:swap-active'
+        data-swap={dateActive}
       >
         <DynamicCalendar className='swap-on' />
         <div className='swap-off'>{t('headerDateTimeIndicator')}</div>
