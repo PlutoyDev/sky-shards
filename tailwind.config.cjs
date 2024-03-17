@@ -15,15 +15,13 @@ module.exports = {
     screens: {
       'xs': '375px',
       ...defaultTheme.screens,
-      'short': { raw: '(max-height: 475px)' },
+      'short': { raw: '(max-height: 474px)' },
       'tall': { raw: '(min-height: 475px)' },
       // Don't know why, but the "max" will be removed when "short" was added
-      'max-xs': { max: '375px' },
-      'max-sm': { max: '640px' },
-      'max-md': { max: '768px' },
-      'max-lg': { max: '1024px' },
-      'max-xl': { max: '1280px' },
-      'max-2xl': { max: '1536px' },
+      'max-xs': { max: '374px' },
+      'max-sm': { max: '639px' },
+      'max-md': { max: '767px' },
+      'max-lg': { max: '1023px' },
     },
   },
   daisyui: {
