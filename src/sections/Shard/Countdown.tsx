@@ -15,10 +15,10 @@ export function ShardCountdownSection({ info }: { info: ShardInfo }) {
   const countdownTo = upcomming && landed ? occurrences[upcommingIndex]?.end : upcomming?.land;
 
   return (
-    <section className='glass grid min-w-[12rem] auto-cols-auto auto-rows-auto place-items-center gap-x-4 md:min-w-[16rem] [@media_(max-height:_375px)]:min-w-[32rem] [@media_(max-height:_375px)]:items-end'>
+    <section className='short:min-w-[32rem] short:items-end tall:md:min-w-[16rem] glass grid min-w-[12rem] auto-cols-auto auto-rows-auto place-items-center gap-x-4'>
       {upcomming ? (
         <>
-          <div className='col-start-1 row-start-1 w-full md:col-span-2 landscape:col-span-2 [@media_(max-height:_375px)]:col-span-1 [@media_(max-height:_375px)]:col-start-2 [@media_(max-height:_375px)]:row-start-1 '>
+          <div className='short:col-span-1 short:col-start-2 short:row-start-1 tall:md:col-span-2 col-start-1 row-start-1 w-full '>
             <Trans
               t={t}
               i18nKey={landed ? 'landed' : 'landing'}
@@ -34,20 +34,20 @@ export function ShardCountdownSection({ info }: { info: ShardInfo }) {
             />
           </div>
           <time
-            className='col-start-1 row-start-2 [@media_(max-height:_375px)]:row-start-1'
+            className='short:row-start-1 col-start-1 row-start-2'
             dateTime={countdownTo?.setZone('local')?.toISO({ suppressMilliseconds: true }) ?? undefined}
           >
             <strong>{t('yourTime')}</strong>
-            <small className='block [@media_(max-height:_375px)]:hidden'>({(Settings.defaultZone as Zone).name})</small>
+            <small className='block'>({(Settings.defaultZone as Zone).name})</small>
             <Calendar date={countdownTo!} convertTo='local' className='block font-bold opacity-80' relFontSize={0.8} />
             <StaticClock time={countdownTo} convertTo='local' className='block font-bold' />
           </time>
           <time
-            className='col-start-1 row-start-3 md:col-start-2 md:row-start-2 landscape:col-start-2 landscape:row-start-2 [@media_(max-height:_375px)]:col-start-3 [@media_(max-height:_375px)]:row-start-1'
+            className='short:col-start-3 short:row-start-1 tall:md:col-start-2 tall:md:row-start-2 col-start-1 row-start-3'
             dateTime={countdownTo?.toISO({ suppressMilliseconds: true }) ?? undefined}
           >
             <strong>{t('skyTime')}</strong>
-            <small className='block [@media_(max-height:_375px)]:hidden'>(America/Los_Angeles)</small>
+            <small className='block'>(America/Los_Angeles)</small>
             <Calendar date={countdownTo!} className='block font-bold opacity-80' relFontSize={0.8} />
             <StaticClock time={countdownTo} className='block font-bold' />
           </time>

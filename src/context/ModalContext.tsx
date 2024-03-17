@@ -81,7 +81,7 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
         data-open={!!modalProps}
       >
         <div
-          className='glass modal-box my-4 !w-max cursor-default rounded-lg transition-[width,height] sm:container max-sm:max-w-[80vw] sm:mx-auto [@media_(max-height:_375px)]:max-h-[80vh]'
+          className='short:max-h-[80vh] glass modal-box my-4 !w-max cursor-default rounded-lg transition-[width,height] sm:container max-sm:max-w-[80vw] sm:mx-auto'
           onClick={e => e.stopPropagation()}
         >
           {(switchAnimate.current = !switchAnimate.current)}
