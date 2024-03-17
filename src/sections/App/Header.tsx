@@ -40,7 +40,7 @@ export default function Header() {
   return (
     <header className='glass flex max-h-min flex-row flex-nowrap items-center justify-between px-5'>
       <a href='/' onClick={e => (navigateToday(), e.preventDefault())}>
-        <img src='/icons/appName.webp' alt='Sky Shards' className='h-6 w-auto xs:h-10 ' />
+        <img src='/icons/appName.webp' alt='Sky Shards' className='h-7 w-auto md:h-10' />
       </a>
 
       <HeaderDateTime navigateToday={navigateToday} />
