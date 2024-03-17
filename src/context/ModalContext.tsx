@@ -85,15 +85,17 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
           onClick={e => e.stopPropagation()}
         >
           {(switchAnimate.current = !switchAnimate.current)}
-          <button className='absolute right-4 top-2' onClick={() => hideModal()}>
-            <ImCross />
-          </button>
           {title && <h1 className='text-center text-lg font-semibold'>{title}</h1>}
-          <div className='overflow-y-auto'>
-            {modalProps && (
-              <modalProps.children hideModal={hideModal} setOnHidden={setOnHiddenWrapper} setTitle={setTitle} />
-            )}
-          </div>
+          {modalProps && (
+            <>
+              <button type='button' title='Close' className='absolute right-4 top-2' onClick={() => hideModal()}>
+                <ImCross />
+              </button>
+              <div className='overflow-y-auto'>
+                <modalProps.children hideModal={hideModal} setOnHidden={setOnHiddenWrapper} setTitle={setTitle} />
+              </div>
+            </>
+          )}
         </div>
       </div>
     </ModalContext.Provider>
