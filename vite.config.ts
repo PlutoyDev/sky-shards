@@ -5,7 +5,6 @@ import { defineConfig, normalizePath } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 import manifest from './manifest';
 import packageJson from './package.json';
-import workbox from './workbox';
 
 process.env.VITE_VERSION = packageJson.version;
 process.env.VITE_VERSION_MINOR = packageJson.version.split('.').slice(0, 2).join('.');
@@ -78,7 +77,21 @@ export default defineConfig({
         'ext/*',
       ],
       manifest,
-      workbox,
+      workbox: {
+        runtimeCaching: [
+          {
+            urlPattern: /^https:\/\/static\.cloudflareinsights\.com\/beacon\.min\.js/i,
+            handler: 'StaleWhileRevalidate',
+            options: {
+              cacheName: 'cloudflare-insights',
+              expiration: {
+                maxEntries: 1,
+                maxAgeSeconds: 60 * 60 * 24 * 30,
+              },
+            },
+          },
+        ],
+      },
     }),
   ],
 });
