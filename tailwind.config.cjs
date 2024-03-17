@@ -13,8 +13,17 @@ module.exports = {
   plugins: [require('daisyui')],
   theme: {
     screens: {
-      xs: '375px',
+      'xs': '375px',
       ...defaultTheme.screens,
+      'short': { raw: '(max-height: 475px)' },
+      'tall': { raw: '(min-height: 475px)' },
+      // Don't know why, but the "max" will be removed when "short" was added
+      'max-xs': { max: '375px' },
+      'max-sm': { max: '640px' },
+      'max-md': { max: '768px' },
+      'max-lg': { max: '1024px' },
+      'max-xl': { max: '1280px' },
+      'max-2xl': { max: '1536px' },
     },
   },
   daisyui: {
