@@ -21,7 +21,8 @@ function HeaderDateTime({ navigateToday }: { navigateToday: () => void }) {
       className='flex cursor-pointer flex-col flex-nowrap items-center justify-center gap-x-3 text-center md:flex-row landscape:flex-row'
     >
       <label
-        className={`max-md:swap ${dateActive ? 'max-md:swap-active' : ''} md:cursor-pointer md:flex-col md:gap-x-2 `}
+        className='short:swap data-[swap]:short:swap-active tall:md:cursor-pointer tall:md:flex-col tall:md:gap-x-2 max-md:swap data-[swap]:max-md:swap-active'
+        data-swap={dateActive}
       >
         <DynamicCalendar className='swap-on' />
         <div className='swap-off'>{t('headerDateTimeIndicator')}</div>
@@ -40,7 +41,7 @@ export default function Header() {
   return (
     <header className='glass flex max-h-min flex-row flex-nowrap items-center justify-between px-5'>
       <a href='/' onClick={e => (navigateToday(), e.preventDefault())}>
-        <img src='/icons/appName.webp' alt='Sky Shards' className='h-6 w-auto xs:h-10 ' />
+        <img src='/icons/appName.webp' alt='Sky Shards' className='h-7 w-auto md:h-10' />
       </a>
 
       <HeaderDateTime navigateToday={navigateToday} />

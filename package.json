@@ -1,7 +1,7 @@
 {
   "name": "sky-shards",
   "private": true,
-  "version": "6.1.0",
+  "version": "6.2.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "framer-motion": "^11.0.6",
+    "@use-gesture/react": "^10.3.0",
     "i18next": "^23.6.0",
     "luxon": "^3.4.4",
     "react": "^18.2.0",

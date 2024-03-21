@@ -1,7 +1,6 @@
 // React Modal Context
 import { useState, createContext, useContext, ReactNode, FC, useEffect, useRef, useCallback } from 'react';
 import { ImCross } from 'react-icons/im';
-import { motion, AnimatePresence } from 'framer-motion';
 
 export interface ModalProps {
   hideModal: () => void;
@@ -32,6 +31,7 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
   const [modalProps, setModalProps] = useState<ShowModalOption | undefined>(undefined);
   const [onHidden, setOnHidden] = useState<(() => void) | undefined>(undefined);
   const [title, setTitle] = useState<string | undefined>(undefined);
+  const switchAnimate = useRef(false);
   const existingPopStateListener = useRef<typeof window.onpopstate>(window.onpopstate);
 
   const keydownListener = useCallback((e: KeyboardEvent) => {
@@ -75,43 +75,29 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
   return (
     <ModalContext.Provider value={{ showModal, hideModal }}>
       {children}
-      <AnimatePresence>
-        {modalProps && (
-          <>
-            {/* Overlay */}
-            <motion.div
-              className='fixed inset-0 z-50 cursor-pointer bg-black bg-opacity-50 backdrop-blur-sm backdrop-filter'
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.1 }}
-              onClick={() => modalProps.hideOnOverlayClick && hideModal()}
-            />
-            {/* Modal */}
-            <motion.div
-              className='fixed inset-0 z-50 mx-auto flex cursor-pointer flex-col items-center justify-center'
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
-              transition={{ duration: 0.1 }}
-              onClick={() => modalProps.hideOnOverlayClick && hideModal()}
-            >
-              <div
-                className='glass my-4 !w-max cursor-default overflow-y-auto rounded-lg transition-[height] sm:container max-sm:max-w-[80vw] sm:mx-auto [@media_(max-height:_375px)]:max-h-[80vh]'
-                onClick={e => e.stopPropagation()}
-              >
-                <button className='absolute right-4 top-2' onClick={() => hideModal()}>
-                  <ImCross />
-                </button>
-                {title && <h1 className='text-center text-lg font-semibold'>{title}</h1>}
-                <div className='overflow-y-auto'>
-                  <modalProps.children hideModal={hideModal} setOnHidden={setOnHiddenWrapper} setTitle={setTitle} />
-                </div>
+      <div
+        className='modal data-[open=true]:modal-open'
+        onClick={() => modalProps?.hideOnOverlayClick && hideModal()}
+        data-open={!!modalProps}
+      >
+        <div
+          className='short:max-h-[80vh] glass modal-box my-4 !w-max cursor-default rounded-lg transition-[width,height] sm:container max-sm:max-w-[80vw] sm:mx-auto'
+          onClick={e => e.stopPropagation()}
+        >
+          {(switchAnimate.current = !switchAnimate.current)}
+          {title && <h1 className='text-center text-lg font-semibold'>{title}</h1>}
+          {modalProps && (
+            <>
+              <button type='button' title='Close' className='absolute right-4 top-2' onClick={() => hideModal()}>
+                <ImCross />
+              </button>
+              <div className='overflow-y-auto'>
+                <modalProps.children hideModal={hideModal} setOnHidden={setOnHiddenWrapper} setTitle={setTitle} />
               </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+            </>
+          )}
+        </div>
+      </div>
     </ModalContext.Provider>
   );
 };
