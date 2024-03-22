@@ -4,6 +4,7 @@ import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 import { createUseGesture, dragAction } from '@use-gesture/react';
 import { DateTime } from 'luxon';
 import { useHeaderFx } from '../../context/HeaderFx';
+import { useSettings } from '../../context/Settings';
 import { parseUrl, replaceUrl } from '../../utils/parseUrl';
 import ShardMain from './Main';
 
@@ -21,9 +22,7 @@ export default function ShardCarousel() {
   const primaryElementRef = useRef<JSX.Element | null>(null);
   const exitingElementRef = useRef<JSX.Element | null>(null);
 
-  const [date, setDate] = useState(() =>
-    roundToRefDate(parseUrl().date, DateTime.local().setZone(appZone).startOf('day')),
-  );
+  const { date, setSettings } = useSettings();
 
   const previousDate = useRef<DateTime>(date);
 
@@ -33,14 +32,7 @@ export default function ShardCarousel() {
       const toDate = typeof d === 'number' ? date.plus({ days: d }) : d;
 
       if (date.hasSame(toDate, 'day')) return;
-
-      if (toDate.hasSame(today, 'day')) {
-        if (reUrl) replaceUrl({ date: today });
-        setDate(today);
-      } else {
-        if (reUrl) replaceUrl({ date: toDate });
-        setDate(roundToRefDate(toDate, today));
-      }
+      setSettings({ date: toDate }, reUrl);
     },
     [date],
   );
@@ -50,21 +42,21 @@ export default function ShardCarousel() {
     setNavigateDay(navigateDate);
   }, [navigateDate, setNavigateDay]);
 
-  useEffect(() => {
-    let timeout: string | number | NodeJS.Timeout | undefined = undefined;
-    const handleDateChange = () => {
-      const newDate = roundToRefDate(parseUrl().date, DateTime.local().setZone(appZone).startOf('day'));
-      if (!newDate.hasSame(date, 'day')) {
-        navigateDate(newDate, false);
-      }
-      const msToNextDay = DateTime.local().setZone('America/Los_Angeles').endOf('day').diffNow().as('milliseconds');
-      clearTimeout(timeout);
-      timeout = setTimeout(handleDateChange, msToNextDay);
-    };
-    handleDateChange();
-    window.addEventListener('popstate', handleDateChange);
-    return () => window.removeEventListener('popstate', handleDateChange);
-  }, [navigateDate]);
+  // useEffect(() => {
+  //   let timeout: string | number | NodeJS.Timeout | undefined = undefined;
+  //   const handleDateChange = () => {
+  //     const newDate = roundToRefDate(parseUrl().date, DateTime.local().setZone(appZone).startOf('day'));
+  //     if (!newDate.hasSame(date, 'day')) {
+  //       navigateDate(newDate, false);
+  //     }
+  //     const msToNextDay = DateTime.local().setZone('America/Los_Angeles').endOf('day').diffNow().as('milliseconds');
+  //     clearTimeout(timeout);
+  //     timeout = setTimeout(handleDateChange, msToNextDay);
+  //   };
+  //   handleDateChange();
+  //   window.addEventListener('popstate', handleDateChange);
+  //   return () => window.removeEventListener('popstate', handleDateChange);
+  // }, [navigateDate]);
 
   const bind = useDrag({
     onDrag: ({ movement: [x] }) => {

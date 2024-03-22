@@ -25,7 +25,7 @@ export function StaticClock({
   disableSeconds,
 }: ClockProp) {
   const { t } = useTranslation('durationFmts');
-  const { twelveHourModeSetting } = useSettings();
+  const { twelveHourMode } = useSettings();
   if (!duration && !time) throw new Error('Time component requires either time or duration prop');
   if (time && duration) throw new Error('Time component requires either time or duration prop, not both');
   if (time && time.locale !== LuxonSettings.defaultLocale) {
@@ -46,7 +46,7 @@ export function StaticClock({
         ),
       )
     : time?.setZone(convertTo === 'local' ? 'default' : 'America/Los_Angeles')?.toLocaleString({
-        hourCycle: twelveHourModeSetting === 'system' ? undefined : twelveHourModeSetting === 'true' ? 'h12' : 'h23',
+        hourCycle: twelveHourMode === 'system' ? undefined : twelveHourMode === 'true' ? 'h12' : 'h23',
         hour: '2-digit',
         minute: '2-digit',
         second: disableSeconds || dualUnit ? undefined : '2-digit',

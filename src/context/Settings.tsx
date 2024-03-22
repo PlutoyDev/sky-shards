@@ -1,194 +1,283 @@
-import { createContext, useCallback, useContext, useEffect, useState } from 'react';
-import i18next from 'i18next';
-import { Settings as LuxonSettings } from 'luxon';
-import useLocalStorageState from '../hooks/useLocalStorageState';
+/*
+Handle routing, url manipulation, url parsing, history & state management.
+
+URL Format before v7:
+Path: /, /date/{yyyy}/{MM}/{dd}, date/{relDate}
+Query: gsTrans=1, lang=xx.
+
+new URL Format:
+Path: /, /{yyyy}/{MM}/{dd}, /{lang}/{yyyy}/{MM}/{dd},
+Query: gsTrans=1, twelveHour=(true|false|system), lightMode=(true|false|system), timezone.
+*/
+import { useState, useCallback, createContext, useContext } from 'react';
+import { DateTime, SystemZone, Settings as LuxonSettings } from 'luxon';
+import useLegacyEffect from '../hooks/useLegacyEffect';
 import { languageResources } from '../i18n';
-import { parseUrl } from '../utils/parseUrl';
 
-export interface Settings {
-  isTwelveHourMode: boolean;
-  isLightMode: boolean;
+const appZone = 'America/Los_Angeles';
 
-  setTwelveHourModeSetting: (value: string) => void;
-  setLightMode: (value: string) => void;
-  setTimezone: (value: string) => void;
-  setLanguage: (value: string) => void;
+const relDateMap = {
+  eytd: -2,
+  ereyesterday: -2,
+  ytd: -1,
+  yesterday: -1,
+  tmr: 1,
+  tomorrow: 1,
+  ovmr: 2,
+  overmorrow: 2,
+} as const;
 
-  twelveHourModeSetting: string;
-  lightMode: string;
-  timezone: string;
-  language: string;
-  languageLoader?: {
-    error?: string;
-    loading?: boolean;
-    isGS?: boolean;
+function isOldUrlFormat(url: URL) {
+  const { pathname, searchParams } = url;
+  return pathname.includes('date') || searchParams.has('lang');
+}
+
+interface SettingsOld {
+  date?: DateTime;
+  gsTrans?: boolean;
+  lang?: string;
+}
+
+function parseOldUrl(url: URL): SettingsOld {
+  const ret: SettingsOld = {};
+
+  const { pathname, searchParams } = url;
+  if (searchParams.has('gsTrans')) ret.gsTrans = searchParams.get('gsTrans') === '1';
+  if (searchParams.has('lang')) ret.lang = searchParams.get('lang')!;
+
+  if (pathname !== '/') {
+    const [route, ...params] = pathname.split('/').slice(1);
+    if (route === 'date') {
+      const [yearStr, monthStr, dayStr] = params;
+      const year = parseInt(yearStr.length === 2 ? `20${yearStr}` : yearStr, 10);
+      const month = monthStr ? parseInt(monthStr, 10) : 1;
+      const day = dayStr ? parseInt(dayStr, 10) : 1;
+      if (year && month && day) {
+        const date = DateTime.local(year, month, day, { zone: appZone });
+        if (date.isValid) {
+          if (date < DateTime.local(2022, 10, 1, { zone: appZone })) {
+            ret.date = DateTime.local(2022, 10, 1, { zone: appZone });
+          } else {
+            ret.date = date;
+          }
+        }
+      }
+    } else if (route in relDateMap) {
+      const date = DateTime.local()
+        .setZone(appZone)
+        .plus({ days: relDateMap[route as keyof typeof relDateMap] });
+      ret.date = date;
+    }
+  }
+
+  return ret;
+}
+
+interface SettingsNew extends SettingsOld {
+  twelveHourMode?: 'true' | 'false' | 'system';
+  lightMode?: 'true' | 'false' | 'system';
+  timezone?: string;
+}
+
+function parseNewUrl(url: URL): SettingsNew {
+  const ret: SettingsNew = {};
+
+  const { pathname, searchParams } = url;
+  const [yearLangOrRel, ...dateParts] = pathname.split('/');
+  if (yearLangOrRel === undefined || yearLangOrRel === '') {
+    ret.date = DateTime.now().setZone(appZone).startOf('day');
+  } else if (yearLangOrRel in relDateMap) {
+    // first part is rel date
+    ret.date = DateTime.now()
+      .setZone(appZone)
+      .plus({ days: relDateMap[yearLangOrRel as keyof typeof relDateMap] });
+  } else if (!/^\d+$/.test(yearLangOrRel)) {
+    // first part is lang
+    ret.lang = yearLangOrRel;
+  } else {
+    // first part is year
+    dateParts.unshift(yearLangOrRel);
+  }
+
+  if (dateParts.length !== 0) {
+    // parse the dates
+    const [yearStr, monthStr, dayStr] = dateParts;
+    const year = parseInt(yearStr.length === 2 ? `20${yearStr}` : yearStr, 10);
+    const month = monthStr ? parseInt(monthStr, 10) : 1;
+    const day = dayStr ? parseInt(dayStr, 10) : 1;
+    if (year && month && day) {
+      ret.date = DateTime.local(year, month, day, { zone: appZone });
+    }
+  }
+
+  //Parse the query params
+  const gsTrans = searchParams.has('gsTrans') ? searchParams.get('gsTrans') === '1' : false;
+  if (gsTrans) ret.gsTrans = gsTrans;
+  const twelveHourMode = searchParams.get('twelveHour') as 'true' | 'false' | 'system';
+  if (twelveHourMode) ret.twelveHourMode = twelveHourMode;
+  const lightMode = searchParams.get('lightMode') as 'true' | 'false' | 'system';
+  if (lightMode) ret.lightMode = lightMode;
+  const timezone = searchParams.get('timezone');
+  if (timezone) ret.timezone = timezone;
+
+  return ret;
+}
+
+function getLocalStorageSettings(): SettingsNew {
+  // Check if this is SSR
+  if (!('localStorage' in globalThis)) return {};
+  const ret: SettingsNew = {};
+  const twelveHourMode = localStorage.getItem('twelveHourMode') as 'true' | 'false' | 'system' | null;
+  if (twelveHourMode) ret.twelveHourMode = twelveHourMode;
+  const lightMode = localStorage.getItem('lightMode') as 'true' | 'false' | 'system' | null;
+  if (lightMode) ret.lightMode = lightMode;
+  const timezone = localStorage.getItem('timezone');
+  if (timezone) ret.timezone = timezone;
+  return ret;
+}
+
+// const twelveHourMode = localStorage.getItem('twelveHourMode') as 'true' | 'false' | 'system' | null;
+
+// const lightMode = (localStorage.getItem('lightMode') as 'true' | 'false' | 'system' | null) ?? undefined;
+// const timezone = localStorage.getItem('timezone') ?? undefined;
+// return { twelveHourMode, lightMode, timezone };
+
+function getDefault(): Required<SettingsNew> {
+  let lang: string = 'en';
+
+  if (navigator.language) {
+    if (navigator.language in languageResources) {
+      lang = navigator.language;
+    }
+    const shortLang = navigator.language.slice(0, 2);
+    if (shortLang in languageResources) {
+      lang = shortLang;
+    }
+  }
+
+  try {
+    for (const l of navigator.languages) {
+      if (l.slice(0, 2) == 'en') {
+        lang = 'en';
+        break;
+      }
+      if (l in languageResources) {
+        lang = l;
+        break;
+      }
+    }
+  } catch (err) {
+    console.error('Failed to get navigator languages', err);
+  }
+
+  return {
+    date: DateTime.now().setZone(appZone).startOf('day'),
+    gsTrans: false,
+    lang,
+    lightMode: 'system',
+    twelveHourMode: 'system',
+    timezone: SystemZone.instance.name,
   };
 }
 
-export const SettingsContext = createContext<Settings>({
-  isTwelveHourMode: false,
-  isLightMode: false,
-
-  setTwelveHourModeSetting: () => console.log('setTwelveHourModeSetting not yet initialized'),
-  setLightMode: () => console.log('setLightMode not yet initialized'),
-  setTimezone: () => console.log('setTimezone not yet initialized'),
-  setLanguage: () => console.log('setLanguage not yet initialized'),
-
-  twelveHourModeSetting: 'system',
-  lightMode: 'system',
-  timezone: LuxonSettings.defaultZone.name,
-  language: 'en',
-});
-
-export const useSettings = () => useContext(SettingsContext);
-
-export const SettingsConsumer = SettingsContext.Consumer;
-
-interface SettingsProviderProps {
-  children: React.ReactNode;
+interface UseSettingsReturn extends Required<SettingsNew> {
+  setSettings: (edits: Partial<SettingsNew>, setUrl?: boolean, pushHistory?: boolean) => void;
 }
 
-export function SettingsProvider({ children }: SettingsProviderProps) {
-  const [twelveHourModeSetting, setTwelveHourModeSetting] = useLocalStorageState('twelveHourMode', 'system');
-  const [lightMode, setLightMode] = useLocalStorageState('lightMode', 'system');
-  const [timezone, setTimezone] = useLocalStorageState('timezone', LuxonSettings.defaultZone.name);
-  const [language, setLanguage] = useLocalStorageState('language', () => {
-    const urlLang = parseUrl().lang;
-    if (urlLang) {
-      return urlLang;
-    }
+const SettingsContext = createContext<UseSettingsReturn>(null as unknown as UseSettingsReturn);
 
-    try {
-      for (const lang of navigator.languages) {
-        if (lang.slice(0, 2) == 'en') {
-          return 'en';
-        }
-        if (lang in languageResources) {
-          return lang;
-        }
-      }
-    } catch (err) {
-      console.error('failed to get navigator languages', err);
-    }
+export function useSettings() {
+  const settings = useContext(SettingsContext);
+  if (!settings) throw new Error('useSettings must be used within a SettingsProvider');
+  return settings;
+}
 
-    const browserLang = navigator.language;
-    if (browserLang in languageResources) {
-      return browserLang;
+export function SettingsProvider({ children }: { children: React.ReactNode }) {
+  const [settings, internalSetSettings] = useState<Required<SettingsNew>>(() => {
+    const def = getDefault();
+    const local = getLocalStorageSettings();
+    const url = new URL(window.location.href);
+    if (isOldUrlFormat(url)) {
+      const parsed = parseOldUrl(url);
+      return { ...def, ...local, ...parsed };
+    } else {
+      const parsed = parseNewUrl(url);
+      return { ...def, ...local, ...parsed };
     }
-    const browserLangShort = browserLang.slice(0, 2);
-    if (browserLangShort in languageResources) {
-      return browserLangShort;
-    }
-
-    return 'en';
   });
-  const [languageLoader, setLanguageLoader] = useState<Settings['languageLoader']>({ loading: false });
 
-  const twelveHourMode =
-    twelveHourModeSetting === 'system'
-      ? Intl.DateTimeFormat().resolvedOptions().hour12 ?? false
-      : twelveHourModeSetting === 'true';
+  console.log('useSettings', settings);
 
-  const boolLightMode =
-    lightMode === 'true' || (lightMode === 'system' && !window.matchMedia('(prefers-color-scheme: dark)').matches);
+  const setSettings: UseSettingsReturn['setSettings'] = useCallback(
+    (edits, setUrl = true, pushHistory = true) => {
+      console.log('setSettings', edits);
+      // update url state and push to history
+      const origin = window.location.origin;
+      internalSetSettings(old => {
+        const settings = Object.keys(edits).length === 0 ? old : { ...old, ...edits };
+        const def = getDefault();
+        let path = '/' + settings.lang;
+        if (!settings.date.hasSame(def.date, 'day')) {
+          path += '/' + settings.date.toFormat('yyyy/MM/dd');
+        }
+        const url = new URL(path, origin);
+        const urlParams = new URLSearchParams();
+        if (settings.gsTrans !== def.gsTrans) urlParams.set('gsTrans', '1');
+        if (settings.twelveHourMode !== def.twelveHourMode) urlParams.set('twelveHour', settings.twelveHourMode);
+        if (settings.lightMode !== def.lightMode) urlParams.set('lightMode', settings.lightMode);
+        if (settings.timezone !== def.timezone) urlParams.set('timezone', settings.timezone);
+        url.search = urlParams.toString();
+        if (setUrl) {
+          if (pushHistory) history.pushState(null, '', url);
+          else history.replaceState(null, '', url);
+        }
+        return settings;
+      });
+    },
+    [internalSetSettings],
+  );
 
-  useEffect(() => {
-    if (lightMode === 'system') {
+  useLegacyEffect(() => {
+    // Set the initial settings from the url
+    setSettings({}, true, false);
+
+    // Listen for popstate events to update the settings
+    const handlePopState = () => {
+      const url = new URL(window.location.href);
+      if (isOldUrlFormat(url)) {
+        const parsed = parseOldUrl(url);
+        internalSetSettings(old => ({ ...old, ...parsed }));
+      } else {
+        const parsed = parseNewUrl(url);
+        internalSetSettings(old => ({ ...old, ...parsed }));
+      }
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  // When lightMode changes, update the theme
+  useLegacyEffect(() => {
+    if (settings.lightMode === 'system') {
       const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
       if (prefersDarkMode) {
         document.documentElement.setAttribute('data-theme', 'dark');
       } else {
         document.documentElement.setAttribute('data-theme', 'light');
       }
-    } else if (lightMode === 'true') {
+    } else if (settings.lightMode === 'true') {
       document.documentElement.setAttribute('data-theme', 'light');
-    } else if (lightMode === 'false') {
+    } else if (settings.lightMode === 'false') {
       document.documentElement.setAttribute('data-theme', 'dark');
     }
-  }, [lightMode]);
+  }, [settings.lightMode]);
 
-  useEffect(() => {
-    if (timezone !== LuxonSettings.defaultZone.name) {
-      LuxonSettings.defaultZone = timezone;
+  // When timezone changes, update the default zone
+  useLegacyEffect(() => {
+    if (settings.timezone !== LuxonSettings.defaultZone.name) {
+      LuxonSettings.defaultZone = settings.timezone;
     }
-  }, [timezone]);
+  }, [settings.timezone]);
 
-  const loadLanguage = useCallback(async (language: string, fallbackLang: string) => {
-    if (language === fallbackLang) {
-      return;
-    }
-    const isGS = language.endsWith('-GS');
-    console.log('downloading language resources', language, isGS);
-    setLanguageLoader({ loading: true, isGS });
-    try {
-      const promise =
-        import.meta.env.VITE_GS_TRANSLATION_URL && isGS
-          ? fetch(`${import.meta.env.VITE_GS_TRANSLATION_URL}?lang=${language.slice(0, -3)}`, {
-              credentials: 'omit',
-            }).then(res => res.json())
-          : language in languageResources
-          ? languageResources[language]()
-          : Promise.reject(new Error('not found'));
-
-      const resource = await promise;
-      if ('error' in resource) {
-        throw new Error(resource.error);
-      }
-
-      for (const [ns, res] of Object.entries(resource)) {
-        i18next.addResourceBundle(language, ns, res);
-      }
-      i18next.changeLanguage(language);
-      document.documentElement.lang = LuxonSettings.defaultLocale = isGS ? language.slice(0, -3) : language;
-      console.log('loaded language resources', language);
-      setLanguageLoader({ loading: false, isGS });
-    } catch (err) {
-      console.error('failed to load language resources', language, err);
-      setLanguageLoader({
-        loading: false,
-        error:
-          err && typeof err === 'string'
-            ? err
-            : err && typeof err === 'object' && 'message' in err
-            ? (err.message as string)
-            : 'unknown error',
-        isGS,
-      });
-      setLanguage(fallbackLang);
-      setTimeout(() => setLanguageLoader({ loading: false, isGS }), 2000);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (i18next.language === language) return;
-    const prevLanguage = i18next.language;
-    if (language === 'en' || (i18next.hasResourceBundle(language, 'shard') && !language.endsWith('-GS'))) {
-      i18next.changeLanguage(language);
-      document.documentElement.lang = LuxonSettings.defaultLocale = language;
-    } else {
-      loadLanguage(language, prevLanguage);
-    }
-  }, [language]);
-
-  return (
-    <SettingsContext.Provider
-      value={{
-        isTwelveHourMode: twelveHourMode,
-        isLightMode: boolLightMode,
-
-        setTwelveHourModeSetting,
-        setLightMode,
-        setTimezone,
-        setLanguage,
-
-        twelveHourModeSetting,
-        lightMode,
-        timezone,
-        language,
-        languageLoader,
-      }}
-    >
-      {children}
-    </SettingsContext.Provider>
-  );
+  return <SettingsContext.Provider value={{ ...settings, setSettings }}>{children}</SettingsContext.Provider>;
 }
