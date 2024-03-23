@@ -223,7 +223,7 @@ function getDefault(): Required<SettingsNew> {
     lang,
     lightMode: 'system',
     twelveHourMode: 'system',
-    timezone: SystemZone.instance.name,
+    timezone: 'system',
   };
 }
 
