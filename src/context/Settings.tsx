@@ -150,6 +150,10 @@ function getLocalStorageSettings(): SettingsNew {
   if (lightMode) ret.lightMode = lightMode;
   const timezone = JSON.parse(localStorage.getItem('timezone') ?? 'null');
   if (timezone) ret.timezone = timezone;
+  const language = localStorage.getItem('language');
+  if (language) {
+    ret.lang = language;
+  }
 
   const settingsV2 = localStorage.getItem('settingsV2');
   if (settingsV2) {
@@ -173,6 +177,7 @@ function setLocalStorageSettings(settings: Partial<SettingsNew>) {
   localStorage.removeItem('twelveHourMode');
   localStorage.removeItem('lightMode');
   localStorage.removeItem('timezone');
+  localStorage.removeItem('language');
 
   if ('date' in settings) {
     settings = { ...settings };
