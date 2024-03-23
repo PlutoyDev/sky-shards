@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@use-gesture/react": "^10.3.0",
+    "framer-motion": "^11.0.20",
     "i18next": "^23.6.0",
     "luxon": "^3.4.4",
     "react": "^18.2.0",

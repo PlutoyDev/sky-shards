@@ -3,9 +3,9 @@ import { FaCog, FaCalendarDay } from 'react-icons/fa';
 import { DateTime } from 'luxon';
 import { DynamicCalendar } from '../../components/Calendar';
 import { ClockNow } from '../../components/Clock';
-import { useHeaderFx } from '../../context/HeaderFx';
 import { useModal } from '../../context/ModalContext';
 import { useNow } from '../../context/Now';
+import { useSettings } from '../../context/Settings';
 import DateSelectionModal from '../Modals/DateSelector';
 import SettingsModal from '../Modals/Settings';
 
@@ -21,7 +21,7 @@ function HeaderDateTime({ navigateToday }: { navigateToday: () => void }) {
       className='flex cursor-pointer flex-col flex-nowrap items-center justify-center gap-x-3 text-center md:flex-row landscape:flex-row'
     >
       <label
-        className='short:swap data-[swap]:short:swap-active tall:md:cursor-pointer tall:md:flex-col tall:md:gap-x-2 max-md:swap data-[swap]:max-md:swap-active'
+        className='short:swap data-[swap]:short:swap-active max-md:swap data-[swap]:max-md:swap-active tall:md:cursor-pointer tall:md:flex-col tall:md:gap-x-2'
         data-swap={dateActive}
       >
         <DynamicCalendar className='swap-on' />
@@ -34,9 +34,9 @@ function HeaderDateTime({ navigateToday }: { navigateToday: () => void }) {
 
 export default function Header() {
   const { t } = useTranslation(['application', 'dateSelector', 'settings']);
+  const { setSettings } = useSettings();
   const { showModal } = useModal();
-  const { navigateDay } = useHeaderFx();
-  const navigateToday = () => navigateDay(DateTime.local({ zone: 'America/Los_Angeles' }));
+  const navigateToday = () => setSettings({ date: DateTime.local({ zone: 'America/Los_Angeles' }) });
 
   return (
     <header className='glass flex max-h-min flex-row flex-nowrap items-center justify-between px-5'>

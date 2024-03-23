@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import { FaMinus, FaPlus, FaExclamation } from 'react-icons/fa';
 import i18next from 'i18next';
 import { Settings as LuxonSettings, SystemZone } from 'luxon';
-import { useHeaderFx } from '../../context/HeaderFx';
 import { ModalProps } from '../../context/ModalContext';
 import { useSettings } from '../../context/Settings';
 import { languageCode, languageResources } from '../../i18n';
@@ -16,8 +15,7 @@ const systemZone = SystemZone.instance.name;
 
 export default function SettingModal({ hideModal }: ModalProps) {
   const { t } = useTranslation('settings');
-  const { lightMode, twelveHourMode, timezone, lang, gsTrans, languageLoader, setSettings } = useSettings();
-  const { fontSize: fontSizeAdjust, setFontSize: setFontSizeAdjust } = useHeaderFx();
+  const { lightMode, twelveHourMode, timezone, lang, gsTrans, languageLoader, fontSize, setSettings } = useSettings();
   const [gsTransState, setGsTransState] = useState<{ state?: 'loading' | 'error'; codeLangs?: Record<string, string> }>(
     {},
   );
@@ -158,11 +156,17 @@ export default function SettingModal({ hideModal }: ModalProps) {
       <div className='w-full md:col-span-2'>
         <p className='text-bold w-full text-center'>{t('fontSize.title')}</p>
         <div className='mt-1 flex w-full flex-row items-center justify-center gap-2'>
-          <button className='btn btn-circle btn-primary btn-xs' onClick={() => setFontSizeAdjust(fontSizeAdjust - 0.1)}>
+          <button
+            className='btn btn-circle btn-primary btn-xs'
+            onClick={() => setSettings({ fontSize: fontSize - 0.1 })}
+          >
             <FaMinus size={12} />
           </button>
-          <p>{fontSizeAdjust.toFixed(1)}</p>
-          <button className='btn btn-circle btn-primary btn-xs' onClick={() => setFontSizeAdjust(fontSizeAdjust + 0.1)}>
+          <p>{fontSize.toFixed(1)}</p>
+          <button
+            className='btn btn-circle btn-primary btn-xs'
+            onClick={() => setSettings({ fontSize: fontSize + 0.1 })}
+          >
             <FaPlus size={12} />
           </button>
         </div>

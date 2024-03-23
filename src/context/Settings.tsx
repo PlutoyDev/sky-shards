@@ -78,6 +78,7 @@ interface SettingsNew extends SettingsOld {
   twelveHourMode?: 'true' | 'false' | 'system';
   lightMode?: 'true' | 'false' | 'system';
   timezone?: string;
+  fontSize?: number;
 }
 
 function parseNewUrl(url: URL): SettingsNew {
@@ -133,6 +134,8 @@ function parseNewUrl(url: URL): SettingsNew {
   if (lightMode) ret.lightMode = lightMode;
   const timezone = searchParams.get('timezone');
   if (timezone) ret.timezone = timezone;
+  const fontSize = searchParams.get('fontSize');
+  if (fontSize) ret.fontSize = parseInt(fontSize, 10);
 
   return ret;
 }
@@ -152,9 +155,9 @@ function getLocalStorageSettings(): SettingsNew {
   const timezone = JSON.parse(localStorage.getItem('timezone') ?? 'null');
   if (timezone) ret.timezone = timezone;
   const language = localStorage.getItem('language');
-  if (language) {
-    ret.lang = language;
-  }
+  if (language) ret.lang = language;
+  const fontSize = JSON.parse(localStorage.getItem('fontSize') ?? 'null');
+  if (fontSize) ret.fontSize = fontSize;
 
   const settingsV2 = localStorage.getItem('settingsV2');
   if (settingsV2) {
@@ -179,6 +182,7 @@ function setLocalStorageSettings(settings: Partial<SettingsNew>) {
   localStorage.removeItem('lightMode');
   localStorage.removeItem('timezone');
   localStorage.removeItem('language');
+  localStorage.removeItem('fontSize');
 
   if ('date' in settings) {
     settings = { ...settings };
@@ -224,6 +228,7 @@ function getDefault(): Required<SettingsNew> {
     lightMode: 'system',
     twelveHourMode: 'system',
     timezone: 'system',
+    fontSize: window.innerWidth > 768 ? 1.4 : 0.8,
   };
 }
 
@@ -322,6 +327,7 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
       return { ...def, ...local, ...parsed };
     } else {
       const parsed = parseNewUrl(url);
+      console.log({ def, local, parsed });
       return { ...def, ...local, ...parsed };
     }
   });
@@ -356,18 +362,32 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
         if (!settings.date.hasSame(def.date, 'day')) {
           path += '/' + settings.date.toFormat('yyyy/MM/dd');
         }
-        const url = new URL(path, origin);
         const urlParams = new URLSearchParams();
-        if (settings.gsTrans !== def.gsTrans) urlParams.set('gsTrans', '1');
-        if (settings.twelveHourMode !== def.twelveHourMode) urlParams.set('twelveHour', settings.twelveHourMode);
-        if (settings.lightMode !== def.lightMode) urlParams.set('lightMode', settings.lightMode);
-        if (settings.timezone !== def.timezone) urlParams.set('timezone', settings.timezone);
-        url.search = urlParams.toString();
+        const localParams = new Map<string, any>();
+
+        Object.entries(settings).forEach(([key, val]) => {
+          if (key === 'date') return;
+          if (key === 'lang' && val !== def.lang) {
+            // lang is handled in the path and localStorage
+            localParams.set(key, val);
+            return;
+          }
+          const dVal = def[key as Exclude<keyof SettingsNew, 'date' | 'lang'>];
+          const d = typeof dVal === 'boolean' ? (dVal ? '1' : '0') : typeof dVal === 'number' ? dVal.toFixed(1) : dVal;
+          const v = typeof val === 'boolean' ? (val ? '1' : '0') : typeof val === 'number' ? val.toFixed(1) : val;
+          if (d !== v) {
+            urlParams.set(key, v as string);
+            localParams.set(key, v as string);
+          }
+        });
+
         if (setUrl) {
+          const url = new URL(path, origin);
+          url.search = urlParams.toString();
           if (pushHistory && !isInit) history.pushState(null, '', url);
           else history.replaceState(null, '', url);
         }
-        setLocalStorageSettings(settings);
+        setLocalStorageSettings(Object.fromEntries(localParams));
         return settings;
       });
     },

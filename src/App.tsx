@@ -1,6 +1,5 @@
 import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
 import { Settings as LuxonSettings } from 'luxon';
-import { HeaderFxProvider } from './context/HeaderFx';
 import { ModalProvider } from './context/ModalContext';
 import { NowProvider } from './context/Now';
 import { SettingsProvider } from './context/Settings';
@@ -49,19 +48,17 @@ function ErrorFallback({ error }: FallbackProps) {
 function App() {
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
-      <HeaderFxProvider>
-        <SettingsProvider>
-          <NowProvider>
-            <ModalProvider>
-              <div className='absolute inset-1 flex flex-col flex-nowrap overflow-hidden'>
-                <Header />
-                <ShardCarousel />
-                <Footer />
-              </div>
-            </ModalProvider>
-          </NowProvider>
-        </SettingsProvider>
-      </HeaderFxProvider>
+      <SettingsProvider>
+        <NowProvider>
+          <ModalProvider>
+            <div className='absolute inset-1 flex flex-col flex-nowrap overflow-hidden'>
+              <Header />
+              <ShardCarousel />
+              <Footer />
+            </div>
+          </ModalProvider>
+        </NowProvider>
+      </SettingsProvider>
     </ErrorBoundary>
   );
 }

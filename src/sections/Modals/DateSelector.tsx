@@ -1,25 +1,23 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 import { DateTime } from 'luxon';
 import { Settings as LuxonSettings } from 'luxon';
-import { useHeaderFx } from '../../context/HeaderFx';
 import type { ModalProps } from '../../context/ModalContext';
+import { useSettings } from '../../context/Settings';
 import useLocalStorageState from '../../hooks/useLocalStorageState';
 import { getShardInfo } from '../../shardPredictor';
 import type { ShardInfo } from '../../shardPredictor';
-import { parseUrl } from '../../utils/parseUrl';
 
 export function DateSelectionModal({ hideModal }: ModalProps) {
+  const { t } = useTranslation(['dateSelector', 'skyRealms', 'skyMaps']);
   const today = DateTime.local({ zone: 'America/Los_Angeles' });
 
-  const { t } = useTranslation(['dateSelector', 'skyRealms', 'skyMaps']);
-  const { navigateDay } = useHeaderFx();
+  const { date, setSettings } = useSettings();
+
+  const navigateDay = useCallback((date: DateTime) => setSettings({ date }), [setSettings]);
   const [numCols, setNumCols] = useLocalStorageState<'5' | '7'>('dateSelector.numCols', '5');
-  const [{ year, month }, setYearMonth] = useState(() => {
-    const { date } = parseUrl();
-    return { year: date.year, month: date.month };
-  });
+  const [{ year, month }, setYearMonth] = useState(() => ({ year: date.year, month: date.month }));
 
   const startOfMth = DateTime.local(year, month, 1, { zone: 'America/Los_Angeles' });
   const endOfMth = startOfMth.endOf('month');
