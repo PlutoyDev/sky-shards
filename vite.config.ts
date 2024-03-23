@@ -31,37 +31,52 @@ readFile('./public/_headers', 'utf-8').then(headers => {
   }
 });
 
+const trnaslationPr = Promise.all([
+  fetch(translationJsonUrl + (isCfPages ? '?build=true' : '')).then(res => res.json()),
+  readdir(translationDir + '/locales').then(files =>
+    files.filter(file => file.endsWith('.json') && file !== 'en.json').map(file => file.slice(0, -5)),
+  ),
+]).then(async ([json, localLocales]) => {
+  const { codeLangs, translations } = json as any;
+  codeLangs['en'] = 'English';
+  const languageCodeFilename = translationDir + '/codeLangs.json';
+  const writePromises = [
+    writeFile(languageCodeFilename, JSON.stringify(codeLangs, null, 2)),
+    ...Object.entries(translations).map(
+      ([lang, translation]) => (
+        console.log('\tWriting', lang),
+        writeFile(translationDir + '/locales/' + lang + '.json', JSON.stringify(translation, null, 2))
+      ),
+    ),
+    ...localLocales.map(l =>
+      l in translations
+        ? Promise.resolve()
+        : (console.log('\tDeleting', l), unlink(translationDir + '/locales/' + l + '.json')),
+    ),
+  ];
+  await Promise.all(writePromises);
+  return codeLangs as Record<string, string>;
+});
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     {
       name: 'translation',
       async buildStart() {
-        console.log('Fetching translation data...');
-        const [json, localLocales] = await Promise.all([
-          fetch(translationJsonUrl + (isCfPages ? '?build=true' : '')).then(res => res.json()),
-          readdir(translationDir + '/locales').then(files =>
-            files.filter(file => file.endsWith('.json') && file !== 'en.json').map(file => file.slice(0, -5)),
-          ),
-        ]);
-        const { codeLangs, translations } = json as any;
-        codeLangs['en'] = 'English';
-        const languageCodeFilename = translationDir + '/codeLangs.json';
-        const writePromises = [
-          writeFile(languageCodeFilename, JSON.stringify(codeLangs, null, 2)),
-          ...Object.entries(translations).map(
-            ([lang, translation]) => (
-              console.log('\tWriting', lang),
-              writeFile(translationDir + '/locales/' + lang + '.json', JSON.stringify(translation, null, 2))
-            ),
-          ),
-          ...localLocales.map(l =>
-            l in translations
-              ? Promise.resolve()
-              : (console.log('\tDeleting', l), unlink(translationDir + '/locales/' + l + '.json')),
-          ),
-        ];
-        await Promise.all(writePromises);
+        await trnaslationPr;
+      },
+      async transformIndexHtml(html) {
+        const codeLangs = await trnaslationPr;
+
+        // Find the end of the title tag
+        const titleEnd = html.indexOf('</title>') + 8;
+        // Inject localized alternate links
+        const links = Object.keys(codeLangs)
+          .map(code => `    <link rel="alternate" hreflang="${code}" href="/${code}" />`)
+          .join('\n');
+
+        return html.slice(0, titleEnd) + '\n\n    <!-- Localization -->\n' + links + '\n' + html.slice(titleEnd);
       },
     },
     react(),
