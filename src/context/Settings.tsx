@@ -166,11 +166,22 @@ function getLocalStorageSettings(): SettingsNew {
   return ret;
 }
 
-// const twelveHourMode = localStorage.getItem('twelveHourMode') as 'true' | 'false' | 'system' | null;
+function setLocalStorageSettings(settings: Partial<SettingsNew>) {
+  // Check if this is SSR
+  if (!('localStorage' in globalThis)) return;
+  // Clear V1 settings
+  localStorage.removeItem('twelveHourMode');
+  localStorage.removeItem('lightMode');
+  localStorage.removeItem('timezone');
 
-// const lightMode = (localStorage.getItem('lightMode') as 'true' | 'false' | 'system' | null) ?? undefined;
-// const timezone = localStorage.getItem('timezone') ?? undefined;
-// return { twelveHourMode, lightMode, timezone };
+  if ('date' in settings) {
+    settings = { ...settings };
+    delete settings.date;
+  }
+
+  // Set new settings
+  localStorage.setItem('settingsV2', JSON.stringify(settings));
+}
 
 function getDefault(): Required<SettingsNew> {
   let lang: string = 'en';
@@ -236,11 +247,8 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
     }
   });
 
-  console.log('useSettings', settings);
-
   const setSettings: UseSettingsReturn['setSettings'] = useCallback(
     (edits, setUrl = true, pushHistory = true) => {
-      console.log('setSettings', edits);
       // update url state and push to history
       const origin = window.location.origin;
       internalSetSettings(old => {
@@ -261,6 +269,7 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
           if (pushHistory) history.pushState(null, '', url);
           else history.replaceState(null, '', url);
         }
+        setLocalStorageSettings(settings);
         return settings;
       });
     },
