@@ -78,7 +78,7 @@ interface SettingsNew extends SettingsOld {
   twelveHourMode?: 'true' | 'false' | 'system';
   lightMode?: 'true' | 'false' | 'system';
   timezone?: string;
-  fontSize?: number;
+  fontSize?: string;
 }
 
 function parseNewUrl(url: URL): SettingsNew {
@@ -93,8 +93,6 @@ function parseNewUrl(url: URL): SettingsNew {
   if (pathname.startsWith('/')) {
     pathname = pathname.slice(1);
   }
-
-  console.log('parseNewUrl', { pathname, searchParams });
 
   if (pathname) {
     const [yearLangOrRel, ...dateParts] = pathname.split('/');
@@ -135,7 +133,7 @@ function parseNewUrl(url: URL): SettingsNew {
   const timezone = searchParams.get('timezone');
   if (timezone) ret.timezone = timezone;
   const fontSize = searchParams.get('fontSize');
-  if (fontSize) ret.fontSize = parseInt(fontSize, 10);
+  if (fontSize) ret.fontSize = fontSize;
 
   return ret;
 }
@@ -228,7 +226,7 @@ function getDefault(): Required<SettingsNew> {
     lightMode: 'system',
     twelveHourMode: 'system',
     timezone: 'system',
-    fontSize: window.innerWidth > 768 ? 1.4 : 0.8,
+    fontSize: window.innerWidth > 768 ? '1.2' : '0.8',
   };
 }
 
@@ -322,14 +320,8 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
     const def = getDefault();
     const local = getLocalStorageSettings();
     const url = new URL(window.location.href);
-    if (isOldUrlFormat(url)) {
-      const parsed = parseOldUrl(url);
-      return { ...def, ...local, ...parsed };
-    } else {
-      const parsed = parseNewUrl(url);
-      console.log({ def, local, parsed });
-      return { ...def, ...local, ...parsed };
-    }
+    const parsed = isOldUrlFormat(url) ? parseOldUrl(url) : parseNewUrl(url);
+    return { ...def, ...local, ...parsed };
   });
 
   useLegacyEffect(() => {}, [settings.lightMode, settings.timezone, settings.lang]);
@@ -373,8 +365,8 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
             return;
           }
           const dVal = def[key as Exclude<keyof SettingsNew, 'date' | 'lang'>];
-          const d = typeof dVal === 'boolean' ? (dVal ? '1' : '0') : typeof dVal === 'number' ? dVal.toFixed(1) : dVal;
-          const v = typeof val === 'boolean' ? (val ? '1' : '0') : typeof val === 'number' ? val.toFixed(1) : val;
+          const d = typeof dVal === 'boolean' ? (dVal ? '1' : '0') : dVal;
+          const v = typeof val === 'boolean' ? (val ? '1' : '0') : val;
           if (d !== v) {
             urlParams.set(key, v as string);
             localParams.set(key, v as string);
@@ -401,12 +393,14 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
     // Listen for popstate events to update the settings
     const handlePopState = () => {
       const url = new URL(window.location.href);
-      if (isOldUrlFormat(url)) {
-        const parsed = parseOldUrl(url);
-        internalSetSettings(old => ({ ...old, ...parsed }));
-      } else {
-        const parsed = parseNewUrl(url);
-        internalSetSettings(old => ({ ...old, ...parsed }));
+      const parsed = { ...getDefault(), ...parseNewUrl(url) };
+
+      const diff = Object.fromEntries(
+        Object.entries(parsed).filter(([key, val]) => settings[key as keyof SettingsNew] !== val),
+      );
+
+      if (Object.keys(diff).length > 0) {
+        setSettings(diff, false, false);
       }
     };
     window.addEventListener('popstate', handlePopState);

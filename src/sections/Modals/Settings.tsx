@@ -158,14 +158,14 @@ export default function SettingModal({ hideModal }: ModalProps) {
         <div className='mt-1 flex w-full flex-row items-center justify-center gap-2'>
           <button
             className='btn btn-circle btn-primary btn-xs'
-            onClick={() => setSettings({ fontSize: fontSize - 0.1 })}
+            onClick={() => setSettings({ fontSize: (parseFloat(fontSize) - 0.1).toFixed(1) })} // 0.1 is the step
           >
             <FaMinus size={12} />
           </button>
-          <p>{fontSize.toFixed(1)}</p>
+          <p>{fontSize}</p>
           <button
             className='btn btn-circle btn-primary btn-xs'
-            onClick={() => setSettings({ fontSize: fontSize + 0.1 })}
+            onClick={() => setSettings({ fontSize: (parseFloat(fontSize) + 0.1).toFixed(1) })} // 0.1 is the step
           >
             <FaPlus size={12} />
           </button>
