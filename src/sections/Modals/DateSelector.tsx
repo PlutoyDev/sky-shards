@@ -5,7 +5,6 @@ import { DateTime } from 'luxon';
 import { Settings as LuxonSettings } from 'luxon';
 import type { ModalProps } from '../../context/ModalContext';
 import { useSettings } from '../../context/Settings';
-import useLocalStorageState from '../../hooks/useLocalStorageState';
 import { getShardInfo } from '../../shardPredictor';
 import type { ShardInfo } from '../../shardPredictor';
 
@@ -13,10 +12,9 @@ export function DateSelectionModal({ hideModal }: ModalProps) {
   const { t } = useTranslation(['dateSelector', 'skyRealms', 'skyMaps']);
   const today = DateTime.local({ zone: 'America/Los_Angeles' });
 
-  const { date, setSettings } = useSettings();
+  const { date, numCols, setSettings } = useSettings();
 
   const navigateDay = useCallback((date: DateTime) => setSettings({ date }), [setSettings]);
-  const [numCols, setNumCols] = useLocalStorageState<'5' | '7'>('dateSelector.numCols', '5');
   const [{ year, month }, setYearMonth] = useState(() => ({ year: date.year, month: date.month }));
 
   const startOfMth = DateTime.local(year, month, 1, { zone: 'America/Los_Angeles' });
@@ -148,7 +146,7 @@ export function DateSelectionModal({ hideModal }: ModalProps) {
         <p className='text-bold justify-self-end'>{t('columnType')}:</p>
         <select
           className='no-scrollbar select select-primary select-xs mt-1 inline-block justify-self-start bg-primary text-primary-content'
-          onChange={e => setNumCols(e.target.value as typeof numCols)}
+          onChange={e => setSettings({ numCols: e.target.value as '5' | '7' })}
           value={numCols}
         >
           <option value={5}>{t('columnType.realm')}</option>

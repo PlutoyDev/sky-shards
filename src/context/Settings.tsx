@@ -79,6 +79,7 @@ interface SettingsNew extends SettingsOld {
   lightMode?: 'true' | 'false' | 'system';
   timezone?: string;
   fontSize?: string;
+  numCols?: '5' | '7';
 }
 
 function parseNewUrl(url: URL): SettingsNew {
@@ -134,6 +135,8 @@ function parseNewUrl(url: URL): SettingsNew {
   if (timezone) ret.timezone = timezone;
   const fontSize = searchParams.get('fontSize');
   if (fontSize) ret.fontSize = fontSize;
+  const numCols = searchParams.get('numCols') as '5' | '7';
+  if (numCols) ret.numCols = numCols;
 
   return ret;
 }
@@ -156,6 +159,8 @@ function getLocalStorageSettings(): SettingsNew {
   if (language) ret.lang = language;
   const fontSize = JSON.parse(localStorage.getItem('fontSize') ?? 'null');
   if (fontSize) ret.fontSize = fontSize;
+  const numCols = JSON.parse(localStorage.getItem('dateSelector.numCols') ?? 'null') as '5' | '7' | null;
+  if (numCols) ret.numCols = numCols;
 
   const settingsV2 = localStorage.getItem('settingsV2');
   if (settingsV2) {
@@ -181,6 +186,7 @@ function setLocalStorageSettings(settings: Partial<SettingsNew>) {
   localStorage.removeItem('timezone');
   localStorage.removeItem('language');
   localStorage.removeItem('fontSize');
+  localStorage.removeItem('dateSelector.numCols');
 
   if ('date' in settings) {
     settings = { ...settings };
@@ -227,6 +233,7 @@ function getDefault(): Required<SettingsNew> {
     twelveHourMode: 'system',
     timezone: 'system',
     fontSize: window.innerWidth > 768 ? '1.2' : '0.8',
+    numCols: '5',
   };
 }
 
