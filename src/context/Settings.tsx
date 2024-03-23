@@ -82,31 +82,44 @@ interface SettingsNew extends SettingsOld {
 function parseNewUrl(url: URL): SettingsNew {
   const ret: SettingsNew = {};
 
-  const { pathname, searchParams } = url;
-  const [yearLangOrRel, ...dateParts] = pathname.split('/');
-  if (yearLangOrRel === undefined || yearLangOrRel === '') {
-    ret.date = DateTime.now().setZone(appZone).startOf('day');
-  } else if (yearLangOrRel in relDateMap) {
-    // first part is rel date
-    ret.date = DateTime.now()
-      .setZone(appZone)
-      .plus({ days: relDateMap[yearLangOrRel as keyof typeof relDateMap] });
-  } else if (!/^\d+$/.test(yearLangOrRel)) {
-    // first part is lang
-    ret.lang = yearLangOrRel;
-  } else {
-    // first part is year
-    dateParts.unshift(yearLangOrRel);
+  let { pathname, searchParams } = url;
+
+  // Clean up the pathname
+  if (pathname.endsWith('/')) {
+    pathname = pathname.slice(0, -1);
+  }
+  if (pathname.startsWith('/')) {
+    pathname = pathname.slice(1);
   }
 
-  if (dateParts.length !== 0) {
-    // parse the dates
-    const [yearStr, monthStr, dayStr] = dateParts;
-    const year = parseInt(yearStr.length === 2 ? `20${yearStr}` : yearStr, 10);
-    const month = monthStr ? parseInt(monthStr, 10) : 1;
-    const day = dayStr ? parseInt(dayStr, 10) : 1;
-    if (year && month && day) {
-      ret.date = DateTime.local(year, month, day, { zone: appZone });
+  console.log('parseNewUrl', { pathname, searchParams });
+
+  if (pathname) {
+    const [yearLangOrRel, ...dateParts] = pathname.split('/');
+    if (yearLangOrRel) {
+      if (yearLangOrRel in relDateMap) {
+        // first part is rel date
+        ret.date = DateTime.now()
+          .setZone(appZone)
+          .plus({ days: relDateMap[yearLangOrRel as keyof typeof relDateMap] });
+      } else if (!/^\d+$/.test(yearLangOrRel)) {
+        // first part is lang
+        ret.lang = yearLangOrRel;
+      } else {
+        // first part is year
+        dateParts.unshift(yearLangOrRel);
+      }
+
+      if (dateParts.length !== 0) {
+        // parse the dates
+        const [yearStr, monthStr, dayStr] = dateParts;
+        const year = parseInt(yearStr.length === 2 ? `20${yearStr}` : yearStr, 10);
+        const month = monthStr ? parseInt(monthStr, 10) : 1;
+        const day = dayStr ? parseInt(dayStr, 10) : 1;
+        if (year && month && day) {
+          ret.date = DateTime.local(year, month, day, { zone: appZone });
+        }
+      }
     }
   }
 
