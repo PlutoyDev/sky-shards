@@ -11,13 +11,12 @@ import ShardProgress from './Progress';
 
 interface ShardMainProps extends Omit<ComponentProps<'div'>, 'className'> {
   date: DateTime;
-  isMain?: boolean;
 }
 
-export default forwardRef<HTMLElement, ShardMainProps>(function ShardMain({ date, isMain, ...props }, ref) {
+export default forwardRef<HTMLElement, ShardMainProps>(function ShardMain({ date, ...props }, ref) {
   const { t, i18n } = useTranslation(['shardCarousel']);
   const info = useMemo(() => getShardInfo(date), [date.day, date.month, date.year]);
-  const localRef = useRef<HTMLElement | null>(null);
+  const summaryRef = useRef<HTMLDivElement>(null);
 
   useLegacyEffect(() => {
     const { haveShard, isRed, map } = info;
@@ -30,17 +29,14 @@ export default forwardRef<HTMLElement, ShardMainProps>(function ShardMain({ date
 
   return (
     <main
-      ref={i => {
-        localRef.current = i;
-        if (ref) {
-          if (typeof ref === 'function') ref(i);
-          else ref.current = i;
-        }
-      }}
+      ref={ref}
       className='no-scrollbar col-start-2 row-start-1 flex h-full max-h-full w-full touch-pan-y flex-col flex-nowrap items-center justify-start gap-2 overflow-x-hidden overflow-y-scroll text-center duration-150 ease-in-out'
       {...props}
     >
-      <div className='flex max-h-screen min-h-full w-full flex-col flex-nowrap items-center justify-center gap-1'>
+      <div
+        ref={summaryRef}
+        className='flex max-h-screen min-h-full w-full flex-col flex-nowrap items-center justify-center gap-1'
+      >
         <ShardInfoSection info={info} />
         {info.haveShard && (
           <>
@@ -49,9 +45,8 @@ export default forwardRef<HTMLElement, ShardMainProps>(function ShardMain({ date
             <small
               className='flex cursor-pointer flex-col items-center justify-center font-serif text-xs [@media_(min-height:_640px)]:xl:text-lg'
               onClick={() => {
-                const carousel = localRef.current?.parentElement;
-                const content = carousel?.children[0];
-                const summary = content?.children[0];
+                const summary = summaryRef.current;
+                const content = summary?.parentElement;
                 content?.scrollTo({ top: summary?.clientHeight, behavior: 'smooth' });
               }}
             >
