@@ -140,12 +140,29 @@ function getLocalStorageSettings(): SettingsNew {
   // Check if this is SSR
   if (!('localStorage' in globalThis)) return {};
   const ret: SettingsNew = {};
-  const twelveHourMode = localStorage.getItem('twelveHourMode') as 'true' | 'false' | 'system' | null;
+  const twelveHourMode = JSON.parse(localStorage.getItem('twelveHourMode') ?? 'null') as
+    | 'true'
+    | 'false'
+    | 'system'
+    | null;
   if (twelveHourMode) ret.twelveHourMode = twelveHourMode;
-  const lightMode = localStorage.getItem('lightMode') as 'true' | 'false' | 'system' | null;
+  const lightMode = JSON.parse(localStorage.getItem('lightMode') ?? 'null') as 'true' | 'false' | 'system' | null;
   if (lightMode) ret.lightMode = lightMode;
-  const timezone = localStorage.getItem('timezone');
+  const timezone = JSON.parse(localStorage.getItem('timezone') ?? 'null');
   if (timezone) ret.timezone = timezone;
+
+  const settingsV2 = localStorage.getItem('settingsV2');
+  if (settingsV2) {
+    try {
+      const parsed = JSON.parse(settingsV2);
+      if (parsed) {
+        Object.assign(ret, parsed);
+      }
+    } catch (err) {
+      console.error('Failed to parse settingsV2', err);
+    }
+  }
+
   return ret;
 }
 
