@@ -10,6 +10,7 @@ Path: /, /{yyyy}/{MM}/{dd}, /{lang}/{yyyy}/{MM}/{dd},
 Query: gsTrans=1, twelveHour=(true|false|system), lightMode=(true|false|system), timezone.
 */
 import { useState, useCallback, createContext, useContext } from 'react';
+import i18next from 'i18next';
 import { DateTime, SystemZone, Settings as LuxonSettings } from 'luxon';
 import useLegacyEffect from '../hooks/useLegacyEffect';
 import { languageResources } from '../i18n';
@@ -226,8 +227,80 @@ function getDefault(): Required<SettingsNew> {
   };
 }
 
+async function setLanguage(
+  language: string,
+  setLanguageLoader: (state: { loading: boolean; error?: string } | null) => void,
+) {
+  if (language === 'en' || (i18next.hasResourceBundle(language, 'shard') && !language.endsWith('-GS'))) {
+    i18next.changeLanguage(language);
+    document.documentElement.lang = LuxonSettings.defaultLocale = language;
+  } else {
+    // Load the language
+    setLanguageLoader({ loading: true });
+    const isGS = language.endsWith('-GS');
+    try {
+      const promise =
+        import.meta.env.VITE_GS_TRANSLATION_URL && isGS
+          ? fetch(`${import.meta.env.VITE_GS_TRANSLATION_URL}?lang=${language.slice(0, -3)}`, {
+              credentials: 'omit',
+            }).then(res => res.json())
+          : language in languageResources
+            ? languageResources[language]()
+            : Promise.reject(new Error('not found'));
+
+      const resource = await promise;
+      if ('error' in resource) {
+        throw new Error(resource.error);
+      }
+
+      for (const [ns, res] of Object.entries(resource)) {
+        i18next.addResourceBundle(language, ns, res);
+      }
+      i18next.changeLanguage(language);
+      document.documentElement.lang = LuxonSettings.defaultLocale = isGS ? language.slice(0, -3) : language;
+      console.log('loaded language resources', language);
+      setLanguageLoader({ loading: false });
+    } catch (err) {
+      console.error('failed to load language resources', language, err);
+      setLanguageLoader({
+        loading: false,
+        error:
+          err && typeof err === 'string'
+            ? err
+            : err && typeof err === 'object' && 'message' in err
+              ? (err.message as string)
+              : 'unknown error',
+      });
+      setTimeout(() => setLanguageLoader(null), 2000);
+    }
+  }
+}
+
+function setLightMode(lightMode: 'true' | 'false' | 'system') {
+  if (lightMode === 'system') {
+    const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (prefersDarkMode) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light');
+    }
+  } else if (lightMode === 'true') {
+    document.documentElement.setAttribute('data-theme', 'light');
+  } else if (lightMode === 'false') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+  }
+}
+
+function setTimezone(timezone: string) {
+  LuxonSettings.defaultZone = timezone;
+}
+
+type LanguageLoader = { loading: boolean; error?: string } | null;
+type SetSettings = (edits?: Partial<SettingsNew>, setUrl?: boolean, pushHistory?: boolean) => void;
+
 interface UseSettingsReturn extends Required<SettingsNew> {
-  setSettings: (edits: Partial<SettingsNew>, setUrl?: boolean, pushHistory?: boolean) => void;
+  languageLoader: LanguageLoader;
+  setSettings: SetSettings;
 }
 
 const SettingsContext = createContext<UseSettingsReturn>(null as unknown as UseSettingsReturn);
@@ -239,6 +312,7 @@ export function useSettings() {
 }
 
 export function SettingsProvider({ children }: { children: React.ReactNode }) {
+  const [languageLoader, setLanguageLoader] = useState<LanguageLoader>(null);
   const [settings, internalSetSettings] = useState<Required<SettingsNew>>(() => {
     const def = getDefault();
     const local = getLocalStorageSettings();
@@ -252,12 +326,31 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
     }
   });
 
-  const setSettings: UseSettingsReturn['setSettings'] = useCallback(
+  useLegacyEffect(() => {}, [settings.lightMode, settings.timezone, settings.lang]);
+
+  const setSettings: SetSettings = useCallback(
     (edits, setUrl = true, pushHistory = true) => {
       // update url state and push to history
       const origin = window.location.origin;
       internalSetSettings(old => {
-        const settings = Object.keys(edits).length === 0 ? old : { ...old, ...edits };
+        const isInit = edits === undefined;
+        const settings = isInit ? old : { ...old, ...edits };
+
+        if (isInit || (edits && 'lightMode' in edits && edits.lightMode !== old.lightMode)) {
+          setLightMode(settings.lightMode);
+        }
+
+        if (isInit || (edits && 'timezone' in edits && edits.timezone !== old.timezone)) {
+          setTimezone(settings.timezone);
+        }
+
+        if (isInit || (edits && 'lang' in edits && edits.lang !== old.lang)) {
+          setLanguage(settings.lang, setLanguageLoader).catch(err => {
+            console.error('Failed to set language', err);
+            setLanguage(isInit ? 'en' : old.lang, setLanguageLoader);
+          });
+        }
+
         const def = getDefault();
         let path = '/' + settings.lang;
         if (!settings.date.hasSame(def.date, 'day')) {
@@ -271,7 +364,7 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
         if (settings.timezone !== def.timezone) urlParams.set('timezone', settings.timezone);
         url.search = urlParams.toString();
         if (setUrl) {
-          if (pushHistory) history.pushState(null, '', url);
+          if (pushHistory && !isInit) history.pushState(null, '', url);
           else history.replaceState(null, '', url);
         }
         setLocalStorageSettings(settings);
@@ -283,7 +376,7 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
 
   useLegacyEffect(() => {
     // Set the initial settings from the url
-    setSettings({}, true, false);
+    setSettings();
 
     // Listen for popstate events to update the settings
     const handlePopState = () => {
@@ -300,28 +393,7 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
-  // When lightMode changes, update the theme
-  useLegacyEffect(() => {
-    if (settings.lightMode === 'system') {
-      const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      if (prefersDarkMode) {
-        document.documentElement.setAttribute('data-theme', 'dark');
-      } else {
-        document.documentElement.setAttribute('data-theme', 'light');
-      }
-    } else if (settings.lightMode === 'true') {
-      document.documentElement.setAttribute('data-theme', 'light');
-    } else if (settings.lightMode === 'false') {
-      document.documentElement.setAttribute('data-theme', 'dark');
-    }
-  }, [settings.lightMode]);
-
-  // When timezone changes, update the default zone
-  useLegacyEffect(() => {
-    if (settings.timezone !== LuxonSettings.defaultZone.name) {
-      LuxonSettings.defaultZone = settings.timezone;
-    }
-  }, [settings.timezone]);
-
-  return <SettingsContext.Provider value={{ ...settings, setSettings }}>{children}</SettingsContext.Provider>;
+  return (
+    <SettingsContext.Provider value={{ ...settings, languageLoader, setSettings }}>{children}</SettingsContext.Provider>
+  );
 }
