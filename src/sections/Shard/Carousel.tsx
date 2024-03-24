@@ -20,12 +20,15 @@ const varients = {
 export default function ShardCarousel() {
   const { t, i18n } = useTranslation(['shardCarousel']);
 
-  const { date, fontSize, setSettings } = useSettings();
+  const { date, lang, fontSize, setSettings } = useSettings();
   const prevDate = useRef(date);
   const direction = useMemo(() => (prevDate.current < date ? 1 : -1), [date]);
   useEffect(() => ((prevDate.current = date), undefined), [date]);
 
-  const info = useMemo(() => getShardInfo(date), [date.day, date.month, date.year]);
+  const { info, tmr, ytd } = useMemo(
+    () => ({ info: getShardInfo(date), tmr: date.plus({ days: 1 }), ytd: date.minus({ days: 1 }) }),
+    [date.day, date.month, date.year],
+  );
   const carouselRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -94,20 +97,28 @@ export default function ShardCarousel() {
           )}
         </motion.main>
       </AnimatePresence>
-      <div
+      <a
+        href={`/${lang}/${ytd.toFormat('yyyy/MM/dd')}`}
         className='relative col-start-1 row-start-1 flex cursor-pointer flex-col-reverse items-center justify-center font-serif text-xs [writing-mode:vertical-rl] [@media_(min-height:_640px)]:xl:text-lg'
-        onClick={() => setSettings({ date: date.minus({ days: 1 }) })}
+        onClick={e => {
+          e.preventDefault();
+          setSettings({ date: ytd });
+        }}
       >
         <span>{t('navigation.rightwards')}</span>
         <BsChevronRight className='m-0' strokeWidth={'0.1rem'} />
-      </div>
-      <div
+      </a>
+      <a
+        href={`/${lang}/${tmr.toFormat('yyyy/MM/dd')}`}
         className='relative col-start-3 row-start-1 flex cursor-pointer flex-col items-center justify-center font-serif text-xs [writing-mode:vertical-rl] [@media_(min-height:_640px)]:xl:text-lg'
-        onClick={() => setSettings({ date: date.plus({ days: 1 }) })}
+        onClick={e => {
+          e.preventDefault();
+          setSettings({ date: tmr });
+        }}
       >
         <span>{t('navigation.leftwards')}</span>
         <BsChevronLeft className='m-0' strokeWidth={'0.1rem'} />
-      </div>
+      </a>
     </div>
   );
 }
