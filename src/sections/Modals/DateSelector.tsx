@@ -48,10 +48,8 @@ export function DateSelectionModal({ hideModal }: ModalProps) {
         <span className='whitespace-nowrap'>({rtf.format(diffMonths, 'month')})</span>
       </p>
       <div
-        className={
-          'no-scrollbar grid max-h-min w-full flex-shrink auto-cols-fr auto-rows-fr grid-rows-[auto] gap-2 overflow-y-scroll px-2 ' +
-          (numCols === '7' ? 'grid-cols-7' : 'grid-cols-5')
-        }
+        data-wide={numCols === '7'}
+        className='no-scrollbar grid max-h-min w-full flex-shrink grid-cols-5 grid-rows-[auto_repeat(7,1fr)] gap-2 overflow-y-scroll px-2 data-[wide=true]:grid-cols-7 data-[wide=true]:grid-rows-[auto_repeat(6,1fr)]'
       >
         {numCols === '7'
           ? Array.from({ length: 7 }, (_, i) => {
