@@ -387,6 +387,17 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
           else history.replaceState(null, '', url);
         }
         setLocalStorageSettings(Object.fromEntries(localParams));
+
+        const canonical = new URL(path, origin);
+        canonical.search = '';
+        const link = document.querySelector('link[rel="canonical"]');
+        if (link) link.setAttribute('href', canonical.toString());
+        else {
+          const link = document.createElement('link');
+          link.rel = 'canonical';
+          link.href = canonical.toString();
+          document.head.appendChild(link);
+        }
         return settings;
       });
     },
