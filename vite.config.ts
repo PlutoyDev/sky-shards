@@ -73,7 +73,7 @@ export default defineConfig({
         const titleEnd = html.indexOf('</title>') + 8;
         // Inject localized alternate links
         const links = Object.keys(codeLangs)
-          .map(code => `    <link rel="alternate" hreflang="${code}" href="/${code}" />`)
+          .map(code => `    <link rel="alternate" hreflang="${code}" href="https://sky-shards.pages.dev/${code}" />`)
           .join('\n');
 
         return html.slice(0, titleEnd) + '\n\n    <!-- Localization -->\n' + links + '\n' + html.slice(titleEnd);
