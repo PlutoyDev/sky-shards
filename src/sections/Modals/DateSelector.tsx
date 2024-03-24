@@ -12,10 +12,10 @@ export function DateSelectionModal({ hideModal }: ModalProps) {
   const { t } = useTranslation(['dateSelector', 'skyRealms', 'skyMaps']);
   const today = DateTime.local({ zone: 'America/Los_Angeles' });
 
-  const { date, numCols, setSettings } = useSettings();
+  const { date: selectedDate, lang, numCols, setSettings } = useSettings();
 
   const navigateDay = useCallback((date: DateTime) => setSettings({ date }), [setSettings]);
-  const [{ year, month }, setYearMonth] = useState(() => ({ year: date.year, month: date.month }));
+  const [{ year, month }, setYearMonth] = useState(() => ({ year: selectedDate.year, month: selectedDate.month }));
 
   const startOfMth = DateTime.local(year, month, 1, { zone: 'America/Los_Angeles' });
   const endOfMth = startOfMth.endOf('month');
@@ -96,33 +96,34 @@ export function DateSelectionModal({ hideModal }: ModalProps) {
         {shardInfos.map(([date, info]) => {
           const { haveShard, isRed, map } = info;
           const isToday = date.hasSame(today, 'day');
+          const isSelected = date.hasSame(selectedDate, 'day');
 
           return (
-            <button
+            <a
+              href={`/${lang}/${date.toFormat('yyyy/MM/dd')}`}
               key={date.day}
               title={date.toLocaleString({ month: 'short', day: 'numeric', year: 'numeric' })}
-              className={
-                'btn btn-outline btn-xs block h-full w-full overflow-x-clip py-0.5 !text-white' +
-                (haveShard ? '' : ' opacity-30')
-              }
-              onClick={() => {
+              data-shard={!haveShard ? 'none' : ''}
+              data-selected={isSelected}
+              className='btn btn-outline btn-xs block h-full w-full overflow-x-clip py-0.5 !text-white data-[selected=true]:btn-active data-[shard=none]:opacity-30'
+              onClick={e => {
+                e.preventDefault();
+                if (isSelected) return;
                 hideModal();
                 setTimeout(() => navigateDay(date), 100);
               }}
             >
               <p
-                className={
-                  'mx-auto w-min whitespace-nowrap rounded-full px-1 text-center align-middle text-lg font-bold lg:text-xl' +
-                  (isToday ? ' border-2 border-dashed border-white' : '') +
-                  (haveShard ? (isRed ? ' text-red-600' : ' text-black') : ' opacity-30 dark:opacity-60')
-                }
+                data-shard={haveShard ? (isRed ? 'red' : 'black') : 'none'}
+                data-today={isToday}
+                className='mx-auto w-min whitespace-nowrap rounded-full px-1 text-center align-middle text-lg font-bold data-[shard=black]:text-black data-[shard=red]:text-red-600 data-[today=true]:underline lg:text-xl data-[shard=none]:dark:opacity-60'
               >
                 {date.toFormat('dd')}
               </p>
               <p className='w-full whitespace-nowrap text-center align-middle text-xs max-md:hidden'>
                 {haveShard ? t(`skyMaps:${map}`) : t('noShard')}
               </p>
-            </button>
+            </a>
           );
         })}
         {numCols === '7' &&
@@ -142,14 +143,15 @@ export function DateSelectionModal({ hideModal }: ModalProps) {
       </div>
       <div className='mb-2 grid w-full grid-cols-2 grid-rows-2 place-items-center gap-2 lg:grid-cols-4 lg:grid-rows-1'>
         <p className='text-bold justify-self-end'>{t('columnType')}:</p>
-        <select
-          className='no-scrollbar select select-primary select-xs mt-1 inline-block justify-self-start bg-primary text-primary-content'
-          onChange={e => setSettings({ numCols: e.target.value as '5' | '7' })}
-          value={numCols}
+        <button
+          className='btn btn-primary swap btn-xs justify-self-start whitespace-nowrap data-[wide=true]:swap-active'
+          onClick={() => setSettings({ numCols: numCols === '5' ? '7' : '5' })}
+          data-wide={numCols === '7'}
         >
-          <option value={5}>{t('columnType.realm')}</option>
-          <option value={7}>{t('columnType.weekday')}</option>
-        </select>
+          <span className='swap-on'>{t('columnType.realm')}</span>
+          <span className='swap-off'>{t('columnType.weekday')}</span>
+        </button>
+
         <button className='btn btn-primary btn-xs justify-self-end whitespace-nowrap' onClick={() => changeMonth(-1)}>
           <BsChevronLeft />
           <span className='max-md:hidden'>{prevMonth.toLocaleString({ month: 'long', year: 'numeric' })}</span>
