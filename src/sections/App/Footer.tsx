@@ -13,7 +13,11 @@ interface SubFooterProps {
 }
 
 function SubFooter({ className, children }: SubFooterProps) {
-  return <div className={`carousel-item h-full w-full max-w-full ${className}`}>{children}</div>;
+  return (
+    <div data-nosnippet className={`carousel-item h-full w-full max-w-full ${className}`}>
+      {children}
+    </div>
+  );
 }
 
 function AppDetailFooter() {
@@ -50,7 +54,7 @@ function AppDetailFooter() {
           <span className='text-sm font-bold sm:hidden'>{t('feedbackShort')}</span>
         </a>
       </div>
-      <p className='text-center max-xs:hidden xs:text-[8px] md:text-xs'>{t('disclaimer')}</p>
+      <p className='text-center xs:text-[8px] md:text-xs max-xs:hidden'>{t('disclaimer')}</p>
     </SubFooter>
   );
 }

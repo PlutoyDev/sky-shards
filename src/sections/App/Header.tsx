@@ -15,8 +15,8 @@ function HeaderDateTime({ navigateToday }: { navigateToday: () => void }) {
   const dateActive = Math.floor(now.second / 6) % 2 === 0;
 
   return (
-    <time
-      dateTime={now.toISO() ?? undefined}
+    <div
+      data-nosnippet
       onClick={navigateToday}
       className='flex cursor-pointer flex-col flex-nowrap items-center justify-center gap-x-3 text-center md:flex-row landscape:flex-row'
     >
@@ -28,7 +28,7 @@ function HeaderDateTime({ navigateToday }: { navigateToday: () => void }) {
         <div className='swap-off'>{t('headerDateTimeIndicator')}</div>
       </label>
       <ClockNow dualUnit className='text-md xs:text-2xl' relFontSize={0} />
-    </time>
+    </div>
   );
 }
 
