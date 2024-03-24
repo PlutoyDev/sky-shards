@@ -20,13 +20,13 @@ function HeaderDateTime({ navigateToday }: { navigateToday: () => void }) {
       onClick={navigateToday}
       className='flex cursor-pointer flex-col flex-nowrap items-center justify-center gap-x-3 text-center md:flex-row landscape:flex-row'
     >
-      <label
+      <p
         className='short:swap data-[swap]:short:swap-active max-md:swap data-[swap]:max-md:swap-active tall:md:cursor-pointer tall:md:flex-col tall:md:gap-x-2'
         data-swap={dateActive}
       >
         <DynamicCalendar className='swap-on' />
         <div className='swap-off'>{t('headerDateTimeIndicator')}</div>
-      </label>
+      </p>
       <ClockNow dualUnit className='text-md xs:text-2xl' relFontSize={0} />
     </div>
   );
