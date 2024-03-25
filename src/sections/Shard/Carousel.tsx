@@ -1,10 +1,12 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BsChevronCompactDown, BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 import { AnimatePresence, motion } from 'framer-motion';
 import { DateTime } from 'luxon';
 import { Settings as LuxonSettings } from 'luxon';
 import { useSettings } from '../../context/Settings';
+import { type RemoteConfig, fetchRemoteConfig } from '../../data/remoteConfig';
+import useLegacyEffect from '../../hooks/useLegacyEffect';
 import { getShardInfo } from '../../shardPredictor';
 import { ShardCountdownSection } from './Countdown';
 import ShardInfoSection from './Info';
@@ -39,6 +41,17 @@ export default function ShardCarousel() {
         ? t('dynamicTitle.hasShard', { color: isRed ? 'red' : 'black', map, date: dateString })
         : t('dynamicTitle.noShard', { date: dateString })) + ' - Sky Shards';
   }, [date.day, date.month, date.year, info.haveShard, info.isRed, i18n.language]);
+
+  // Fetch remote config on mount
+  const [remoteConfig, setRemoteConfig] = useState<RemoteConfig | null>(null);
+  const manualData = useMemo(() => remoteConfig?.dailyMap[(date as DateTime<true>).toISODate()], [remoteConfig, date]);
+  useLegacyEffect(
+    () =>
+      void fetchRemoteConfig()
+        .then(setRemoteConfig)
+        .catch(e => console.error('Failed to fetch remote config', e)),
+    [],
+  );
 
   return (
     <div
