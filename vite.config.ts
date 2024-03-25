@@ -23,15 +23,22 @@ const translationDir = normalizePath('./src/i18n');
 
 process.env.VITE_GS_TRANSLATION_URL = translationJsonUrl;
 
-// check public/_header csp allow translation url
+if (process.env.VITE_SHARD_REMOTE_URL === undefined)
+  process.env.VITE_SHARD_REMOTE_URL = 'https://sky-shardfig.plutoy.top/minified.json';
+
+// check public/_header csp allow translation url and dynamic data url
 readFile('./public/_headers', 'utf-8').then(headers => {
   if (!headers.includes(translationJsonUrl)) {
     console.error('Translation url not allowed in public/_headers');
     process.exit(1);
   }
+  if (!headers.includes(process.env.VITE_SHARD_REMOTE_URL)) {
+    console.error('Dynamic data url not allowed in public/_headers');
+    process.exit(1);
+  }
 });
 
-const trnaslationPr = Promise.all([
+const translationPr = Promise.all([
   fetch(translationJsonUrl + (isCfPages ? '?build=true' : '')).then(res => res.json()),
   readdir(translationDir + '/locales').then(files =>
     files.filter(file => file.endsWith('.json') && file !== 'en.json').map(file => file.slice(0, -5)),
@@ -64,10 +71,10 @@ export default defineConfig({
     {
       name: 'translation',
       async buildStart() {
-        await trnaslationPr;
+        await translationPr;
       },
       async transformIndexHtml(html) {
-        const codeLangs = await trnaslationPr;
+        const codeLangs = await translationPr;
 
         // Find the end of the title tag
         const titleEnd = html.indexOf('</title>') + 8;
