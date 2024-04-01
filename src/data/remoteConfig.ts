@@ -1,23 +1,36 @@
 // Copied from https://github.com/PlutoyDev/sky-shardfig/blob/main/shared/lib.ts
+import type { DateTime } from 'luxon';
 
-export interface ManualData {
-  memory?: 0 | 1 | 2 | 3 | 4 | 5;
-  variation?: number;
-  isBugged?: boolean;
-  bugType?: 'noShard' | 'noMemory';
-  isDisabled?: boolean;
-  disabledReason?: string;
-  credits?: string[];
-  lastModified?: string;
-  lastModifiedBy?: string;
+export interface Override {
+  hasShard?: boolean;
+  isRed?: boolean;
+  group?: number;
+  realm?: number;
+  map?: string;
+}
+
+export interface DailyConfig {
+  memory?: number | null;
+  memoryBy?: string | null;
+  variation?: number | null;
+  variationBy?: string | null;
+  override?: Override | null;
+  overrideBy?: string | null;
+  overrideReason?: string | null;
+  version?: number;
+  lastModified?: DateTime;
+}
+
+export interface GlobalConfig {
+  // This controls the global state of the application
+  bugged?: boolean;
+  buggedReason?: string;
 }
 
 export interface RemoteConfig {
-  dailyMap: Record<string, ManualData>; //key = yyyy-mm-dd
-  isBugged?: boolean;
-  bugType?: 'inaccurate' | 'tgc :/';
-  lastModified?: string;
-  lastModifiedBy?: string;
+  dailiesMap: Record<string, DailyConfig>;
+  authorNames: Record<string, string>;
+  global: GlobalConfig;
 }
 
 export async function fetchRemoteConfig(): Promise<RemoteConfig> {
