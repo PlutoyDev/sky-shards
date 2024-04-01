@@ -94,7 +94,7 @@ export function DateSelectionModal({ hideModal }: ModalProps) {
             );
           })}
         {shardInfos.map(([date, info]) => {
-          const { haveShard, isRed, map } = info;
+          const { hasShard, isRed, map } = info;
           const isToday = date.hasSame(today, 'day');
           const isSelected = date.hasSame(selectedDate, 'day');
 
@@ -103,7 +103,7 @@ export function DateSelectionModal({ hideModal }: ModalProps) {
               href={`/${lang}/${date.toFormat('yyyy/MM/dd')}`}
               key={date.day}
               title={date.toLocaleString({ month: 'short', day: 'numeric', year: 'numeric' })}
-              data-shard={!haveShard ? 'none' : ''}
+              data-shard={!hasShard ? 'none' : ''}
               data-selected={isSelected}
               className='btn btn-outline btn-xs block h-full w-full overflow-x-clip py-0.5 !text-white data-[selected=true]:btn-active data-[shard=none]:opacity-30'
               onClick={e => {
@@ -114,14 +114,14 @@ export function DateSelectionModal({ hideModal }: ModalProps) {
               }}
             >
               <p
-                data-shard={haveShard ? (isRed ? 'red' : 'black') : 'none'}
+                data-shard={hasShard ? (isRed ? 'red' : 'black') : 'none'}
                 data-today={isToday}
                 className='mx-auto w-min whitespace-nowrap rounded-full px-1 text-center align-middle text-lg font-bold data-[shard=black]:text-black data-[shard=red]:text-red-600 data-[today=true]:underline lg:text-xl data-[shard=none]:dark:opacity-60'
               >
                 {date.toFormat('dd')}
               </p>
               <p className='w-full whitespace-nowrap text-center align-middle text-xs max-md:hidden'>
-                {haveShard ? t(`skyMaps:${map}`) : t('noShard')}
+                {hasShard ? t(`skyMaps:${map}`) : t('noShard')}
               </p>
             </a>
           );

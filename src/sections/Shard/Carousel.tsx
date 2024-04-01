@@ -34,13 +34,13 @@ export default function ShardCarousel() {
   const carouselRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const { haveShard, isRed, map } = info;
+    const { hasShard, isRed, map } = info;
     const dateString = date.setLocale(LuxonSettings.defaultLocale).toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY);
     document.title =
-      (haveShard
+      (hasShard
         ? t('dynamicTitle.hasShard', { color: isRed ? 'red' : 'black', map, date: dateString })
         : t('dynamicTitle.noShard', { date: dateString })) + ' - Sky Shards';
-  }, [date.day, date.month, date.year, info.haveShard, info.isRed, i18n.language]);
+  }, [date.day, date.month, date.year, info.hasShard, info.isRed, i18n.language]);
 
   // Fetch remote config on mount
   const [remoteConfig, setRemoteConfig] = useState<RemoteConfig | null>(null);
@@ -83,7 +83,7 @@ export default function ShardCarousel() {
         >
           <div className='flex max-h-screen min-h-full w-full flex-col flex-nowrap items-center justify-center gap-1'>
             <ShardInfoSection info={info} />
-            {info.haveShard && (
+            {info.hasShard && (
               <>
                 <ShardProgress info={info} />
                 <ShardCountdownSection info={info} />
@@ -102,7 +102,7 @@ export default function ShardCarousel() {
               </>
             )}
           </div>
-          {info.haveShard && (
+          {info.hasShard && (
             <div className='flex flex-row flex-wrap items-start justify-center gap-6'>
               <ShardMapInfographic info={info} />
               <ShardDataInfographic info={info} />

@@ -1,5 +1,6 @@
 import { DateTime, Duration } from 'luxon';
 import type { Translation } from '../i18n';
+import type { Override } from './remoteConfig';
 
 // const earlySkyOffset = Duration.fromObject({ minutes: -32, seconds: -10 }); //after start
 // const eruptionOffset = Duration.fromObject({ minutes: 7 }); //after start
@@ -88,16 +89,36 @@ const overrideRewardAC: Record<string, number> = {
   'vault.jelly': 3.5,
 };
 
-export function getShardInfo(date: DateTime) {
+// Used to validate variation input, not listed = 1
+export const numMapVarients = {
+  'prairie.butterfly': 3,
+  'prairie.village': 3,
+  'prairie.bird': 2,
+  'prairie.island': 3,
+  'forest.brook': 2,
+  'forest.end': 2,
+  'valley.rink': 3,
+  'valley.dreams': 2,
+  'wateland.temple': 3,
+  'wasteland.battlefield': 3,
+  'wasteland.graveyard': 2,
+  'wasteland.crab': 2,
+  'wasteland.ark': 4,
+  'vault.starlight': 3,
+  'vault.jelly': 2,
+};
+
+export function getShardInfo(date: DateTime, override?: Override) {
   const today = date.setZone('America/Los_Angeles').startOf('day');
   const [dayOfMth, dayOfWk] = [today.day, today.weekday];
-  const isRed = dayOfMth % 2 === 1;
-  const realmIdx = (dayOfMth - 1) % 5;
-  const infoIndex = isRed ? (((dayOfMth - 1) / 2) % 3) + 2 : (dayOfMth / 2) % 2;
+  const isRed = override?.isRed ?? dayOfMth % 2 === 1;
+  const realmIdx = override?.realm ?? (dayOfMth - 1) % 5;
+  const infoIndex = override?.group ?? (isRed ? (((dayOfMth - 1) / 2) % 3) + 2 : (dayOfMth / 2) % 2);
   const { noShardWkDay, interval, offset, maps, defRewardAC } = shardsInfo[infoIndex];
-  const haveShard = !noShardWkDay.includes(dayOfWk);
-  const map = maps[realmIdx];
+  const hasShard = override?.hasShard ?? !noShardWkDay.includes(dayOfWk);
+  const map = override?.map ?? maps[realmIdx];
   const rewardAC = isRed ? overrideRewardAC[map] ?? defRewardAC : undefined;
+  const numVarient = numMapVarients[map as keyof typeof numMapVarients] ?? 1;
   let firstStart = today.plus(offset);
   //Detect timezone changed, happens on Sunday, shardInfoIdx is 2,3 or 4. Offset > 2hrs
   if (dayOfWk === 7 && today.isInDST !== firstStart.isInDST) {
@@ -112,7 +133,7 @@ export function getShardInfo(date: DateTime) {
   return {
     date,
     isRed,
-    haveShard,
+    hasShard,
     offset,
     interval,
     lastEnd: occurrences[2].end,
@@ -131,9 +152,9 @@ interface findShardOptions {
 
 export function findNextShard(from: DateTime, opts: findShardOptions = {}): ShardInfo {
   const info = getShardInfo(from);
-  const { haveShard, isRed, lastEnd } = info;
+  const { hasShard, isRed, lastEnd } = info;
   const { only } = opts;
-  if (haveShard && from < lastEnd && (!only || (only === 'red') === isRed)) {
+  if (hasShard && from < lastEnd && (!only || (only === 'red') === isRed)) {
     return info;
   } else {
     return findNextShard(from.plus({ days: 1 }), { only });

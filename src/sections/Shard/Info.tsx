@@ -13,7 +13,7 @@ export const ShardInfoSection = forwardRef<HTMLDivElement, ShardInfoSectionProps
   ref,
 ) {
   const { t } = useTranslation(['infoSection', 'skyRealms']);
-  if (!info.haveShard) {
+  if (!info.hasShard) {
     return (
       <div
         className='flex max-h-screen min-h-full w-full flex-col flex-nowrap items-center justify-center gap-1'
