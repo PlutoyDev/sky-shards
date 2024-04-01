@@ -5,8 +5,8 @@ import { DateTime } from 'luxon';
 import { Settings as LuxonSettings } from 'luxon';
 import type { ModalProps } from '../../context/ModalContext';
 import { useSettings } from '../../context/Settings';
-import { getShardInfo } from '../../shardPredictor';
-import type { ShardInfo } from '../../shardPredictor';
+import { getShardInfo } from '../../data/shard';
+import type { ShardInfo } from '../../data/shard';
 
 export function DateSelectionModal({ hideModal }: ModalProps) {
   const { t } = useTranslation(['dateSelector', 'skyRealms', 'skyMaps']);

@@ -2,7 +2,7 @@ import { forwardRef } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { DynamicCalendar } from '../../components/Calendar';
 import Emoji from '../../components/Emoji';
-import { ShardInfo } from '../../shardPredictor';
+import { ShardInfo } from '../../data/shard';
 
 interface ShardInfoSectionProps {
   info: ShardInfo;

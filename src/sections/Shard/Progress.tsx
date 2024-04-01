@@ -8,7 +8,7 @@ import { Trans, useTranslation } from 'react-i18next';
 import { DateTime, Settings as LuxonSettings } from 'luxon';
 import { StaticClock } from '../../components/Clock';
 import { useNow } from '../../context/Now';
-import { ShardInfo } from '../../shardPredictor';
+import { ShardInfo } from '../../data/shard';
 
 interface ShardProgressProps {
   info: ShardInfo;
@@ -53,7 +53,7 @@ export function ShardProgress({ info }: ShardProgressProps) {
               {/* Time Label */}
               <span
                 className={
-                  'absolute -left-[0.5em] whitespace-nowrap' + (i === 1 ? ' max-sm:top-0 sm:bottom-0' : ' bottom-0')
+                  'absolute -left-[0.5em] whitespace-nowrap' + (i === 1 ? ' sm:bottom-0 max-sm:top-0' : ' bottom-0')
                 }
               >
                 {/* <StaticClock time={start}  convertTo={useLocalTz ? 'local' : undefined} /> */}

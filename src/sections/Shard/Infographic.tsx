@@ -1,7 +1,7 @@
 import { ReactNode, useState, useEffect } from 'react';
 import { BiLinkExternal } from 'react-icons/bi';
 import { BsDiscord } from 'react-icons/bs';
-import { ShardInfo } from '../../shardPredictor';
+import { ShardInfo } from '../../data/shard';
 
 interface ShardInfographicsProps {
   title: string;

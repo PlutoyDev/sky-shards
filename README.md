@@ -6,7 +6,7 @@
 
 Compute the color, time and location of [Shard Eruptions](https://sky-children-of-the-light.fandom.com/wiki/Shard_Eruptions) in the Game "Sky: Children of the Light".
 
-Shard is computed as described in [Shard Prediction Rule](./ShardPredictionRule.md)
+Shard is computed as described in [Shard Prediction Rule](./ShardPredictionRule.md) and calculated [here](./src/data/shard.ts)
 
 ## Localizations
 

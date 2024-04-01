@@ -3,7 +3,7 @@ import { Settings, Zone } from 'luxon';
 import Calendar from '../../components/Calendar';
 import StaticClock, { Countdown } from '../../components/Clock';
 import { useNow } from '../../context/Now';
-import { ShardInfo } from '../../shardPredictor';
+import { ShardInfo } from '../../data/shard';
 
 export function ShardCountdownSection({ info }: { info: ShardInfo }) {
   const { t } = useTranslation(['countdownSection', 'durationFmts']);
@@ -15,10 +15,10 @@ export function ShardCountdownSection({ info }: { info: ShardInfo }) {
   const countdownTo = upcomming && landed ? occurrences[upcommingIndex]?.end : upcomming?.land;
 
   return (
-    <section className='short:min-w-[32rem] short:items-end tall:md:min-w-[16rem] glass grid min-w-[12rem] auto-cols-auto auto-rows-auto place-items-center gap-x-4'>
+    <section className='glass grid min-w-[12rem] auto-cols-auto auto-rows-auto place-items-center gap-x-4 short:min-w-[32rem] short:items-end tall:md:min-w-[16rem]'>
       {upcomming ? (
         <>
-          <div className='short:col-span-1 short:col-start-2 short:row-start-1 tall:md:col-span-2 col-start-1 row-start-1 w-full '>
+          <div className='col-start-1 row-start-1 w-full short:col-span-1 short:col-start-2 short:row-start-1 tall:md:col-span-2 '>
             <Trans
               t={t}
               i18nKey={landed ? 'landed' : 'landing'}
@@ -34,7 +34,7 @@ export function ShardCountdownSection({ info }: { info: ShardInfo }) {
             />
           </div>
           <time
-            className='short:row-start-1 col-start-1 row-start-2'
+            className='col-start-1 row-start-2 short:row-start-1'
             dateTime={countdownTo?.setZone('local')?.toISO({ suppressMilliseconds: true }) ?? undefined}
           >
             <strong>{t('yourTime')}</strong>
@@ -43,7 +43,7 @@ export function ShardCountdownSection({ info }: { info: ShardInfo }) {
             <StaticClock time={countdownTo} convertTo='local' className='block font-bold' />
           </time>
           <time
-            className='short:col-start-3 short:row-start-1 tall:md:col-start-2 tall:md:row-start-2 col-start-1 row-start-3'
+            className='col-start-1 row-start-3 short:col-start-3 short:row-start-1 tall:md:col-start-2 tall:md:row-start-2'
             dateTime={countdownTo?.toISO({ suppressMilliseconds: true }) ?? undefined}
           >
             <strong>{t('skyTime')}</strong>
