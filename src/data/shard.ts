@@ -139,6 +139,7 @@ export function getShardInfo(date: DateTime, override?: Override) {
     lastEnd: occurrences[2].end,
     realm: realms[realmIdx],
     map,
+    numVarient,
     rewardAC,
     occurrences,
   };
