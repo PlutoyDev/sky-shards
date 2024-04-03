@@ -113,7 +113,7 @@ export function getShardInfo(date: DateTime, override?: Override) {
   const [dayOfMth, dayOfWk] = [today.day, today.weekday];
   const isRed = override?.isRed ?? dayOfMth % 2 === 1;
   const realmIdx = override?.realm ?? (dayOfMth - 1) % 5;
-  const infoIndex = override?.group ?? (isRed ? (((dayOfMth - 1) / 2) % 3) + 2 : (dayOfMth / 2) % 2);
+  const infoIndex = override?.group ?? (dayOfMth % 2 === 1 ? (((dayOfMth - 1) / 2) % 3) + 2 : (dayOfMth / 2) % 2);
   const { noShardWkDay, interval, offset, maps, defRewardAC } = shardsInfo[infoIndex];
   const hasShard = override?.hasShard ?? !noShardWkDay.includes(dayOfWk);
   const map = override?.map ?? maps[realmIdx];
