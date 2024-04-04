@@ -27,11 +27,13 @@ export interface GlobalConfig {
   buggedReason?: string;
 }
 
-export interface RemoteConfig {
+export interface RemoteConfigResponse {
   dailiesMap: Record<string, DailyConfig>;
   authorNames: Record<string, string>;
-  global: GlobalConfig;
+  global?: GlobalConfig;
 }
+
+export type RemoteConfig = RemoteConfigResponse;
 
 export async function fetchRemoteConfig(): Promise<RemoteConfig> {
   const res = await fetch(import.meta.env.VITE_SHARD_REMOTE_URL as string);
