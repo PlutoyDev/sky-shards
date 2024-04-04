@@ -23,8 +23,9 @@ const translationDir = normalizePath('./src/i18n');
 
 process.env.VITE_GS_TRANSLATION_URL = translationJsonUrl;
 
-if (process.env.VITE_SHARD_REMOTE_URL === undefined)
-  process.env.VITE_SHARD_REMOTE_URL = 'https://sky-shardfig.plutoy.top/minified.json';
+if (process.env.VITE_SHARD_REMOTE_URL === undefined) {
+  process.env.VITE_SHARD_REMOTE_URL = 'https://sky-shardfig.plutoy.top';
+}
 
 // check public/_header csp allow translation url and dynamic data url
 readFile('./public/_headers', 'utf-8').then(headers => {

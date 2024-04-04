@@ -1,5 +1,5 @@
 // Copied from https://github.com/PlutoyDev/sky-shardfig/blob/main/shared/lib.ts
-import type { DateTime } from 'luxon';
+import { DateTime } from 'luxon';
 
 export interface Override {
   hasShard?: boolean;
@@ -36,6 +36,12 @@ export interface RemoteConfigResponse {
 export type RemoteConfig = RemoteConfigResponse;
 
 export async function fetchRemoteConfig(): Promise<RemoteConfig> {
-  const res = await fetch(import.meta.env.VITE_SHARD_REMOTE_URL as string);
+  const res = await fetch((import.meta.env.VITE_SHARD_REMOTE_URL as string) + '/minified.json');
   return await res.json();
+}
+
+export async function fetchRemoteLastUpdated(): Promise<number> {
+  const res = await fetch((import.meta.env.VITE_SHARD_REMOTE_URL as string) + '/last_updated.txt');
+  const text = await res.text();
+  return parseInt(text);
 }
