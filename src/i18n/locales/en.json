@@ -154,6 +154,14 @@
     "dynamicTitle.noShard": "No shard eruptions {{date}}",
     "dynamicTitle.hasShard": "$t(shard:color.{{color}}) in $t(skyMaps:{{map}}) on {{date}}"
   },
+  "override": {
+    "disclosure": "Info has been altered by {{author}}",
+    "reason.event_area": "Reason: Events are occuring in the area",
+    "reason.buggy_sky": "Reason: Sky is buggy",
+    "reason.schedule_change": "Reason: Schedule has changed",
+    "revert": "Revert original",
+    "apply": "Apply override"
+  },
   "infoSection": {
     "redShard": "<color>Red shard</color> <emoji/>",
     "blackShard": "<color>Black shard</color> <emoji/>",

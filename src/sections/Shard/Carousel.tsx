@@ -11,6 +11,7 @@ import useLegacyEffect from '../../hooks/useLegacyEffect';
 import { ShardCountdownSection } from './Countdown';
 import ShardInfoSection from './Info';
 import { ShardMapInfographic, ShardDataInfographic } from './Infographic';
+import ShardOverride from './Override';
 import ShardProgress from './Progress';
 
 const varients = {
@@ -21,15 +22,27 @@ const varients = {
 
 export default function ShardCarousel() {
   const { t, i18n } = useTranslation(['shardCarousel']);
+  const [applyOverride, setApplyOverride] = useState(true);
 
   const { date, lang, fontSize, setSettings } = useSettings();
   const prevDate = useRef(date);
   const direction = useMemo(() => (prevDate.current < date ? 1 : -1), [date]);
   useEffect(() => ((prevDate.current = date), undefined), [date]);
 
+  // Fetch remote config on mount
+  const [remoteConfig, setRemoteConfig] = useState<(RemoteConfig & { fetchedAt: number }) | null>(null);
+  const remoteDailyConfig = useMemo(
+    () => remoteConfig?.dailiesMap[date.toISODate() as string] ?? undefined,
+    [remoteConfig, date],
+  );
+
   const { info, tmr, ytd } = useMemo(
-    () => ({ info: getShardInfo(date), tmr: date.plus({ days: 1 }), ytd: date.minus({ days: 1 }) }),
-    [date.day, date.month, date.year],
+    () => ({
+      info: getShardInfo(date, (applyOverride && remoteDailyConfig?.override) || undefined),
+      tmr: date.plus({ days: 1 }),
+      ytd: date.minus({ days: 1 }),
+    }),
+    [date.day, date.month, date.year, applyOverride, remoteDailyConfig],
   );
   const carouselRef = useRef<HTMLDivElement>(null);
 
@@ -42,13 +55,13 @@ export default function ShardCarousel() {
         : t('dynamicTitle.noShard', { date: dateString })) + ' - Sky Shards';
   }, [date.day, date.month, date.year, info.hasShard, info.isRed, i18n.language]);
 
-  // Fetch remote config on mount
-  const [remoteConfig, setRemoteConfig] = useState<RemoteConfig | null>(null);
-  const manualData = useMemo(() => remoteConfig?.dailyMap[(date as DateTime<true>).toISODate()], [remoteConfig, date]);
   useLegacyEffect(
     () =>
       void fetchRemoteConfig()
-        .then(setRemoteConfig)
+        .then(config => {
+          setRemoteConfig({ ...config, fetchedAt: Date.now() });
+          // TODO Setup polling with fetchRemoteLastUpdated
+        })
         .catch(e => console.error('Failed to fetch remote config', e)),
     [],
   );
@@ -82,10 +95,17 @@ export default function ShardCarousel() {
           style={{ fontSize: `${fontSize}em` }}
         >
           <div className='flex max-h-screen min-h-full w-full flex-col flex-nowrap items-center justify-center gap-1'>
-            <ShardInfoSection info={info} />
+            <ShardOverride
+              info={info}
+              remoteDailyConfig={remoteDailyConfig}
+              remoteAuthorNames={remoteConfig?.authorNames}
+              toggleApplyOverride={() => setApplyOverride(!applyOverride)}
+            />
+            <ShardInfoSection info={info} remoteDailyConfig={remoteDailyConfig} />
+
             {info.hasShard && (
               <>
-                <ShardProgress info={info} />
+                {/* <ShardProgress info={info} /> */}
                 <ShardCountdownSection info={info} />
                 <small
                   className='flex cursor-pointer flex-col items-center justify-center font-serif text-xs [@media_(min-height:_640px)]:xl:text-lg'

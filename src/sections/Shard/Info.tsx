@@ -2,10 +2,13 @@ import { forwardRef } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { DynamicCalendar } from '../../components/Calendar';
 import Emoji from '../../components/Emoji';
+import { DailyConfig } from '../../data/remoteConfig';
 import { ShardInfo } from '../../data/shard';
 
 interface ShardInfoSectionProps {
   info: ShardInfo;
+  remoteDailyConfig?: DailyConfig;
+  remoteAuthorNames?: Record<string, string>;
 }
 
 export const ShardInfoSection = forwardRef<HTMLDivElement, ShardInfoSectionProps>(function ShardInfoSection(

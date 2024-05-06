@@ -142,6 +142,7 @@ export function getShardInfo(date: DateTime, override?: Override) {
     numVarient,
     rewardAC,
     occurrences,
+    wasOverride: !!override,
   };
 }
 
