@@ -95,13 +95,12 @@ export default function ShardCarousel() {
           style={{ fontSize: `${fontSize}em` }}
         >
           <div className='flex max-h-screen min-h-full w-full flex-col flex-nowrap items-center justify-center gap-1'>
-            <ShardOverride
+            <ShardInfoSection
               info={info}
               remoteDailyConfig={remoteDailyConfig}
               remoteAuthorNames={remoteConfig?.authorNames}
-              toggleApplyOverride={() => setApplyOverride(!applyOverride)}
+              toggleOverride={() => setApplyOverride(!applyOverride)}
             />
-            <ShardInfoSection info={info} remoteDailyConfig={remoteDailyConfig} />
 
             {info.hasShard && (
               <>

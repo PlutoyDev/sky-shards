@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import { forwardRef, useMemo } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { DynamicCalendar } from '../../components/Calendar';
 import Emoji from '../../components/Emoji';
@@ -9,13 +9,44 @@ interface ShardInfoSectionProps {
   info: ShardInfo;
   remoteDailyConfig?: DailyConfig;
   remoteAuthorNames?: Record<string, string>;
+  toggleOverride: () => void;
 }
 
 export const ShardInfoSection = forwardRef<HTMLDivElement, ShardInfoSectionProps>(function ShardInfoSection(
-  { info },
+  { info, remoteDailyConfig, remoteAuthorNames, toggleOverride },
   ref,
 ) {
-  const { t } = useTranslation(['infoSection', 'skyRealms']);
+  const { t } = useTranslation(['infoSection', 'skyRealms', 'override']);
+  const { override, overrideBy, overrideReason, memory } = remoteDailyConfig ?? {};
+  const overrideDisclosure = useMemo(() => {
+    const hasOverride = override && overrideBy && overrideReason;
+    if (!hasOverride) return null;
+    const overrideAuthor = remoteAuthorNames?.[overrideBy];
+    const reason: string = overrideReason.startsWith('!!!')
+      ? 'Reason: ' + overrideReason.slice(3)
+      : // @ts-ignore
+        t(`reason.${overrideReason}`);
+    return (
+      <small className='text-[0.8em]'>
+        <p className='flex flex-row flex-wrap items-center justify-center gap-1'>
+          <span className='font-semibold'>{t('override:disclosure', { author: overrideAuthor })} </span>
+          <button
+            className='btn btn-primary swap btn-sm h-min min-h-0 !p-1 text-[0.8em] data-[active=true]:swap-active'
+            onClick={() => toggleOverride()}
+            aria-label={info.wasOverride ? t('override:revert') : t('override:apply')}
+            data-active={info.wasOverride}
+          >
+            <span className='swap-on'>{t('override:revert')}</span>
+            <span className='swap-off'>{t('override:apply')}</span>
+          </button>
+        </p>
+        <p className='hidden xs:tall:block'>{reason}</p>
+        <hr className='mx-auto w-5/6 border-t border-dashed' />
+      </small>
+    );
+  }, [override, overrideBy, overrideReason, t, remoteAuthorNames, toggleOverride]);
+  console.log('render');
+
   if (!info.hasShard) {
     return (
       <div
@@ -23,6 +54,7 @@ export const ShardInfoSection = forwardRef<HTMLDivElement, ShardInfoSectionProps
         ref={ref}
       >
         <section className='glass'>
+          {overrideDisclosure}
           <Trans
             t={t}
             i18nKey='noShard'
@@ -38,6 +70,7 @@ export const ShardInfoSection = forwardRef<HTMLDivElement, ShardInfoSectionProps
   return (
     <section className='glass'>
       <p className='whitespace-normal'>
+        {overrideDisclosure}
         <Trans
           t={t}
           i18nKey='hasShard'
