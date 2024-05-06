@@ -74,13 +74,10 @@ export function ShardMemoryInfographic({ remoteDailyConfig, authorNames }: Shard
       credits={
         <>
           <a href='https://discord.gg/skyinfographicsdatabase' target='_blank' rel='noreferrer'>
-            <div className='glass'>
+            <div className='glass tooltip tooltip-top' data-tip='Click to join server'>
               <p>
                 <strong>Sky: COTL </strong>Infographic Database Discord Server
                 <BsDiscord className='ml-1 inline' />
-              </p>
-              <p>
-                Click here to Join Server
                 <BiLinkExternal className='ml-1 inline' />
               </p>
             </div>
@@ -112,13 +109,10 @@ export function ShardMapInfographic({ info, remoteDailyConfig, authorNames }: Sh
       credits={
         <>
           <a href='https://discord.gg/skyinfographicsdatabase' target='_blank' rel='noreferrer'>
-            <div className='glass'>
+            <div className='glass tooltip tooltip-top' data-tip='Click to join server'>
               <p>
                 <strong>Sky: COTL </strong>Infographic Database Discord Server
                 <BsDiscord className='ml-1 inline' />
-              </p>
-              <p>
-                Click here to Join Server
                 <BiLinkExternal className='ml-1 inline' />
               </p>
             </div>
