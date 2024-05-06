@@ -127,31 +127,72 @@ function HelpTranslation() {
   );
 }
 
-function InspiredByFooter() {
-  const { t } = useTranslation('footer');
+interface OtherAppFooterProps {
+  heading: string;
+  app: {
+    title: string;
+    description: string;
+    link: string;
+    icon: string;
+    creator: string;
+  };
+}
+
+function OtherAppFooter({ heading, app: { title, description, link, icon, creator } }: OtherAppFooterProps) {
   return (
-    <SubFooter className='flex flex-col flex-nowrap items-center justify-center gap-x-3 xs:flex-row xs:gap-x-6'>
-      <p>{t('inspiredBy')}</p>
+    <SubFooter className='flex flex-col flex-nowrap items-center justify-center gap-x-3 xs:flex-row xs:gap-x-8'>
+      <p>{heading}</p>
       <a
         target='_blank'
         rel='noreferrer'
-        href='https://sky-clock.netlify.app/'
-        className='z-10 grid cursor-pointer grid-rows-2 rounded-lg border border-zinc-500 px-2 text-center shadow-2xl shadow-zinc-700  '
-        style={{ gridTemplateColumns: 'max-content min-content max-content' }}
+        href={link}
+        className='z-10 grid cursor-pointer grid-cols-[max-content,min-content,max-content] grid-rows-2 rounded-lg border border-zinc-500 px-2 text-center shadow-2xl shadow-zinc-700'
       >
-        <img className='ml-auto mt-1.5 h-4 w-4' src='/ext/sky-clock.webp' alt='Sky Clock App Icon' />
+        <img className='ml-auto mt-1.5 h-4 w-4' src={icon} alt={`${title} App Icon`} />
         <h2 className='mx-2 whitespace-nowrap text-center'>
-          <span className='text-sm underline'>Sky Clock</span>
-          <span className='text-xs'> by Chris Stead</span>
+          <span className='text-sm underline'>{title}</span>
+          <span className='text-xs'> by {creator}</span>
         </h2>
         <BiLinkExternal className='mt-1.5 self-start' />
-        <p className='col-span-3 whitespace-normal text-xs'>{t('skyClockDescription')}</p>
+        <p className='col-span-3 whitespace-normal text-xs'>{description}</p>
       </a>
     </SubFooter>
   );
 }
 
-const durationPerSection = 15; // seconds
+function SkyClockFooter() {
+  const { t } = useTranslation('footer');
+  return (
+    <OtherAppFooter
+      heading={t('inspiredBy')}
+      app={{
+        title: 'Sky Clock',
+        description: t('skyClockDescription'),
+        link: 'https://sky-clock.netlify.app/',
+        icon: '/ext/sky-clock.webp',
+        creator: 'Chris Stead',
+      }}
+    />
+  );
+}
+
+function SkyPlannerFooter() {
+  const { t } = useTranslation('footer');
+  return (
+    <OtherAppFooter
+      heading={t('seeAlso')}
+      app={{
+        title: 'Sky Planner',
+        description: t('skyPlannerDescription'),
+        link: 'https://sky-planner.pages.dev/',
+        icon: '/ext/sky-planner.webp',
+        creator: 'Silverfeelin',
+      }}
+    />
+  );
+}
+
+const durationPerSection = 12; // seconds
 
 export function Footer() {
   const [currentSection, setCurrentSection] = useState(0);
@@ -163,7 +204,8 @@ export function Footer() {
     const subfooters = [
       { key: 'app-detail', Footer: AppDetailFooter },
       { key: 'pattern-credit', Footer: PattenCreditFooter },
-      { key: 'inspired-by', Footer: InspiredByFooter },
+      { key: 'sky-clock', Footer: SkyClockFooter },
+      { key: 'sky-planner', Footer: SkyPlannerFooter },
     ] as { key: string; Footer: () => JSX.Element }[];
 
     const translators = t('translators');

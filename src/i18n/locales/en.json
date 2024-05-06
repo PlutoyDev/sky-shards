@@ -33,12 +33,14 @@
     "feedbackShort": "Feedback",
     "disclaimer": "This app is not affiliated with That Game Company or Sky: Children of the Light",
     "patternCredit": "Thanks to these Discord users for aiding in discovering shard eruption patterns:",
-    "inspiredBy": "Inspired by:",
-    "skyClockDescription": "Visit it for timing of Geyser, Grandma, Turtle and many more",
     "translatedBy": "Translated by:",
     "translators": "",
     "addFixTranslation": "Add or fix translation",
-    "translationSheet": "Translation sheet"
+    "translationSheet": "Translation sheet",
+    "inspiredBy": "Inspired by:",
+    "seeAlso": "See also:",
+    "skyClockDescription": "Visit it for timing of Geyser, Grandma, Turtle and many more",
+    "skyPlannerDescription": "Plan & tracks your unlocks"
   },
   "durationUnits": {
     "seconds.long": "seconds",
