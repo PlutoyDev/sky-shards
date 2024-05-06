@@ -1,5 +1,4 @@
 {
-  "$schema": "../schema.json",
   "application": {
     "headerDateTimeIndicator": "Now in Sky"
   },
