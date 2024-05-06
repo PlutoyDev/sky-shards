@@ -16,8 +16,8 @@ export const ShardInfoSection = forwardRef<HTMLDivElement, ShardInfoSectionProps
   { info, remoteDailyConfig, remoteAuthorNames, toggleOverride },
   ref,
 ) {
-  const { t } = useTranslation(['infoSection', 'skyRealms', 'override']);
-  const { override, overrideBy, overrideReason, memory } = remoteDailyConfig ?? {};
+  const { t } = useTranslation(['infoSection', 'skyRealms', 'override', 'shard']);
+  const { override, overrideBy, overrideReason, memory, memoryBy } = remoteDailyConfig ?? {};
   const overrideDisclosure = useMemo(() => {
     const hasOverride = override && overrideBy && overrideReason;
     if (!hasOverride) return null;
@@ -105,20 +105,33 @@ export const ShardInfoSection = forwardRef<HTMLDivElement, ShardInfoSectionProps
           values={{ color: info.isRed ? 'red' : 'black', map: info.map, realm: info.realm }}
         />
       </p>
-      <p className='whitespace-nowrap'>
-        <Trans
-          t={t}
-          {...(info.isRed
-            ? {
-                i18nKey: 'redShardRewards',
-                values: { qty: info.rewardAC },
-                components: { emoji: <Emoji name='Ascended candle' /> },
-              }
-            : {
-                i18nKey: 'blackShardRewards',
-                components: { emoji: <Emoji name='Candle cake' /> },
-              })}
-        />
+      <p className='flex flex-row flex-wrap items-center justify-around justify-items-start whitespace-nowrap'>
+        <span>
+          <Trans
+            t={t}
+            {...(info.isRed
+              ? {
+                  i18nKey: 'redShardRewards',
+                  values: { qty: info.rewardAC },
+                  components: { emoji: <Emoji name='Ascended candle' /> },
+                }
+              : {
+                  i18nKey: 'blackShardRewards',
+                  components: { emoji: <Emoji name='Candle cake' /> },
+                })}
+          />
+        </span>
+        {info.isRed &&
+          (memory ? (
+            <span
+              className='tooltip tooltip-top underline decoration-dashed md:tooltip-right'
+              data-tip={t('manualMemoryCredit', { author: remoteAuthorNames?.[memoryBy!] })}
+            >
+              {t('manualMemory', { memory: t(`shard:memories.${memory as 0 | 1 | 2 | 3 | 4 | 5}`) })}
+            </span>
+          ) : (
+            <span>{t('manualMemory', { memory: t('shard:memories.random') })}</span>
+          ))}
       </p>
     </section>
   );

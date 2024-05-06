@@ -145,7 +145,8 @@
     "memories.2": "Manta",
     "memories.3": "Krill",
     "memories.4": "Whale",
-    "memories.5": "Elder"
+    "memories.5": "Elder",
+    "memories.random": "Random"
   },
   "shardCarousel": {
     "navigation.rightwards": "Swipe right or Click here for previous shard",
@@ -169,7 +170,7 @@
     "hasShard": "<shard/> in <bold>$t(skyMaps:{{map}})</bold>, <bold><realm/></bold>, <date/>",
     "blackShardRewards": "Giving 4 <emoji/> of wax",
     "redShardRewards": "Giving max of {{qty}} <emoji/>",
-    "manualMemory": "Memory: <memory/>",
+    "manualMemory": "Memory: {{memory}}",
     "manualMemoryCredit": "Submitted by {{author}}"
   },
   "progressSection": {
