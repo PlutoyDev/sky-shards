@@ -75,10 +75,6 @@ function PattenCreditFooter() {
 
 function TranslatorsFooter() {
   const { t, i18n } = useTranslation('footer');
-  const translationErrorLink = t('translationErrorLink', {
-    commitHash: import.meta.env.VITE_GIT_COMMIT,
-    language: i18n.language,
-  });
   let translators = [] as string[];
   try {
     const tCsv = t('translators');
@@ -91,30 +87,25 @@ function TranslatorsFooter() {
     translators = [`Error in translator list: ${e}`];
   }
   return (
-    <SubFooter className='flex flex-col items-center justify-center gap-y-1'>
-      <p className='text- flex w-full select-none flex-row flex-wrap items-center justify-center gap-x-1.5 whitespace-nowrap'>
-        <span className='text-center text-xs md:text-sm'>{t('translatedBy')}</span>
+    <SubFooter className='flex flex-col items-center justify-center gap-1 gap-x-3 xs:flex-row xs:gap-x-6 '>
+      <p className='flex select-none flex-row flex-wrap items-center justify-center gap-x-1.5 whitespace-nowrap'>
+        <span className='text-center text-xs xs:text-sm'>{t('translatedBy')}</span>
         {translators.map(t => (
           <span key={t}>{t}</span>
         ))}
       </p>
-      <p className='text-center text-xs'>
-        <Trans
-          t={t}
-          i18nKey='translationErrors'
-          components={{
-            a: (
-              <a
-                className='underline decoration-dashed'
-                title='Report translation error'
-                href={translationErrorLink}
-                target='_blank'
-                rel='noreferrer'
-              />
-            ),
-          }}
-        />
-      </p>
+      <div className='flex flex-col items-center justify-center gap-y-1'>
+        <p className='font-bold'>{t('addFixTranslation')}</p>
+        <a
+          href='https://docs.google.com/spreadsheets/d/16eSANTI310SY8uWjsjbxNBzyD-49hwF3OGYRkFPykoo/edit#gid=0&range=A5:B5'
+          target='_blank'
+          rel='noreferrer'
+          className='block rounded-xl bg-green-700 px-2 pb-1 pt-0.5 text-white'
+        >
+          <BsTable className='text-md mr-2 inline-block' />
+          <span className='text-sm font-bold'>{t('translationSheet')}</span>
+        </a>
+      </div>
     </SubFooter>
   );
 }
@@ -139,7 +130,7 @@ function HelpTranslation() {
 function InspiredByFooter() {
   const { t } = useTranslation('footer');
   return (
-    <SubFooter className='justify-cen ter flex flex-col flex-nowrap items-center justify-center gap-x-3 md:gap-x-6 landscape:flex-row'>
+    <SubFooter className='flex flex-col flex-nowrap items-center justify-center gap-x-3 xs:flex-row xs:gap-x-6'>
       <p>{t('inspiredBy')}</p>
       <a
         target='_blank'
@@ -211,7 +202,7 @@ export function Footer() {
   }, [currentSection, numSubfooters]);
 
   return (
-    <footer className='carousel carousel-vertical glass h-28 w-full cursor-row-resize !py-0' ref={footerRef}>
+    <footer className='carousel carousel-vertical glass h-32 w-full cursor-row-resize !py-0 xs:h-28' ref={footerRef}>
       {subfooters.map(({ key, Footer }) => (
         <Footer key={key} />
       ))}
