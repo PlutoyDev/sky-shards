@@ -127,7 +127,7 @@ export const ShardInfoSection = forwardRef<HTMLDivElement, ShardInfoSectionProps
               className='tooltip tooltip-top underline decoration-dashed md:tooltip-right'
               data-tip={t('manualMemoryCredit', { author: remoteAuthorNames?.[memoryBy!] })}
             >
-              {t('manualMemory', { memory: t(`shard:memories.${memory as 0 | 1 | 2 | 3 | 4 | 5}`) })}
+              {t('manualMemory', { memory: t(`shard:memories.${memory}`) })}
             </span>
           ) : (
             <span>{t('manualMemory', { memory: t('shard:memories.random') })}</span>

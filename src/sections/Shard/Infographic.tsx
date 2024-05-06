@@ -1,6 +1,8 @@
 import { ReactNode, useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { BiLinkExternal } from 'react-icons/bi';
 import { BsDiscord } from 'react-icons/bs';
+import { DailyConfig } from '../../data/remoteConfig';
 import { ShardInfo } from '../../data/shard';
 
 interface ShardInfographicsProps {
@@ -52,30 +54,79 @@ function ShardInfographics({ title, image, imageAlt, credits }: ShardInfographic
   );
 }
 
-interface ShardMapInfographic {
-  info: ShardInfo;
+interface ShardMemoryInfographic {
+  remoteDailyConfig?: DailyConfig;
+  authorNames?: Record<string, string>;
 }
 
-export function ShardMapInfographic({ info }: ShardMapInfographic) {
-  const map = `/infographics/map_clement/${info.map}.webp`;
+export function ShardMemoryInfographic({ remoteDailyConfig, authorNames }: ShardMemoryInfographic) {
+  const { t } = useTranslation(['infographicSection', 'shard']);
+  const memory = remoteDailyConfig?.memory;
+  if (!memory && memory !== 0) return null;
+  const memoryBy = authorNames?.[remoteDailyConfig?.memoryBy!]!;
+  const memoryImg = `/infographics/memory_clement/${memory}.webp`;
+  const memoryStr = t(`shard:memories.${memory}`);
+  return (
+    <ShardInfographics
+      title={`Clement's Shard Memory (${memoryStr})`}
+      image={memoryImg}
+      imageAlt={memoryStr}
+      credits={
+        <>
+          <a href='https://discord.gg/skyinfographicsdatabase' target='_blank' rel='noreferrer'>
+            <div className='glass'>
+              <p>
+                <strong>Sky: COTL </strong>Infographic Database Discord Server
+                <BsDiscord className='ml-1 inline' />
+              </p>
+              <p>
+                Click here to Join Server
+                <BiLinkExternal className='ml-1 inline' />
+              </p>
+            </div>
+          </a>
+          {remoteDailyConfig?.memory && <p>{t('memoryCredit', { author: authorNames?.[memoryBy] })}</p>}
+        </>
+      }
+    />
+  );
+}
+
+interface ShardMapInfographic {
+  info: ShardInfo;
+  remoteDailyConfig?: DailyConfig;
+  authorNames?: Record<string, string>;
+}
+
+export function ShardMapInfographic({ info, remoteDailyConfig, authorNames }: ShardMapInfographic) {
+  const { t } = useTranslation(['infographicSection']);
+  const map =
+    remoteDailyConfig?.variation || remoteDailyConfig?.variation === 0
+      ? `/infographics/map_varient_clement/${info.map}.${remoteDailyConfig?.variation}.webp`
+      : `/infographics/map_clement/${info.map}.webp`;
   return (
     <ShardInfographics
       title="Clement's Map"
       image={map}
       imageAlt={info.map}
       credits={
-        <a href='https://discord.gg/skyinfographicsdatabase' target='_blank' rel='noreferrer'>
-          <div className='glass'>
-            <p>
-              <strong>Sky: COTL </strong>Infographic Database Discord Server
-              <BsDiscord className='ml-1 inline' />
-            </p>
-            <p>
-              Click here to Join Server
-              <BiLinkExternal className='ml-1 inline' />
-            </p>
-          </div>
-        </a>
+        <>
+          <a href='https://discord.gg/skyinfographicsdatabase' target='_blank' rel='noreferrer'>
+            <div className='glass'>
+              <p>
+                <strong>Sky: COTL </strong>Infographic Database Discord Server
+                <BsDiscord className='ml-1 inline' />
+              </p>
+              <p>
+                Click here to Join Server
+                <BiLinkExternal className='ml-1 inline' />
+              </p>
+            </div>
+          </a>
+          {remoteDailyConfig?.variation && (
+            <p>{t('varationCredit', { author: authorNames?.[remoteDailyConfig?.variationBy!] })}</p>
+          )}
+        </>
       }
     />
   );

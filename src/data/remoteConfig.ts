@@ -10,9 +10,9 @@ export interface Override {
 }
 
 export interface DailyConfig {
-  memory?: number | null;
+  memory?: 0 | 1 | 2 | 3 | 4 | 5 | null;
   memoryBy?: string | null;
-  variation?: number | null;
+  variation?: 0 | 1 | 2 | 3 | null;
   variationBy?: string | null;
   override?: Override | null;
   overrideBy?: string | null;

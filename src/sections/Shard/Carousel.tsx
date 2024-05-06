@@ -10,9 +10,7 @@ import { getShardInfo } from '../../data/shard';
 import useLegacyEffect from '../../hooks/useLegacyEffect';
 import { ShardCountdownSection } from './Countdown';
 import ShardInfoSection from './Info';
-import { ShardMapInfographic, ShardDataInfographic } from './Infographic';
-import ShardOverride from './Override';
-import ShardProgress from './Progress';
+import { ShardMapInfographic, ShardDataInfographic, ShardMemoryInfographic } from './Infographic';
 
 const varients = {
   enter: (direction: number) => ({ x: direction < 0 ? '-100%' : '100%', opacity: 0 }),
@@ -104,7 +102,6 @@ export default function ShardCarousel() {
 
             {info.hasShard && (
               <>
-                {/* <ShardProgress info={info} /> */}
                 <ShardCountdownSection info={info} />
                 <small
                   className='flex cursor-pointer flex-col items-center justify-center font-serif text-xs [@media_(min-height:_640px)]:xl:text-lg'
@@ -123,7 +120,8 @@ export default function ShardCarousel() {
           </div>
           {info.hasShard && (
             <div className='flex flex-row flex-wrap items-start justify-center gap-6'>
-              <ShardMapInfographic info={info} />
+              <ShardMemoryInfographic remoteDailyConfig={remoteDailyConfig} authorNames={remoteConfig?.authorNames} />
+              <ShardMapInfographic info={info} remoteDailyConfig={remoteDailyConfig} />
               <ShardDataInfographic info={info} />
             </div>
           )}
