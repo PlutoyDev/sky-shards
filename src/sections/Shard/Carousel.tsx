@@ -121,7 +121,11 @@ export default function ShardCarousel() {
           {info.hasShard && (
             <div className='flex flex-row flex-wrap items-start justify-center gap-6'>
               <ShardMemoryInfographic remoteDailyConfig={remoteDailyConfig} authorNames={remoteConfig?.authorNames} />
-              <ShardMapInfographic info={info} remoteDailyConfig={remoteDailyConfig} />
+              <ShardMapInfographic
+                info={info}
+                remoteDailyConfig={remoteDailyConfig}
+                authorNames={remoteConfig?.authorNames}
+              />
               <ShardDataInfographic info={info} />
             </div>
           )}

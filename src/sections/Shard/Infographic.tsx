@@ -63,13 +63,13 @@ export function ShardMemoryInfographic({ remoteDailyConfig, authorNames }: Shard
   const { t } = useTranslation(['infographicSection', 'shard']);
   const memory = remoteDailyConfig?.memory;
   if (!memory && memory !== 0) return null;
-  const memoryBy = authorNames?.[remoteDailyConfig?.memoryBy!]!;
-  const memoryImg = `/infographics/memory_clement/${memory}.webp`;
+  const author = authorNames?.[remoteDailyConfig?.memoryBy!]!;
+  const imageUrl = `/infographics/memory_clement/${memory}.webp`;
   const memoryStr = t(`shard:memories.${memory}`);
   return (
     <ShardInfographics
       title={`Clement's Shard Memory (${memoryStr})`}
-      image={memoryImg}
+      image={imageUrl}
       imageAlt={memoryStr}
       credits={
         <>
@@ -82,7 +82,7 @@ export function ShardMemoryInfographic({ remoteDailyConfig, authorNames }: Shard
               </p>
             </div>
           </a>
-          {remoteDailyConfig?.memory && <p>{t('memoryCredit', { author: authorNames?.[memoryBy] })}</p>}
+          {remoteDailyConfig?.memory && <p>{t('memoryCredit', { author })}</p>}
         </>
       }
     />
@@ -97,14 +97,16 @@ interface ShardMapInfographic {
 
 export function ShardMapInfographic({ info, remoteDailyConfig, authorNames }: ShardMapInfographic) {
   const { t } = useTranslation(['infographicSection']);
-  const map =
-    remoteDailyConfig?.variation || remoteDailyConfig?.variation === 0
+  const { variation, variationBy } = remoteDailyConfig ?? {};
+  const author = variationBy && authorNames?.[variationBy];
+  const imageUrl =
+    variation || variation === 0
       ? `/infographics/map_varient_clement/${info.map}.${remoteDailyConfig?.variation}.webp`
       : `/infographics/map_clement/${info.map}.webp`;
   return (
     <ShardInfographics
       title="Clement's Map"
-      image={map}
+      image={imageUrl}
       imageAlt={info.map}
       credits={
         <>
@@ -117,9 +119,7 @@ export function ShardMapInfographic({ info, remoteDailyConfig, authorNames }: Sh
               </p>
             </div>
           </a>
-          {remoteDailyConfig?.variation && (
-            <p>{t('varationCredit', { author: authorNames?.[remoteDailyConfig?.variationBy!] })}</p>
-          )}
+          {author && <p>{t('varationCredit', { author })}</p>}
         </>
       }
     />
