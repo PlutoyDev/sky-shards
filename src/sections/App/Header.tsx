@@ -25,7 +25,7 @@ function HeaderDateTime({ navigateToday }: { navigateToday: () => void }) {
         data-swap={dateActive}
       >
         <DynamicCalendar className='swap-on' />
-        <div className='swap-off'>{t('headerDateTimeIndicator')}</div>
+        <span className='swap-off'>{t('headerDateTimeIndicator')}</span>
       </p>
       <ClockNow dualUnit className='text-md xs:text-2xl' relFontSize={0} />
     </div>
