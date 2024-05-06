@@ -1,12 +1,13 @@
 // Copied from https://github.com/PlutoyDev/sky-shardfig/blob/main/shared/lib.ts
 import { DateTime } from 'luxon';
+import type { Translation } from '../i18n';
 
 export interface Override {
   hasShard?: boolean;
   isRed?: boolean;
   group?: number;
   realm?: number;
-  map?: string;
+  map?: keyof Translation['skyMaps'];
 }
 
 export interface DailyConfig {
