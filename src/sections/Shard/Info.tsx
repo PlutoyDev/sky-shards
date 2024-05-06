@@ -45,7 +45,6 @@ export const ShardInfoSection = forwardRef<HTMLDivElement, ShardInfoSectionProps
       </small>
     );
   }, [override, overrideBy, overrideReason, t, remoteAuthorNames, toggleOverride]);
-  console.log('render');
 
   if (!info.hasShard) {
     return (
