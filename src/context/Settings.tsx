@@ -155,7 +155,7 @@ function getLocalStorageSettings(): SettingsNew {
   if (lightMode) ret.lightMode = lightMode;
   const timezone = JSON.parse(localStorage.getItem('timezone') ?? 'null');
   if (timezone) ret.timezone = timezone;
-  const language = localStorage.getItem('language');
+  const language = JSON.parse(localStorage.getItem('language') ?? 'null');
   if (language) ret.lang = language;
   const fontSize = JSON.parse(localStorage.getItem('fontSize') ?? 'null');
   if (fontSize) ret.fontSize = fontSize;
