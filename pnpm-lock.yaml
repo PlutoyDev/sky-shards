@@ -34,6 +34,9 @@ devDependencies:
   '@trivago/prettier-plugin-sort-imports':
     specifier: ^4.3.0
     version: 4.3.0(prettier@3.2.5)
+  '@types/google-apps-script':
+    specifier: ^1.0.83
+    version: 1.0.83
   '@types/luxon':
     specifier: ^3.4.2
     version: 3.4.2
@@ -2158,6 +2161,10 @@ packages:
 
   /@types/estree@1.0.5:
     resolution: {integrity: sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==}
+    dev: true
+
+  /@types/google-apps-script@1.0.83:
+    resolution: {integrity: sha512-o+QNeNZxPAfYHzRiLHjub9qF0IILg21r9MzYlnrIHUT+/wcC70aqDfedmzKTgtzsj79zvoTZD0cjGgy46+1Ynw==}
     dev: true
 
   /@types/json-schema@7.0.14:
