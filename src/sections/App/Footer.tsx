@@ -140,7 +140,7 @@ interface OtherAppFooterProps {
 
 function OtherAppFooter({ heading, app: { title, description, link, icon, creator } }: OtherAppFooterProps) {
   return (
-    <SubFooter className='flex flex-col flex-nowrap items-center justify-center gap-x-3 xs:flex-row xs:gap-x-8'>
+    <SubFooter className='flex flex-col flex-nowrap items-center justify-center gap-x-3 sm:flex-row'>
       <p>{heading}</p>
       <a
         target='_blank'
@@ -244,7 +244,7 @@ export function Footer() {
   }, [currentSection, numSubfooters]);
 
   return (
-    <footer className='carousel carousel-vertical glass h-32 w-full cursor-row-resize !py-0 xs:h-28' ref={footerRef}>
+    <footer className='carousel carousel-vertical glass h-32 w-full cursor-row-resize !py-0 sm:h-28' ref={footerRef}>
       {subfooters.map(({ key, Footer }) => (
         <Footer key={key} />
       ))}
