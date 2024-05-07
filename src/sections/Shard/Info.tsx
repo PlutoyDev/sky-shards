@@ -132,7 +132,9 @@ export const ShardInfoSection = forwardRef<HTMLDivElement, ShardInfoSectionProps
             )}
           </>
         ) : (
-          <Trans t={t} i18nKey='blackShardRewards' components={{ emoji: <Emoji name='Candle cake' /> }} />
+          <span>
+            <Trans t={t} i18nKey='blackShardRewards' components={{ emoji: <Emoji name='Candle cake' /> }} />
+          </span>
         )}
       </p>
       <small className='grid grid-flow-row-dense grid-cols-3 grid-rows-[auto_auto] place-items-center gap-x-2 lg:gap-x-4 tall:max-md:grid-flow-col-dense tall:max-md:grid-cols-[auto_auto] tall:max-md:grid-rows-3 tall:max-md:gap-y-2'>
