@@ -107,32 +107,33 @@ export const ShardInfoSection = forwardRef<HTMLDivElement, ShardInfoSectionProps
         />
       </p>
       <p className='flex flex-row flex-wrap items-center justify-around justify-items-start gap-x-2 whitespace-nowrap'>
-        <span>
-          <Trans
-            t={t}
-            {...(info.isRed
-              ? {
-                  i18nKey: 'redShardRewards',
-                  values: { qty: info.rewardAC },
-                  components: { emoji: <Emoji name='Ascended candle' /> },
-                }
-              : {
-                  i18nKey: 'blackShardRewards',
-                  components: { emoji: <Emoji name='Candle cake' /> },
-                })}
-          />
-        </span>
-        {info.isRed &&
-          (memory ? (
+        {info.isRed ? (
+          <>
             <span
               className='tooltip tooltip-top underline decoration-dashed md:tooltip-right'
-              data-tip={t('manualMemoryCredit', { author: remoteAuthorNames?.[memoryBy!] })}
+              data-tip={t('redShardRewardNote')}
             >
-              {t('manualMemory', { memory: t(`shard:memories.${memory}`) })}
+              <Trans
+                t={t}
+                i18nKey='redShardRewards'
+                values={{ qty: info.rewardAC }}
+                components={{ emoji: <Emoji name='Ascended candle' /> }}
+              />
             </span>
-          ) : (
-            <span>{t('manualMemory', { memory: t('shard:memories.random') })}</span>
-          ))}
+            {memory ? (
+              <span
+                className='tooltip tooltip-top underline decoration-dashed md:tooltip-right'
+                data-tip={t('manualMemoryCredit', { author: remoteAuthorNames?.[memoryBy!] })}
+              >
+                {t('manualMemory', { memory: t(`shard:memories.${memory}`) })}
+              </span>
+            ) : (
+              <span>{t('manualMemory', { memory: t('shard:memories.random') })}</span>
+            )}
+          </>
+        ) : (
+          <Trans t={t} i18nKey='blackShardRewards' components={{ emoji: <Emoji name='Candle cake' /> }} />
+        )}
       </p>
       <small className='grid grid-flow-row-dense grid-cols-3 grid-rows-[auto_auto] place-items-center gap-x-2 lg:gap-x-4 tall:max-md:grid-flow-col-dense tall:max-md:grid-cols-[auto_auto] tall:max-md:grid-rows-3 tall:max-md:gap-y-2'>
         {
