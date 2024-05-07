@@ -158,7 +158,7 @@
   },
   "override": {
     "disclosure": "Info has been altered by {{author}}",
-    "reason.event_area": "Reason: Events are occuring in the area",
+    "reason.event_area": "Reason: Events are occurring in the area",
     "reason.buggy_sky": "Reason: Sky is buggy",
     "reason.schedule_change": "Reason: Schedule has changed",
     "revert": "Revert original",
