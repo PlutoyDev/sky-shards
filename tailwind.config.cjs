@@ -15,8 +15,8 @@ module.exports = {
     screens: {
       'xs': '375px',
       ...defaultTheme.screens,
-      'short': { raw: '(max-height: 474px)' },
-      'tall': { raw: '(min-height: 475px)' },
+      'short': { raw: '(max-height: 499px)' },
+      'tall': { raw: '(min-height: 500px)' },
       // Don't know why, but the "max" will be removed when "short" was added
       'max-xs': { max: '374px' },
       'max-sm': { max: '639px' },
