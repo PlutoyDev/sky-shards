@@ -147,7 +147,7 @@ export const ShardInfoSection = forwardRef<HTMLDivElement, ShardInfoSectionProps
           // Shard Time
           info.occurrences.map(({ land, end }, i) => (
             <p key={`time.${i}`}>
-              <ClockNow time={land} strikeThroughPast /> - <ClockNow time={end} strikeThroughPast />
+              <ClockNow time={land} strikeThroughPast showLocal /> - <ClockNow time={end} strikeThroughPast showLocal />
             </p>
           ))
         }
