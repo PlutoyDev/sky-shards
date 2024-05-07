@@ -194,6 +194,7 @@ function setLocalStorageSettings(settings: Partial<SettingsNew>) {
   }
 
   // Set new settings
+  if ('gsTrans' in settings) delete settings.gsTrans;
   localStorage.setItem('settingsV2', JSON.stringify(settings));
 }
 
