@@ -106,7 +106,7 @@ export const ShardInfoSection = forwardRef<HTMLDivElement, ShardInfoSectionProps
           values={{ color: info.isRed ? 'red' : 'black', map: info.map, realm: info.realm }}
         />
       </p>
-      <p className='flex flex-row flex-wrap items-center justify-around justify-items-start whitespace-nowrap'>
+      <p className='flex flex-row flex-wrap items-center justify-around justify-items-start gap-x-2 whitespace-nowrap'>
         <span>
           <Trans
             t={t}
