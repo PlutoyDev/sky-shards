@@ -14,6 +14,7 @@ interface ShardInfographicsProps {
 
 function ShardInfographics({ title, image, imageAlt, credits }: ShardInfographicsProps) {
   const [noImg, setNoImg] = useState(image === '');
+  const { t } = useTranslation('infographicSection');
   useEffect(() => {
     setNoImg(image === '');
   }, [image]);
@@ -37,7 +38,7 @@ function ShardInfographics({ title, image, imageAlt, credits }: ShardInfographic
               d='M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'
             ></path>
           </svg>
-          <span>Unable to find image</span>
+          <span>{t('imageError')}</span>
         </div>
       ) : (
         <a href={image} className='block p-0.5' target='_blank' rel='noreferrer'>

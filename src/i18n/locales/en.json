@@ -184,6 +184,7 @@
   },
   "infographicSection": {
     "varationCredit": "Variation info submitted by {{author}}",
-    "memoryCredit": "Memory info submitted by {{author}}"
+    "memoryCredit": "Memory info submitted by {{author}}",
+    "imageError": "Unable to find image"
   }
 }
