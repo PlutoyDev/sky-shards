@@ -101,7 +101,7 @@ export function ShardMapInfographic({ info, remoteDailyConfig, authorNames }: Sh
   const { variation, variationBy } = remoteDailyConfig ?? {};
   const author = variationBy && authorNames?.[variationBy];
   const imageUrl =
-    variation || variation === 0
+    info.numVarient > 1 && (variation || variation === 0)
       ? `/infographics/map_varient_clement/${info.map}.${remoteDailyConfig?.variation}.webp`
       : `/infographics/map_clement/${info.map}.webp`;
   return (

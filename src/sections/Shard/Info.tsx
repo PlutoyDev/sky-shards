@@ -120,7 +120,7 @@ export const ShardInfoSection = forwardRef<HTMLDivElement, ShardInfoSectionProps
                 components={{ emoji: <Emoji name='Ascended candle' /> }}
               />
             </span>
-            {memory ? (
+            {memory || memory === 0 ? (
               <span
                 className='tooltip tooltip-top underline decoration-dashed md:tooltip-right'
                 data-tip={t('manualMemoryCredit', { author: remoteAuthorNames?.[memoryBy!] })}
