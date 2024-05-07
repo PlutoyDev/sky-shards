@@ -173,10 +173,7 @@
     "redShardRewards": "Reward: {{qty}} <emoji/>",
     "redShardRewardNote": "Based on the number of fragments collected",
     "manualMemory": "Memory: {{memory}}",
-    "manualMemoryCredit": "Submitted by {{author}}",
-    "scheduleTitle": "Schedule",
-    "landTime": "Land time",
-    "endTime": "End time"
+    "manualMemoryCredit": "Submitted by {{author}}"
   },
   "countdownSection": {
     "landing": "<bold>$t(shard:ordinal.{{i}})</bold> landing in <countdown/>",
