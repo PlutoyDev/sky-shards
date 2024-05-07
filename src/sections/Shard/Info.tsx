@@ -1,6 +1,7 @@
 import { forwardRef, useMemo } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { DynamicCalendar } from '../../components/Calendar';
+import StaticClock, { ClockNow } from '../../components/Clock';
 import Emoji from '../../components/Emoji';
 import { DailyConfig } from '../../data/remoteConfig';
 import { ShardInfo } from '../../data/shard';
@@ -67,7 +68,7 @@ export const ShardInfoSection = forwardRef<HTMLDivElement, ShardInfoSectionProps
     );
   }
   return (
-    <section className='glass'>
+    <section className='glass max-w-full'>
       <p className='whitespace-normal'>
         {overrideDisclosure}
         <Trans
@@ -133,6 +134,24 @@ export const ShardInfoSection = forwardRef<HTMLDivElement, ShardInfoSectionProps
             <span>{t('manualMemory', { memory: t('shard:memories.random') })}</span>
           ))}
       </p>
+      <small className='grid grid-flow-row-dense grid-cols-3 grid-rows-[auto_auto] place-items-center gap-x-2 lg:gap-x-4 tall:max-md:grid-flow-col-dense tall:max-md:grid-cols-[auto_auto] tall:max-md:grid-rows-3 tall:max-md:gap-y-2'>
+        {
+          // Shard Ordinals
+          Array.from({ length: 3 }, (_, i) => (
+            <p key={`ordinal.${i}`} className='font-semibold'>
+              {t(`shard:ordinal.${i as 0 | 1 | 2}`)}
+            </p>
+          ))
+        }
+        {
+          // Shard Time
+          info.occurrences.map(({ land, end }, i) => (
+            <p key={`time.${i}`}>
+              <ClockNow time={land} strikeThroughPast /> - <ClockNow time={end} strikeThroughPast />
+            </p>
+          ))
+        }
+      </small>
     </section>
   );
 });

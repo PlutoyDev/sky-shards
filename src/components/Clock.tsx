@@ -12,6 +12,7 @@ interface ClockProp {
   relFontSize?: number;
   disableMonoFont?: boolean;
   disableSeconds?: boolean;
+  strikeThrough?: boolean;
 }
 
 export function StaticClock({
@@ -23,6 +24,7 @@ export function StaticClock({
   relFontSize = 1,
   disableMonoFont,
   disableSeconds,
+  strikeThrough,
 }: ClockProp) {
   const { t } = useTranslation('durationFmts');
   const { twelveHourMode } = useSettings();
@@ -53,6 +55,7 @@ export function StaticClock({
       });
 
   className += disableMonoFont ? '' : ' font-mono';
+  if (strikeThrough) className += ' line-through';
   return (
     <span className={className} style={relFontSize ? { fontSize: `${relFontSize}em` } : undefined}>
       {formattedTime}
@@ -62,14 +65,17 @@ export function StaticClock({
 
 export default StaticClock;
 
-type ClockNowProp = Omit<ClockProp, 'convertTo' | 'duration'> & {
+type ClockNowProp = Omit<ClockProp, 'convertTo' | 'duration' | 'strikeThrough'> & {
   showLocal?: boolean;
   invertDiff?: boolean;
+  strikeThroughPast?: boolean;
 };
 
-export function ClockNow({ time, showLocal = false, invertDiff, ...clockParam }: ClockNowProp) {
+export function ClockNow({ time, showLocal = false, invertDiff, strikeThroughPast, ...clockParam }: ClockNowProp) {
   const { application, local } = useNow();
-  if (time) {
+  if (time && strikeThroughPast) {
+    return <StaticClock strikeThrough={application > time} {...clockParam} time={time} />;
+  } else if (time && !strikeThroughPast) {
     const duration = invertDiff ? application.diff(time) : time.diff(application);
     return <StaticClock {...clockParam} duration={duration} />;
   } else {

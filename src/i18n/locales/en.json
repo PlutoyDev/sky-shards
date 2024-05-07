@@ -172,7 +172,10 @@
     "blackShardRewards": "Giving 4 <emoji/> of wax",
     "redShardRewards": "Giving max of {{qty}} <emoji/>",
     "manualMemory": "Memory: {{memory}}",
-    "manualMemoryCredit": "Submitted by {{author}}"
+    "manualMemoryCredit": "Submitted by {{author}}",
+    "scheduleTitle": "Schedule",
+    "landTime": "Land time",
+    "endTime": "End time"
   },
   "progressSection": {
     "showTimeIn.skyTime": "Showing time in <a>Sky time</a>",
