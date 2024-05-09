@@ -57,18 +57,39 @@ export default function ShardCarousel() {
     // Fetch and setup polling for remote config
     const fetchAndSet = async () => {
       const config = await fetchRemoteConfig();
-      const interval = window.setInterval(async () => {
-        if (await shouldUpdate(config.id)) {
-          clearInterval(interval);
-          fetchAndSet();
-        }
-      }, 20 * 1000);
+      const interval = window.setInterval(
+        async () => {
+          if (await shouldUpdate(config.id)) {
+            clearInterval(interval);
+            fetchAndSet();
+          }
+        },
+        20 * 60 * 1000,
+      );
       setRemoteConfig({ ...config, intId: interval });
     };
     fetchAndSet();
 
+    // Add visibility change listener
+    const visibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        fetchAndSet();
+      } else {
+        setRemoteConfig(c => {
+          c?.intId && window.clearInterval(c.intId);
+          return c;
+        });
+      }
+    };
+
+    document.addEventListener('visibilitychange', visibilityChange);
+
     return () => {
-      window.clearInterval(remoteConfig?.intId);
+      setRemoteConfig(c => {
+        c?.intId && window.clearInterval(c.intId);
+        return c;
+      });
+      document.removeEventListener('visibilitychange', visibilityChange);
     };
   }, []);
 
