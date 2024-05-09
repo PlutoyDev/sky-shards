@@ -1,5 +1,5 @@
-import { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Trans, useTranslation } from 'react-i18next';
+import { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { BiLinkExternal } from 'react-icons/bi';
 import { BsGithub, BsTable } from 'react-icons/bs';
 import { TbForms } from 'react-icons/tb';
