@@ -32,6 +32,7 @@ export interface RemoteConfigResponse {
   dailiesMap: Record<string, DailyConfig>;
   authorNames: Record<string, string>;
   global?: GlobalConfig;
+  id: string;
 }
 
 export type RemoteConfig = RemoteConfigResponse;
@@ -41,8 +42,8 @@ export async function fetchRemoteConfig(): Promise<RemoteConfig> {
   return await res.json();
 }
 
-export async function fetchRemoteLastUpdated(): Promise<number> {
-  const res = await fetch((import.meta.env.VITE_SHARD_REMOTE_URL as string) + '/last_updated.txt');
+export async function shouldUpdate(id: string): Promise<boolean> {
+  const res = await fetch((import.meta.env.VITE_SHARD_REMOTE_URL as string) + '/poll_id.txt');
   const text = await res.text();
-  return parseInt(text);
+  return text !== id;
 }

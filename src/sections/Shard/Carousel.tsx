@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { DateTime } from 'luxon';
 import { Settings as LuxonSettings } from 'luxon';
 import { useSettings } from '../../context/Settings';
-import { type RemoteConfig, fetchRemoteConfig } from '../../data/remoteConfig';
+import { type RemoteConfig, fetchRemoteConfig, shouldUpdate } from '../../data/remoteConfig';
 import { getShardInfo } from '../../data/shard';
 import useLegacyEffect from '../../hooks/useLegacyEffect';
 import { ShardCountdownSection } from './Countdown';
@@ -28,7 +28,7 @@ export default function ShardCarousel() {
   useEffect(() => ((prevDate.current = date), undefined), [date]);
 
   // Fetch remote config on mount
-  const [remoteConfig, setRemoteConfig] = useState<(RemoteConfig & { fetchedAt: number }) | null>(null);
+  const [remoteConfig, setRemoteConfig] = useState<(RemoteConfig & { intId: number }) | null>(null);
   const remoteDailyConfig = useMemo(
     () => remoteConfig?.dailiesMap[date.toISODate() as string] ?? undefined,
     [remoteConfig, date],
@@ -53,16 +53,24 @@ export default function ShardCarousel() {
         : t('dynamicTitle.noShard', { date: dateString })) + ' - Sky Shards';
   }, [date.day, date.month, date.year, info.hasShard, info.isRed, i18n.language]);
 
-  useLegacyEffect(
-    () =>
-      void fetchRemoteConfig()
-        .then(config => {
-          setRemoteConfig({ ...config, fetchedAt: Date.now() });
-          // TODO Setup polling with fetchRemoteLastUpdated
-        })
-        .catch(e => console.error('Failed to fetch remote config', e)),
-    [],
-  );
+  useLegacyEffect(() => {
+    // Fetch and setup polling for remote config
+    const fetchAndSet = async () => {
+      const config = await fetchRemoteConfig();
+      const interval = window.setInterval(async () => {
+        if (await shouldUpdate(config.id)) {
+          clearInterval(interval);
+          fetchAndSet();
+        }
+      }, 20 * 1000);
+      setRemoteConfig({ ...config, intId: interval });
+    };
+    fetchAndSet();
+
+    return () => {
+      window.clearInterval(remoteConfig?.intId);
+    };
+  }, []);
 
   return (
     <div
