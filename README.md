@@ -23,20 +23,33 @@ git update-index --assume-unchanged src/i18n/codeLangs.json
 
 ## Routes
 
+Processed by [Setting Context](./src/context/Settings.tsx)
+
 - `/` - Today's Shard Eruption page
+- `/:lang` - Translation
+  - Available languages are in [Google Sheet](https://docs.google.com/spreadsheets/d/16eSANTI310SY8uWjsjbxNBzyD-49hwF3OGYRkFPykoo/edit#gid=2102926823)
 - Relative day
-  - `/tomorrow` - Tomorrow's Shard Eruption page
-  - `/yesterday` - Yesterday's Shard Eruption page
-- `/date/:year/:month/:day` - Shard Eruption page for a specific date, For example:
-  - `/date/2022/12/31` Shard Eruption page for 31st December 2022
-  - `/date/2023/1/1` Shard Eruption page for 1st January 2023
+  - `/:lang/tomorrow` or `/tmr` - Tomorrow's Shard Eruption page
+  - `/:lang/yesterday` or `/ytd` - Yesterday's Shard Eruption page
+- `/:lang/:year/:month/:day` - Shard Eruption page for a specific date, For example:
+  - `/:lang/2022/12/31` Shard Eruption page for 31st December 2022
+  - `/:lang/2023/1/1` Shard Eruption page for 1st January 2023
+
+### Query Parameters
+
+- `gsTrans` - Fetch Google Sheet Translation (`1`|`0`)
+- `twelveHour` - Display time in 12-hour format (`true` | `false` | `system` )
+- `lightMode` - Light mode (`true` | `false` | `system`)
+- `timezone` - Timezone [IANA Timezone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) (`string`)
+- `fontSize` - Font size (1 decimal point) (`number`)
+- `numCols` - Number of columns in the table in date selector (`number`)
 
 ## Development
 
 Requirements:
 
-- [Node.js](https://nodejs.org/en/) >= 16
-- [pnpm](https://pnpm.io/) >= 7
+- [Node.js](https://nodejs.org/en/) >= 18
+- [pnpm](https://pnpm.io/) >= 8
 
 ### Commands
 
@@ -63,3 +76,16 @@ Build the project
 ```bash
 pnpm build
 ```
+
+## Feedback & Issues
+
+Feel free to open an issue or pull request for any feedback or issues. No need to be formal, just let me know what you think. I will try to respond as soon as possible.
+
+## License
+
+TL;DR: You can do whatever you want with the code. A link back to this repository or website would be appreciated.
+
+> [!IMPORTANT]  
+> Assets located in `/public/infographics/*`, `/public/ext/*` & `/public/emojis/*` are not covered by this license as they are not created by me.
+
+[MIT](./LICENSE)
