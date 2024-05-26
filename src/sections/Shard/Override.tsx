@@ -1,9 +1,7 @@
 // Glass section to let the user know that the calculation has been override by some external source.
-import { Trans, useTranslation } from 'react-i18next';
-import Calendar from '../../components/Calendar';
+import { useTranslation } from 'react-i18next';
 import { DailyConfig } from '../../data/remoteConfig';
 import { ShardInfo } from '../../data/shard';
-import type en from '../../i18n/locales/en.json';
 
 interface ShardOverrideSectionProps {
   info: ShardInfo;

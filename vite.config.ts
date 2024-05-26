@@ -1,6 +1,5 @@
 import react from '@vitejs/plugin-react-swc';
-import { readFile, writeFile, readdir, unlink } from 'fs/promises';
-import fetch from 'node-fetch';
+import { readFile, writeFile, readdir, unlink, stat } from 'fs/promises';
 import { defineConfig, normalizePath } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 import manifest from './manifest';
@@ -39,54 +38,17 @@ readFile('./public/_headers', 'utf-8').then(headers => {
   }
 });
 
-const translationPr = Promise.all([
-  fetch(translationJsonUrl + (isCfPages ? '?build=true' : '')).then(res => res.json()),
-  readdir(translationDir + '/locales').then(files =>
-    files.filter(file => file.endsWith('.json') && file !== 'en.json').map(file => file.slice(0, -5)),
-  ),
-]).then(async ([json, localLocales]) => {
-  const { codeLangs, translations } = json as any;
-  codeLangs['en'] = 'English';
-  const languageCodeFilename = translationDir + '/codeLangs.json';
-  const writePromises = [
-    writeFile(languageCodeFilename, JSON.stringify(codeLangs, null, 2)),
-    ...Object.entries(translations).map(
-      ([lang, translation]) => (
-        console.log('\tWriting', lang),
-        writeFile(translationDir + '/locales/' + lang + '.json', JSON.stringify(translation, null, 2))
-      ),
-    ),
-    ...localLocales.map(l =>
-      l in translations
-        ? Promise.resolve()
-        : (console.log('\tDeleting', l), unlink(translationDir + '/locales/' + l + '.json')),
-    ),
-  ];
-  await Promise.all(writePromises);
-  return codeLangs as Record<string, string>;
-});
-
+// Check if the translation file (locales.json) exists
+try { 
+  stat(normalizePath('./src/i18n/locales.json'))
+} catch (e) {
+  console.error('locales.json not found, run pnpm downloadTrans to download it');
+  process.exit(1);
+}
+  
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    {
-      name: 'translation',
-      async buildStart() {
-        await translationPr;
-      },
-      async transformIndexHtml(html) {
-        const codeLangs = await translationPr;
-
-        // Find the end of the title tag
-        const titleEnd = html.indexOf('</title>') + 8;
-        // Inject localized alternate links
-        const links = Object.keys(codeLangs)
-          .map(code => `    <link rel="alternate" hreflang="${code}" href="https://sky-shards.pages.dev/${code}" />`)
-          .join('\n');
-
-        return html.slice(0, titleEnd) + '\n\n    <!-- Localization -->\n' + links + '\n' + html.slice(titleEnd);
-      },
-    },
     react(),
     VitePWA({
       registerType: 'autoUpdate',

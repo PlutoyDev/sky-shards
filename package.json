@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
+    "build": "pnpm downloadTrans && tsc && vite build",
+    "preview": "vite preview",
+    "downloadTrans": "tsx script/node/downloadTranslations.ts"
   },
   "dependencies": {
     "framer-motion": "^11.0.20",
@@ -40,6 +41,7 @@
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.5.11",
     "tailwindcss": "^3.4.1",
+    "tsx": "^4.11.0",
     "typescript": "^5.3.3",
     "vite": "^5.1.4",
     "vite-plugin-pwa": "^0.19.0",

@@ -13,7 +13,6 @@ import { useState, useCallback, createContext, useContext } from 'react';
 import i18next from 'i18next';
 import { DateTime, SystemZone, Settings as LuxonSettings } from 'luxon';
 import useLegacyEffect from '../hooks/useLegacyEffect';
-import { languageResources } from '../i18n';
 
 const appZone = 'America/Los_Angeles';
 
@@ -202,11 +201,11 @@ function getDefault(): Required<SettingsNew> {
   let lang: string = 'en';
 
   if (navigator.language) {
-    if (navigator.language in languageResources) {
+    if (i18next.hasResourceBundle(navigator.language, 'shard')) {
       lang = navigator.language;
     }
     const shortLang = navigator.language.slice(0, 2);
-    if (shortLang in languageResources) {
+    if (i18next.hasResourceBundle(shortLang, 'shard')) {
       lang = shortLang;
     }
   }
@@ -217,7 +216,7 @@ function getDefault(): Required<SettingsNew> {
         lang = 'en';
         break;
       }
-      if (l in languageResources) {
+      if (i18next.hasResourceBundle(l, 'shard')) {
         lang = l;
         break;
       }
@@ -242,22 +241,16 @@ async function setLanguage(
   language: string,
   setLanguageLoader: (state: { loading: boolean; error?: string } | null) => void,
 ) {
-  if (language === 'en' || (i18next.hasResourceBundle(language, 'shard') && !language.endsWith('-GS'))) {
+  if (!language.endsWith('-GS')) {
     i18next.changeLanguage(language);
     document.documentElement.lang = LuxonSettings.defaultLocale = language;
   } else {
-    // Load the language
+    // Load the language from google sheets
     setLanguageLoader({ loading: true });
-    const isGS = language.endsWith('-GS');
     try {
-      const promise =
-        import.meta.env.VITE_GS_TRANSLATION_URL && isGS
-          ? fetch(`${import.meta.env.VITE_GS_TRANSLATION_URL}?lang=${language.slice(0, -3)}`, {
-              credentials: 'omit',
-            }).then(res => res.json())
-          : language in languageResources
-            ? languageResources[language]()
-            : Promise.reject(new Error('not found'));
+      const promise = fetch(`${import.meta.env.VITE_GS_TRANSLATION_URL}?lang=${language.slice(0, -3)}`, {
+        credentials: 'omit',
+      }).then(res => res.json());
 
       const resource = await promise;
       if ('error' in resource) {
@@ -268,7 +261,7 @@ async function setLanguage(
         i18next.addResourceBundle(language, ns, res);
       }
       i18next.changeLanguage(language);
-      document.documentElement.lang = LuxonSettings.defaultLocale = isGS ? language.slice(0, -3) : language;
+      document.documentElement.lang = LuxonSettings.defaultLocale = language.slice(0, -3);
       console.log('loaded language resources', language);
       setLanguageLoader({ loading: false });
     } catch (err) {
