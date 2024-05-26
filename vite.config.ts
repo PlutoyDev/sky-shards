@@ -48,6 +48,16 @@ try {
   
 // https://vitejs.dev/config/
 export default defineConfig({
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'framer-motion': ['framer-motion'],
+          'i18n': ['i18next', 'react-i18next', './src/i18n/index.tsx'],
+        },
+      },
+    },
+  },
   plugins: [
     react(),
     VitePWA({
