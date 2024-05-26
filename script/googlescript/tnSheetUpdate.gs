@@ -1,4 +1,4 @@
-/// <reference path="../node_modules/@types/google-apps-script/index.d.ts" />
+/// <reference path="../../node_modules/@types/google-apps-script/index.d.ts" />
 
 const translationSheetId = '1rRi95qUiwhP5hskuAmdEanhVdng1lAeaOahf7FIdKpc';
 const branch = 'v8';

@@ -1,4 +1,4 @@
-/// <reference path="../node_modules/@types/google-apps-script/index.d.ts" />
+/// <reference path="../../node_modules/@types/google-apps-script/index.d.ts" />
 
 const translationSheetId = '16eSANTI310SY8uWjsjbxNBzyD-49hwF3OGYRkFPykoo';
 
