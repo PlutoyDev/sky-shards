@@ -52,6 +52,7 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
+          'react': ['react', 'react-dom'],
           'framer-motion': ['framer-motion'],
           'i18n': ['i18next', 'react-i18next', './src/i18n/index.tsx'],
         },
