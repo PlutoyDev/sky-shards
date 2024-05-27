@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FaCog, FaCalendarDay, FaEllipsisV, FaAngleRight } from 'react-icons/fa';
+import { FaCog, FaCalendarDay, FaEllipsisV, FaAngleRight, FaShareAlt } from 'react-icons/fa';
 import { DateTime } from 'luxon';
 import { DynamicCalendar } from '../../components/Calendar';
 import { ClockNow } from '../../components/Clock';
@@ -9,6 +9,7 @@ import { useNow } from '../../context/Now';
 import { useSettings } from '../../context/Settings';
 import DateSelectionModal from '../Modals/DateSelector';
 import SettingsModal from '../Modals/Settings';
+import ShareModal from '../Modals/Share';
 
 function HeaderDateTime({ navigateToday }: { navigateToday: () => void }) {
   const { application: now } = useNow();
@@ -64,7 +65,7 @@ export function HeaderButton({
 }
 
 export default function Header() {
-  const { t } = useTranslation(['application', 'dateSelector', 'settings']);
+  const { t } = useTranslation(['application', 'dateSelector', 'settings', 'share']);
   const { setSettings } = useSettings();
   const { showModal } = useModal();
   const navigateToday = () => setSettings({ date: DateTime.local({ zone: 'America/Los_Angeles' }) });
@@ -86,6 +87,18 @@ export default function Header() {
       <HeaderDateTime navigateToday={navigateToday} />
 
       <div className='flex flex-row gap-x-2'>
+        <HeaderButton
+          title={t('share:title')}
+          onClick={() => {
+            showModal({
+              children: ShareModal,
+              hideOnOverlayClick: true,
+              title: t('share:title'),
+            });
+          }}
+        >
+          <FaShareAlt size={18} />
+        </HeaderButton>
         <HeaderButton
           title={t('dateSelector:title')}
           onClick={() => {

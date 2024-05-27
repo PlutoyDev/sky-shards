@@ -24,6 +24,13 @@
     "columnType.weekday": "Weekday",
     "noShard": "No shard"
   },
+  "share": {
+    "title": "Share",
+    "linkTitle": "Link",
+    "copy": "Copy",
+    "send": "Send",
+    "infoTitle": "Generated info"
+  },
   "footer": {
     "createdBy": "Created by: {{author}}",
     "version": "Version: {{version}}",
