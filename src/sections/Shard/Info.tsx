@@ -1,7 +1,7 @@
 import { forwardRef, useMemo } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { DynamicCalendar } from '../../components/Calendar';
-import StaticClock, { ClockNow } from '../../components/Clock';
+import { ClockNow } from '../../components/Clock';
 import Emoji from '../../components/Emoji';
 import { DailyConfig } from '../../data/remoteConfig';
 import { ShardInfo } from '../../data/shard';

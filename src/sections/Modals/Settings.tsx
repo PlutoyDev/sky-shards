@@ -1,8 +1,7 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FaMinus, FaPlus, FaExclamation } from 'react-icons/fa';
-import i18next from 'i18next';
-import { Settings as LuxonSettings, SystemZone } from 'luxon';
+import { SystemZone } from 'luxon';
 import { ModalProps } from '../../context/ModalContext';
 import { useSettings } from '../../context/Settings';
 import { languageCode } from '../../i18n';

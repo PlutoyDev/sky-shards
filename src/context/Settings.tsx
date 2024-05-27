@@ -11,7 +11,7 @@ Query: gsTrans=1, twelveHour=(true|false|system), lightMode=(true|false|system),
 */
 import { useState, useCallback, createContext, useContext } from 'react';
 import i18next from 'i18next';
-import { DateTime, SystemZone, Settings as LuxonSettings } from 'luxon';
+import { DateTime, Settings as LuxonSettings } from 'luxon';
 import useLegacyEffect from '../hooks/useLegacyEffect';
 
 const appZone = 'America/Los_Angeles';
