@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "pnpm downloadTrans && tsc && vite build",
+    "buildonly": "tsc && vite build",
     "preview": "vite preview",
     "downloadTrans": "tsx script/node/downloadTranslations.ts"
   },
