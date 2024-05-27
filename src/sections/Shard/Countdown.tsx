@@ -38,7 +38,7 @@ export function ShardCountdownSection({ info }: { info: ShardInfo }) {
             dateTime={countdownTo?.setZone('local')?.toISO({ suppressMilliseconds: true }) ?? undefined}
           >
             <strong>{t('yourTime')}</strong>
-            <small className='block'>({(Settings.defaultZone as Zone).name})</small>
+            <small className='hidden tall:block'>({(Settings.defaultZone as Zone).name})</small>
             <Calendar date={countdownTo!} convertTo='local' className='block font-bold opacity-80' relFontSize={0.8} />
             <StaticClock time={countdownTo} convertTo='local' className='block font-bold' />
           </time>
@@ -47,7 +47,7 @@ export function ShardCountdownSection({ info }: { info: ShardInfo }) {
             dateTime={countdownTo?.toISO({ suppressMilliseconds: true }) ?? undefined}
           >
             <strong>{t('skyTime')}</strong>
-            <small className='block'>(America/Los_Angeles)</small>
+            <small className='hidden tall:block'>(America/Los_Angeles)</small>
             <Calendar date={countdownTo!} className='block font-bold opacity-80' relFontSize={0.8} />
             <StaticClock time={countdownTo} className='block font-bold' />
           </time>
