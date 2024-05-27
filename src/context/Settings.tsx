@@ -232,7 +232,7 @@ function getDefault(): Required<SettingsNew> {
     lightMode: 'system',
     twelveHourMode: 'system',
     timezone: 'system',
-    fontSize: window.innerWidth > 768 ? '1.2' : '0.8',
+    fontSize: window.innerWidth > 768 && window.innerHeight > 500 ? '1.2' : '0.8',
     numCols: '5',
   };
 }
