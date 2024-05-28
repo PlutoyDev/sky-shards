@@ -12,14 +12,7 @@ Shard is computed as described in [Shard Prediction Rule](./ShardPredictionRule.
 
 Google sheet link: [Sky Shard Translation](https://docs.google.com/spreadsheets/d/16eSANTI310SY8uWjsjbxNBzyD-49hwF3OGYRkFPykoo/edit)
 
-Languages will be downloaded into `src/i18n/locales` from Google Sheets when the app is built.
-Do not edit the files in `src/i18n/locales` directly.
-
-The langauge names `src/i18n/codeLangs.json` is committed to the repository and will also be updated when the app is built. Ignore all the changes to this file:
-
-```bash
-git update-index --assume-unchanged src/i18n/codeLangs.json
-```
+Languages will be downloaded into `src/i18n/locales.json` from Google Sheets when the app is built.
 
 ## Routes
 
