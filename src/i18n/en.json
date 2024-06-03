@@ -29,7 +29,7 @@
     "linkTitle": "Link",
     "copy": "Copy",
     "send": "Send",
-    "infoTitle": "Generated info"
+    "infoTitle": "Generate info"
   },
   "footer": {
     "createdBy": "Created by: {{author}}",
