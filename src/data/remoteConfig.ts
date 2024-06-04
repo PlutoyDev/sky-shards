@@ -22,16 +22,11 @@ export interface DailyConfig {
   lastModified?: DateTime;
 }
 
-export interface GlobalConfig {
-  // This controls the global state of the application
-  bugged?: boolean;
-  buggedReason?: string;
-}
-
 export interface RemoteConfigResponse {
   dailiesMap: Record<string, DailyConfig>;
   authorNames: Record<string, string>;
-  global?: GlobalConfig;
+  warnings?: 'bugged' | 'changed' | 'disabled';
+  // Randomly generated string for polling check
   id: string;
 }
 
