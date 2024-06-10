@@ -24,6 +24,14 @@
     "columnType.weekday": "Weekday",
     "noShard": "No shard"
   },
+  "warning": {
+    "title": "Heads up!",
+    "buggedMsg": "We have noticed that shards isn't behaving the way that it should.\nPlease be patient and let TGC fix the issue with Shards.",
+    "changedMsg": "The schedule of shard event has been changed by TGC.\nPlease be patient and let us find out what's the new schedule of shard.",
+    "disabledMsg": "It seem like shard has been disabled by TGC.",
+    "moreInfo": "Click <a>here</a> for more infomation",
+    "moreInfoDiscord": "You will need a discord account that is in the Official Sky Discord Server to view the message"
+  },
   "footer": {
     "createdBy": "Created by: {{author}}",
     "version": "Version: {{version}}",

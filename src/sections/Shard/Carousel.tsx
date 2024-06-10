@@ -4,10 +4,13 @@ import { BsChevronCompactDown, BsChevronLeft, BsChevronRight } from 'react-icons
 import { AnimatePresence, motion } from 'framer-motion';
 import { DateTime } from 'luxon';
 import { Settings as LuxonSettings } from 'luxon';
+import FormatTrans from '../../components/FormatTrans';
+import { useModal } from '../../context/ModalContext';
 import { useSettings } from '../../context/Settings';
-import { type RemoteConfig, fetchRemoteConfig, shouldUpdate } from '../../data/remoteConfig';
+import { type RemoteConfig, useRemoteConfig } from '../../data/remoteConfig';
 import { getShardInfo } from '../../data/shard';
 import useLegacyEffect from '../../hooks/useLegacyEffect';
+import WarningModal from '../Modals/Warning';
 import { ShardCountdownSection } from './Countdown';
 import ShardInfoSection from './Info';
 import { ShardMapInfographic, ShardDataInfographic, ShardMemoryInfographic } from './Infographic';
@@ -19,7 +22,7 @@ const varients = {
 };
 
 export default function ShardCarousel() {
-  const { t, i18n } = useTranslation(['shardCarousel']);
+  const { t, i18n } = useTranslation(['shardCarousel', 'warning']);
   const [applyOverride, setApplyOverride] = useState(true);
 
   const { date, lang, fontSize, setSettings } = useSettings();
@@ -27,8 +30,9 @@ export default function ShardCarousel() {
   const direction = useMemo(() => (prevDate.current < date ? 1 : -1), [date]);
   useEffect(() => ((prevDate.current = date), undefined), [date]);
 
-  // Fetch remote config on mount
-  const [remoteConfig, setRemoteConfig] = useState<(RemoteConfig & { intId: number }) | null>(null);
+  const { showModal } = useModal();
+  const remoteConfig = useRemoteConfig(date.diffNow('days').days < -3);
+
   const remoteDailyConfig = useMemo(
     () => remoteConfig?.dailiesMap[date.toISODate() as string] ?? undefined,
     [remoteConfig, date],
@@ -54,44 +58,13 @@ export default function ShardCarousel() {
   }, [date.day, date.month, date.year, info.hasShard, info.isRed, i18n.language]);
 
   useLegacyEffect(() => {
-    // Fetch and setup polling for remote config
-    const fetchAndSet = async () => {
-      const config = await fetchRemoteConfig();
-      const interval = window.setInterval(
-        async () => {
-          if (await shouldUpdate(config.id)) {
-            clearInterval(interval);
-            fetchAndSet();
-          }
-        },
-        20 * 60 * 1000,
-      );
-      setRemoteConfig({ ...config, intId: interval });
-    };
-    fetchAndSet();
-
-    // Add visibility change listener
-    const visibilityChange = () => {
-      if (document.visibilityState === 'visible') {
-        fetchAndSet();
-      } else {
-        setRemoteConfig(c => {
-          c?.intId && window.clearInterval(c.intId);
-          return c;
-        });
-      }
-    };
-
-    document.addEventListener('visibilitychange', visibilityChange);
-
-    return () => {
-      setRemoteConfig(c => {
-        c?.intId && window.clearInterval(c.intId);
-        return c;
+    if (remoteConfig && remoteConfig.warning) {
+      showModal({
+        title: t('warning:title'),
+        children: WarningModal,
       });
-      document.removeEventListener('visibilitychange', visibilityChange);
-    };
-  }, []);
+    }
+  }, [remoteConfig, remoteConfig?.warning]);
 
   return (
     <div
