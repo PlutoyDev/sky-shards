@@ -22,7 +22,7 @@ const varients = {
 };
 
 export default function ShardCarousel() {
-  const { t, i18n } = useTranslation(['shardCarousel', 'warning']);
+  const { t, i18n } = useTranslation('shardCarousel');
   const [applyOverride, setApplyOverride] = useState(true);
 
   const { date, lang, fontSize, setSettings } = useSettings();
@@ -60,8 +60,8 @@ export default function ShardCarousel() {
   useLegacyEffect(() => {
     if (remoteConfig && remoteConfig.warning) {
       showModal({
-        title: t('warning:title'),
         children: WarningModal,
+        hideCloseButton: true,
       });
     }
   }, [remoteConfig, remoteConfig?.warning]);

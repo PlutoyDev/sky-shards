@@ -12,23 +12,32 @@ export default function WarningModal({ hideModal }: ModalProps) {
   const { warning, warningLink } = remoteConfig;
 
   return (
-    <div className='flex flex-col gap-y-4'>
-      <h1 className='text-xl font-bold'>{t('title')}</h1>
-      <FormatTrans msg={t(`${warning}Msg`)} />
+    <div className=''>
+      <h1 className='text-center text-xl font-bold'>{t('title')}</h1>
+      <p className='mt-2'>
+        <FormatTrans msg={t(`${warning}Msg`)} />
+      </p>
       {warningLink && (
-        <>
-          <p>
-            <Trans
-              t={t}
-              i18nKey='moreInfo'
-              components={{
-                a: <a href={warningLink} target='_blank' rel='noreferrer' className='underline hover:text-blue-400' />,
-              }}
-            />
-          </p>
+        <p className='mt-2 leading-snug'>
+          <Trans
+            t={t}
+            i18nKey='moreInfo'
+            components={{
+              a: <a href={warningLink} target='_blank' rel='noreferrer' className='underline hover:text-blue-400' />,
+            }}
+          />
+          <br />
           {warningLink.includes('discord') && <small>({t('moreInfoDiscord')})</small>}
-        </>
+        </p>
       )}
+      <p className='mt-2'>
+        <FormatTrans msg={t('proceedCaptions')} />
+      </p>
+      <div className='mx-auto mt-2 w-min'>
+        <button type='button' className='btn btn-primary btn-sm rounded-badge' onClick={hideModal}>
+          {t('proceed')}
+        </button>
+      </div>
     </div>
   );
 }

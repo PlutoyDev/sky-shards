@@ -26,11 +26,13 @@
   },
   "warning": {
     "title": "Heads up!",
-    "buggedMsg": "We have noticed that shards isn't behaving the way that it should.\nPlease be patient and let TGC fix the issue with Shards.",
+    "buggedMsg": "We have noticed that shards isn't behaving the way that it should.\nPlease be patient and let TGC fix the issue with shards.",
     "changedMsg": "The schedule of shard event has been changed by TGC.\nPlease be patient and let us find out what's the new schedule of shard.",
     "disabledMsg": "It seem like shard has been disabled by TGC.",
     "moreInfo": "Click <a>here</a> for more infomation",
-    "moreInfoDiscord": "You will need a discord account that is in the Official Sky Discord Server to view the message"
+    "moreInfoDiscord": "You will need a discord account that is in the Official Sky Discord Server to view the message",
+    "proceedCaptions": "The countdown/prediction here might not reflect what is in Sky.\nYou can still use this app by clicking on the proceed button bellow.",
+    "proceed": "Proceed"
   },
   "footer": {
     "createdBy": "Created by: {{author}}",

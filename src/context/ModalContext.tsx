@@ -13,6 +13,7 @@ interface ShowModalOption {
   onHidden?: () => void;
   hideOnOverlayClick?: boolean;
   title?: string;
+  hideCloseButton?: boolean;
 }
 
 export type ModalContextType = {
@@ -81,16 +82,18 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
         data-open={!!modalProps}
       >
         <div
-          className='short:max-h-[80vh] glass modal-box my-4 !w-max cursor-default rounded-lg transition-[width,height] sm:container max-sm:max-w-[80vw] sm:mx-auto'
+          className='glass modal-box my-4 !w-max cursor-default rounded-lg transition-[width,height] sm:container sm:mx-auto short:max-h-[80vh] max-sm:max-w-[80vw]'
           onClick={e => e.stopPropagation()}
         >
           {(switchAnimate.current = !switchAnimate.current)}
           {title && <h1 className='text-center text-lg font-semibold'>{title}</h1>}
           {modalProps && (
             <>
-              <button type='button' title='Close' className='absolute right-4 top-2' onClick={() => hideModal()}>
-                <ImCross />
-              </button>
+              {!modalProps.hideCloseButton && (
+                <button type='button' title='Close' className='absolute right-4 top-2' onClick={() => hideModal()}>
+                  <ImCross />
+                </button>
+              )}
               <div className='overflow-y-auto'>
                 <modalProps.children hideModal={hideModal} setOnHidden={setOnHiddenWrapper} setTitle={setTitle} />
               </div>
