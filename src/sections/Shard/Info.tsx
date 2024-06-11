@@ -1,5 +1,6 @@
 import { forwardRef, useMemo } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
+import { Settings as LuxonSettings, Zone } from 'luxon';
 import { DynamicCalendar } from '../../components/Calendar';
 import { ClockNow } from '../../components/Clock';
 import Emoji from '../../components/Emoji';
@@ -141,20 +142,21 @@ export const ShardInfoSection = forwardRef<HTMLDivElement, ShardInfoSectionProps
         {
           // Shard Ordinals
           Array.from({ length: 3 }, (_, i) => (
-            <p key={`ordinal.${i}`} className='font-semibold'>
+            <span key={`ordinal.${i}`} className='font-semibold'>
               {t(`shard:ordinal.${i as 0 | 1 | 2}`)}
-            </p>
+            </span>
           ))
         }
         {
           // Shard Time
           info.occurrences.map(({ land, end }, i) => (
-            <p key={`time.${i}`}>
-              <ClockNow time={land} strikeThroughPast showLocal /> - <ClockNow time={end} strikeThroughPast showLocal />
-            </p>
+            <span key={`time.${i}`}>
+              <ClockNow time={land} strikeThroughPast /> - <ClockNow time={end} strikeThroughPast />
+            </span>
           ))
         }
       </small>
+      <span className='text-[0.8em]'>{t('schTzFoot', { timezone: (LuxonSettings.defaultZone as Zone).name })}</span>
     </section>
   );
 });

@@ -182,6 +182,7 @@
     "blackShardRewards": "Reward:4 <emoji/> of wax",
     "redShardRewards": "Reward: {{qty}} <emoji/>",
     "redShardRewardNote": "Based on the number of fragments collected",
+    "schTzFoot": "Timings are shown in {{timezone}}",
     "manualMemory": "Memory: {{memory}}",
     "manualMemoryCredit": "Submitted by {{author}}"
   },
