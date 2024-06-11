@@ -110,7 +110,7 @@ export default function Header() {
         >
           <FaCog size={18} />
         </HeaderButton>
-        <HeaderButton isExpand title={t('dateSelector:title')} onClick={() => setExpandMenu(!expandMenu)}>
+        <HeaderButton isExpand title='Expand' onClick={() => setExpandMenu(!expandMenu)}>
           {expandMenu ? <FaAngleRight size={18} /> : <FaEllipsisV size={18} />}
         </HeaderButton>
       </div>
