@@ -144,59 +144,75 @@ function parseNewUrl(url: URL): SettingsNew {
 
 function getLocalStorageSettings(): SettingsNew {
   // Check if this is SSR
-  if (!('localStorage' in globalThis)) return {};
-  const ret: SettingsNew = {};
-  const twelveHourMode = JSON.parse(localStorage.getItem('twelveHourMode') ?? 'null') as
-    | 'true'
-    | 'false'
-    | 'system'
-    | null;
-  if (twelveHourMode) ret.twelveHourMode = twelveHourMode;
-  const lightMode = JSON.parse(localStorage.getItem('lightMode') ?? 'null') as 'true' | 'false' | 'system' | null;
-  if (lightMode) ret.lightMode = lightMode;
-  const timezone = JSON.parse(localStorage.getItem('timezone') ?? 'null');
-  if (timezone) ret.timezone = timezone;
-  const language = JSON.parse(localStorage.getItem('language') ?? 'null');
-  if (language) ret.lang = language;
-  const fontSize = JSON.parse(localStorage.getItem('fontSize') ?? 'null');
-  if (fontSize) ret.fontSize = fontSize;
-  const numCols = JSON.parse(localStorage.getItem('dateSelector.numCols') ?? 'null') as '5' | '7' | null;
-  if (numCols) ret.numCols = numCols;
+  try {
+    if (!('localStorage' in globalThis)) return {};
+    const ret: SettingsNew = {};
+    const twelveHourMode = JSON.parse(localStorage.getItem('twelveHourMode') ?? 'null') as
+      | 'true'
+      | 'false'
+      | 'system'
+      | null;
+    if (twelveHourMode) ret.twelveHourMode = twelveHourMode;
+    const lightMode = JSON.parse(localStorage.getItem('lightMode') ?? 'null') as 'true' | 'false' | 'system' | null;
+    if (lightMode) ret.lightMode = lightMode;
+    const timezone = JSON.parse(localStorage.getItem('timezone') ?? 'null');
+    if (timezone) ret.timezone = timezone;
+    const language = JSON.parse(localStorage.getItem('language') ?? 'null');
+    if (language) ret.lang = language;
+    const fontSize = JSON.parse(localStorage.getItem('fontSize') ?? 'null');
+    if (fontSize) ret.fontSize = fontSize;
+    const numCols = JSON.parse(localStorage.getItem('dateSelector.numCols') ?? 'null') as '5' | '7' | null;
+    if (numCols) ret.numCols = numCols;
 
-  const settingsV2 = localStorage.getItem('settingsV2');
-  if (settingsV2) {
-    try {
-      const parsed = JSON.parse(settingsV2);
-      if (parsed) {
-        Object.assign(ret, parsed);
+    const settingsV2 = localStorage.getItem('settingsV2');
+    if (settingsV2) {
+      try {
+        const parsed = JSON.parse(settingsV2);
+        if (parsed) {
+          Object.assign(ret, parsed);
+        }
+      } catch (err) {
+        console.error('Failed to parse settingsV2', err);
       }
-    } catch (err) {
-      console.error('Failed to parse settingsV2', err);
     }
-  }
 
-  return ret;
+    return ret;
+  } catch (err) {
+    // localStorage is disabled or blocked by the user('s browser)
+    if (err instanceof DOMException && err.name === 'SecurityError') {
+      return {};
+    }
+    throw err;
+  }
 }
 
 function setLocalStorageSettings(settings: Partial<SettingsNew>) {
-  // Check if this is SSR
-  if (!('localStorage' in globalThis)) return;
-  // Clear V1 settings
-  localStorage.removeItem('twelveHourMode');
-  localStorage.removeItem('lightMode');
-  localStorage.removeItem('timezone');
-  localStorage.removeItem('language');
-  localStorage.removeItem('fontSize');
-  localStorage.removeItem('dateSelector.numCols');
+  try {
+    // Check if this is SSR
+    if (!('localStorage' in globalThis)) return;
+    // Clear V1 settings
+    localStorage.removeItem('twelveHourMode');
+    localStorage.removeItem('lightMode');
+    localStorage.removeItem('timezone');
+    localStorage.removeItem('language');
+    localStorage.removeItem('fontSize');
+    localStorage.removeItem('dateSelector.numCols');
 
-  if ('date' in settings) {
-    settings = { ...settings };
-    delete settings.date;
+    if ('date' in settings) {
+      settings = { ...settings };
+      delete settings.date;
+    }
+
+    // Set new settings
+    if ('gsTrans' in settings) delete settings.gsTrans;
+    localStorage.setItem('settingsV2', JSON.stringify(settings));
+  } catch (err) {
+    // localStorage is disabled or blocked by the user('s browser)
+    if (err instanceof DOMException && err.name === 'SecurityError') {
+      return;
+    }
+    throw err;
   }
-
-  // Set new settings
-  if ('gsTrans' in settings) delete settings.gsTrans;
-  localStorage.setItem('settingsV2', JSON.stringify(settings));
 }
 
 function getDefault(): Required<SettingsNew> {
