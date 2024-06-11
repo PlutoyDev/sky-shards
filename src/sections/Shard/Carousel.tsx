@@ -4,10 +4,9 @@ import { BsChevronCompactDown, BsChevronLeft, BsChevronRight } from 'react-icons
 import { AnimatePresence, motion } from 'framer-motion';
 import { DateTime } from 'luxon';
 import { Settings as LuxonSettings } from 'luxon';
-import FormatTrans from '../../components/FormatTrans';
 import { useModal } from '../../context/ModalContext';
 import { useSettings } from '../../context/Settings';
-import { type RemoteConfig, useRemoteConfig } from '../../data/remoteConfig';
+import { useRemoteConfig } from '../../data/remoteConfig';
 import { getShardInfo } from '../../data/shard';
 import useLegacyEffect from '../../hooks/useLegacyEffect';
 import WarningModal from '../Modals/Warning';
