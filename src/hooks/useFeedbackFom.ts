@@ -33,16 +33,17 @@ export default function useFeedbackFormUrl(params?: FeedbackFormParams) {
   const appLang = i18n.language;
   const appTimezone = LuxonSettings.defaultZone.name;
 
-  debugInfo += `Locale: ${appLang}\nTime zone: ${appTimezone}\n`;
+  debugInfo += `Locale: ${appLang}\nTime zone: ${appTimezone}`;
 
   const size = window.innerWidth + 'x' + window.innerHeight;
   const locales = tryDefault(() => navigator.languages.join(', '), 'unknown');
   const timeZone = tryDefault(() => Intl.DateTimeFormat().resolvedOptions().timeZone, 'unknown');
   const userAgent = tryDefault(() => navigator.userAgent, 'unknown');
+  const href = tryDefault(() => window.location.href, 'unknown');
 
   debugInfo +=
     `--Device info (Feel free to delete it)--\n` +
-    `Size: ${size}\nLocale: ${locales}\nTime zone: ${timeZone}\nUser agent: ${userAgent}\n`;
+    `Size: ${size}\nLocale: ${locales}\nTime zone: ${timeZone}\nUser agent: ${userAgent}\nURL: ${href}\n`;
 
   if (params?.debugInfo) {
     debugInfo += `--Custom--\n${params.debugInfo}\n`;
