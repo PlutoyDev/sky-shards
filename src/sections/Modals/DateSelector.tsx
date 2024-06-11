@@ -105,7 +105,7 @@ export function DateSelectionModal({ hideModal }: ModalProps) {
               title={date.toLocaleString({ month: 'short', day: 'numeric', year: 'numeric' })}
               data-shard={!hasShard ? 'none' : ''}
               data-selected={isSelected}
-              className='btn btn-outline btn-xs block h-full w-full overflow-x-clip py-0.5 !text-white data-[selected=true]:btn-active data-[shard=none]:opacity-30'
+              className='btn btn-outline btn-xs block h-full w-full overflow-x-clip !text-white data-[selected=true]:btn-active data-[shard=none]:opacity-30 max-sm:px-0 dark:!text-gray-200'
               onClick={e => {
                 e.preventDefault();
                 if (isSelected) return;
@@ -116,7 +116,7 @@ export function DateSelectionModal({ hideModal }: ModalProps) {
               <p
                 data-shard={hasShard ? (isRed ? 'red' : 'black') : 'none'}
                 data-today={isToday}
-                className='mx-auto w-min whitespace-nowrap rounded-full px-1 text-center align-middle text-lg font-bold data-[shard=black]:text-black data-[shard=red]:text-red-600 data-[today=true]:underline lg:text-xl data-[shard=none]:dark:opacity-60'
+                className='mx-auto w-min whitespace-nowrap rounded-full px-1 text-center align-middle font-bold data-[shard=black]:text-black data-[shard=red]:text-red-600 data-[today=true]:underline lg:text-xl max-md:text-sm data-[shard=none]:dark:opacity-60'
               >
                 {date.toFormat('dd')}
               </p>
