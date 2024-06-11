@@ -1,11 +1,20 @@
+import { useCallback } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
+import { DateTime } from 'luxon';
 import FormatTrans from '../../components/FormatTrans';
 import { ModalProps } from '../../context/ModalContext';
+import { useSettings } from '../../context/Settings';
 import { useRemoteConfig } from '../../data/remoteConfig';
 
 export default function WarningModal({ hideModal }: ModalProps) {
   const { t } = useTranslation('warning');
+  const { setSettings } = useSettings();
   const remoteConfig = useRemoteConfig();
+
+  const dismiss = useCallback(() => {
+    setSettings({ lastWarn: DateTime.now().toUnixInteger() });
+    hideModal();
+  }, [hideModal, setSettings]);
 
   if (!remoteConfig || !remoteConfig.warning) return null;
 
@@ -34,7 +43,7 @@ export default function WarningModal({ hideModal }: ModalProps) {
         <FormatTrans msg={t('proceedCaptions')} />
       </p>
       <div className='mx-auto mt-2 w-min'>
-        <button type='button' className='btn btn-primary btn-sm rounded-badge' onClick={hideModal}>
+        <button type='button' className='btn btn-primary btn-sm rounded-badge' onClick={dismiss}>
           {t('proceed')}
         </button>
       </div>

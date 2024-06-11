@@ -79,6 +79,8 @@ interface SettingsNew extends SettingsOld {
   timezone?: string;
   fontSize?: string;
   numCols?: '5' | '7';
+  /* Unix timestamp of Date that user last dismissed the warning */
+  lastWarn?: number;
 }
 
 function parseNewUrl(url: URL): SettingsNew {
@@ -234,6 +236,7 @@ function getDefault(): Required<SettingsNew> {
     timezone: 'system',
     fontSize: window.innerWidth > 768 && window.innerHeight > 500 ? '1.2' : '0.8',
     numCols: '5',
+    lastWarn: 0,
   };
 }
 

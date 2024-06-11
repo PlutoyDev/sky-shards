@@ -25,7 +25,7 @@ export default function ShardCarousel() {
   const { t, i18n } = useTranslation('shardCarousel');
   const [applyOverride, setApplyOverride] = useState(true);
 
-  const { date, lang, fontSize, setSettings } = useSettings();
+  const { date, lang, fontSize, lastWarn, setSettings } = useSettings();
   const prevDate = useRef(date);
   const direction = useMemo(() => (prevDate.current < date ? 1 : -1), [date]);
   useEffect(() => ((prevDate.current = date), undefined), [date]);
@@ -59,12 +59,15 @@ export default function ShardCarousel() {
 
   useLegacyEffect(() => {
     if (remoteConfig && remoteConfig.warning) {
-      showModal({
-        children: WarningModal,
-        hideCloseButton: true,
-      });
+      const shouldWarn = lastWarn < DateTime.now().minus({ days: 1 }).toUnixInteger();
+      if (shouldWarn) {
+        showModal({
+          children: WarningModal,
+          hideCloseButton: true,
+        });
+      }
     }
-  }, [remoteConfig, remoteConfig?.warning]);
+  }, [remoteConfig, remoteConfig?.warning, lastWarn, showModal]);
 
   return (
     <div
