@@ -107,7 +107,7 @@ type DynamicCalendarProp = Omit<CalendarProp, 'convertTo' | 'date'> & {
 export function DynamicCalendar({ date, invertDiff, ...calendarProp }: DynamicCalendarProp) {
   const { application, local } = useNow();
   return useMemo(() => {
-    if (date) {
+    if (date && Math.abs(date.diff(application, 'days').days) < 30) {
       const style = calendarProp.relFontSize
         ? ({ fontSize: `${calendarProp.relFontSize}em` } as CSSProperties)
         : undefined;
