@@ -1,5 +1,5 @@
 import react from '@vitejs/plugin-react-swc';
-import { readFile, writeFile, readdir, unlink, stat } from 'fs/promises';
+import { readFile, stat } from 'fs/promises';
 import { defineConfig, normalizePath } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 import manifest from './manifest';
@@ -39,13 +39,13 @@ readFile('./public/_headers', 'utf-8').then(headers => {
 });
 
 // Check if the translation file (locales.json) exists
-try { 
-  stat(normalizePath('./src/i18n/locales.json'))
+try {
+  stat(normalizePath('./src/i18n/locales.json'));
 } catch (e) {
   console.error('locales.json not found, run pnpm downloadTrans to download it');
   process.exit(1);
 }
-  
+
 // https://vitejs.dev/config/
 export default defineConfig({
   build: {

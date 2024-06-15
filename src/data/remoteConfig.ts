@@ -1,8 +1,6 @@
 // Copied from https://github.com/PlutoyDev/sky-shardfig/blob/main/shared/lib.ts
-import { useEffect } from 'react';
 import { DateTime } from 'luxon';
 import useSWR from 'swr';
-import useLegacyEffect from '../hooks/useLegacyEffect';
 import type { Translation } from '../i18n';
 
 export interface Override {
@@ -53,10 +51,12 @@ export type RemoteConfig = RemoteConfigResponse;
 // }
 
 const fetcher = (file: 'minified.json' | 'all.json') =>
-  fetch((import.meta.env.VITE_SHARD_REMOTE_URL as string) + '/' + file).then(res => res.json()) as Promise<RemoteConfig>;
+  fetch((import.meta.env.VITE_SHARD_REMOTE_URL as string) + '/' + file).then(res =>
+    res.json(),
+  ) as Promise<RemoteConfig>;
 
 export function useRemoteConfig(requireFull: boolean = false) {
-  const {data: config,} = useSWR(() => (requireFull ? 'all.json' : 'minified.json'), fetcher, {
+  const { data: config } = useSWR(() => (requireFull ? 'all.json' : 'minified.json'), fetcher, {
     refreshInterval: 20 * 60 * 1000, // 20 minutes
     keepPreviousData: true,
     dedupingInterval: 5 * 60 * 1000, // 5 minutes
@@ -64,5 +64,4 @@ export function useRemoteConfig(requireFull: boolean = false) {
   });
 
   return config;
-  
 }
