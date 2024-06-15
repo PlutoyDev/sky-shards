@@ -83,7 +83,7 @@ export function ShardMemoryInfographic({ remoteDailyConfig, authorNames }: Shard
               </p>
             </div>
           </a>
-          {remoteDailyConfig?.memory && <p>{t('memoryCredit', { author })}</p>}
+          {(remoteDailyConfig?.memory || remoteDailyConfig?.memory === 0) && <p>{t('memoryCredit', { author })}</p>}
         </>
       }
     />
