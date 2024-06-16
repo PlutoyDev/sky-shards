@@ -462,24 +462,14 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
           <div className='glass flex flex-col md:flex-row'>
             <div className='flex flex-col gap-2'>
               <h2 className='text-lg font-semibold'>{localT('language.title')}</h2>
-              <button
-                onClick={() => {
-                  setSettings({ lang: resolvedLocal.lang });
-                }}
-                className='btn btn-primary'
-              >
+              <button onClick={() => setSettings({ lang: resolvedLocal.lang })} className='btn btn-primary'>
                 {localT('language.stay', { language: languageCode[resolvedLocal.lang] })}
               </button>
             </div>
             <div className='divider !m-0 md:divider-horizontal' />
             <div className='flex flex-col gap-2'>
               <h2 className='text-lg font-semibold'>{t('language.title')}</h2>
-              <button
-                onClick={() => {
-                  setSettings({ lang: settings.lang });
-                }}
-                className='btn btn-primary'
-              >
+              <button onClick={() => setSettings({ lang: settings.lang })} className='btn btn-primary'>
                 {t('language.switch', { language: languageCode[settings.lang] })}
               </button>
             </div>
