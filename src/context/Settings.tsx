@@ -82,6 +82,8 @@ interface SettingsNew extends SettingsOld {
   numCols?: '5' | '7';
   /* Unix timestamp of Date that user last dismissed the warning */
   lastWarn?: number;
+  /* Legacy Timeline Display */
+  legTimeline?: boolean;
 }
 
 function validifySettings(settings: Partial<SettingsNew>) {
@@ -263,6 +265,7 @@ function getDefault(): Required<SettingsNew> {
     fontSize: window.innerWidth > 768 && window.innerHeight > 500 ? '1.2' : '0.8',
     numCols: '5',
     lastWarn: 0,
+    legTimeline: false,
   };
 }
 

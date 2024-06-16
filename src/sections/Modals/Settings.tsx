@@ -14,7 +14,8 @@ const systemZone = SystemZone.instance.name;
 
 export default function SettingModal({ hideModal }: ModalProps) {
   const { t } = useTranslation('settings');
-  const { lightMode, twelveHourMode, timezone, lang, gsTrans, languageLoader, fontSize, setSettings } = useSettings();
+  const { lightMode, twelveHourMode, timezone, lang, gsTrans, languageLoader, fontSize, legTimeline, setSettings } =
+    useSettings();
   const [gsTransState, setGsTransState] = useState<{ state?: 'loading' | 'error'; codeLangs?: Record<string, string> }>(
     {},
   );
@@ -149,6 +150,21 @@ export default function SettingModal({ hideModal }: ModalProps) {
             <span className='flex-1 text-xs'>{languageLoader.error}</span>
           </div>
         ) : null}
+      </div>
+
+      {/* Use Legacy Timeline Visuals */}
+      <div>
+        <div className='form-control'>
+          <label className='label cursor-pointer'>
+            <span className='label-text'>{t('legacyTimeline.label')}</span>
+            <input
+              type='checkbox'
+              className='toggle toggle-primary'
+              checked={legTimeline}
+              onChange={e => setSettings({ legTimeline: e.target.checked })}
+            />
+          </label>
+        </div>
       </div>
 
       {/* Font Size */}

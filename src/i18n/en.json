@@ -17,7 +17,8 @@
     "language.title": "Language",
     "fontSize.title": "Content font size",
     "language.switch": "Switch to {{language}}",
-    "language.stay": "Stay in {{language}}"
+    "language.stay": "Stay in {{language}}",
+    "legacyTimeline.label": "Use legacy timeline"
   },
   "dateSelector": {
     "title": "Select a date",

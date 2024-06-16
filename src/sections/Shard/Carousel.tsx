@@ -13,6 +13,7 @@ import WarningModal from '../Modals/Warning';
 import { ShardCountdownSection } from './Countdown';
 import ShardInfoSection from './Info';
 import { ShardMapInfographic, ShardDataInfographic, ShardMemoryInfographic } from './Infographic';
+import ShardProgressSection from './Progress';
 
 const varients = {
   enter: (direction: number) => ({ x: direction < 0 ? '-100%' : '100%', opacity: 0 }),
@@ -24,7 +25,7 @@ export default function ShardCarousel() {
   const { t, i18n } = useTranslation('shardCarousel');
   const [applyOverride, setApplyOverride] = useState(true);
 
-  const { date, lang, fontSize, lastWarn, setSettings } = useSettings();
+  const { date, lang, fontSize, lastWarn, legTimeline, setSettings } = useSettings();
   const prevDate = useRef(date);
   const direction = useMemo(() => (prevDate.current < date ? 1 : -1), [date]);
   useEffect(() => ((prevDate.current = date), undefined), [date]);
@@ -106,6 +107,7 @@ export default function ShardCarousel() {
 
             {info.hasShard && (
               <>
+                {legTimeline && <ShardProgressSection info={info} />}
                 <ShardCountdownSection info={info} />
                 <small
                   className='flex cursor-pointer flex-col items-center justify-center font-serif text-xs [@media_(min-height:_640px)]:xl:text-lg'

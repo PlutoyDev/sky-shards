@@ -4,6 +4,7 @@ import { Settings as LuxonSettings, Zone } from 'luxon';
 import { DynamicCalendar } from '../../components/Calendar';
 import { ClockNow } from '../../components/Clock';
 import Emoji from '../../components/Emoji';
+import { useSettings } from '../../context/Settings';
 import { DailyConfig } from '../../data/remoteConfig';
 import { ShardInfo } from '../../data/shard';
 
@@ -18,6 +19,7 @@ export const ShardInfoSection = forwardRef<HTMLDivElement, ShardInfoSectionProps
   { info, remoteDailyConfig, remoteAuthorNames, toggleOverride },
   ref,
 ) {
+  const { legTimeline } = useSettings();
   const { t } = useTranslation(['infoSection', 'skyRealms', 'override', 'shard']);
   const { override, overrideBy, overrideReason, memory, memoryBy } = remoteDailyConfig ?? {};
   const overrideDisclosure = useMemo(() => {
@@ -138,25 +140,29 @@ export const ShardInfoSection = forwardRef<HTMLDivElement, ShardInfoSectionProps
           </span>
         )}
       </p>
-      <small className='grid grid-flow-row-dense grid-cols-3 grid-rows-[auto_auto] place-items-center gap-x-2 lg:gap-x-4 tall:max-md:grid-flow-col-dense tall:max-md:grid-cols-[auto_auto] tall:max-md:grid-rows-3 tall:max-md:gap-y-2'>
-        {
-          // Shard Ordinals
-          Array.from({ length: 3 }, (_, i) => (
-            <span key={`ordinal.${i}`} className='font-semibold'>
-              {t(`shard:ordinal.${i as 0 | 1 | 2}`)}
-            </span>
-          ))
-        }
-        {
-          // Shard Time
-          info.occurrences.map(({ land, end }, i) => (
-            <span key={`time.${i}`}>
-              <ClockNow time={land} strikeThroughPast /> - <ClockNow time={end} strikeThroughPast />
-            </span>
-          ))
-        }
-      </small>
-      <span className='text-[0.8em]'>{t('schTzFoot', { timezone: (LuxonSettings.defaultZone as Zone).name })}</span>
+      {!legTimeline && (
+        <>
+          <small className='grid grid-flow-row-dense grid-cols-3 grid-rows-[auto_auto] place-items-center gap-x-2 lg:gap-x-4 tall:max-md:grid-flow-col-dense tall:max-md:grid-cols-[auto_auto] tall:max-md:grid-rows-3 tall:max-md:gap-y-2'>
+            {
+              // Shard Ordinals
+              Array.from({ length: 3 }, (_, i) => (
+                <span key={`ordinal.${i}`} className='font-semibold'>
+                  {t(`shard:ordinal.${i as 0 | 1 | 2}`)}
+                </span>
+              ))
+            }
+            {
+              // Shard Time
+              info.occurrences.map(({ land, end }, i) => (
+                <span key={`time.${i}`}>
+                  <ClockNow time={land} strikeThroughPast /> - <ClockNow time={end} strikeThroughPast />
+                </span>
+              ))
+            }
+          </small>
+          <span className='text-[0.8em]'>{t('schTzFoot', { timezone: (LuxonSettings.defaultZone as Zone).name })}</span>
+        </>
+      )}
     </section>
   );
 });
