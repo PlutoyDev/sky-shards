@@ -33,7 +33,7 @@ export default function useFeedbackFormUrl(params?: FeedbackFormParams) {
   const appLang = i18n.language;
   const appTimezone = LuxonSettings.defaultZone.name;
 
-  debugInfo += `Locale: ${appLang}\nTime zone: ${appTimezone}`;
+  debugInfo += `Locale: ${appLang}\nTime zone: ${appTimezone}\n`;
 
   const size = window.innerWidth + 'x' + window.innerHeight;
   const locales = tryDefault(() => navigator.languages.join(', '), 'unknown');
