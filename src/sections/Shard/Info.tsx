@@ -142,7 +142,7 @@ export const ShardInfoSection = forwardRef<HTMLDivElement, ShardInfoSectionProps
       </p>
       {!legTimeline && (
         <>
-          <small className='grid grid-flow-row-dense grid-cols-3 grid-rows-[auto_auto] place-items-center gap-x-2 lg:gap-x-4 tall:max-md:grid-flow-col-dense tall:max-md:grid-cols-[auto_auto] tall:max-md:grid-rows-3 tall:max-md:gap-y-2'>
+          <small className='grid grid-flow-row-dense grid-cols-3 grid-rows-[auto_auto] place-items-center gap-x-2 lg:gap-x-8 tall:max-md:grid-flow-col-dense tall:max-md:grid-cols-[auto_auto] tall:max-md:grid-rows-3 tall:max-md:gap-y-2'>
             {
               // Shard Ordinals
               Array.from({ length: 3 }, (_, i) => (
