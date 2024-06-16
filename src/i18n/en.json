@@ -15,7 +15,9 @@
     "timezones.title": "Timezone",
     "timezones.reset": "Reset",
     "language.title": "Language",
-    "fontSize.title": "Content font size"
+    "fontSize.title": "Content font size",
+    "language.switch": "Switch to {{language}}",
+    "language.stay": "Stay in {{language}}"
   },
   "dateSelector": {
     "title": "Select a date",

@@ -9,10 +9,11 @@ new URL Format:
 Path: /, /{yyyy}/{MM}/{dd}, /{lang}/{yyyy}/{MM}/{dd},
 Query: gsTrans=1, twelveHour=(true|false|system), lightMode=(true|false|system), timezone.
 */
-import { useState, useCallback, createContext, useContext } from 'react';
+import { useState, useCallback, createContext, useContext, useMemo } from 'react';
 import i18next from 'i18next';
 import { DateTime, Settings as LuxonSettings } from 'luxon';
 import useLegacyEffect from '../hooks/useLegacyEffect';
+import { languageCode } from '../i18n';
 
 const appZone = 'America/Los_Angeles';
 
@@ -81,6 +82,15 @@ interface SettingsNew extends SettingsOld {
   numCols?: '5' | '7';
   /* Unix timestamp of Date that user last dismissed the warning */
   lastWarn?: number;
+}
+
+function validifySettings(settings: Partial<SettingsNew>) {
+  // check if lang is in languageCode
+  if ('lang' in settings && settings.lang && !(settings.lang in languageCode)) {
+    delete settings.lang;
+  }
+
+  return settings;
 }
 
 function parseNewUrl(url: URL): SettingsNew {
@@ -336,13 +346,17 @@ export function useSettings() {
 
 export function SettingsProvider({ children }: { children: React.ReactNode }) {
   const [languageLoader, setLanguageLoader] = useState<LanguageLoader>(null);
-  const [settings, internalSetSettings] = useState<Required<SettingsNew>>(() => {
+  const [resolvedLocal, internalSetSettings] = useState<Required<SettingsNew>>(() => {
     const def = getDefault();
-    const local = getLocalStorageSettings();
-    const url = new URL(window.location.href);
-    const parsed = isOldUrlFormat(url) ? parseOldUrl(url) : parseNewUrl(url);
-    return { ...def, ...local, ...parsed };
+    const local = validifySettings(getLocalStorageSettings());
+    return { ...def, ...local };
   });
+
+  const settings = useMemo(() => {
+    const url = new URL(window.location.href);
+    const parsed = validifySettings(isOldUrlFormat(url) ? parseOldUrl(url) : parseNewUrl(url));
+    return { ...resolvedLocal, ...parsed };
+  }, [resolvedLocal]);
 
   useLegacyEffect(() => {}, [settings.lightMode, settings.timezone, settings.lang]);
 
@@ -438,7 +452,42 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
+  const localT = i18next.getFixedT(resolvedLocal.lang, 'settings');
+  const t = i18next.getFixedT(settings.lang, 'settings');
+
   return (
-    <SettingsContext.Provider value={{ ...settings, languageLoader, setSettings }}>{children}</SettingsContext.Provider>
+    <SettingsContext.Provider value={{ ...settings, languageLoader, setSettings }}>
+      {settings.lang !== resolvedLocal.lang ? (
+        <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform text-center'>
+          <div className='glass flex flex-col md:flex-row'>
+            <div className='flex flex-col gap-2'>
+              <h2 className='text-lg font-semibold'>{localT('language.title')}</h2>
+              <button
+                onClick={() => {
+                  setSettings({ lang: resolvedLocal.lang });
+                }}
+                className='btn btn-primary'
+              >
+                {localT('language.stay', { language: languageCode[resolvedLocal.lang] })}
+              </button>
+            </div>
+            <div className='divider !m-0 md:divider-horizontal' />
+            <div className='flex flex-col gap-2'>
+              <h2 className='text-lg font-semibold'>{t('language.title')}</h2>
+              <button
+                onClick={() => {
+                  setSettings({ lang: settings.lang });
+                }}
+                className='btn btn-primary'
+              >
+                {t('language.switch', { language: languageCode[settings.lang] })}
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : (
+        children
+      )}
+    </SettingsContext.Provider>
   );
 }
