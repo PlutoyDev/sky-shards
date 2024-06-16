@@ -188,6 +188,12 @@
     "manualMemory": "Memory: {{memory}}",
     "manualMemoryCredit": "Submitted by {{author}}"
   },
+  "progressSection": {
+    "showTimeIn.skyTime": "Showing time in <a>Sky time</a>",
+    "showTimeIn.localTime": "Showing time in <a>Local time</a>",
+    "showTimeIn.relativeTime": "Showing time in <a>Relative time</a>",
+    "startTimeOnly": "Limited width: Start time only"
+  },
   "countdownSection": {
     "landing": "<bold>$t(shard:ordinal.{{i}})</bold> landing in <countdown/>",
     "landed": "<bold>$t(shard:ordinal.{{i}})</bold> landed <bold>{{landedSince}}</bold> ago. <br/>Ending in <countdown/>",
