@@ -144,7 +144,6 @@ function OtherAppFooter({ heading, app: { title, description, link, icon, creato
       <p>{heading}</p>
       <a
         target='_blank'
-        rel='noreferrer'
         href={link}
         className='z-10 grid cursor-pointer grid-cols-[max-content,min-content,max-content] grid-rows-2 rounded-lg border border-zinc-500 px-2 text-center shadow-2xl shadow-zinc-700'
       >
