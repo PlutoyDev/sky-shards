@@ -74,7 +74,14 @@ type ClockNowProp = Omit<ClockProp, 'convertTo' | 'duration' | 'strikeThrough'> 
 export function ClockNow({ time, showLocal = false, invertDiff, strikeThroughPast, ...clockParam }: ClockNowProp) {
   const { application, local } = useNow();
   if (time && strikeThroughPast) {
-    return <StaticClock strikeThrough={application > time} {...clockParam} time={time} />;
+    return (
+      <StaticClock
+        strikeThrough={application > time}
+        {...clockParam}
+        time={time}
+        convertTo={showLocal ? 'local' : 'sky'}
+      />
+    );
   } else if (time && !strikeThroughPast) {
     const duration = invertDiff ? application.diff(time) : time.diff(application);
     return <StaticClock {...clockParam} duration={duration} />;
