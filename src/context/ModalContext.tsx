@@ -55,7 +55,6 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
     window.addEventListener('keydown', keydownListener);
     existingPopStateListener.current = window.onpopstate;
     window.onpopstate = () => hideModal();
-    history.pushState({}, '');
     setModalProps(props);
   };
 
