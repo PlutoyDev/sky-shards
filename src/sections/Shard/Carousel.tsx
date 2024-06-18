@@ -59,7 +59,8 @@ export default function ShardCarousel() {
 
   useLegacyEffect(() => {
     if (remoteConfig && remoteConfig.warning) {
-      const shouldWarn = !DateTime.now().setZone('America/Los_Angeles').hasSame(DateTime.fromSeconds(lastWarn), 'day');
+      const last = DateTime.fromSeconds(lastWarn).setZone('America/Los_Angeles');
+      const shouldWarn = !DateTime.now().setZone('America/Los_Angeles').hasSame(last, 'day');
       if (shouldWarn) {
         showModal({
           children: WarningModal,
@@ -67,7 +68,7 @@ export default function ShardCarousel() {
         });
       }
     }
-  }, [remoteConfig, remoteConfig?.warning, lastWarn, showModal]);
+  }, [remoteConfig?.warning, lastWarn]);
 
   return (
     <div
