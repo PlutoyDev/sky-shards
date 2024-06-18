@@ -20,7 +20,7 @@ const translationJsonUrl =
 process.env.VITE_GS_TRANSLATION_URL = translationJsonUrl;
 
 if (!process.env.VITE_SHARD_REMOTE_URL) {
-  process.env.VITE_SHARD_REMOTE_URL = 'https://sky-shardfig.pages.dev';
+  process.env.VITE_SHARD_REMOTE_URL = 'https://sky-shardfig.plutoy.top';
 }
 
 // Check if the translation file (locales.json) exists
