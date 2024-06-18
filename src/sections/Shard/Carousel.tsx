@@ -59,7 +59,7 @@ export default function ShardCarousel() {
 
   useLegacyEffect(() => {
     if (remoteConfig && remoteConfig.warning) {
-      const shouldWarn = lastWarn < DateTime.now().minus({ days: 1 }).toUnixInteger();
+      const shouldWarn = !DateTime.now().setZone('America/Los_Angeles').hasSame(DateTime.fromSeconds(lastWarn), 'day');
       if (shouldWarn) {
         showModal({
           children: WarningModal,
