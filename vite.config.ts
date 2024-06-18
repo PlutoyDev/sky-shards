@@ -10,33 +10,18 @@ process.env.VITE_VERSION_MINOR = packageJson.version.split('.').slice(0, 2).join
 process.env.VITE_GIT_BRANCH = process.env.CF_PAGES_BRANCH;
 process.env.VITE_GIT_COMMIT = process.env.CF_PAGES_COMMIT_SHA;
 
-const isCfPages = process.env.CF_PAGES === '1';
-
 console.log('Version', process.env.VITE_VERSION);
 console.log('Branch', process.env.VITE_GIT_BRANCH);
 console.log('Commit Ref', process.env.VITE_GIT_COMMIT);
 
 const translationJsonUrl =
   'https://script.google.com/macros/s/AKfycbw3r2wYz_qnUf0shFqoZFTc5z6uQ1DNOdS54ZZ0vrfmcOl-OLKe-NW7GItLcLuNexr7/exec';
-const translationDir = normalizePath('./src/i18n');
 
 process.env.VITE_GS_TRANSLATION_URL = translationJsonUrl;
 
-if (process.env.VITE_SHARD_REMOTE_URL === undefined) {
-  process.env.VITE_SHARD_REMOTE_URL = 'https://sky-shardfig.plutoy.top';
+if (!process.env.VITE_SHARD_REMOTE_URL) {
+  process.env.VITE_SHARD_REMOTE_URL = 'https://sky-shardfig.pages.dev';
 }
-
-// check public/_header csp allow translation url and dynamic data url
-readFile('./public/_headers', 'utf-8').then(headers => {
-  if (!headers.includes(translationJsonUrl)) {
-    console.error('Translation url not allowed in public/_headers');
-    process.exit(1);
-  }
-  if (!headers.includes(process.env.VITE_SHARD_REMOTE_URL)) {
-    console.error('Dynamic data url not allowed in public/_headers');
-    process.exit(1);
-  }
-});
 
 // Check if the translation file (locales.json) exists
 try {
@@ -89,5 +74,19 @@ export default defineConfig({
         ],
       },
     }),
+    {
+      name: 'edit_headers',
+      async buildEnd() {
+        const additionalConnectSrc = [
+          'https://script.googleusercontent.com/macros/echo',
+          process.env.VITE_GS_TRANSLATION_URL,
+          process.env.VITE_SHARD_REMOTE_URL,
+        ].join(' ');
+        const premadeHeaders = await readFile('./src/_headers', 'utf-8');
+        const headers = premadeHeaders.replace('${addConnectSrc}', additionalConnectSrc);
+        this.emitFile({ type: 'asset', fileName: '_headers', source: headers });
+        console.log('dis/allowed connect-src:', additionalConnectSrc);
+      },
+    },
   ],
 });
