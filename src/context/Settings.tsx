@@ -371,26 +371,40 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
         const isInit = edits === undefined;
         const settings = isInit ? old : { ...old, ...edits };
 
+        const def = getDefault();
+        let path = '/' + settings.lang;
+        if (!settings.date.hasSame(def.date, 'day')) {
+          path += '/' + settings.date.toFormat('yyyy/MM/dd');
+        }
+
+        const url = new URL(path, origin);
+        const link = document.querySelector('link[rel="canonical"]');
+        if (link) link.setAttribute('href', url.toString());
+        else {
+          const link = document.createElement('link');
+          link.rel = 'canonical';
+          link.href = url.toString();
+          document.head.appendChild(link);
+        }
+
         if (isInit || (edits && 'lightMode' in edits && edits.lightMode !== old.lightMode)) {
+          // When lightMode is in edit
           setLightMode(settings.lightMode);
         }
 
         if (isInit || (edits && 'timezone' in edits && edits.timezone !== old.timezone)) {
+          // When timezone is in edit
           setTimezone(settings.timezone);
         }
 
         if (isInit || (edits && 'lang' in edits && edits.lang !== old.lang)) {
+          // When lang is in edit
           setLanguage(settings.lang, setLanguageLoader).catch(err => {
             console.error('Failed to set language', err);
             setLanguage(isInit ? 'en' : old.lang, setLanguageLoader);
           });
         }
 
-        const def = getDefault();
-        let path = '/' + settings.lang;
-        if (!settings.date.hasSame(def.date, 'day')) {
-          path += '/' + settings.date.toFormat('yyyy/MM/dd');
-        }
         const urlParams = new URLSearchParams();
         const localParams = new Map<string, any>();
 
@@ -411,23 +425,11 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
         });
 
         if (setUrl) {
-          const url = new URL(path, origin);
           url.search = urlParams.toString();
           if (pushHistory && !isInit) history.pushState(null, '', url);
           else history.replaceState(null, '', url);
         }
         setLocalStorageSettings(Object.fromEntries(localParams));
-
-        const canonical = new URL(path, origin);
-        canonical.search = '';
-        const link = document.querySelector('link[rel="canonical"]');
-        if (link) link.setAttribute('href', canonical.toString());
-        else {
-          const link = document.createElement('link');
-          link.rel = 'canonical';
-          link.href = canonical.toString();
-          document.head.appendChild(link);
-        }
         return settings;
       });
     },
