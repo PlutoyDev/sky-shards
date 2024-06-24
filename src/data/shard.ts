@@ -99,7 +99,7 @@ export const numMapVarients = {
   'forest.end': 2,
   'valley.rink': 3,
   'valley.dreams': 2,
-  'wateland.temple': 3,
+  'wasteland.temple': 3,
   'wasteland.battlefield': 3,
   'wasteland.graveyard': 2,
   'wasteland.crab': 2,
