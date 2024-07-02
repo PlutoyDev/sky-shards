@@ -7,7 +7,7 @@ interface CalendarProp {
   convertTo?: 'local' | 'sky';
   className?: string;
   relFontSize?: number;
-  localeOverride?: Pick<Intl.DateTimeFormatOptions, 'weekday' | 'month' | 'day' | 'year' | 'dateStyle'>;
+  localeOverride?: Partial<Pick<Intl.DateTimeFormatOptions, 'weekday' | 'month' | 'day' | 'year' | 'dateStyle'>>;
   allowWrap?: boolean;
   inline?: boolean;
   relativeMaxDays?: number;
@@ -107,20 +107,24 @@ type DynamicCalendarProp = Omit<CalendarProp, 'convertTo' | 'date'> & {
 export function DynamicCalendar({ date, invertDiff, ...calendarProp }: DynamicCalendarProp) {
   const { application, local } = useNow();
   return useMemo(() => {
-    if (date && Math.abs(date.diff(application, 'days').days) < 30) {
+    if (date) {
       const style = calendarProp.relFontSize
         ? ({ fontSize: `${calendarProp.relFontSize}em` } as CSSProperties)
         : undefined;
-      const today = application.startOf('day');
-      const rtf = new Intl.RelativeTimeFormat(LuxonSettings.defaultLocale, { numeric: 'auto' });
-      date = date.startOf('day');
-      const days = date.diff(today, 'days').days;
+      if (Math.abs(date.diff(application, 'days').days) < 30) {
+        const today = application.startOf('day');
+        const rtf = new Intl.RelativeTimeFormat(LuxonSettings.defaultLocale, { numeric: 'auto' });
+        date = date.startOf('day');
+        const days = date.diff(today, 'days').days;
 
-      return (
-        <span className={calendarProp.className} style={style}>
-          {rtf.format(days, 'day')}
-        </span>
-      );
+        return (
+          <span className={calendarProp.className} style={style}>
+            {rtf.format(days, 'day')}
+          </span>
+        );
+      } else {
+        return <Calendar date={date} {...calendarProp} inline localeOverride={{ weekday: undefined }} />;
+      }
     } else {
       return <Calendar date={application} {...calendarProp} />;
     }
