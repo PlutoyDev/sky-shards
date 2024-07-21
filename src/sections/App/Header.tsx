@@ -23,7 +23,7 @@ function HeaderDateTime({ navigateToday }: { navigateToday: () => void }) {
     >
       <p className='max-md:hidden'>{t('headerDateTimeIndicator')}</p>
       <p
-        className='short:swap data-[swap]:short:swap-active max-md:swap data-[swap]:max-md:swap-active tall:md:cursor-pointer tall:md:flex-col tall:md:gap-x-2'
+        className='short:swap data-[swap="true"]:short:swap-active max-md:swap data-[swap="true"]:max-md:swap-active tall:md:cursor-pointer tall:md:flex-col tall:md:gap-x-2'
         data-swap={dateActive}
       >
         <DynamicCalendar className='swap-on' />
