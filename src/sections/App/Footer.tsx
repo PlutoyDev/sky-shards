@@ -199,7 +199,7 @@ function SkyEventCalFooter() {
       app={{
         title: 'Sky Event Calendar',
         description: 'Find information about current and upcoming Sky events',
-        link: 'https://sky-event-calendar.pages.dev/',
+        link: 'https://skydreamers.notion.site/Sky-Event-Calendar-FM-ec6e6134924048859b2a8410b0a8b20d',
         icon: '/ext/sky-event-cal.webp',
         creator: 'Alvenoir',
       }}
