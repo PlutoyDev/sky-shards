@@ -191,6 +191,22 @@ function SkyPlannerFooter() {
   );
 }
 
+function SkyEventCalFooter() {
+  const { t } = useTranslation('footer');
+  return (
+    <OtherAppFooter
+      heading={t('seeAlso')}
+      app={{
+        title: 'Sky Event Calendar',
+        description: 'Find information about current and upcoming Sky events',
+        link: 'https://sky-event-calendar.pages.dev/',
+        icon: '/ext/sky-event-cal.webp',
+        creator: 'Alvenoir',
+      }}
+    />
+  );
+}
+
 const durationPerSection = 12; // seconds
 
 export function Footer() {
@@ -213,6 +229,7 @@ export function Footer() {
       subfooters.splice(2, 0, { key: 'translators-credit', Footer: TranslatorsFooter });
     } else if (i18n.language === 'en') {
       subfooters.splice(2, 0, { key: 'help-translate', Footer: HelpTranslation });
+      subfooters.push({ key: 'sky-event-cal', Footer: SkyEventCalFooter });
     }
 
     return subfooters;
