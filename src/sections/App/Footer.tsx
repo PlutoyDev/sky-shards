@@ -183,7 +183,7 @@ function SkyPlannerFooter() {
       app={{
         title: 'Sky Planner',
         description: t('skyPlannerDescription'),
-        link: 'https://sky-planner.pages.dev/',
+        link: 'https://sky-planner.com/',
         icon: '/ext/sky-planner.webp',
         creator: 'Silverfeelin',
       }}
