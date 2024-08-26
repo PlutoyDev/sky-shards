@@ -28,7 +28,7 @@ export function ShardProgress({ info }: ShardProgressProps) {
         <div className='absolute left-0 top-0 z-0 h-full rounded-full bg-gray-200' style={{ width: '100%' }} />
         {/* Start label */}
         <span className='absolute -left-[0.5em] top-0'>
-          <StaticClock time={startOfDay} convertTo='local' />
+          <StaticClock time={startOfDay} convertTo='local' disableSeconds />
         </span>
         {/* Segments */}
         {info.occurrences.map(({ land, end }, i) => {
@@ -47,11 +47,11 @@ export function ShardProgress({ info }: ShardProgressProps) {
                 }
               >
                 {/* <StaticClock time={start}  convertTo={useLocalTz ? 'local' : undefined} /> */}
-                <StaticClock time={land} convertTo='local' />
+                <StaticClock time={land} convertTo='local' disableSeconds />
               </span>
               <span className='absolute -right-[0.5em] top-0 max-sm:hidden'>
                 {/* <StaticClock time={end}  convertTo={useLocalTz ? 'local' : undefined} /> */}
-                <StaticClock time={end} convertTo='local' />
+                <StaticClock time={end} convertTo='local' disableSeconds />
               </span>
             </div>
           );
