@@ -74,7 +74,7 @@ function PattenCreditFooter() {
 }
 
 function TranslatorsFooter() {
-  const { t, i18n } = useTranslation('footer');
+  const { t } = useTranslation('footer');
   let translators = [] as string[];
   try {
     const tCsv = t('translators');

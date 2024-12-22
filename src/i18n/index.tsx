@@ -1,7 +1,12 @@
 import { initReactI18next } from 'react-i18next';
 import i18n from 'i18next';
 import resourceEn from './en.json';
-import { translations, codeLangs } from './locales.json';
+import locales from './locales.json';
+
+const { translations, codeLangs } = locales as unknown as {
+  codeLangs: Record<string, string>;
+  translations: Record<string, Record<string, string>>;
+};
 
 export type Translation = typeof resourceEn;
 

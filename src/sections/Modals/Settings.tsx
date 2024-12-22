@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FaMinus, FaPlus, FaExclamation } from 'react-icons/fa';
 import { SystemZone } from 'luxon';
-import { ModalProps } from '../../context/ModalContext';
 import { useSettings } from '../../context/Settings';
 import { languageCode } from '../../i18n';
 
@@ -12,7 +11,7 @@ const timezones = JSON.parse(timezonesJson);
 
 const systemZone = SystemZone.instance.name;
 
-export default function SettingModal({ hideModal }: ModalProps) {
+export default function SettingModal() {
   const { t } = useTranslation('settings');
   const { lightMode, twelveHourMode, timezone, lang, gsTrans, languageLoader, fontSize, legTimeline, setSettings } =
     useSettings();

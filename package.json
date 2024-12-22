@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "pnpm downloadTrans && tsc && vite build",
-    "buildonly": "tsc && vite build",
+    "build": "pnpm downloadTrans && tsc -b && vite build",
+    "buildonly": "tsc -b && vite build",
     "preview": "vite preview",
     "downloadTrans": "curl -Lo src/i18n/locales.json https://script.google.com/macros/s/AKfycbw3r2wYz_qnUf0shFqoZFTc5z6uQ1DNOdS54ZZ0vrfmcOl-OLKe-NW7GItLcLuNexr7/exec"
   },
