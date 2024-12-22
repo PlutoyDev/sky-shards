@@ -1,0 +1,36 @@
+{
+  "$schema": "https://inlang.com/schema/project-settings",
+  "sourceLanguageTag": "en",
+  "languageTags": [
+    "en",
+    "zh",
+    "zh-tw",
+    "ja",
+    "ko",
+    "pt-br",
+    "it",
+    "id",
+    "fr",
+    "es",
+    "ru",
+    "uk",
+    "de",
+    "bg",
+    "vi",
+    "sv",
+    "pl",
+    "ro",
+    "th",
+    "ar",
+    "nl",
+    "sk",
+    "fi",
+    "fa",
+    "tl",
+    "he"
+  ],
+  "modules": ["https://cdn.jsdelivr.net/npm/@inlang/plugin-json@latest/dist/index.js"],
+  "plugin.inlang.json": {
+    "pathPattern": "./messages/{languageTag}.json"
+  }
+}
