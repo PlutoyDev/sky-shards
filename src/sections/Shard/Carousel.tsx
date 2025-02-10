@@ -31,7 +31,8 @@ export default function ShardCarousel() {
   useEffect(() => ((prevDate.current = date), undefined), [date]);
 
   const { showModal } = useModal();
-  const remoteConfig = useRemoteConfig(date.diffNow('days').days < -2);
+  const daysDiff = date.diffNow('days').days 
+  const remoteConfig = useRemoteConfig(daysDiff < -2 || daysDiff > 0);
 
   const remoteDailyConfig = useMemo(
     () => remoteConfig?.dailiesMap[date.toISODate() as string] ?? undefined,
