@@ -16,7 +16,7 @@ export function ShardOverrideSection({
   remoteAuthorNames,
   toggleApplyOverride,
 }: ShardOverrideSectionProps) {
-  const { t } = useTranslation(['override']);
+  const { t } = useTranslation('override');
   const { override, overrideBy, overrideReason } = remoteDailyConfig ?? {};
 
   if (!override || !overrideBy || !overrideReason) {
