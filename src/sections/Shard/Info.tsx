@@ -29,7 +29,7 @@ export const ShardInfoSection = forwardRef<HTMLDivElement, ShardInfoSectionProps
     const reason: string = overrideReason.startsWith('!!!')
       ? 'Reason: ' + overrideReason.slice(3)
       : // @ts-ignore
-        t(`reason.${overrideReason}`);
+        t(`override:reason.${overrideReason}`);
     return (
       <small className='text-[0.8em]'>
         <p className='flex flex-row flex-wrap items-center justify-center gap-1'>
