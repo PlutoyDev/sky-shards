@@ -8,7 +8,7 @@
     "build": "pnpm downloadTrans && tsc && vite build",
     "buildonly": "tsc && vite build",
     "preview": "vite preview",
-    "downloadTrans": "curl -Lo src/i18n/locales.json https://script.google.com/macros/s/AKfycbw3r2wYz_qnUf0shFqoZFTc5z6uQ1DNOdS54ZZ0vrfmcOl-OLKe-NW7GItLcLuNexr7/exec"
+    "downloadTrans": "curl -Lo src/i18n/locales.json https://script.google.com/macros/s/AKfycbxWmAhleoWLtyVpXgICkkGUdAZKi_JPkuSxJ243H33316scaRFgY0kEq6UR3iPajsq4/exec"
   },
   "dependencies": {
     "framer-motion": "^11.2.6",
